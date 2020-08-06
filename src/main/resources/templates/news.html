@@ -21,22 +21,25 @@
     <table th:if="${news.size() > 0}" class="table table-hover">
         <tbody>
         <tr>
-            <th colspan="5">Список новостей:</th>
+            <th colspan="7">Список новостей:</th>
         </tr>
         <tr>
             <td>Индекс</td>
-            <td>Дата</td>
+            <td>Дата создания</td>
             <td>Краткий текст</td>
             <td>Полный текст</td>
-            <td>Новость активна</td>
+            <td>Новость видима</td>
+            <td>Адрес картинки</td>
+            <td>Автор</td>
         </tr>
         <tr th:each="item : ${news}">
             <td th:text="${item.id}"/>
-            <td></td>
+            <td th:text="${item.creationDate}"/>
             <td th:text="${item.shortText}"/>
             <td th:text="${item.text}"/>
-            <td th:text="${item.active}"/>
-            <td>
+            <td th:text="${item.visible}"/>
+            <td th:text="${item.picture}"/>
+            <td th:text="${item.author.login}"/>
         </tr>
         </tbody>
     </table>

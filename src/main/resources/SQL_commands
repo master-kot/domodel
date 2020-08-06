@@ -4,17 +4,25 @@ CREATE SCHEMA domodel;
 
 SET SEARCH_PATH TO domodel;
 
+CREATE TABLE users (id bigserial, login varchar(50), password varchar(100) not null, enabled boolean not null, creation_date date, first_name varchar(200), second_name varchar(200), middle_name varchar(200), phone_number varchar(50), email varchar(250), PRIMARY KEY(id));
+CREATE TABLE authorities (id bigserial, user_id bigint not null, authority varchar(50) not null, FOREIGN KEY (user_id) REFERENCES users (id), PRIMARY KEY (id));
+CREATE TABLE news (id bigserial, creation_date date, short_text varchar(200) not null, text varchar(2000) not null, visible boolean, picture varchar(200), type varchar(100), author bigint not null, FOREIGN KEY (author) REFERENCES users (id), PRIMARY KEY (id));
 
-CREATE TABLE users (username varchar(50), password varchar(100) not null, enabled boolean not null, PRIMARY KEY(username));
-CREATE TABLE authorities (id serial, username varchar(50) not null, authority varchar(50) not null, FOREIGN KEY (username) REFERENCES users (username), PRIMARY KEY (id));
-INSERT INTO users (username, password, enabled) VALUES ('admin', '{noop}admin', true), ('user', '{noop}user', true);
-INSERT INTO authorities (username, authority) VALUES ('admin', 'ROLE_ADMIN'), ('user', 'ROLE_USER');
-
-CREATE TABLE news (id bigserial, creation_date date, short_text varchar(200) not null, text varchar(1000) not null, active boolean not null, PRIMARY KEY (id));
-INSERT INTO news (short_text, text, active) VALUES ('Short text description', 'Full text description of the news number one', true);
-
+INSERT INTO users (login, password, enabled, first_name, second_name, middle_name, phone_number, email) VALUES ('admin', '{noop}admin', true, 'Ivan', 'Ivanov', 'Ivanovich', '9123456789', 'ivan@mail.ru');
+INSERT INTO authorities (user_id, authority) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO news (creation_date, short_text, text, visible, picture, author) VALUES ('2020-08-06', 'Short text description', 'Full text description of the news number one', true, 'http://Link_for_picture', 1);
 
 
-### НЕ ИСПОЛЬЗУЮТСЯ В ДАННЫЙ МОМЕНТ ###
-CREATE TABLE news_list (id bigserial, news_id bigint not null, author_id varchar(50) not null, FOREIGN KEY (news_id) REFERENCES news (id), FOREIGN KEY (author_id) REFERENCES users (username));
-INSERT INTO news_list (news_id, author_id) VALUES (1, 'admin');
+### РАБОТА С БД ###
+
+SELECT * FROM products;
+SELECT * FROM users;
+SELECT * FROM authorities;
+
+DROP TABLE news;
+DROP TABLE authorities;
+DROP TABLE users;
+
+### НЕ ИСПОЛЬЗУЕТСЯ ###
+#CREATE TABLE news_list (id bigserial, news_id bigint not null, FOREIGN KEY (news_id) REFERENCES news (id), FOREIGN KEY (author_id) REFERENCES users (id));
+#CREATE TABLE profiles (id bigserial, user_id bigint not null, creation_date date, full_name varchar(100), phone_number varchar(20), email varchar(100), FOREIGN KEY (user_id) REFERENCES users (id), PRIMARY KEY (id));
