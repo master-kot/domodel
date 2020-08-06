@@ -1,6 +1,5 @@
 package ru.geekbrains.domodel.news.services.api;
 
-import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.news.entities.News;
 
 import java.util.List;
@@ -8,41 +7,32 @@ import java.util.List;
 /**
  * Сервис новостей
  */
-@Service
 public interface NewsService {
 
     /**
      * Получить список новостей
      *
-     * @return
+     * @return список новостей
      */
     List<News> getAllNews();
 
     /**
+     * Получить новость по ее идентификатору
      *
-     *
-     * @param id
-     * @return
+     * @param id идентификатор новости
+     * @return новость
      */
     News getNewsById(Long id);
 
     /**
-     *
-     *
-     * @param title
-     * @return
-     */
-    News getNewsByTitle(String title);
-
-    /**
-     *
+     * Удалить новость по ее идентификатору
      *
      * @param id
      */
     void deleteNewsById(Long id);
 
     /**
-     *
+     * Сохранить новость
      *
      * @param news
      * @return
@@ -50,7 +40,7 @@ public interface NewsService {
     public News saveNews (News news);
 
     /**
-     *
+     * Изменить новость
      *
      * @param id
      * @param shortText

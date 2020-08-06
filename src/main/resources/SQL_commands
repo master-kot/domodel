@@ -1,0 +1,20 @@
+#########Команды postgresql для создания Базы данных голосования#####################
+
+CREATE SCHEMA domodel;
+
+SET SEARCH_PATH TO domodel;
+
+
+CREATE TABLE users (username varchar(50), password varchar(100) not null, enabled boolean not null, PRIMARY KEY(username));
+CREATE TABLE authorities (id serial, username varchar(50) not null, authority varchar(50) not null, FOREIGN KEY (username) REFERENCES users (username), PRIMARY KEY (id));
+INSERT INTO users (username, password, enabled) VALUES ('admin', '{noop}admin', true), ('user', '{noop}user', true);
+INSERT INTO authorities (username, authority) VALUES ('admin', 'ROLE_ADMIN'), ('user', 'ROLE_USER');
+
+CREATE TABLE news (id bigserial, creation_date date, short_text varchar(200) not null, text varchar(1000) not null, active boolean not null, PRIMARY KEY (id));
+INSERT INTO news (short_text, text, active) VALUES ('Short text description', 'Full text description of the news number one', true);
+
+
+
+### НЕ ИСПОЛЬЗУЮТСЯ В ДАННЫЙ МОМЕНТ ###
+CREATE TABLE news_list (id bigserial, news_id bigint not null, author_id varchar(50) not null, FOREIGN KEY (news_id) REFERENCES news (id), FOREIGN KEY (author_id) REFERENCES users (username));
+INSERT INTO news_list (news_id, author_id) VALUES (1, 'admin');

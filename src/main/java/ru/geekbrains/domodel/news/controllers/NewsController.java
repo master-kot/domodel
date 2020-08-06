@@ -17,8 +17,8 @@ import java.util.List;
 @RequestMapping("/news")
 public class NewsController {
 
-    // Сервис товаров
-    private NewsService newsService;
+    // Сервис новостей
+    private final NewsService newsService;
 
     @Autowired
     public NewsController(NewsService newsService) {
@@ -26,12 +26,12 @@ public class NewsController {
     }
 
     /**
-     * Отобразить весь список продуктов магазина
+     * Отобразить весь список новостей
      */
     @GetMapping("")
-    public String shopPage(Model model) {
-        List<News> allProducts = newsService.getAllNews();
-        model.addAttribute("products", allProducts);
+    public String newsPage(Model model) {
+        List<News> allNews = newsService.getAllNews();
+        model.addAttribute("news", allNews);
         return "news";
     }
 

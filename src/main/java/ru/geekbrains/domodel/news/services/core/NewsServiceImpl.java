@@ -7,9 +7,10 @@ import ru.geekbrains.domodel.news.repositories.NewsRepository;
 import ru.geekbrains.domodel.news.services.api.NewsService;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
- * Сервис новостей
+ * Реализация сервиса новостей
  */
 @Service
 public class NewsServiceImpl implements NewsService {
@@ -29,12 +30,8 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public News getNewsById(Long id) {
-        return newsRepository.findById(id).get();
-    }
-
-    @Override
-    public News getNewsByTitle(String title) {
-        return newsRepository.findOneByTitle(title);
+        Optional<News> news = newsRepository.findById(id);
+        return news.orElse(null);
     }
 
     @Override

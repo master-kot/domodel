@@ -1,5 +1,7 @@
 package ru.geekbrains.domodel.news.entities;
 
+import ru.geekbrains.domodel.users.entities.User;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -24,11 +26,12 @@ public class News {
     @Column(name = "text")
     private String text;
 
-    @Column(name = "author_id")
-    private String authorId;
-
     @Column(name = "active")
     private boolean active;
+
+    @OneToOne
+    @JoinColumn(name = "author_id")
+    private User authorId;
 
     public Long getId() {
         return id;
@@ -62,11 +65,11 @@ public class News {
         this.text = text;
     }
 
-    public String getAuthorId() {
+    public User getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(String authorId) {
+    public void setAuthorId(User authorId) {
         this.authorId = authorId;
     }
 
@@ -81,18 +84,17 @@ public class News {
     public News() {
     }
 
-    public News(Long id, Date creationDate, String shortText, String text, String authorId, boolean active) {
+    public News(Long id, Date creationDate, String shortText, String text, boolean active) {
         this.id = id;
         this.creationDate = creationDate;
         this.shortText = shortText;
         this.text = text;
-        this.authorId = authorId;
         this.active = active;
     }
 
     @Override
     public String toString() {
-        return String.format("News: [id = %d, short_text = %s, author_id = %d]", id, shortText, authorId);
+        return String.format("News: [id = %d, short_text = %s, text = %s]", id, shortText, text);
     }
 
 }

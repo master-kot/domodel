@@ -10,8 +10,4 @@ import ru.geekbrains.domodel.news.entities.News;
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
 
-    /**
-     * Найти новость по ее наименованию
-     */
-    News findOneByTitle(String title);
 }
