@@ -15,16 +15,16 @@ public class News {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "creation_date")
+    @Column(name = "creation_date", nullable = false)
     private Date creationDate;
 
-    @Column(name = "short_text")
+    @Column(name = "short_text", nullable = false)
     private String shortText;
 
-    @Column(name = "text")
+    @Column(name = "text", nullable = false)
     private String text;
 
-    @Column(name = "visible")
+    @Column(name = "visible", nullable = false)
     private boolean visible;
 
     @Column(name = "picture")
@@ -34,7 +34,7 @@ public class News {
     private String type;
 
     @OneToOne
-    @JoinColumn(name = "author")
+    @JoinColumn(name = "author", nullable = false)
     private User author;
 
     public Long getId() {

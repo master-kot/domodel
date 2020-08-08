@@ -15,7 +15,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "login", nullable = false, unique = true)
@@ -164,4 +164,6 @@ public class User {
         this.enabled = enabled;
         this.creationDate = creationDate;
     }
+
+
 }
