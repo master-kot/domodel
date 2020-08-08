@@ -30,7 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         }
 
         /**
-         * Конфигурируем, что аутентификация будет проходить через провайдера
+         * Конфигурация провайдера аутентификации
          */
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -38,15 +38,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         }
 
         /**
-         * Конфигурация HttpSecurity настраивает
-         * в какие разделы сайта разрешается доступ для определенных ролей пользователей
+         * Конфигурация доступа в разделы сайта для определенных ролей пользователей
          */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .authorizeRequests()
+            http.authorizeRequests()
+                    //TODO настройки безопасности
 //                    .antMatchers("/users/**").hasAnyRole("ADMIN")
-//                    .antMatchers("/meters/**").authenticated()
+                    .antMatchers("/profile/**").authenticated()
                     .anyRequest().permitAll()
                     .and()
                     .formLogin()
@@ -56,6 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .failureUrl("/?error")
                     .and()
                     .logout()
+                    .logoutSuccessUrl("/")
                     .deleteCookies("JSESSIONID")
                     .logoutSuccessUrl("/")
                     .and()
@@ -69,5 +69,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             authenticationProvider.setPasswordEncoder(passwordEncoder);
             return authenticationProvider;
         }
-
 }

@@ -26,7 +26,8 @@ public class User {
     private boolean enabled;
 
     @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL) //удаление ролей каскадом вслед за удалением пользователя
+            cascade = CascadeType.ALL, //удаление ролей каскадом вслед за удалением пользователя
+            orphanRemoval = true) //удаление ролей не привязанных к пользователю
     private List<Authority> authorities;
 
     @Column(name = "creation_date")
@@ -54,6 +55,10 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
