@@ -1,0 +1,131 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+                   http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd" >
+
+    <changeSet id="1.0.1" author="sergei_prudnikov">
+<!--        <sql dbms="postgresql" endDelimiter=";">-->
+<!--            CREATE SCHEMA domodel-->
+<!--        </sql>-->
+
+        <!-- Создание таблицы Users -->
+        <createTable schemaName="domodel" tableName="users">
+            <column autoIncrement="true" startWith="1" incrementBy="1" name="id" type="BIGINT">
+                <constraints primaryKey="true"  nullable="false" unique="true"/>
+            </column>
+            <column name="login" type="VARCHAR(128)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="second_name" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="middle_name" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <!-- Создание таблицы Authorities -->
+        <createTable schemaName="domodel" tableName="authorities">
+            <column name="user_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="authority" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableSchemaName="domodel"
+                baseTableName="authorities"
+                baseColumnNames="user_id"
+                constraintName="fk_authorities_users"
+                referencedTableSchemaName="domodel"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="RESTRICT"/>
+
+        <!-- Создание таблицы News -->
+        <createTable schemaName="domodel" tableName="news">
+            <column autoIncrement="true" startWith="1" incrementBy="1" name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="creation_date" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="short_text" type="VARCHAR(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="visible" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="picture" type="VARCHAR(512)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="type" type="VARCHAR(128)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="author" type="BIGINT">
+                <constraints  nullable="false" />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableSchemaName="domodel"
+                baseTableName="news"
+                baseColumnNames="author"
+                constraintName="fk_news_users"
+                referencedTableSchemaName="domodel"
+                referencedTableName="users"
+                referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="1.0.2" author="sergei_prudnikov">
+        <insert tableName="users">
+            <column name="login" value="admin"></column>
+            <column name="password" value="$2a$10$ArsakpPHT5jPbPEAeVc/lup1V4tJS9hqaa1PfRNIUy459JkPjK5xS"></column>
+            <column name="enabled" value="true"></column>
+            <column name="creation_date" value="2020-08-08"></column>
+            <column name="first_name" value="Ivan"></column>
+            <column name="second_name" value="Ivanov"></column>
+            <column name="middle_name" value="Ivanovich"></column>
+            <column name="phone_number" value="9123456789"></column>
+            <column name="email" value="ivan@mail.ru"></column>
+        </insert>
+        <insert tableName="authorities">
+            <column name="user_id" value="1"></column>
+            <column name="authority" value="ROLE_ADMIN"></column>
+        </insert>
+        <insert tableName="news">
+            <column name="creation_date" value="2020-08-06"></column>
+            <column name="short_text" value="Short text description"></column>
+            <column name="text" value="Full text description of the news number one"></column>
+            <column name="visible" value="true"></column>
+            <column name="picture" value="http://Link_for_picture"></column>
+            <column name="type" value="ANNOUNCE"></column>
+            <column name="author" value="1"></column>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
