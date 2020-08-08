@@ -9,8 +9,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.geekbrains.domodel.services.api.UserService;
 
 /**
  * Конфигурация WebSecurity для аутентификации пользователей
@@ -20,53 +20,56 @@ import ru.geekbrains.domodel.services.api.UserService;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-        private final PasswordEncoder passwordEncoder;
-        private final UserService userService;
+    // Сервис шифрования паролей
+    private final PasswordEncoder passwordEncoder;
 
-        @Autowired
-        public SecurityConfiguration(PasswordEncoder passwordEncoder, UserService userService) {
-            this.passwordEncoder = passwordEncoder;
-            this.userService = userService;
-        }
+    // Сервис данных пользователя
+    private final UserDetailsService userDetailsService;
 
-        /**
-         * Конфигурация провайдера аутентификации
-         */
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(authenticationProvider());
-        }
+    @Autowired
+    public SecurityConfiguration(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
+        this.passwordEncoder = passwordEncoder;
+        this.userDetailsService = userDetailsService;
+    }
 
-        /**
-         * Конфигурация доступа в разделы сайта для определенных ролей пользователей
-         */
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                    //TODO настройки безопасности
-//                    .antMatchers("/users/**").hasAnyRole("ADMIN")
-                    .antMatchers("/profile/**").authenticated()
-                    .anyRequest().permitAll()
-                    .and()
-                    .formLogin()
-                    .loginPage("/").permitAll()
-                    .loginProcessingUrl("/authenticateTheUser")
-                    .defaultSuccessUrl("/")
-                    .failureUrl("/?error")
-                    .and()
-                    .logout()
-                    .logoutSuccessUrl("/")
-                    .deleteCookies("JSESSIONID")
-                    .logoutSuccessUrl("/")
-                    .and()
-                    .rememberMe().key("uniqueAndSecret");
-        }
+    /**
+     * Конфигурация провайдера аутентификации
+     */
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
 
-        @Bean
-        public DaoAuthenticationProvider authenticationProvider() {
-            DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-            authenticationProvider.setUserDetailsService(userService);
-            authenticationProvider.setPasswordEncoder(passwordEncoder);
-            return authenticationProvider;
-        }
+    /**
+     * Конфигурация доступа в разделы сайта для определенных ролей пользователей
+     */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                //TODO настройки безопасности
+                .antMatchers("/users/**").hasAnyRole("ADMIN")
+                .antMatchers("/profile/**").authenticated()
+                .anyRequest().permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/").permitAll()
+                .loginProcessingUrl("/authenticateTheUser")
+                .defaultSuccessUrl("/")
+                .failureUrl("/?error")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/")
+                .and()
+                .rememberMe().key("uniqueAndSecret");
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        return authenticationProvider;
+    }
 }

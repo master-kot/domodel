@@ -5,10 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.services.api.NewsService;
 
-import java.util.List;
+import java.security.Principal;
 
 /**
  * Контроллер модуля новостей
@@ -29,7 +28,10 @@ public class NewsController {
      * Перехват запроса списка новостей
      */
     @GetMapping("")
-    public String newsPage(Model model) {
+    public String newsPage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
         model.addAttribute("news", newsService.getAllNews());
         return "news";
     }

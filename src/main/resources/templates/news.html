@@ -15,6 +15,13 @@
 
 <body>
 
+<div class="container" th:if="${username != null}">
+    <div th:text="'Вы вошли как пользователь ' + ${username}"/>
+    <form th:action="@{/logout}" method="POST">
+        <input type="submit" class="btn btn-danger" value="Выйти" />
+    </form>
+</div>
+
 <div class="container">
     <h1>Новости</h1>
     <span th:if="${news.size() == 0}">Новостей пока нет</span>

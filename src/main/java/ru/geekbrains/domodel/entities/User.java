@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+import static javax.persistence.FetchType.EAGER;
+
 /**
  * Сущность пользователя
  */
@@ -13,21 +15,22 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "login", unique = true, nullable = false)
+    @Column(name = "login", nullable = false, unique = true)
     private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "enabled")
+    @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @OneToMany(mappedBy = "user",
+    @OneToMany(fetch = EAGER,
+            mappedBy = "user",
             cascade = CascadeType.ALL, //удаление ролей каскадом вслед за удалением пользователя
-            orphanRemoval = true) //удаление ролей не привязанных к пользователю
+            orphanRemoval = true) //удаление ролей не связанных ни с одним пользователем
     private List<Authority> authorities;
 
     @Column(name = "creation_date")
@@ -42,10 +45,10 @@ public class User {
     @Column(name = "middle_name")
     private String middleName;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @OneToMany(mappedBy = "user",
@@ -155,12 +158,10 @@ public class User {
     public User(String username,
                 String password,
                 boolean enabled,
-                List<Authority> authorities,
                 Date creationDate) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
-        this.authorities = authorities;
         this.creationDate = creationDate;
     }
 }

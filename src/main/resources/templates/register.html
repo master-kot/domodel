@@ -18,8 +18,16 @@
     <h1>Регистрация нового пользователя</h1>
 </div>
 
+<div class="container" th:if="${username != null}">
+    <div th:text="'Вы вошли как пользователь ' + ${username}"/>
+    <form th:action="@{/logout}" method="POST">
+        <input type="submit" class="btn btn-danger" value="Выйти" />
+    </form>
+</div>
+
 <div class="container" th:if="${message != null}">
     <div th:text="${message}"/>
+    <a class="px-3" th:href="@{/}">Войти на сайт</a>
 </div>
 
 <div class="container">

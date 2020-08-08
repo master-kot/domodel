@@ -18,11 +18,8 @@
     <h1>Главная страница</h1>
 </div>
 
-<div class="container" th:if="${message != null}">
-    <div th:text="${message}"/>
-</div>
-
-<div class="container"  sec:authorize="isAuthenticated()">
+<div class="container" th:if="${username != null}">
+    <div th:text="'Вы вошли как пользователь ' + ${username}"/>
     <form th:action="@{/logout}" method="POST">
         <input type="submit" class="btn btn-danger" value="Выйти" />
     </form>
@@ -41,8 +38,10 @@
                     <label for="password">Пароль</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Пароль">
                 </div>
-                <button type="submit" class="btn btn-primary">Войти</button>
-                <a class="px-3" th:href="@{/register}">Зарегистрироваться</a>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                    <a class="px-3" th:href="@{/register}">Зарегистрироваться</a>
+                </div>
             </form>
         </div>
     </div>

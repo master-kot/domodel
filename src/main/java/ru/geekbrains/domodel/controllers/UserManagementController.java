@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.domodel.services.api.UserService;
 
+import java.security.Principal;
+
 /**
  * Контроллер модуля управления пользователями
  */
@@ -28,7 +30,10 @@ public class UserManagementController {
      * Перехват запроса списка всех пользователей
      */
     @GetMapping("")
-    public String getAllUsersPage(Model model) {
+    public String getAllUsersPage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
         model.addAttribute("users", userService.findAllUsers());
         return "users";
     }

@@ -35,8 +35,7 @@ public class MainController {
     @GetMapping("")
     public String getHomePage(@RequestParam(required = false) String error, Model model, Principal principal) {
         if (principal != null) {
-            model.addAttribute("message",
-                String.format(Messages.LOGIN_SUCCESFUL, principal.getName()));
+            model.addAttribute("username", principal.getName());
         }
         return "index";
     }
@@ -45,7 +44,10 @@ public class MainController {
      * Перехват запроса регистрации нового пользователя
      */
     @GetMapping("/register")
-    public String getRegisterPage(Model model) {
+    public String getRegisterPage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
         model.addAttribute("user", new UserRepresentation());
         return "register";
     }

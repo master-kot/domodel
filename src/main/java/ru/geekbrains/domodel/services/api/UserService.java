@@ -1,6 +1,5 @@
 package ru.geekbrains.domodel.services.api;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.UserRepresentation;
@@ -11,7 +10,7 @@ import java.util.List;
  * Сервис пользователей
  */
 @Service
-public interface UserService extends UserDetailsService {
+public interface UserService {
 
     /**
      * Найти пользователя по его идентификатору

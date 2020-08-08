@@ -1,21 +1,15 @@
 package ru.geekbrains.domodel.services.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.UserRepresentation;
-import ru.geekbrains.domodel.entities.constants.Messages;
 import ru.geekbrains.domodel.repositories.UserRepository;
 import ru.geekbrains.domodel.services.api.UserService;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Сервис пользователей
@@ -26,7 +20,7 @@ public class UserServiceImpl implements UserService {
     // Репозиторий пользователей
     private final UserRepository userRepository;
 
-    // Класс для шифрования паролей
+    // Сервис шифрования паролей
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
@@ -69,21 +63,8 @@ public class UserServiceImpl implements UserService {
                 request.getUsername(),
                 passwordEncoder.encode(request.getPassword()),
                 true,
-                new ArrayList<>(),
                 new Date());
-        user.getAuthorities().add(new Authority(user, "ROLE_USER"));
+        user.setAuthorities(new ArrayList<>(Collections.singletonList(new Authority(user, "ROLE_USER"))));
         return userRepository.save(user);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> loadedUser = userRepository.findByUsername(username);
-        return loadedUser
-                .map(user -> new org.springframework.security.core.userdetails.User(
-                        user.getUsername(),
-                        user.getPassword(),
-                        user.getAuthorities()
-                ))
-                .orElseThrow(() -> new UsernameNotFoundException(Messages.USER_NOT_FOUND));
     }
 }
