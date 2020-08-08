@@ -17,7 +17,7 @@ public class User {
     private Long id;
 
     @Column(name = "login", unique = true, nullable = false)
-    private String login;
+    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -26,8 +26,7 @@ public class User {
     private boolean enabled;
 
     @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL, //удаление ролей каскадом вслед за удалением пользователя
-            orphanRemoval = true) //удаление ролей не привязанных ни к одному пользователю
+            cascade = CascadeType.ALL) //удаление ролей каскадом вслед за удалением пользователя
     private List<Authority> authorities;
 
     @Column(name = "creation_date")
@@ -48,15 +47,21 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<House> houses;
 
-    public String getLogin() {
-        return login;
+    public Long getId() {
+        return id;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -142,18 +147,15 @@ public class User {
     public User() {
     }
 
-    public User(String login, String password, boolean enabled, List<Authority> authorities) {
-        this.login = login;
+    public User(String username,
+                String password,
+                boolean enabled,
+                List<Authority> authorities,
+                Date creationDate) {
+        this.username = username;
         this.password = password;
         this.enabled = enabled;
         this.authorities = authorities;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User u = (User) o;
-        return (id.equals(u.id));
+        this.creationDate = creationDate;
     }
 }

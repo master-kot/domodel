@@ -17,71 +17,36 @@
 <div class="container">
     <h1>Главная страница</h1>
 </div>
-<div class="container">
-    <div id="loginbox" style="margin-top: 50px;" class="mainbox col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2" sec:authorize="isAnonymous()">
 
-        <div th:if="${user != null}">
-            <div th:text="'Создан пользователь с именем: ' + ${user.getLogin()}"/>
-        </div>
+<div class="container" th:if="${message != null}">
+    <div th:text="${message}"/>
+</div>
 
-        <div class="panel panel-info">
-            <div class="panel-title">
-                <b>Пожалуйста войдите в свой аккаунт</b>
-            </div>
-            <div style="padding-top: 30px" class="panel-body">
-                <form th:action="@{/authenticateTheUser}" method="POST" class="form-horizontal">
-                    <div style="margin-bottom: 25px" class="input-group">
-                        <input type="text" name="login" placeholder="логин" class="form-control">
-                    </div>
-                    <div style="margin-bottom: 25px" class="input-group">
-                        <input type="password" name="password" placeholder="пароль" class="form-control">
-                    </div>
-                    <div th:if="${user == null && error != null}">
-                        <small class="form-text text-danger" th:text="${error}"></small>
-                    </div>
-                    <div>
-                        Запомнить меня: <input type="checkbox" name="remember-me" checked/>
-                    </div>
-                    <div style="margin-top: 10px" class="form-group">
-                        <button type="submit" class="btn btn-success">Войти</button>
-                    </div>
-                </form>
-            </div>
+<div class="container"  sec:authorize="isAuthenticated()">
+    <form th:action="@{/logout}" method="POST">
+        <input type="submit" class="btn btn-danger" value="Выйти" />
+    </form>
+</div>
 
-            <div class="panel-title">
-                <b>Либо создайте нового пользователя:</b>
-            </div>
-            <div style="padding-top: 30px" class="panel-body">
-                <form th:action="@{/createUser}" method="POST" class="form-horizontal" th:object="${request}">
-                    <div style="margin-bottom: 25px" class="input-group">
-                        <input type="text" id="login" th:field="*{login}" placeholder="имя пользователя" class="form-control">
-                        <small class="form-text text-danger" th:each="err : ${#fields.errors('login')}" th:text="${err}">Validation errors</small>
-                    </div>
-                    <div style="margin-bottom: 25px" class="input-group">
-                        <input type="password" id="password" th:field="*{password}" placeholder="пароль" class="form-control">
-                        <small class="form-text text-danger" th:each="err : ${#fields.errors('password')}"  th:text="${err}">Validation errors</small>
-                    </div>
-                    <div style="margin-bottom: 25px" class="input-group">
-                        <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" placeholder="подтвердите пароль" class="form-control">
-                        <small  class="form-text text-danger" th:each="err : ${#fields.errors('passwordConfirm')}" th:text="${err}">Validation errors</small>
-                    </div>
-                    <div style="margin-top: 10px" class="form-group">
-                        <button type="submit" class="btn btn-success">Создать пользователя</button>
-                        <button type="reset" class="btn btn-danger">Очистить форму</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div  class="container" sec:authorize="hasRole('USER')">
-        <div class="panel-title"><b>Спасибо, что вошли в систему как пользователь!</b><br><br>
-            Пожалуйста перейдите в <a th:href="@{/news}">раздел новости</a>,
-        </div>
-    </div>
-    <div  class="container" sec:authorize="hasRole('ADMIN')">
-        <div class="panel-title"><b>Вы вошли как администратор!</b><br>
+<div class="container" sec:authorize="isAnonymous()">
+    <div class="row py-2">
+        <div class="col-12">
+            <form th:action="@{/authenticateTheUser}" method="post">
+                <div class="form-group">
+                    <label for="username">Имя пользователя</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Логин пользователя">
+                    <small class="form-text text-danger" th:if="${param.error != null}">Некорректное имя пользователя или пароль</small>
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Пароль">
+                </div>
+                <button type="submit" class="btn btn-primary">Войти</button>
+                <a class="px-3" th:href="@{/register}">Зарегистрироваться</a>
+            </form>
         </div>
     </div>
 </div>
+
 </body>
 </html>

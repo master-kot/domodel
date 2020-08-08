@@ -43,17 +43,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
          */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                    .antMatchers("/admin/**").hasAnyRole("ADMIN")
-                    .antMatchers("/meters/**").authenticated()
+            http
+                    .authorizeRequests()
+//                    .antMatchers("/users/**").hasAnyRole("ADMIN")
+//                    .antMatchers("/meters/**").authenticated()
                     .anyRequest().permitAll()
                     .and()
                     .formLogin()
                     .loginPage("/").permitAll()
-                    //для проверки коректности аутентификации используем адрес
                     .loginProcessingUrl("/authenticateTheUser")
                     .defaultSuccessUrl("/")
-                    .failureUrl("/?error=authenticationFailed")
+                    .failureUrl("/?error")
                     .and()
                     .logout()
                     .deleteCookies("JSESSIONID")

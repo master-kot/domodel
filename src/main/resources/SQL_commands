@@ -8,7 +8,7 @@ CREATE TABLE users (id bigserial, login varchar(50), password varchar(100) not n
 CREATE TABLE authorities (id bigserial, user_id bigint not null, authority varchar(50) not null, FOREIGN KEY (user_id) REFERENCES users (id), PRIMARY KEY (id));
 CREATE TABLE news (id bigserial, creation_date date, short_text varchar(200) not null, text varchar(2000) not null, visible boolean, picture varchar(200), type varchar(100), author bigint not null, FOREIGN KEY (author) REFERENCES users (id), PRIMARY KEY (id));
 
-INSERT INTO users (login, password, enabled, first_name, second_name, middle_name, phone_number, email) VALUES ('admin', '{noop}admin', true, 'Ivan', 'Ivanov', 'Ivanovich', '9123456789', 'ivan@mail.ru');
+INSERT INTO users (login, password, enabled, first_name, second_name, middle_name, phone_number, email) VALUES ('admin', '$2a$10$ArsakpPHT5jPbPEAeVc/lup1V4tJS9hqaa1PfRNIUy459JkPjK5xS', true, 'Ivan', 'Ivanov', 'Ivanovich', '9123456789', 'ivan@mail.ru');
 INSERT INTO authorities (user_id, authority) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO news (creation_date, short_text, text, visible, picture, author) VALUES ('2020-08-06', 'Short text description', 'Full text description of the news number one', true, 'http://Link_for_picture', 1);
 

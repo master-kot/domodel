@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.UserRepresentation;
 
+import java.util.List;
+
 /**
  * Сервис пользователей
  */
@@ -12,12 +14,35 @@ import ru.geekbrains.domodel.entities.UserRepresentation;
 public interface UserService extends UserDetailsService {
 
     /**
-     * Найти пользователя по логину
+     * Найти пользователя по его идентификатору
      *
-     * @param login логин пользователя
+     * @param userId идентификатор пользователя
      * @return пользователь
      */
-    User findByLogin(String login);
+    User findUserById(Long userId);
+
+    /**
+     * Найти пользователя по логину
+     *
+     * @param username логин пользователя
+     * @return пользователь
+     */
+    User findUserByUsername(String username);
+
+    /**
+     * Найти всех пользователей
+     *
+     * @return список пользователей
+     */
+    List<User> findAllUsers();
+
+    /**
+     * Удалить пользователя по его идентификатору
+     *
+     * @param userId идентификатор пользователя
+     * @return удален ли пользователь
+     */
+    boolean deleteUserById(Long userId);
 
     /**
      * Создать нового пользователя
@@ -25,6 +50,6 @@ public interface UserService extends UserDetailsService {
      * @param request отображение пользователя
      * @return новый пользователь, сохраненный в репозитории
      */
-    User createNewUser(UserRepresentation request);
+    User createUser(UserRepresentation request);
 
 }

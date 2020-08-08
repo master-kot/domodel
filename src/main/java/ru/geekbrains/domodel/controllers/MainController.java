@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.UserRepresentation;
+import ru.geekbrains.domodel.entities.constants.Messages;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 /**
  * Главный контроллер web-приложения
@@ -29,47 +30,49 @@ public class MainController {
     }
 
     /**
-     * Перехват запроса корневой страницы
+     * Перехват запроса главной страницы
      */
     @GetMapping("")
-    public String homePage(@RequestParam(required = false) String error, Model model) {
-        if (error != null && error.equals("authenticationFailed")) {
-            model.addAttribute("error",
-                    "Ошибка авторизации: пользователь не существует, либо пароль не верный");
+    public String getHomePage(@RequestParam(required = false) String error, Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("message",
+                String.format(Messages.LOGIN_SUCCESFUL, principal.getName()));
         }
-        model.addAttribute("request", new UserRepresentation());
         return "index";
     }
 
     /**
-     * Создать нового пользователя
+     * Перехват запроса регистрации нового пользователя
      */
-    @PostMapping("/createUser")
-    public String createNewUser(@ModelAttribute @Valid UserRepresentation request,
-                                BindingResult bindingResult,
-                                Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("user", null);
-            return "index";
-        }
-
-        if (!request.getPassword().equals(request.getPasswordConfirm())) {
-            bindingResult.rejectValue("password", "", "Пароли не совпадают");
-            model.addAttribute("user", null);
-            model.addAttribute("error",
-                    "Пользователь не создан. Введенные пароли не совпадают");
-            return "index";
-        }
-
-        User user = userService.createNewUser(request);
-        if (user != null) {
-            model.addAttribute("user", user);
-        } else {
-            model.addAttribute("user", null);
-            model.addAttribute("error",
-                    "В системе уже зарегистрирован пользователь с именем " + request.getLogin());
-        }
-        return "index";
+    @GetMapping("/register")
+    public String getRegisterPage(Model model) {
+        model.addAttribute("user", new UserRepresentation());
+        return "register";
     }
 
+    /**
+     * Перехват запроса создания нового пользователя
+     */
+    @PostMapping("/register")
+    public String registerUser(@Valid @ModelAttribute("user") UserRepresentation user,
+                               BindingResult bindingResult,
+                               Model model) {
+        if (bindingResult.hasErrors()) {
+            return "register";
+        }
+
+        if (!user.getPassword().equals(user.getPasswordConfirm())) {
+            bindingResult.rejectValue("password", "", Messages.PASSWORD_MISMATCH);
+            return "register";
+        }
+
+        if (userService.createUser(user) != null) {
+            model.addAttribute("message",
+                    String.format(Messages.USER_CREATED, user.getUsername()));
+        } else {
+            bindingResult.rejectValue("username", "",
+                    String.format(Messages.USER_HAS_ALREADY_CREATED, user.getUsername()));
+        }
+        return "register";
+    }
 }
