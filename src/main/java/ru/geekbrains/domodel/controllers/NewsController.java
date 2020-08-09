@@ -10,7 +10,7 @@ import ru.geekbrains.domodel.services.api.NewsService;
 import java.security.Principal;
 
 /**
- * Контроллер модуля новостей
+ * Контроллер новостей
  */
 @Controller
 @RequestMapping("/news")
@@ -28,12 +28,11 @@ public class NewsController {
      * Перехват запроса списка новостей
      */
     @GetMapping("")
-    public String newsPage(Model model, Principal principal) {
+    public String getNewsPage(Model model, Principal principal) {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
         model.addAttribute("news", newsService.getAllNews());
         return "news";
     }
-
 }

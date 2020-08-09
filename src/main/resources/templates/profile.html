@@ -15,43 +15,31 @@
 
 <body>
 
-<div class="container" th:if="${username != null}">
-    <div th:text="'Вы вошли как пользователь ' + ${username}"/>
-    <form th:action="@{/logout}" method="POST">
-        <input type="submit" class="btn btn-danger" value="Выйти" />
-    </form>
-</div>
-
-<div class="container">
-    <h1>Список пользователей</h1>
-    <span th:if="${users.size() == 0}">Пользователей пока нет</span>
-    <table th:if="${users.size() > 0}" class="table table-hover">
+<div class="container" >
+    <h1>Профиль пользователя</h1>
+    <table th:if="${user != null}" class="table table-hover">
         <tbody>
         <tr>
-            <td>Индекс</td>
             <td>Логин</td>
+            <td>Пароль</td>
             <td>Активен</td>
             <td>Список ролей</td>
             <td>Дата создания</td>
             <td>Имя</td>
             <td>Фамилия</td>
             <td>Отчество</td>
-            <td>Номер телефона</td>
             <td>Адрес почты</td>
-            <td>Список домов</td>
         </tr>
-        <tr th:each="item : ${users}">
-            <td th:text="${item.id}"/>
-            <td th:text="${item.username}"/>
-            <td th:text="${item.enabled}"/>
-            <td th:text="${item.authorities}"/>
-            <td th:text="${item.creationDate}"/>
-            <td th:text="${item.firstName}"/>
-            <td th:text="${item.secondName}"/>
-            <td th:text="${item.middleName}"/>
-            <td th:text="${item.phoneNumber}"/>
-            <td th:text="${item.email}"/>
-            <td/>
+        <tr>
+            <td th:text="${user.username}"/>
+            <td th:text="${user.password}"/>
+            <td th:text="${user.enabled}"/>
+            <td th:text="${user.authorities}"/>
+            <td th:text="${user.creationDate}"/>
+            <td th:text="${user.firstName}"/>
+            <td th:text="${user.secondName}"/>
+            <td th:text="${user.middleName}"/>
+            <td th:text="${user.email}"/>
         </tr>
         </tbody>
     </table>

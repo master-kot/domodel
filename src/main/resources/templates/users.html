@@ -36,9 +36,7 @@
             <td>Имя</td>
             <td>Фамилия</td>
             <td>Отчество</td>
-            <td>Номер телефона</td>
             <td>Адрес почты</td>
-            <td>Список домов</td>
         </tr>
         <tr th:each="item : ${users}">
             <td th:text="${item.id}"/>
@@ -49,7 +47,6 @@
             <td th:text="${item.firstName}"/>
             <td th:text="${item.secondName}"/>
             <td th:text="${item.middleName}"/>
-            <td th:text="${item.phoneNumber}"/>
             <td th:text="${item.email}"/>
             <td/>
         </tr>

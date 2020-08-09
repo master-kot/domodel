@@ -38,6 +38,9 @@ public class UserManagementController {
         return "users";
     }
 
+    /**
+     * Перехват запроса удаления пользователя
+     */
     @DeleteMapping("delete/{id}")
     public String deleteUser(@PathVariable("id") long id) {
         userService.deleteUserById(id);

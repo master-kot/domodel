@@ -33,6 +33,7 @@ public class News {
     @Column(name = "type")
     private String type;
 
+    // Ссылка на пользователя - автора новости
     @OneToOne
     @JoinColumn(name = "author", nullable = false)
     private User author;

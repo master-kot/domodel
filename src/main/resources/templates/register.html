@@ -27,7 +27,7 @@
 
 <div class="container" th:if="${message != null}">
     <div th:text="${message}"/>
-    <a class="px-3" th:href="@{/}">Войти на сайт</a>
+    <a class="px-3" th:href="@{/}">Перейти на главную страницу, чтобы войти на сайт</a>
 </div>
 
 <div class="container">
@@ -35,9 +35,14 @@
         <div class="col-12">
             <form th:action="@{/register}" method="post" th:object="${user}">
                 <div class="form-group">
-                    <label for="username">Имя пользователя</label>
-                    <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="Введите логин">
+                    <label for="username">Номер телефона</label>
+                    <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="Номер телефона">
                     <small class="form-text text-danger" th:each="err : ${#fields.errors('username')}" th:text="${err}">Ошибка</small>
+                </div>
+                <div class="form-group">
+                    <label for="email">Адрес электронной почты</label>
+                    <input type="text" id="email" th:field="*{email}" class="form-control" placeholder="Адрес электронной почты">
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('email')}" th:text="${err}">Ошибка</small>
                 </div>
                 <div class="form-group">
                     <label for="password">Пароль</label>

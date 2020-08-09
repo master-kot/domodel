@@ -67,4 +67,21 @@ public class UserServiceImpl implements UserService {
         user.setAuthorities(new ArrayList<>(Collections.singletonList(new Authority(user, "ROLE_USER"))));
         return userRepository.save(user);
     }
+
+    @Override
+    public User updateUser(User userData, String username) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUsername(userData.getUsername());
+            user.setPassword(passwordEncoder.encode(userData.getPassword()));
+            user.setFirstName(userData.getFirstName());
+            user.setSecondName(userData.getSecondName());
+            user.setMiddleName(userData.getMiddleName());
+            user.setEmail(userData.getEmail());
+            return userRepository.save(user);
+        } else {
+            return null;
+        }
+    }
 }

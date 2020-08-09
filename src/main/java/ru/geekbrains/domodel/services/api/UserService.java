@@ -51,4 +51,10 @@ public interface UserService {
      */
     User createUser(UserRepresentation request);
 
+    /**
+     * Изменить данные пользователя
+     *
+     * @param userData данные пользователя
+     */
+    User updateUser(User userData, String username);
 }

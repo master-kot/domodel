@@ -45,16 +45,12 @@ public class User {
     @Column(name = "middle_name")
     private String middleName;
 
-    @Column(name = "phone_number", unique = true)
-    private String phoneNumber;
-
     @Column(name = "email", unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<House> houses;
+    //TODO нужна ли эта ссылка на аккаунты?
+//    @OneToMany(mappedBy = "user")
+//    private List<Account> accounts;
 
     public Long getId() {
         return id;
@@ -128,28 +124,12 @@ public class User {
         this.middleName = middleName;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public List<House> getHouses() {
-        return houses;
-    }
-
-    public void setHouses(List<House> houses) {
-        this.houses = houses;
     }
 
     public User() {
@@ -164,6 +144,4 @@ public class User {
         this.enabled = enabled;
         this.creationDate = creationDate;
     }
-
-
 }

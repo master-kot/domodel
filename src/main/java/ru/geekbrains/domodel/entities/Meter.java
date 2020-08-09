@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * Сущность счетчика
+ * Сущность счетчика показаний. Если счетчик электричества двухтарифный,
+ * необходимо создать два счетчика с разными type, но одним meterNumber
  */
 @Entity
 @Table(name = "meters")
@@ -13,54 +14,26 @@ public class Meter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "house_id", nullable = false)
-    private House house;
+    // Серийный номер счетчика
+    @Column(name = "meter_number", nullable = false)
+    private Integer meterNumber;
 
-    @Column(name = "number", nullable = false)
-    private Integer number;
-
+    // Тип счетчика, значения: ELECTRICITY_UNIFIED, ELECTRICITY_DAY, ELECTRICITY_NIGHT, GAS, HOT_WATER, COLD_WATER
     @Column(name = "type", nullable = false)
     private String type;
 
-    //TODO создать таблицы
+    //TODO Ссылка на таблицу со списком показаний счетчиков
 //    @OneToMany(mappedBy = "meter")
-//    private List<Integer> datas;
+//    private List<MeterData> meterDatas;
 
-    public House getHouse() {
-        return house;
-    }
+    //TODO Обратная ссылка на лицевой счет, нужна ли она?
+//    @ManyToOne
+//    @JoinColumn(name = "requisites", nullable = false)
+//    private Account account;
 
-    public void setHouse(House house) {
-        this.house = house;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    //TODO создать таблицы
-//    public List<Integer> getDatas() {
-//        return datas;
-//    }
-//
-//    public void setDatas(List<Integer> datas) {
-//        this.datas = datas;
-//    }
+    //TODO геттеры и сеттеры для полей класса, обновить файл создания базы данных
 
     public Meter() {
     }

@@ -5,9 +5,9 @@ import org.springframework.stereotype.Repository;
 import ru.geekbrains.domodel.entities.Meter;
 
 /**
- * Репозиторий счетчиков
+ * Репозиторий счетчиков показаний
  */
 @Repository
-public interface MeterRepository extends JpaRepository<Meter, Integer> {
+public interface MeterRepository extends JpaRepository<Meter, Long> {
 
 }
