@@ -1,6 +1,8 @@
 package ru.geekbrains.domodel.entities;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,7 +11,9 @@ import java.util.Date;
  * Сущность новости для связи ее с БД
  */
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "news")
 public class News {
 

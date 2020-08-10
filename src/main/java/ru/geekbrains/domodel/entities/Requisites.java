@@ -1,6 +1,8 @@
 package ru.geekbrains.domodel.entities;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -9,7 +11,9 @@ import javax.persistence.*;
  * Используются для отображения информации о компании и формирования платежек
  */
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "requisites")
 public class Requisites {
 

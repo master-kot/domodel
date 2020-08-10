@@ -1,6 +1,8 @@
 package ru.geekbrains.domodel.entities;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -9,7 +11,9 @@ import javax.validation.constraints.Size;
 /**
  * Представление сущности пользователя для работы с фронтэндом
  */
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class UserRepresentation {
 
     @NotBlank

@@ -1,6 +1,8 @@
 package ru.geekbrains.domodel.entities;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,7 +14,9 @@ import static javax.persistence.FetchType.EAGER;
  * Сущность пользователя
  */
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -54,9 +58,6 @@ public class User {
     //TODO нужна ли эта ссылка на аккаунты?
 //    @OneToMany(mappedBy = "user")
 //    private List<Account> accounts;
-
-    public User() {
-    }
 
     public User(String username,
                 String password,
