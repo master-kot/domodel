@@ -8,6 +8,6 @@ import ru.geekbrains.domodel.entities.Bill;
  * Репозиторий счетов (платежных документов)
  */
 @Repository
-public interface BillRepository extends JpaRepository<Bill, Integer> {
+public interface BillRepository extends JpaRepository<Bill, Long> {
 
 }

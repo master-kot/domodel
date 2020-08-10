@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8"/>
+
+    <title>Регистрация нового пользователя</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Регистрация нового пользователя</h1>
+</div>
+
+<div class="container" th:if="${username != null}">
+    <div th:text="'Вы вошли как пользователь ' + ${username}"/>
+    <form th:action="@{/logout}" method="POST">
+        <input type="submit" class="btn btn-danger" value="Выйти" />
+    </form>
+</div>
+
+<div class="container" th:if="${message != null}">
+    <div th:text="${message}"/>
+    <a class="px-3" th:href="@{/}">Перейти на главную страницу, чтобы войти на сайт</a>
+</div>
+
+<div class="container">
+    <div class="row py-2">
+        <div class="col-12">
+            <form th:action="@{/register}" method="post" th:object="${user}">
+                <div class="form-group">
+                    <label for="username">Номер телефона</label>
+                    <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="Номер телефона">
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('username')}" th:text="${err}">Ошибка</small>
+                </div>
+                <div class="form-group">
+                    <label for="email">Адрес электронной почты</label>
+                    <input type="text" id="email" th:field="*{email}" class="form-control" placeholder="Адрес электронной почты">
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('email')}" th:text="${err}">Ошибка</small>
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="Пароль">
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('password')}" th:text="${err}">Ошибка</small>
+                </div>
+                <div class="form-group">
+                    <label for="passwordConfirm">Повторите пароль</label>
+                    <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" class="form-control" placeholder="Повторите пароль">
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('passwordConfirm')}" th:text="${err}">Ошибка</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

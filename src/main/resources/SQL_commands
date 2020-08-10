@@ -4,13 +4,25 @@ CREATE SCHEMA domodel;
 
 SET SEARCH_PATH TO domodel;
 
-CREATE TABLE users (id bigserial, login varchar(50), password varchar(100) not null, enabled boolean not null, creation_date date, first_name varchar(200), second_name varchar(200), middle_name varchar(200), phone_number varchar(50), email varchar(250), PRIMARY KEY(id));
-CREATE TABLE authorities (id bigserial, user_id bigint not null, authority varchar(50) not null, FOREIGN KEY (user_id) REFERENCES users (id), PRIMARY KEY (id));
-CREATE TABLE news (id bigserial, creation_date date, short_text varchar(200) not null, text varchar(2000) not null, visible boolean, picture varchar(200), type varchar(100), author bigint not null, FOREIGN KEY (author) REFERENCES users (id), PRIMARY KEY (id));
-
-INSERT INTO users (login, password, enabled, first_name, second_name, middle_name, phone_number, email) VALUES ('admin', '{noop}admin', true, 'Ivan', 'Ivanov', 'Ivanovich', '9123456789', 'ivan@mail.ru');
+### МОДУЛЬ АВТОРИЗАЦИИ ###
+CREATE TABLE users (id bigserial not null, login varchar(50) not null UNIQUE, password varchar(255) not null, enabled boolean not null, creation_date timestamp not null, first_name varchar(255), second_name varchar(255), middle_name varchar(255), email varchar(255) UNIQUE, PRIMARY KEY (id));
+CREATE TABLE authorities (user_id bigint not null, authority varchar(100) not null, FOREIGN KEY (user_id) REFERENCES users (id), PRIMARY KEY (user_id, authority));
+INSERT INTO users (login, password, enabled, creation_date, first_name, second_name, middle_name, email) VALUES ('admin', '$2a$10$ArsakpPHT5jPbPEAeVc/lup1V4tJS9hqaa1PfRNIUy459JkPjK5xS', true, '2020-08-08', 'Ivan', 'Ivanov', 'Ivanovich', 'ivan@mail.ru');
 INSERT INTO authorities (user_id, authority) VALUES (1, 'ROLE_ADMIN');
-INSERT INTO news (creation_date, short_text, text, visible, picture, author) VALUES ('2020-08-06', 'Short text description', 'Full text description of the news number one', true, 'http://Link_for_picture', 1);
+
+### МОДУЛЬ НОВОСТЕЙ ###
+CREATE TABLE news (id bigserial not null, creation_date timestamp not null, short_text varchar(255) not null, text varchar(2000) not null, visible boolean not null, picture varchar(255), type varchar(100), author bigint not null, FOREIGN KEY (author) REFERENCES users (id), PRIMARY KEY (id));
+
+### МОДУЛЬ ПЛАТЕЖЕЙ ###
+#TODO create table bills
+
+### МОДУЛЬ НАЧИСЛЕНИЙ ###
+#TODO create table accounts
+#TODO create table meters
+#TODO create table meter_datas
+
+### МОДУЛЬ ИНФОРМАЦИИ О КОМПАНИИ ###
+#TODO create table requisites
 
 
 ### РАБОТА С БД ###
@@ -19,10 +31,8 @@ SELECT * FROM products;
 SELECT * FROM users;
 SELECT * FROM authorities;
 
-DROP TABLE news;
-DROP TABLE authorities;
-DROP TABLE users;
+DROP TABLE news CASCADE;
+DROP TABLE authorities CASCADE;
+DROP TABLE users CASCADE;
 
-### НЕ ИСПОЛЬЗУЕТСЯ ###
-#CREATE TABLE news_list (id bigserial, news_id bigint not null, FOREIGN KEY (news_id) REFERENCES news (id), FOREIGN KEY (author_id) REFERENCES users (id));
-#CREATE TABLE profiles (id bigserial, user_id bigint not null, creation_date date, full_name varchar(100), phone_number varchar(20), email varchar(100), FOREIGN KEY (user_id) REFERENCES users (id), PRIMARY KEY (id));
+alter table if exists users add column password varchar(255);

@@ -1,8 +1,6 @@
 package ru.geekbrains.domodel.services.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Authority;
@@ -11,9 +9,7 @@ import ru.geekbrains.domodel.entities.UserRepresentation;
 import ru.geekbrains.domodel.repositories.UserRepository;
 import ru.geekbrains.domodel.services.api.UserService;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Сервис пользователей
@@ -24,7 +20,7 @@ public class UserServiceImpl implements UserService {
     // Репозиторий пользователей
     private final UserRepository userRepository;
 
-    // Класс для кодирования паролей
+    // Сервис шифрования паролей
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
@@ -34,32 +30,58 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByLogin(String login) {
-        Optional<User> user = userRepository.findByLogin(login);
+    public User findUserById(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
         return user.orElse(null);
     }
 
     @Override
-    public User createNewUser(UserRepresentation request) {
+    public User findUserByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        return user.orElse(null);
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public boolean deleteUserById(Long userId) {
+        userRepository.deleteById(userId);
+        return userRepository.existsById(userId);
+    }
+
+    @Override
+    public User createUser(UserRepresentation request) {
+        Optional<User> userFromDB = userRepository.findByUsername(request.getUsername());
+        if (userFromDB.isPresent()) {
+            return null;
+        }
+
         User user = new User(
-                request.getLogin(),
+                request.getUsername(),
                 passwordEncoder.encode(request.getPassword()),
                 true,
-                new ArrayList<>());
-        user.getAuthorities().add(new Authority(user, "ROLE_USER"));
+                new Date());
+        user.setAuthorities(new ArrayList<>(Collections.singletonList(new Authority(user, "ROLE_USER"))));
         return userRepository.save(user);
     }
 
-    @Transactional
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByLogin(username)
-                .map(user -> new org.springframework.security.core.userdetails.User(
-                        user.getLogin(),
-                        user.getPassword(),
-                        user.getAuthorities()
-                ))
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+    public User updateUser(User userData, String username) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUsername(userData.getUsername());
+            user.setPassword(passwordEncoder.encode(userData.getPassword()));
+            user.setFirstName(userData.getFirstName());
+            user.setSecondName(userData.getSecondName());
+            user.setMiddleName(userData.getMiddleName());
+            user.setEmail(userData.getEmail());
+            return userRepository.save(user);
+        } else {
+            return null;
+        }
     }
-
 }

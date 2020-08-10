@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+import static javax.persistence.FetchType.EAGER;
+
 /**
  * Сущность пользователя
  */
@@ -16,18 +18,19 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "login", unique = true, nullable = false)
-    private String login;
+    @Column(name = "login", nullable = false, unique = true)
+    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "enabled")
+    @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @OneToMany(mappedBy = "user",
+    @OneToMany(fetch = EAGER,
+            mappedBy = "user",
             cascade = CascadeType.ALL, //удаление ролей каскадом вслед за удалением пользователя
-            orphanRemoval = true) //удаление ролей не привязанных ни к одному пользователю
+            orphanRemoval = true) //удаление ролей не связанных ни с одним пользователем
     private List<Authority> authorities;
 
     @Column(name = "creation_date")
@@ -42,21 +45,27 @@ public class User {
     @Column(name = "middle_name")
     private String middleName;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "user")
-    private List<House> houses;
+    //TODO нужна ли эта ссылка на аккаунты?
+//    @OneToMany(mappedBy = "user")
+//    private List<Account> accounts;
 
-    public String getLogin() {
-        return login;
+    public Long getId() {
+        return id;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -115,14 +124,6 @@ public class User {
         this.middleName = middleName;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -131,29 +132,16 @@ public class User {
         this.email = email;
     }
 
-    public List<House> getHouses() {
-        return houses;
-    }
-
-    public void setHouses(List<House> houses) {
-        this.houses = houses;
-    }
-
     public User() {
     }
 
-    public User(String login, String password, boolean enabled, List<Authority> authorities) {
-        this.login = login;
+    public User(String username,
+                String password,
+                boolean enabled,
+                Date creationDate) {
+        this.username = username;
         this.password = password;
         this.enabled = enabled;
-        this.authorities = authorities;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User u = (User) o;
-        return (id.equals(u.id));
+        this.creationDate = creationDate;
     }
 }
