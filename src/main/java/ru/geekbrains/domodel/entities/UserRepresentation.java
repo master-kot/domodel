@@ -1,5 +1,7 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Data;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -7,6 +9,7 @@ import javax.validation.constraints.Size;
 /**
  * Представление сущности пользователя для работы с фронтэндом
  */
+@Data
 public class UserRepresentation {
 
     @NotBlank
@@ -23,39 +26,4 @@ public class UserRepresentation {
 
     @Email
     private String email;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public UserRepresentation() {
-    }
 }

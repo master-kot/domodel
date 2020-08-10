@@ -1,5 +1,7 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +12,7 @@ import static javax.persistence.FetchType.EAGER;
  * Сущность пользователя
  */
 @Entity
+@Data
 @Table(name = "users")
 public class User {
 
@@ -51,86 +54,6 @@ public class User {
     //TODO нужна ли эта ссылка на аккаунты?
 //    @OneToMany(mappedBy = "user")
 //    private List<Account> accounts;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public List<Authority> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(List<Authority> authorities) {
-        this.authorities = authorities;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public User() {
     }

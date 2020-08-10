@@ -1,5 +1,7 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import java.util.List;
  * Сущность лицевого счета, заведенного для каждого дома
  */
 @Entity
+@Data
 @Table(name = "accounts")
 public class Account {
 
@@ -31,8 +34,5 @@ public class Account {
 
     //TODO нужна ли обратная ссылка на пользователя?
 
-    //TODO геттеры и сеттеры для полей класса, обновить файл создания базы данных
-
-    public Account() {
-    }
+    //TODO обновить файл создания базы данных
 }

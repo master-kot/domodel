@@ -1,13 +1,15 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Сущность счетчика показаний. Если счетчик электричества двухтарифный,
  * необходимо создать два счетчика с разными type, но одним meterNumber
  */
 @Entity
+@Data
 @Table(name = "meters")
 public class Meter {
 
@@ -33,8 +35,5 @@ public class Meter {
 //    @JoinColumn(name = "requisites", nullable = false)
 //    private Account account;
 
-    //TODO геттеры и сеттеры для полей класса, обновить файл создания базы данных
-
-    public Meter() {
-    }
+    //TODO обновить файл создания базы данных
 }

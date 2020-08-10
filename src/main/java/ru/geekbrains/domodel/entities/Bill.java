@@ -1,5 +1,7 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -7,6 +9,7 @@ import java.util.Date;
  * Сущность счета (платежного документа)
  */
 @Entity
+@Data
 @Table(name = "bills")
 public class Bill {
 
@@ -43,64 +46,5 @@ public class Bill {
 //    @JoinColumn(name = "requisites", nullable = false)
 //    private Requisites requisites;
 
-    //TODO геттеры и сеттеры для полей класса, обновить файл создания базы данных
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getTarget() {
-        return target;
-    }
-
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public boolean isCalculated() {
-        return calculated;
-    }
-
-    public void setCalculated(boolean calculated) {
-        this.calculated = calculated;
-    }
-
-    public String getSendStatus() {
-        return sendStatus;
-    }
-
-    public void setSendStatus(String sendStatus) {
-        this.sendStatus = sendStatus;
-    }
-
-    public boolean isPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(boolean paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public Bill() {
-    }
+    //TODO обновить файл создания базы данных
 }

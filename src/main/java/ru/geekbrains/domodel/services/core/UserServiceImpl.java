@@ -64,7 +64,10 @@ public class UserServiceImpl implements UserService {
                 passwordEncoder.encode(request.getPassword()),
                 true,
                 new Date());
-        user.setAuthorities(new ArrayList<>(Collections.singletonList(new Authority(user, "ROLE_USER"))));
+        Authority authority = new Authority();
+        authority.setUser(user);
+        authority.setAuthority("ROLE_USER");
+        user.setAuthorities(new ArrayList<>(Collections.singletonList(authority)));
         return userRepository.save(user);
     }
 

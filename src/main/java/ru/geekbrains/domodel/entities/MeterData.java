@@ -1,5 +1,7 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -7,6 +9,7 @@ import java.util.Date;
  * Сущность показания счетчика
  */
 @Entity
+@Data
 @Table(name = "meter_datas")
 public class MeterData {
 
@@ -26,8 +29,5 @@ public class MeterData {
     @Column(name = "amount")
     private Double amount;
 
-    //TODO геттеры и сеттеры для полей класса, обновить файл создания базы данных
-
-    public MeterData() {
-    }
+    //TODO обновить файл создания базы данных
 }
