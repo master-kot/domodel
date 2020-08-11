@@ -46,15 +46,16 @@ public interface UserService {
     /**
      * Создать нового пользователя
      *
-     * @param request отображение пользователя
+     * @param userData отображение данных пользователя
      * @return новый пользователь, сохраненный в репозитории
      */
-    User createUser(UserRepresentation request);
+    User createUser(UserRepresentation userData);
 
     /**
      * Изменить данные пользователя
      *
-     * @param userData данные пользователя
+     * @param userData отображение данных пользователя
+     * @param user изменяемый пользователь
      */
-    User updateUser(User userData, String username);
+    User updateUser(UserRepresentation userData, User user);
 }

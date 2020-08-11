@@ -33,7 +33,7 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <form th:action="@{/register}" method="post" th:object="${user}">
+            <form th:action="@{/register}" method="post" th:object="${userData}">
                 <div class="form-group">
                     <label for="username">Номер телефона</label>
                     <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="Номер телефона">
@@ -54,7 +54,9 @@
                     <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" class="form-control" placeholder="Повторите пароль">
                     <small class="form-text text-danger" th:each="err : ${#fields.errors('passwordConfirm')}" th:text="${err}">Ошибка</small>
                 </div>
-                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                <div>
+                    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                </div>
             </form>
         </div>
     </div>

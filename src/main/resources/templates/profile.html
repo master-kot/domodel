@@ -17,30 +17,72 @@
 
 <div class="container" >
     <h1>Профиль пользователя</h1>
-    <table th:if="${user != null}" class="table table-hover">
+    <table class="table table-hover">
         <tbody>
-        <tr>
-            <td>Логин</td>
-            <td>Пароль</td>
-            <td>Активен</td>
-            <td>Список ролей</td>
-            <td>Дата создания</td>
-            <td>Имя</td>
-            <td>Фамилия</td>
-            <td>Отчество</td>
-            <td>Адрес почты</td>
-        </tr>
-        <tr>
-            <td th:text="${user.username}"/>
-            <td th:text="${user.password}"/>
-            <td th:text="${user.enabled}"/>
-            <td th:text="${user.authorities}"/>
-            <td th:text="${user.creationDate}"/>
-            <td th:text="${user.firstName}"/>
-            <td th:text="${user.secondName}"/>
-            <td th:text="${user.middleName}"/>
-            <td th:text="${user.email}"/>
-        </tr>
+        <form th:action="@{/profile/change}" method="post" th:object="${userData}">
+            <tr>
+                <td>Параметр</td><td>Текущее значение</td><td>Новое значение</td>
+            </tr>
+            <tr>
+                <td>Номер телефона</td>
+                <td th:text="${user.username}"/>
+                <td>
+                    <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="Номер телефона"><br>
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('username')}" th:text="${err}">Ошибка</small>
+                </td>
+            </tr>
+            <tr>
+                <td>Пароль</td>
+                <td>
+                    <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="Новый пароль">
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('password')}" th:text="${err}">Ошибка</small>
+                </td>
+                <td>
+                    <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" class="form-control" placeholder="Повторите пароль">
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('passwordConfirm')}" th:text="${err}">Ошибка</small>
+                </td>
+            </tr>
+            <tr>
+                <td>Активен</td><td th:text="${user.enabled}"/><td></td>
+            </tr>
+            <tr>
+                <td>Список ролей</td><td th:text="${user.authorities}"/><td></td>
+            </tr>
+            <tr>
+                <td>Дата создания</td><td th:text="${user.creationDate}"/><td></td>
+            </tr>
+            <tr>
+                <td>Имя</td><td th:text="${user.firstName}"/>
+                <td>
+                    <input type="text" id="firstName" th:field="*{firstName}" class="form-control" placeholder="Имя">
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('firstName')}" th:text="${err}">Ошибка</small>
+                </td>
+            </tr>
+            <tr>
+                <td>Фамилия</td><td th:text="${user.secondName}"/>
+                <td>
+                    <input type="text" id="secondName" th:field="*{secondName}" class="form-control" placeholder="Фамилия">
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('secondName')}" th:text="${err}">Ошибка</small>
+                </td>
+            </tr>
+            <tr>
+                <td>Отчество</td><td th:text="${user.middleName}"/>
+                <td>
+                    <input type="text" id="middleName" th:field="*{middleName}" class="form-control" placeholder="Отчество">
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('middleName')}" th:text="${err}">Ошибка</small>
+                </td>
+            </tr>
+            <tr>
+                <td>Адрес почты</td><td th:text="${user.email}"/>
+                <td>
+                    <input type="text" id="email" th:field="*{email}" class="form-control" placeholder="Адрес электронной почты">
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('email')}" th:text="${err}">Ошибка</small>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3"><button type="submit" class="btn btn-success">Изменить профиль пользователя</button></td>
+            </tr>
+        </form>
         </tbody>
     </table>
 </div>

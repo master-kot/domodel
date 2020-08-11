@@ -28,6 +28,12 @@ public class UserRepresentation {
     @Size(min = 5, message="Пароль должен быть не менее 5 символов")
     private String passwordConfirm;
 
+    private String firstName;
+
+    private String secondName;
+
+    private String middleName;
+
     @Email
     private String email;
 }
