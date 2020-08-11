@@ -1,5 +1,8 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Data;
+import ru.geekbrains.domodel.entities.enums.MeterType;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -7,33 +10,33 @@ import java.util.List;
  * Сущность счетчика показаний. Если счетчик электричества двухтарифный,
  * необходимо создать два счетчика с разными type, но одним meterNumber
  */
+@Data
 @Entity
 @Table(name = "meters")
 public class Meter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    // Серийный номер счетчика
+    @ManyToOne
+    @JoinColumn(name = "user_meter")
+    private User user;
+
     @Column(name = "meter_number", nullable = false)
     private Integer meterNumber;
 
-    // Тип счетчика, значения: ELECTRICITY_UNIFIED, ELECTRICITY_DAY, ELECTRICITY_NIGHT, GAS, HOT_WATER, COLD_WATER
-    @Column(name = "type", nullable = false)
-    private String type;
+    @Column(nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private MeterType type;
 
-    //TODO Ссылка на таблицу со списком показаний счетчиков
-//    @OneToMany(mappedBy = "meter")
-//    private List<MeterData> meterDatas;
+    @OneToMany(mappedBy = "meter")
+    private List<MeterData> meterDatas;
 
     //TODO Обратная ссылка на лицевой счет, нужна ли она?
 //    @ManyToOne
 //    @JoinColumn(name = "requisites", nullable = false)
 //    private Account account;
-
-    //TODO геттеры и сеттеры для полей класса, обновить файл создания базы данных
 
     public Meter() {
     }
