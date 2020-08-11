@@ -1,38 +1,53 @@
 package ru.geekbrains.domodel.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.domodel.entities.Meter;
+import ru.geekbrains.domodel.entities.MeterData;
+import ru.geekbrains.domodel.entities.constants.Roles;
 import ru.geekbrains.domodel.services.api.MeterService;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Контроллер счетчиков показаний
  */
 @Controller
 @RequestMapping("/meters")
+@AllArgsConstructor
+@Secured({Roles.ROLE_ADMIN, Roles.ROLE_USER})
 public class MeterController {
 
-    // Сервис счетчиков показаний
     private final MeterService meterService;
 
-    @Autowired
-    public MeterController(MeterService meterService) {
-        this.meterService = meterService;
+    @GetMapping("")
+    public String meter(Model model, Principal principal) {
+        Optional<Meter> meter = meterService.getMeter(principal.getName());
+        model.addAttribute("meters", meter);
+        model.addAttribute("meterDatas", meterService.getAllMeterData(meter.get()).orElse(new ArrayList<>()));
+        return "meters";
     }
 
-    /**
-     * Перехват запроса списка новостей
-     */
-    @GetMapping("")
-    public String getMetersPage(Model model, Principal principal) {
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
-        }
-        model.addAttribute("meters", meterService.getAllMeters());
-        return "meters";
+    @PostMapping("/submit")
+    public String submitData(MeterData meterData) {
+        return "redirect:/meters";
+    }
+
+    @GetMapping("/add")
+    public String addPage() {
+        return "meterAddPage";
+    }
+
+    @PostMapping("/add")
+    public String addOne(Meter meter, Principal principal) {
+        meterService.save(meter, principal.getName());
+        return "redirect:/meters";
     }
 }
