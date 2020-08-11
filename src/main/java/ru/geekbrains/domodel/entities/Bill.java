@@ -50,5 +50,9 @@ public class Bill {
 //    @JoinColumn(name = "requisites", nullable = false)
 //    private Requisites requisites;
 
+    //TODO ссылка на калькуляцию (обоснование цены счета)
+//    @OneToOne
+//    private Calculation calculation;
+
     //TODO обновить файл создания базы данных
 }
