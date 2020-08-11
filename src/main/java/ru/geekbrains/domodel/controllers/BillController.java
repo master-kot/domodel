@@ -35,4 +35,10 @@ public class BillController {
         model.addAttribute("bills", billService.getAllBills());
         return "bills";
     }
+
+    @GetMapping("/bills/add_new_bill")
+    public String addNewBillCompaing(){
+
+        return "bills";
+    }
 }
