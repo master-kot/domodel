@@ -38,6 +38,11 @@ public class Meter {
     @Column(name = "check_date")
     private Date checkDate;
 
+    // Тип счетчика, имеет значения: ELECTRICITY_UNIFIED,
+    // ELECTRICITY_DAY, ELECTRICITY_NIGHT, GAS, HOT_WATER, COLD_WATER
+    @Column(name = "type", nullable = false)
+    private String type;
+
     // Ссылка на рассчетный тариф для счетчика
     @ManyToOne
     @JoinColumn(name = "tariff_id")

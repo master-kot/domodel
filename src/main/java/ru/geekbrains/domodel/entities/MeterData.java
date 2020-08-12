@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Сущность единичных данных показания счетчика
+ * Сущность данных показания счетчика
  */
 @Entity
 @Getter
@@ -22,14 +22,16 @@ public class MeterData {
     @Column(name = "id")
     private Long id;
 
-    // Счетчик, к которому прикреплено данное показание
+    // Счетчик, к которому прикреплено (соответствует) показание
     @ManyToOne
     @JoinColumn(name = "meter_id")
     private Meter meter;
 
+    // Дата создания
     @Column(name = "creation_date")
     private Date creationDate;
 
+    // Количество единиц
     @Column(name = "amount")
     private Double amount;
 }

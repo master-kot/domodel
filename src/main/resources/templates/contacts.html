@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-	<meta charset="UTF-8">
+    <meta charset="UTF-8" >
 	<link rel="stylesheet" href="./css/styles.css" />
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-	<title>Domodel</title>
+    <title>Domodel</title>
 </head>
 <body>
-<div class="wrapper">
-	<div class="top">
+	<div class="wrapper">
+		<div class="top">
 		<header>
 			<div class="container r-flex">
 				<div class="header_left">
@@ -90,48 +90,121 @@
 			</div>
 		</header><!--header-->
 		<main >
-			<div class="container content">
-				<article class="card_news r-flex">
-					<img src="./img/news/1/1.png" alt="news foto"></img>
-					<div class="card_header card_header__impotant">
-						<h3>
-							ВАЖНАЯ НОВОСТЬ!
-						</h3>
-						<p>
-						<B>Пока не корректно работает ссылка "Войти", входим через эту <a th:href="@{/login}">страницу логина</a></B>
-						</p>
-						<p>
-						<B>Создать пользователя можно <a th:href="@{/register}">здесь</a></B>
-						</p>
-					</div>
-					<div class="card_news__date">
-						<p>
-							12.08.2020
-						</p>
-					</div>
-				</article>
-				<article class="card_news r-flex">
-					<img src="./img/news/1/1.png" alt="news foto"></img>
-					<div class="card_header">
-						<h3>
-							Новость вторая
-						</h3>
-						<p>
-							В ближайшие дни обещают много новых страниц!
-						</p>
-					</div>
-					<div class="card_news__date">
-						<p>
-							12.08.2020
-						</p>
-					</div>
-				</article>
-				<p class="news_archive">
-					<a href="/news/archive" >
-						архив новостей
-					</a>
+			<div class="container">
+				<div class="about_container">
+					<h1>
+						ООО “ДОМОДЕЛ”
+					</h1>
+					<section class="contacts_section">
+						<h2 class="contact_header">
+							Контакты
+						</h2>
+						<article>
+							<div class="contact_address r-flex">
+								<p>
+									Адрес:
+								</p>
+								<p>
+									Московская область, домодедовский район, пос. Новая надежда, д.1
+								</p>
+							</div>
+						</article>
+						<article>
+							<div class="contact_phone r-flex">
+								<p>
+									Телефон:
+								</p>
+								<p>
+									8(999)3124578
+								</p>
+							</div>
+						</article>
+						<article>
+							<div class="contact_mail r-flex">
+								<p>
+									e-mail:
+								</p>
+								<p>
+									domodel@mail.ru
+								</p>
+							</div>
+						</article>
+					</section>
+					<section class="requisites_section">
+						<h2 class="requisites_header">
+							Реквизиты
+						</h2>
+						<article>
+							<h3 class="company_name">
+								ООО “ДОМОДЕЛ”
+							</h3>
+							<div class="requisites_details  r-flex">
 
-				</p>
+								<p class="inn">
+									ИНН:
+								</p>
+								<p>
+									000000000001
+								</p>
+							</div>
+						</article>
+						<article>
+							<div class="requisites_details  r-flex">
+
+								<p class="kpp">
+									КПП:
+								</p>
+								<p>
+									000000000000
+								</p>
+							</div>
+						</article>
+						<article>
+							<div class="requisites_details  r-flex">
+
+								<p class="ogrn">
+									ОГРН:
+								</p>
+								<p>
+									0000000000000
+								</p>
+							</div>
+						</article>
+						<article>
+							<div class="requisites_details  r-flex">
+
+								<p class="account">
+									Р/С:
+								</p>
+								<p>
+									324493100000000024578
+								</p>
+							</div>
+						</article>
+						<article>
+							<div class="requisites_details  r-flex">
+
+								<p class="kc">
+									К/С:
+								</p>
+								<p>
+									89993100000000024578
+								</p>
+							</div>
+						</article>
+						<article>
+							<div class="requisites_details r-flex">
+
+								<p class="bic">
+									БИК:
+								</p>
+								<p>
+									000000000
+								</p>
+							</div>
+						</article>
+					</section>
+				</div><!--foto_container-->
 			</div><!--container-->
 		</main> <!--main-->
 		<div id="openModal" class="modal">
@@ -153,12 +226,12 @@
 				</form>
 			</div>
 		</div>
-	</div> <!--top-->
-	<footer>
-		<div class="container">
+		</div> <!--top-->
+		<footer>
+			<div class="container">
 
-		</div>
-	</footer> <!--footer-->
-</div> <!--wrapper-->
+			</div>
+		</footer> <!--footer-->
+	</div> <!--wrapper-->
 </body>
 </html>

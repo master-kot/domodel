@@ -17,10 +17,13 @@ import javax.persistence.*;
 @Table(name = "authorities")
 public class Authority implements GrantedAuthority {
 
+    // Роль пользователя, варианты: ROLE_ADMIN - администратор сайта, ROLE_DIRECTOR - председатель СНТО,
+    // ROLE_ACCOUNTANT - бухгалтер, ROLE_STAFF - персонал организации, ROLE_USER - пользователь сайта
     @Id
     @Column(name = "authority", nullable = false)
     private String authority;
 
+    // Ссылка на пользователя, которому соответствует роль
     @Id
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

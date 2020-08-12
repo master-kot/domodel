@@ -8,8 +8,6 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import static javax.persistence.FetchType.EAGER;
-
 /**
  * Сущность лицевого счета, заведенного для каждого дома
  */
@@ -30,6 +28,7 @@ public class Account {
     @JoinColumn(name = "user_id")
     private User user;
 
+    // Улица (может быть не заполнено)
     @Column(name = "street")
     private String street;
 

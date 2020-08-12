@@ -23,14 +23,13 @@ public class Tariff {
     @Column(name = "id")
     private Long id;
 
+    // Описание данного тарифа (для более понятного выбора тарифа при назначении на счетчик)
+    @Column(name = "description", nullable = false)
+    private String description;
+
     // Цена за единицу
     @Column(name = "price")
     private Double price;
-
-    // Тип счетчика, имеет значения: ELECTRICITY_UNIFIED,
-    // ELECTRICITY_DAY, ELECTRICITY_NIGHT, GAS, HOT_WATER, COLD_WATER
-    @Column(name = "type", nullable = false)
-    private String type;
 
     // Список счетчиков, для которых используется данный тариф
     @OneToMany(mappedBy = "tariff")

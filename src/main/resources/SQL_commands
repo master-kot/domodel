@@ -13,13 +13,16 @@ INSERT INTO authorities (user_id, authority) VALUES (1, 'ROLE_ADMIN');
 ### МОДУЛЬ НОВОСТЕЙ ###
 CREATE TABLE news (id bigserial not null, creation_date timestamp not null, short_text varchar(255) not null, text varchar(2000) not null, visible boolean not null, picture varchar(255), type varchar(100), author bigint not null, FOREIGN KEY (author) REFERENCES users (id), PRIMARY KEY (id));
 
-### МОДУЛЬ ПЛАТЕЖЕЙ ###
-#TODO create table bills
 
 ### МОДУЛЬ НАЧИСЛЕНИЙ ###
 #TODO create table accounts
 #TODO create table meters
 #TODO create table meter_datas
+
+### МОДУЛЬ ПЛАТЕЖНЫХ ПОРУЧЕНИЙ ###
+#TODO create table bills
+#TODO create table calculations
+#TODO create table tariffs
 
 ### МОДУЛЬ ИНФОРМАЦИИ О КОМПАНИИ ###
 #TODO create table requisites
