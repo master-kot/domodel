@@ -31,6 +31,13 @@ SELECT * FROM products;
 SELECT * FROM users;
 SELECT * FROM authorities;
 
+DROP TABLE accounts CASCADE;
+DROP TABLE bills CASCADE;
+DROP TABLE calculations CASCADE;
+DROP TABLE meters CASCADE;
+DROP TABLE meter_datas CASCADE;
+DROP TABLE requisites CASCADE;
+DROP TABLE tariffs CASCADE;
 DROP TABLE news CASCADE;
 DROP TABLE authorities CASCADE;
 DROP TABLE users CASCADE;

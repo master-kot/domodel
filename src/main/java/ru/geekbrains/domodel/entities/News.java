@@ -41,7 +41,7 @@ public class News {
     private String type;
 
     // Ссылка на пользователя - автора новости
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "author", nullable = false)
     private User author;
 }

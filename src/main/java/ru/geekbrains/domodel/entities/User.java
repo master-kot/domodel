@@ -6,7 +6,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.FetchType.EAGER;
 
@@ -55,9 +57,10 @@ public class User {
     @Column(name = "email", unique = true)
     private String email;
 
-    //TODO нужна ли эта ссылка на аккаунты?
-//    @OneToMany(mappedBy = "user")
-//    private List<Account> accounts;
+    // Список лицевых счетов пользователя
+    @OneToMany(fetch = EAGER,
+            mappedBy = "user")
+    private Set<Account> accounts = new HashSet<>();
 
     public User(String username,
                 String password,

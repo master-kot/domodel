@@ -5,6 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Сущность счетчика показаний. Если счетчик электричества двухтарифный,
@@ -22,22 +25,25 @@ public class Meter {
     @Column(name = "id")
     private Long id;
 
+    // Лицевой счет, к которому прикреплен данный счетчик
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
+
     // Серийный номер счетчика
     @Column(name = "meter_number", nullable = false)
     private Integer meterNumber;
 
-    // Тип счетчика, значения: ELECTRICITY_UNIFIED, ELECTRICITY_DAY, ELECTRICITY_NIGHT, GAS, HOT_WATER, COLD_WATER
-    @Column(name = "type", nullable = false)
-    private String type;
+    // Дата последней поверки счетчика
+    @Column(name = "check_date")
+    private Date checkDate;
 
-    //TODO Ссылка на таблицу со списком показаний счетчиков
-//    @OneToMany(mappedBy = "meter")
-//    private List<MeterData> meterDatas;
+    // Ссылка на рассчетный тариф для счетчика
+    @ManyToOne
+    @JoinColumn(name = "tariff_id")
+    private Tariff tariff;
 
-    //TODO Обратная ссылка на лицевой счет, нужна ли она?
-//    @ManyToOne
-//    @JoinColumn(name = "requisites", nullable = false)
-//    private Account account;
-
-    //TODO обновить файл создания базы данных
+    // Список показаний данного счетчика
+    @OneToMany(mappedBy = "meter")
+    private Set<MeterData> meterDatas = new HashSet<>();
 }

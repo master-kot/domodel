@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Сущность тарифа
@@ -21,9 +23,16 @@ public class Tariff {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "price", nullable = false)
+    // Цена за единицу
+    @Column(name = "price")
     private Double price;
 
-    //TODO завести поля класса
-    //TODO обновить файл создания базы данных
+    // Тип счетчика, имеет значения: ELECTRICITY_UNIFIED,
+    // ELECTRICITY_DAY, ELECTRICITY_NIGHT, GAS, HOT_WATER, COLD_WATER
+    @Column(name = "type", nullable = false)
+    private String type;
+
+    // Список счетчиков, для которых используется данный тариф
+    @OneToMany(mappedBy = "tariff")
+    private Set<Meter> meters = new HashSet<>();
 }

@@ -26,10 +26,7 @@
             <tr>
                 <td>Номер телефона</td>
                 <td th:text="${user.username}"/>
-                <td>
-                    <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="Номер телефона"><br>
-                    <small class="form-text text-danger" th:each="err : ${#fields.errors('username')}" th:text="${err}">Ошибка</small>
-                </td>
+                <td></td>
             </tr>
             <tr>
                 <td>Пароль</td>
@@ -43,37 +40,47 @@
                 </td>
             </tr>
             <tr>
-                <td>Активен</td><td th:text="${user.enabled}"/><td></td>
+                <td>Активен</td>
+                <td th:text="${user.enabled}"/>
+                <td></td>
             </tr>
             <tr>
-                <td>Список ролей</td><td th:text="${user.authorities}"/><td></td>
+                <td>Список ролей</td>
+                <td th:text="${user.authorities}"/>
+                <td></td>
             </tr>
             <tr>
-                <td>Дата создания</td><td th:text="${user.creationDate}"/><td></td>
+                <td>Дата создания</td>
+                <td th:text="${user.creationDate}"/>
+                <td></td>
             </tr>
             <tr>
-                <td>Имя</td><td th:text="${user.firstName}"/>
+                <td>Имя</td>
+                <td th:text="${user.firstName}"/>
                 <td>
                     <input type="text" id="firstName" th:field="*{firstName}" class="form-control" placeholder="Имя">
                     <small class="form-text text-danger" th:each="err : ${#fields.errors('firstName')}" th:text="${err}">Ошибка</small>
                 </td>
             </tr>
             <tr>
-                <td>Фамилия</td><td th:text="${user.secondName}"/>
+                <td>Фамилия</td>
+                <td th:text="${user.secondName}"/>
                 <td>
                     <input type="text" id="secondName" th:field="*{secondName}" class="form-control" placeholder="Фамилия">
                     <small class="form-text text-danger" th:each="err : ${#fields.errors('secondName')}" th:text="${err}">Ошибка</small>
                 </td>
             </tr>
             <tr>
-                <td>Отчество</td><td th:text="${user.middleName}"/>
+                <td>Отчество</td>
+                <td th:text="${user.middleName}"/>
                 <td>
                     <input type="text" id="middleName" th:field="*{middleName}" class="form-control" placeholder="Отчество">
                     <small class="form-text text-danger" th:each="err : ${#fields.errors('middleName')}" th:text="${err}">Ошибка</small>
                 </td>
             </tr>
             <tr>
-                <td>Адрес почты</td><td th:text="${user.email}"/>
+                <td>Адрес почты</td>
+                <td th:text="${user.email}"/>
                 <td>
                     <input type="text" id="email" th:field="*{email}" class="form-control" placeholder="Адрес электронной почты">
                     <small class="form-text text-danger" th:each="err : ${#fields.errors('email')}" th:text="${err}">Ошибка</small>
