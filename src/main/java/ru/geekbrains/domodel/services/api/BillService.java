@@ -15,4 +15,10 @@ public interface BillService {
      * @return список счетов
      */
     List<Bill> getAllBills();
+
+    Bill save(Bill bill);
+
+    Bill findById(Long billId);
+
+    List<Bill> findAllByUsername(String username);
 }
