@@ -1,10 +1,9 @@
 package ru.geekbrains.domodel.entities;
 
-import lombok.Data;
-import ru.geekbrains.domodel.entities.enums.MeterType;
-
 import javax.persistence.*;
-import java.util.List;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Сущность счетчика показаний. Если счетчик электричества двухтарифный,
@@ -12,6 +11,7 @@ import java.util.List;
  */
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "meters")
 public class Meter {
 
@@ -19,25 +19,30 @@ public class Meter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Лицевой счет, к которому прикреплен данный счетчик
     @ManyToOne
-    @JoinColumn(name = "user_meter")
-    private User user;
+    @JoinColumn(name = "account_id")
+    private Account account;
 
+    // Серийный номер счетчика
     @Column(name = "meter_number", nullable = false)
     private Integer meterNumber;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    private MeterType type;
+    // Дата последней поверки счетчика
+    @Column(name = "check_date")
+    private Date checkDate;
 
+    // Тип счетчика, имеет значения: ELECTRICITY_UNIFIED,
+    // ELECTRICITY_DAY, ELECTRICITY_NIGHT, GAS, HOT_WATER, COLD_WATER
+    @Column(name = "type", nullable = false)
+    private String type;
+
+    // Ссылка на рассчетный тариф для счетчика
+    @ManyToOne
+    @JoinColumn(name = "tariff_id")
+    private Tariff tariff;
+
+    // Список показаний данного счетчика
     @OneToMany(mappedBy = "meter")
-    private List<MeterData> meterDatas;
-
-    //TODO Обратная ссылка на лицевой счет, нужна ли она?
-//    @ManyToOne
-//    @JoinColumn(name = "requisites", nullable = false)
-//    private Account account;
-
-    public Meter() {
-    }
+    private Set<MeterData> meterDatas = new HashSet<>();
 }

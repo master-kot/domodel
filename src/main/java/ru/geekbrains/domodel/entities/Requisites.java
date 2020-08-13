@@ -1,12 +1,19 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 /**
- * Сущность реквизитов компании.
+ * Сущность платежных реквизитов компании.
  * Используются для отображения информации о компании и формирования платежек
  */
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "requisites")
 public class Requisites {
 
@@ -47,95 +54,4 @@ public class Requisites {
 
     @Column(name = "phone_number")
     private String phoneNumber;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(Integer companyName) {
-        this.companyName = companyName;
-    }
-
-    public Integer getInn() {
-        return inn;
-    }
-
-    public void setInn(Integer inn) {
-        this.inn = inn;
-    }
-
-    public Integer getKpp() {
-        return kpp;
-    }
-
-    public void setKpp(Integer kpp) {
-        this.kpp = kpp;
-    }
-
-    public Integer getOgrn() {
-        return ogrn;
-    }
-
-    public void setOgrn(Integer ogrn) {
-        this.ogrn = ogrn;
-    }
-
-    public Integer getBankAccount() {
-        return bankAccount;
-    }
-
-    public void setBankAccount(Integer bankAccount) {
-        this.bankAccount = bankAccount;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
-    public Integer getBik() {
-        return bik;
-    }
-
-    public void setBik(Integer bik) {
-        this.bik = bik;
-    }
-
-    public Integer getCorrespondentAccount() {
-        return correspondentAccount;
-    }
-
-    public void setCorrespondentAccount(Integer correspondentAccount) {
-        this.correspondentAccount = correspondentAccount;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Requisites() {
-    }
 }

@@ -1,15 +1,14 @@
 package ru.geekbrains.domodel.entities;
 
-import lombok.Data;
-
 import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Сущность показания счетчика
+ * Сущность данных показания счетчика
  */
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "meter_datas")
 public class MeterData {
 
@@ -17,12 +16,9 @@ public class MeterData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //TODO Обратная ссылка на meter_id
-    // Идентификатор счетчика (id в таблице meters)
-//    @Column(name = "meter_id", nullable = false)
-//    private Integer meterNumber;
+    // Счетчик, к которому прикреплено (соответствует) показание
     @ManyToOne
-    @JoinColumn(name = "meter")
+    @JoinColumn(name = "meter_id")
     private Meter meter;
 
     @Column(name = "creation_date")
@@ -30,7 +26,4 @@ public class MeterData {
 
     @Column(name = "amount")
     private Double amount;
-
-    public MeterData() {
-    }
 }

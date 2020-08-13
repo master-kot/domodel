@@ -1,12 +1,22 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Сущность счета (платежного документа)
+ * Сущность счета (платежного документа).
+ * Сумма к оплате total должна быть рассчитана модулем калькуляции или внесена вручную.
  */
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "bills")
 public class Bill {
 
@@ -15,92 +25,42 @@ public class Bill {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "creation_date")
+    // Ссылка на лицевой номер пользователя
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
+
+    // Дата создания
+    @Column(name = "creation_date", nullable = false)
     private Date creationDate;
 
+    // Назначение платежа
     @Column(name = "target", nullable = false)
     private String target;
 
-    @Column(name = "amount", nullable = false)
-    private Double amount;
+    // Сумма к оплате (сумма всех калькуляций)
+    @Column(name = "total", nullable = false)
+    private Double total;
 
+    // Переменная для счета, подсчитанного автоматически
     @Column(name = "calculated", nullable = false)
     private boolean calculated;
 
+    // Статус отправки счета пользователю может быть: NEW новая платежка, SENT отправлена пользователю,
+    // RECEIVED просмотрена пользователем, CANCELED отменена (отозвана) председателем (бухгалтером)
     @Column(name = "send_status", nullable = false)
     private String sendStatus;
 
+    // Статус платежа, изменяется председателем (бухгалтером)
     @Column(name = "payment_status", nullable = false)
     private boolean paymentStatus;
 
-    //TODO ссылка на номер лицевого счета
-//    @ManyToOne
-//    @JoinColumn(name = "account_id", nullable = false)
-//    private Account accountId;
+    // Ссылка на платежные реквизиты
+    @ManyToOne
+    @JoinColumn(name = "requisites_id")
+    private Requisites requisites;
 
-    //TODO ссылка на номер реквизитов компании
-//    @ManyToOne
-//    @JoinColumn(name = "requisites", nullable = false)
-//    private Requisites requisites;
-
-    //TODO геттеры и сеттеры для полей класса, обновить файл создания базы данных
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getTarget() {
-        return target;
-    }
-
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public boolean isCalculated() {
-        return calculated;
-    }
-
-    public void setCalculated(boolean calculated) {
-        this.calculated = calculated;
-    }
-
-    public String getSendStatus() {
-        return sendStatus;
-    }
-
-    public void setSendStatus(String sendStatus) {
-        this.sendStatus = sendStatus;
-    }
-
-    public boolean isPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(boolean paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public Bill() {
-    }
+    // Ссылка на калькуляцию (обоснование цены счета)
+    @OneToMany(mappedBy = "bill")
+    private Set<Calculation> calculations = new HashSet<>();
 }

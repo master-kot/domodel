@@ -41,6 +41,17 @@ public class MainController {
     }
 
     /**
+     * Перехват запроса страницы логина (ВРЕМЕННОЕ РЕШЕНИЕ)
+     */
+    @GetMapping("/login")
+    public String getLoginPage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
+        return "login";
+    }
+
+    /**
      * Перехват запроса регистрации нового пользователя
      */
     @GetMapping("/register")
@@ -48,7 +59,7 @@ public class MainController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        model.addAttribute("user", new UserRepresentation());
+        model.addAttribute("userData", new UserRepresentation());
         return "register";
     }
 
@@ -56,24 +67,24 @@ public class MainController {
      * Перехват запроса создания нового пользователя
      */
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("user") UserRepresentation user,
+    public String registerUser(@Valid @ModelAttribute("userData") UserRepresentation userData,
                                BindingResult bindingResult,
                                Model model) {
         if (bindingResult.hasErrors()) {
             return "register";
         }
 
-        if (!user.getPassword().equals(user.getPasswordConfirm())) {
+        if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
             bindingResult.rejectValue("password", "", Messages.PASSWORD_MISMATCH);
             return "register";
         }
 
-        if (userService.createUser(user) != null) {
+        if (userService.createUser(userData) != null) {
             model.addAttribute("message",
-                    String.format(Messages.USER_CREATED, user.getUsername()));
+                    String.format(Messages.USER_CREATED, userData.getUsername()));
         } else {
             bindingResult.rejectValue("username", "",
-                    String.format(Messages.USER_HAS_ALREADY_CREATED, user.getUsername()));
+                    String.format(Messages.USER_HAS_ALREADY_CREATED, userData.getUsername()));
         }
         return "register";
     }

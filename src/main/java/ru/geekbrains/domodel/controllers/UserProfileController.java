@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.domodel.entities.User;
+import ru.geekbrains.domodel.entities.UserRepresentation;
+import ru.geekbrains.domodel.entities.constants.Messages;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import javax.validation.Valid;
@@ -35,22 +37,30 @@ public class UserProfileController {
     @GetMapping("")
     public String getUserProfilePage(Model model, Principal principal) {
         model.addAttribute("user", userService.findUserByUsername(principal.getName()));
+        model.addAttribute("userData", new UserRepresentation());
         return "profile";
     }
 
     /**
      * Перехват запроса на изменение профиля пользователя
      */
-    @PostMapping("/profile/change")
-    public String changeUserProfile(@Valid @ModelAttribute("user") User user,
+    @PostMapping("/change")
+    public String changeUserProfile(@Valid @ModelAttribute("userData") UserRepresentation userData,
                                     BindingResult bindingResult,
                                     Model model,
                                     Principal principal) {
+        User user = userService.findUserByUsername(principal.getName());
+        model.addAttribute("user", user);
         if (bindingResult.hasErrors()) {
             return "profile";
         }
-        model.addAttribute("user",
-                model.addAttribute("user", userService.updateUser(user, principal.getName())));
-        return "profile";
+
+        if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
+            bindingResult.rejectValue("password", "", Messages.PASSWORD_MISMATCH);
+            return "profile";
+        }
+
+        userService.updateUser(userData, user);
+        return "redirect:/profile";
     }
 }

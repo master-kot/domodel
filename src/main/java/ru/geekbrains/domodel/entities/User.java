@@ -1,8 +1,11 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static javax.persistence.FetchType.EAGER;
 
@@ -10,6 +13,9 @@ import static javax.persistence.FetchType.EAGER;
  * Сущность пользователя
  */
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -18,122 +24,48 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    // Логин (телефон пользователя)
     @Column(name = "login", nullable = false, unique = true)
     private String username;
 
+    // Пароль
     @Column(name = "password", nullable = false)
     private String password;
 
+    // Пользователь активен (true) или заблокирован (false)
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
+    // Список ролей данного пользователя
     @OneToMany(fetch = EAGER,
             mappedBy = "user",
             cascade = CascadeType.ALL, //удаление ролей каскадом вслед за удалением пользователя
             orphanRemoval = true) //удаление ролей не связанных ни с одним пользователем
-    private List<Authority> authorities;
+    private List<Authority> authorities = new ArrayList<>();
 
+    // Дата создания
     @Column(name = "creation_date")
     private Date creationDate;
 
+    // Имя
     @Column(name = "first_name")
     private String firstName;
 
+    // Фамилия
     @Column(name = "second_name")
     private String secondName;
 
+    // Отчество
     @Column(name = "middle_name")
     private String middleName;
 
+    // Адрес электроной почты
     @Column(name = "email", unique = true)
     private String email;
 
-    //TODO нужна ли эта ссылка на аккаунты?
-//    @OneToMany(mappedBy = "user")
-//    private List<Account> accounts;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public List<Authority> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(List<Authority> authorities) {
-        this.authorities = authorities;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public User() {
-    }
+    // Список лицевых счетов пользователя
+    @OneToMany(mappedBy = "user")
+    private Set<Account> accounts = new HashSet<>();
 
     public User(String username,
                 String password,
