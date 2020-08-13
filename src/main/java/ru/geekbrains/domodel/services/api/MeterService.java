@@ -1,8 +1,8 @@
 package ru.geekbrains.domodel.services.api;
 
+import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
-import ru.geekbrains.domodel.entities.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,11 +12,11 @@ import java.util.Optional;
  */
 public interface MeterService {
 
-    Optional<Meter> getMeter(String userName);
+    Optional<Meter> getMeterByAccount(Account account);
     Optional<List<Meter>> getAllMeters();
-    Optional<List<Meter>> getMetersByUser(String userName);
     Meter findMeterByNum(Integer meterNum);
     void save(Meter meter, String userName);
 
+    void submitData(MeterData meterData);
     Optional<List<MeterData>> getAllMeterData(Meter meter);
 }

@@ -4,39 +4,44 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
 import ru.geekbrains.domodel.entities.constants.Roles;
+import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.MeterService;
 
 import java.security.Principal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Контроллер счетчиков показаний
  */
 @Controller
-@RequestMapping("/meters")
 @AllArgsConstructor
+@RequestMapping("/meters")
 @Secured({Roles.ROLE_ADMIN, Roles.ROLE_USER})
 public class MeterController {
 
     private final MeterService meterService;
+    private final AccountService accountService;
 
     @GetMapping("")
     public String meter(Model model, Principal principal) {
-        Optional<Meter> meter = meterService.getMeter(principal.getName());
-        model.addAttribute("meters", meter);
-        model.addAttribute("meterDatas", meterService.getAllMeterData(meter.get()).orElse(new ArrayList<>()));
+        Account account = accountService.getAccountByUserName(principal.getName());
+        model.addAttribute("account", account);
+        model.addAttribute("meters", account.getMeters());
+        //TODO: исправить логику
+        Meter meter = account.getMeters().stream().findFirst().get();
+        model.addAttribute("meterDatas", meter.getMeterDatas());
         return "meters";
     }
 
     @PostMapping("/submit")
     public String submitData(MeterData meterData) {
+        meterService.submitData(meterData);
         return "redirect:/meters";
     }
 

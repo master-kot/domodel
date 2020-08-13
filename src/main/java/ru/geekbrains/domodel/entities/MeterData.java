@@ -1,13 +1,19 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Сущность данных показания счетчика
  */
-@Data
+
 @Entity
+@Setter
+@Getter
 @NoArgsConstructor
 @Table(name = "meter_datas")
 public class MeterData {
@@ -18,10 +24,10 @@ public class MeterData {
 
     // Счетчик, к которому прикреплено (соответствует) показание
     @ManyToOne
-    @JoinColumn(name = "meter_id")
+    @JoinColumn(name = "meter_id", nullable = false)
     private Meter meter;
 
-    @Column(name = "creation_date")
+    @Column(name = "creation_date", nullable = false)
     private Date creationDate;
 
     @Column(name = "amount")

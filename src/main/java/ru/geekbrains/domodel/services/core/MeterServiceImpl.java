@@ -2,15 +2,18 @@ package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
 import ru.geekbrains.domodel.entities.User;
+import ru.geekbrains.domodel.repositories.AccountRepository;
 import ru.geekbrains.domodel.repositories.MeterDataRepository;
 import ru.geekbrains.domodel.repositories.MeterRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
 import ru.geekbrains.domodel.services.api.MeterService;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,24 +29,13 @@ public class MeterServiceImpl implements MeterService {
     private final UserRepository userRepository;
 
     @Override
-    public Optional<Meter> getMeter(String userName) {
-        User user = userRepository.findByUsername(userName).orElseThrow(
-                () -> new NullPointerException("User not found!")
-        );
-        return meterRepository.findByUser(user);
+    public Optional<Meter> getMeterByAccount(Account account) {
+        return meterRepository.findByAccount(account);
     }
 
     @Override
     public Optional<List<Meter>> getAllMeters() {
         return Optional.of(meterRepository.findAll());
-    }
-
-    @Override
-    public Optional<List<Meter>> getMetersByUser(String userName) {
-        User user = userRepository.findByUsername(userName).orElseThrow(
-                () -> new NullPointerException("User not found!")
-        );
-        return meterRepository.findAllByUser(user);
     }
 
     @Override
@@ -55,11 +47,18 @@ public class MeterServiceImpl implements MeterService {
 
     @Transactional
     @Override
+    public void submitData(MeterData meterData) {
+        meterData.setCreationDate(new Date());
+        meterDataRepository.save(meterData);
+    }
+
+    @Transactional
+    @Override
     public void save(Meter meter, String name) {
         User user = userRepository.findByUsername(name).orElseThrow(
                 () -> new NullPointerException("User not found!")
         );
-        meter.setUser(user);
+        meter.setAccount(null);
         meterRepository.save(meter);
     }
 

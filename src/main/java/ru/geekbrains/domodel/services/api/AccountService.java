@@ -15,4 +15,5 @@ public interface AccountService {
      * @return список лицевых счетов
      */
     List<Account> getAllAccounts();
+    Account getAccountByUserName(String userName);
 }
