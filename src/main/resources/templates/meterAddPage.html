@@ -12,8 +12,16 @@
     <h2>Данные о счетчике</h2>
     <form th:action="@{/meters/add}" method="POST">
         <div class="form-row row justify-content-center">
+            <label>Участок
+                <select name="account" class="form-control">
+                    <option th:each="account : ${accounts}"
+                            th:value="${account.id}"
+                            th:text="${account.getHouseNumber()}">
+                    </option>
+                </select>
+            </label>
             <div class="form-group">
-                <label for="meterNumber">Серийный номер</label>
+                <label for="meterNumber">Серийный номер счетчика</label>
                 <input type="text" class="form-control" id="meterNumber" name="meterNumber" placeholder="Серийный номер">
             </div>
             <div class="form-group col-md-3">

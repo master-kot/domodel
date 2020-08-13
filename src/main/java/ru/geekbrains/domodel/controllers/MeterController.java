@@ -46,13 +46,14 @@ public class MeterController {
     }
 
     @GetMapping("/add")
-    public String addPage() {
+    public String addPage(Model model, Principal principal) {
+        model.addAttribute("accounts", accountService.getAccounts(principal.getName()));
         return "meterAddPage";
     }
 
     @PostMapping("/add")
-    public String addOne(Meter meter, Principal principal) {
-        meterService.save(meter, principal.getName());
+    public String addOne(Meter meter) {
+        meterService.save(meter);
         return "redirect:/meters";
     }
 }

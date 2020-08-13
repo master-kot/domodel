@@ -33,7 +33,17 @@ public class AccountServiceImpl implements AccountService {
        );
 
        return accountRepository.findByUser(user).orElseThrow(
-                () -> new NullPointerException("not found Account by User: " + user)
+                () -> new NullPointerException("not found Account by User: " + userName)
        );
+    }
+
+    @Override
+    public List<Account> getAccounts(String userName) {
+        User user = userRepository.findByUsername(userName).orElseThrow(
+                () -> new NullPointerException("not found User: " + userName)
+        );
+        return accountRepository.findAllByUser(user).orElseThrow(
+                () -> new NullPointerException("not found Account by User: " + userName)
+        );
     }
 }

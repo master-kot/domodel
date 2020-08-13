@@ -15,7 +15,7 @@ public interface MeterService {
     Optional<Meter> getMeterByAccount(Account account);
     Optional<List<Meter>> getAllMeters();
     Meter findMeterByNum(Integer meterNum);
-    void save(Meter meter, String userName);
+    void save(Meter meter);
 
     void submitData(MeterData meterData);
     Optional<List<MeterData>> getAllMeterData(Meter meter);

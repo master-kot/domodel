@@ -16,4 +16,5 @@ public interface AccountService {
      */
     List<Account> getAllAccounts();
     Account getAccountByUserName(String userName);
+    List<Account> getAccounts(String userName);
 }

@@ -27,7 +27,7 @@ public class Meter {
 
     // Лицевой счет, к которому прикреплен данный счетчик
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     @Column(name = "meter_number", nullable = false)

@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
-import ru.geekbrains.domodel.entities.User;
-import ru.geekbrains.domodel.repositories.AccountRepository;
 import ru.geekbrains.domodel.repositories.MeterDataRepository;
 import ru.geekbrains.domodel.repositories.MeterRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
@@ -54,11 +52,7 @@ public class MeterServiceImpl implements MeterService {
 
     @Transactional
     @Override
-    public void save(Meter meter, String name) {
-        User user = userRepository.findByUsername(name).orElseThrow(
-                () -> new NullPointerException("User not found!")
-        );
-        meter.setAccount(null);
+    public void save(Meter meter) {
         meterRepository.save(meter);
     }
 
