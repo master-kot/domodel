@@ -3,6 +3,7 @@ package ru.geekbrains.domodel.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.geekbrains.domodel.entities.enums.MeterType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,23 +12,22 @@ import java.util.Set;
 
 /**
  * Сущность счетчика показаний. Если счетчик электричества двухтарифный,
- * необходимо создать два счетчика с разными type, но одним meterNumber
+ * необходимо создать два счетчика с разными type, но одним meterNumber.
  */
 @Entity
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 @Table(name = "meters")
 public class Meter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     // Лицевой счет, к которому прикреплен данный счетчик
     @ManyToOne
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
     // Серийный номер счетчика
@@ -38,10 +38,10 @@ public class Meter {
     @Column(name = "check_date")
     private Date checkDate;
 
-    // Тип счетчика, имеет значения: ELECTRICITY_UNIFIED,
-    // ELECTRICITY_DAY, ELECTRICITY_NIGHT, GAS, HOT_WATER, COLD_WATER
+    // Тип счетчика
     @Column(name = "type", nullable = false)
-    private String type;
+    @Enumerated(EnumType.ORDINAL)
+    private MeterType type;
 
     // Ссылка на рассчетный тариф для счетчика
     @ManyToOne

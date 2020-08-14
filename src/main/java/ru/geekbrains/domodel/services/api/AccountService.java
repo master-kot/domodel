@@ -11,8 +11,14 @@ public interface AccountService {
 
     /**
      * Получить список всех лицевых счетов
-     *
-     * @return список лицевых счетов
      */
     List<Account> getAllAccounts();
+    
+    /**
+     * Получить лицевой счето пользователя
+     */
+    Account getAccountByUserName(String userName);
+    
+    // TODO переименовать
+    List<Account> getAccounts(String userName);
 }
