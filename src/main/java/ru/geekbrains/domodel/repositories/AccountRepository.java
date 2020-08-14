@@ -13,6 +13,16 @@ import java.util.Optional;
  */
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Long> {
+    
+    // TODO Кто решает, сколько аккаунтов у пользователя? Возможно лучше, чтобы все таки был один?
+    // TODO Возможно лучше было бы Реализовать поиск по username?
+    /**
+     * Найти аккаунт по пользователю
+     */
     Optional<Account> findByUser(User user);
+    
+    /**
+     * Найти список аккаунтов пользователя
+     */
     Optional<List<Account>> findAllByUser(User user);
 }
