@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.geekbrains.domodel.entities.UserRepresentation;
-import ru.geekbrains.domodel.entities.constants.Messages;
+import ru.geekbrains.domodel.entities.enums.Messages;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import javax.validation.Valid;

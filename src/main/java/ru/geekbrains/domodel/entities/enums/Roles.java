@@ -1,4 +1,4 @@
-package ru.geekbrains.domodel.entities.constants;
+package ru.geekbrains.domodel.entities.enums;
 
 public class Roles {
 

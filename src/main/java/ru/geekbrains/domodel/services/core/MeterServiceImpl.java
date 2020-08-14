@@ -7,7 +7,6 @@ import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
 import ru.geekbrains.domodel.repositories.MeterDataRepository;
 import ru.geekbrains.domodel.repositories.MeterRepository;
-import ru.geekbrains.domodel.repositories.UserRepository;
 import ru.geekbrains.domodel.services.api.MeterService;
 
 import javax.transaction.Transactional;
@@ -24,10 +23,9 @@ public class MeterServiceImpl implements MeterService {
 
     private final MeterRepository meterRepository;
     private final MeterDataRepository meterDataRepository;
-    private final UserRepository userRepository;
 
     @Override
-    public Optional<Meter> getMeterByAccount(Account account) {
+    public Optional<List<Meter>> getAllMetersByAccount(Account account) {
         return meterRepository.findByAccount(account);
     }
 
@@ -37,15 +35,15 @@ public class MeterServiceImpl implements MeterService {
     }
 
     @Override
-    public Meter findMeterByNum(Integer meterNum) {
-        return meterRepository.findByMeterNumber(meterNum).orElseThrow(
+    public Meter getMeterBySerialNumber(Integer serialNumber) {
+        return meterRepository.findBySerialNumber(serialNumber).orElseThrow(
                 () -> new NullPointerException("Meter not found!")
         );
     }
 
     @Transactional
     @Override
-    public void submitData(MeterData meterData) {
+    public void submitMeterData(MeterData meterData) {
         meterData.setCreationDate(new Date());
         meterDataRepository.save(meterData);
     }
@@ -57,7 +55,13 @@ public class MeterServiceImpl implements MeterService {
     }
 
     @Override
-    public Optional<List<MeterData>> getAllMeterData(Meter meter) {
+    public Optional<List<MeterData>> getAllMeterDataByMeter(Meter meter) {
         return meterDataRepository.findByMeter(meter);
+    }
+
+    //TODO реализовать получение последних по дате показаний счетчика
+    @Override
+    public Optional<MeterData> getLastMeterDataByMeter(Meter meter) {
+        return Optional.empty();
     }
 }

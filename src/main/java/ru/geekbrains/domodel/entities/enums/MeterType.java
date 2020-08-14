@@ -2,8 +2,9 @@ package ru.geekbrains.domodel.entities.enums;
 
 import lombok.Getter;
 
-// Варианты типов счетчиков
-public enum  MeterType {
+// Перечисление вариантов различных типов счетчиков
+public enum MeterType {
+
     ELECTRICITY_UNIFIED("Однотарифный счётчик электроэнергии"),
     ELECTRICITY_DAY("Дневной счётчик электроэнергии"),
     ELECTRICITY_NIGHT("Ночной счётчик электроэнергии"),
@@ -12,9 +13,10 @@ public enum  MeterType {
     COLD_WATER("Счётчик холодной воды");
 
     @Getter
-    private String name;
+    // Описание счетчика
+    private final String description;
 
-    MeterType(String name) {
-        this.name = name;
+    MeterType(String description) {
+        this.description = description;
     }
 }

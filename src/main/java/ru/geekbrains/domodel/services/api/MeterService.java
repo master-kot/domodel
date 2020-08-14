@@ -12,17 +12,38 @@ import java.util.Optional;
  */
 public interface MeterService {
 
-    Optional<Meter> getMeterByAccount(Account account);
-    
+    /**
+     * Получить список счетчиков данного аккаунта
+     */
+    Optional<List<Meter>> getAllMetersByAccount(Account account);
+
+    /**
+     * Получить список всех счетчиков
+     */
     Optional<List<Meter>> getAllMeters();
-    
-    Meter findMeterByNum(Integer meterNum);
-    
+
+    /**
+     * Получить счетчик по его серийному номеру
+     */
+    Meter getMeterBySerialNumber(Integer serialNumber);
+
+    /**
+     * Сохранить данные счетчика
+     */
     void save(Meter meter);
 
-    void submitData(MeterData meterData);
-    
-    Optional<List<MeterData>> getAllMeterData(Meter meter);
-    
-    //TODO получить последние по дате показания счетчика
+    /**
+     * Принять единичные данные о показаниях счетчика
+     */
+    void submitMeterData(MeterData meterData);
+
+    /**
+     * Получить список всех показаний данного счетчика
+     */
+    Optional<List<MeterData>> getAllMeterDataByMeter(Meter meter);
+
+    /**
+     * Получить последние по дате показания данного счетчика
+     */
+    Optional<MeterData> getLastMeterDataByMeter(Meter meter);
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,6 +14,18 @@ import java.util.Optional;
 @Repository
 public interface MeterRepository extends JpaRepository<Meter, Long> {
 
-    Optional<Meter> findByMeterNumber(Integer meterNum);
-    Optional<Meter> findByAccount(Account account);
+    /**
+     * Получить список счетчиков аккаунта
+     */
+    Optional<List<Meter>> findByAccount(Account account);
+
+    /**
+     * Найти счетчик по его серийному номеру
+     */
+    Optional<Meter> findBySerialNumber(Integer serialNumber);
+
+    /**
+     *
+     */
+    Optional<Meter> findById(Long id);
 }

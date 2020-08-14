@@ -6,9 +6,7 @@ import lombok.Setter;
 import ru.geekbrains.domodel.entities.enums.MeterType;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Сущность счетчика показаний. Если счетчик электричества двухтарифный,
@@ -31,8 +29,8 @@ public class Meter {
     private Account account;
 
     // Серийный номер счетчика
-    @Column(name = "meter_number", nullable = false)
-    private Integer meterNumber;
+    @Column(name = "serial_number", nullable = false)
+    private Integer serialNumber;
 
     // Дата последней поверки счетчика
     @Column(name = "check_date")
@@ -50,5 +48,5 @@ public class Meter {
 
     // Список показаний данного счетчика
     @OneToMany(mappedBy = "meter")
-    private Set<MeterData> meterDatas = new HashSet<>();
+    private List<MeterData> meterDatas = new ArrayList<>();
 }

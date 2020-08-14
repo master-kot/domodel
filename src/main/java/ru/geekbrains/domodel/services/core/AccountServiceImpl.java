@@ -9,6 +9,7 @@ import ru.geekbrains.domodel.repositories.UserRepository;
 import ru.geekbrains.domodel.services.api.AccountService;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Реализация сервиса лицевых счетов
@@ -17,9 +18,16 @@ import java.util.List;
 @AllArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-    // Репозиторий лицевый счетов
+    // Репозиторий лицевых счетов
     private final AccountRepository accountRepository;
+
+    // Репозиторий пользователей
     private final UserRepository userRepository;
+
+    @Override
+    public Optional<Account> getAccountById(Long id) {
+        return accountRepository.findById(id);
+    }
 
     @Override
     public List<Account> getAllAccounts() {
@@ -27,23 +35,23 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getAccountByUserName(String userName) {
-       User user = userRepository.findByUsername(userName).orElseThrow(
-               () -> new NullPointerException("not found User: " + userName)
+    public List<Account> getAccountsByUserUserame(String username) {
+        //TODO думаю лучше отдавать просто пустой список аккаунтов если пользователь не найден
+        User user = userRepository.findByUsername(username).orElseThrow(
+               () -> new NullPointerException("not found User: " + username)
        );
 
-       return accountRepository.findByUser(user).orElseThrow(
-                () -> new NullPointerException("not found Account by User: " + userName)
+       //TODO думаю лучше отдавать просто пустой список аккаунтов если они не найдены
+       return accountRepository.findAllByUser(user).orElseThrow(
+                () -> new NullPointerException("not found Account by User: " + username)
        );
     }
 
     @Override
-    public List<Account> getAccounts(String userName) {
-        User user = userRepository.findByUsername(userName).orElseThrow(
-                () -> new NullPointerException("not found User: " + userName)
-        );
+    public List<Account> getAccountsByUser(User user) {
+        //TODO  думаю лучше отдавать просто пустой список аккаунтов если они не найдены
         return accountRepository.findAllByUser(user).orElseThrow(
-                () -> new NullPointerException("not found Account by User: " + userName)
+                () -> new NullPointerException("not found Account by User: " + user.getUsername())
         );
     }
 }

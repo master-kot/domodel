@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -42,5 +44,5 @@ public class Account {
 
     // Список счетов, выставленных для данного аккаунта
     @OneToMany(mappedBy = "account")
-    private Set<Bill> bills = new HashSet<>();
+    private List<Bill> bills = new ArrayList<>();
 }

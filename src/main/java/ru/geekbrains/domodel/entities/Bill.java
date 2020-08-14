@@ -5,9 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Сущность счета (платежного документа).
@@ -42,10 +40,11 @@ public class Bill {
     @Column(name = "total", nullable = false)
     private Double total;
 
-    // Переменная для счета, подсчитанного автоматически
+    // true для счета, подсчитанного автоматически, false если сумма к оплате введена вручную
     @Column(name = "calculated", nullable = false)
     private boolean calculated;
 
+    // TODO сделать в виде перечисления
     // Статус отправки счета пользователю может быть: NEW новая платежка, SENT отправлена пользователю,
     // RECEIVED просмотрена пользователем, CANCELED отменена (отозвана) председателем (бухгалтером)
     @Column(name = "send_status", nullable = false)
@@ -62,5 +61,5 @@ public class Bill {
 
     // Ссылка на калькуляцию (обоснование цены счета)
     @OneToMany(mappedBy = "bill")
-    private Set<Calculation> calculations = new HashSet<>();
+    private List<Calculation> calculations = new ArrayList<>();
 }

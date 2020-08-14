@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.UserRepresentation;
-import ru.geekbrains.domodel.entities.constants.Messages;
+import ru.geekbrains.domodel.entities.enums.Messages;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import javax.validation.Valid;

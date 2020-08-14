@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.User;
-import ru.geekbrains.domodel.entities.constants.Messages;
+import ru.geekbrains.domodel.entities.enums.Messages;
 import ru.geekbrains.domodel.repositories.UserRepository;
 
 import java.util.Optional;

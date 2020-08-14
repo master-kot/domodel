@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
-import ru.geekbrains.domodel.entities.constants.Roles;
+import ru.geekbrains.domodel.entities.enums.Roles;
 import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.MeterService;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * Контроллер счетчиков показаний
@@ -30,24 +31,26 @@ public class MeterController {
 
     @GetMapping("")
     public String meter(Model model, Principal principal) {
-        Account account = accountService.getAccountByUserName(principal.getName());
-        model.addAttribute("account", account);
-        model.addAttribute("meters", account.getMeters());
-        //TODO: исправить логику
-        Meter meter = account.getMeters().stream().findFirst().get();
-        model.addAttribute("meterDatas", meter.getMeterDatas());
+        List<Account> accounts = accountService.getAccountsByUserUserame(principal.getName());
+        for (Account account : accounts) {
+            //TODO: исправить логику
+            model.addAttribute("account", account);
+            model.addAttribute("meters", account.getMeters());
+            Meter meter = account.getMeters().stream().findFirst().get();
+            model.addAttribute("meterDatas", meter.getMeterDatas());
+        }
         return "meters";
     }
 
     @PostMapping("/submit")
     public String submitData(MeterData meterData) {
-        meterService.submitData(meterData);
+        meterService.submitMeterData(meterData);
         return "redirect:/meters";
     }
 
     @GetMapping("/add")
     public String addPage(Model model, Principal principal) {
-        model.addAttribute("accounts", accountService.getAccounts(principal.getName()));
+        model.addAttribute("accounts", accountService.getAccountsByUserUserame(principal.getName()));
         return "meterAddPage";
     }
 
