@@ -12,7 +12,7 @@ import java.util.Set;
 
 /**
  * Сущность счетчика показаний. Если счетчик электричества двухтарифный,
- * необходимо создать два счетчика с разными type, но одним meterNumber
+ * необходимо создать два счетчика с разными type, но одним meterNumber.
  */
 @Entity
 @NoArgsConstructor
@@ -30,6 +30,7 @@ public class Meter {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
+    // Серийный номер счетчика
     @Column(name = "meter_number", nullable = false)
     private Integer meterNumber;
 
@@ -37,6 +38,7 @@ public class Meter {
     @Column(name = "check_date")
     private Date checkDate;
 
+    // Тип счетчика
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private MeterType type;
