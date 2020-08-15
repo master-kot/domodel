@@ -37,7 +37,7 @@
 <div class="container" sec:authorize="isAnonymous()">
     <div class="row py-2">
         <div class="col-12">
-            <form th:action="@{/authenticateTheUser}" method="post">
+            <form th:action="@{/authenticate}" method="post">
                 <div class="form-group">
                     <label for="username">Номер телефона</label>
                     <input type="text" class="form-control" id="username" name="username" placeholder="Номер телефона">

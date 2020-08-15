@@ -32,6 +32,6 @@ public class PhotosController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        return "photos";
+        return "/pages/photos";
     }
 }

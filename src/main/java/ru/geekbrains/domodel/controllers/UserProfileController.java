@@ -39,7 +39,7 @@ public class UserProfileController {
     public String getUserProfilePage(Model model, Principal principal) {
         model.addAttribute("user", userService.findUserByUsername(principal.getName()));
         model.addAttribute("userData", new UserRepresentation());
-        return "profile";
+        return "/pages/profile";
     }
 
     /**
@@ -53,12 +53,12 @@ public class UserProfileController {
         User user = userService.findUserByUsername(principal.getName());
         model.addAttribute("user", user);
         if (bindingResult.hasErrors()) {
-            return "profile";
+            return "/pages/profile";
         }
 
         if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
             bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
-            return "profile";
+            return "/pages/profile";
         }
 
         userService.updateUser(userData, user);

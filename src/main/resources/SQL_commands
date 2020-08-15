@@ -5,9 +5,9 @@ CREATE SCHEMA domodel;
 SET SEARCH_PATH TO domodel;
 
 ### МОДУЛЬ АВТОРИЗАЦИИ ###
-CREATE TABLE users (id bigserial not null, login varchar(50) not null UNIQUE, password varchar(255) not null, enabled boolean not null, creation_date timestamp not null, first_name varchar(255), second_name varchar(255), middle_name varchar(255), email varchar(255) UNIQUE, PRIMARY KEY (id));
+CREATE TABLE users (id bigserial not null, login varchar(50) not null UNIQUE, password varchar(255) not null, enabled boolean not null, creation_date timestamp not null, first_name varchar(255), second_name varchar(255), middle_name varchar(255), email varchar(255) UNIQUE, photo_link varchar(255), PRIMARY KEY (id));
 CREATE TABLE authorities (user_id bigint not null, authority varchar(100) not null, FOREIGN KEY (user_id) REFERENCES users (id), PRIMARY KEY (user_id, authority));
-INSERT INTO users (login, password, enabled, creation_date, first_name, second_name, middle_name, email) VALUES ('admin', '$2a$10$ArsakpPHT5jPbPEAeVc/lup1V4tJS9hqaa1PfRNIUy459JkPjK5xS', true, '2020-08-08', 'Ivan', 'Ivanov', 'Ivanovich', 'ivan@mail.ru');
+INSERT INTO users (login, password, enabled, creation_date, first_name, second_name, middle_name, email, photo_link) VALUES ('admin', '$2a$10$ArsakpPHT5jPbPEAeVc/lup1V4tJS9hqaa1PfRNIUy459JkPjK5xS', true, '2020-08-08', 'Ivan', 'Ivanov', 'Ivanovich', 'ivan@mail.ru', '../img/personal_page/myfoto.png');
 INSERT INTO authorities (user_id, authority) VALUES (1, 'ROLE_ADMIN');
 
 ### МОДУЛЬ НОВОСТЕЙ ###

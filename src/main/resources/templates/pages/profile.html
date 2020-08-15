@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="stylesheet" href="./css/linearicons.css">
-	<link rel="stylesheet" href="./css/styles.css" />
+	<link rel="stylesheet" href="../css/linearicons.css">
+	<link rel="stylesheet" href="../css/styles.css" />
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <title>Domodel</title>
@@ -21,7 +21,7 @@
 					<p class="welcom">
 						Добро пожаловать
 					</p>
-					<a href="index.html">
+					<a href="../index.html">
 						<svg width="135" height="40" viewBox="0 0 135 40" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 							<rect width="135" height="40" fill="url(#pattern0)"/>
 							<defs>
@@ -38,11 +38,11 @@
 						<ul class="menu r-flex">
 							<a href="index.html">
 								<li >
-										новости
+									новости
 								</li>
 							</a>
 							<a href="/pages/about">
-								<li>								
+								<li>
 									о нас
 								</li>
 							</a>
@@ -70,20 +70,20 @@
 								<li>
 									контакты
 								</li>
-							</a>																																								
+							</a>
 						</ul>
 					</nav>
 				</div>
 				<div class="header_right">
-					<img src="./img/home_page/avatar.png" alt="avatar">
+					<img src="../img/home_page/avatar.png" alt="avatar"></img>
 					<div class="notlogged">
 						<a href="#" id="login">
 							войти
 						</a>
 					</div>
-					<div class="logged" th:if="${username != null}" >
+					<div class="logged">
 						<p th:text="'Пользователь ' + ${username}"/>
-						<a href="/profile">
+						<a href="/pages/profile">
 							личный кабинет
 						</a>
 					</div>
@@ -91,67 +91,129 @@
 			</div>
 		</header><!--header-->
 		<main >
-			<div class="container content">
-				<div class="add_news">
-					<form name="add_news" method="post" action="#" class="r-flex">
-						<input type="text" placeholder="Введите название новости" name="news title" class="inputshadow">
-						<textarea placeholder="Введите описание новости" class="inputshadow"></textarea>
-						<div class="add_news_controls r-flex">
-							<div class="add_news_controls_left">
-								<input type="checkbox" name="fixed" class="inputshadow"/>
-								<label for="fixed">Закрепить новость</label>
-								<input type="checkbox" name="public" class="inputshadow">
-								<label for="public">Публичная новость</label>
-							</div>
-							<div class="add_news_controls_right">
-								<input type="button" name="put image" value="Вставить картинку" class=""/>
-								<input type="button" name="put href" value="Вставить гиперссылку"/>
-								<input type="submit" name="submit news" value="Опубликовать"/>
-							</div>
-						</div>
-					</form>
-				</div>
-				<article class="card_news r-flex">
-					<img src="./img/news/1/1.png" alt="news foto">
-					<div class="card_header card_header__impotant">
-						<h3>
-							ВАЖНАЯ НОВОСТЬ!
-						</h3>
-						<p>
-							<B>Пока не корректно работает ссылка "Войти", входим через эту <a th:href="@{pages/login}">страницу логина</a></B>
-						</p>
-						<p>
-							<B>Создать пользователя можно <a th:href="@{/register}">здесь</a></B>
-						</p>
-					</div>
-					<div class="card_news__date">
-						<p>
-							17.08.2020
-						</p>
-					</div>
-				</article>
-				<article class="card_news r-flex">
-					<img src="./img/news/1/1.png" alt="news foto">
-					<div class="card_header">
-						<h3>
-							Новость какая-то
-						</h3>
-						<p>
-							Очередное собрание состоиться 24 августа в 14:00
-						</p>
-					</div>
-					<div class="card_news__date">
-						<p>
-							17.08.2020
-						</p>
-					</div>
-				</article>
-				<p class="news_archive">
-					<a href="#" >
-						архив новостей
-					</a>
-				
-				</p>
+			<div class="container">
+				<div class="cabinet_container r-flex">
+					<section class="cabinet_personal">
+						<h2>
+							ЛИЧНЫЕ ДАННЫЕ
+						</h2>
+						<div class="cabinet_personal_line"></div>
+						<article>
+							<p class="cabinet_personal_item">
+								Фото:
+							</p>
+							<img src="../img/personal_page/myfoto.png" alt="user foto">
+							<p  class="cabinet_personal_item">
+								Фамилия:
+							</p>
+							<p th:text="${user.secondName}" class="cabinet_personal_value">
+								Петров
+							</p>
+							<p class="cabinet_personal_item">
+								Имя:
+							</p>
+							<p th:text="${user.firstName}" class="cabinet_personal_value">
+								Иван
+							</p>
+							<p class="cabinet_personal_item">
+								№ лицевого счета: (ДОДЕЛАТЬ В ВИДЕ СПИСКА)
+							</p>
+							<p class="cabinet_personal_value">
+								24
+							</p>
+							<p class="cabinet_personal_item">
+								Кол-во соток: (ДОДЕЛАТЬ В ВИДЕ СПИСКА)
+							</p>
+							<p class="cabinet_personal_value">
+								7
+							</p>
+						</article>
+						<div class="cabinet_personal_line"></div>
+						<a href="/profile/change">
+							редактировать
+						</a>
+					</section>
+					<section class="cabinet_general">
+						<h2>
+							ОБЩАЯ ИНФОРМАЦИЯ профиля пользователя
+						</h2>
+						<table class="table table-hover">
+							<tbody>
+							<form th:action="@{/profile/change}" method="post" th:object="${userData}">
+								<tr>
+									<td>Параметр</td><td>Текущее значение</td><td>Новое значение</td>
+								</tr>
+								<tr>
+									<td>Номер телефона</td>
+									<td th:text="${user.username}"/>
+									<td></td>
+								</tr>
+								<tr>
+									<td>Пароль</td>
+									<td>
+										<input type="password" id="password" th:field="*{password}" class="form-control" placeholder="Новый пароль">
+										<small class="form-text text-danger" th:each="err : ${#fields.errors('password')}" th:text="${err}">Ошибка</small>
+									</td>
+									<td>
+										<input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" class="form-control" placeholder="Повторите пароль">
+										<small class="form-text text-danger" th:each="err : ${#fields.errors('passwordConfirm')}" th:text="${err}">Ошибка</small>
+									</td>
+								</tr>
+								<tr>
+									<td>Активен</td>
+									<td th:text="${user.enabled}"/>
+									<td></td>
+								</tr>
+								<tr>
+									<td>Список ролей</td>
+									<td th:text="${user.authorities}"/>
+									<td></td>
+								</tr>
+								<tr>
+									<td>Дата создания</td>
+									<td th:text="${user.creationDate}"/>
+									<td></td>
+								</tr>
+								<tr>
+									<td>Имя</td>
+									<td th:text="${user.firstName}"/>
+									<td>
+										<input type="text" id="firstName" th:field="*{firstName}" class="form-control" placeholder="Имя">
+										<small class="form-text text-danger" th:each="err : ${#fields.errors('firstName')}" th:text="${err}">Ошибка</small>
+									</td>
+								</tr>
+								<tr>
+									<td>Фамилия</td>
+									<td th:text="${user.secondName}"/>
+									<td>
+										<input type="text" id="secondName" th:field="*{secondName}" class="form-control" placeholder="Фамилия">
+										<small class="form-text text-danger" th:each="err : ${#fields.errors('secondName')}" th:text="${err}">Ошибка</small>
+									</td>
+								</tr>
+								<tr>
+									<td>Отчество</td>
+									<td th:text="${user.middleName}"/>
+									<td>
+										<input type="text" id="middleName" th:field="*{middleName}" class="form-control" placeholder="Отчество">
+										<small class="form-text text-danger" th:each="err : ${#fields.errors('middleName')}" th:text="${err}">Ошибка</small>
+									</td>
+								</tr>
+								<tr>
+									<td>Адрес почты</td>
+									<td th:text="${user.email}"/>
+									<td>
+										<input type="text" id="email" th:field="*{email}" class="form-control" placeholder="Адрес электронной почты">
+										<small class="form-text text-danger" th:each="err : ${#fields.errors('email')}" th:text="${err}">Ошибка</small>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3"><button type="submit" class="btn btn-success">Изменить профиль пользователя</button></td>
+								</tr>
+							</form>
+							</tbody>
+						</table>
+					</section>
+				</div><!--cabinet_container-->
 			</div><!--container-->
 		</main> <!--main-->
 		<div id="loginForm" class="modal">
@@ -164,13 +226,12 @@
 				<h2>
 					АВТОРИЗАЦИЯ
 				</h2>
-				<!--посмотри пожалуйста как сделано в файле templates/old/login.html здесь почему то не работает-->
-				<form name="login" id="login" action="/authenticate" method="post" class="r-flex">
-					<input type="text" id="username" name="username" placeholder="Номер телефона"/>
-					<input type="password" id="password" name="username" placeholder="Пароль"/>
+				<form name="login" id="login" action="#" method="post" class="r-flex">
+					<input type="text" name="username" placeholder="ЛОГИН(№ участка)"/>
+					<input type="password" name="username" placeholder="ПАРОЛЬ"/>
 					<div class="login_controls r-flex">
-						<input type="submit" name="submit" value="Войти"></input>
-						<input type="button" name="cancel" value="Отмена"></input>
+						<input type="submit" name="submit" value="вход"></input>
+						<input type="button" name="cancel" value="отмена"></input>
 					</div>
 				</form>
 			</div>
@@ -186,6 +247,6 @@
 	  src="https://code.jquery.com/jquery-3.5.1.js"
 	  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 	  crossorigin="anonymous"></script>
-	<script src="./js/main.js"></script>
+	<script src="../js/main.js"></script>
 </body>
 </html>

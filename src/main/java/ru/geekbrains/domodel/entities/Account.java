@@ -32,9 +32,13 @@ public class Account {
     @Column(name = "street")
     private String street;
 
-    // Номер дома, участка
+    // Номер дома или участка
     @Column(name = "house_number", nullable = false)
     private String houseNumber;
+
+    // Количество соток участка
+    @Column(name = "acres_number")
+    private String acresNumber;
 
     // Список счетчиков данного аккаунта
     @OneToMany(mappedBy = "account")
