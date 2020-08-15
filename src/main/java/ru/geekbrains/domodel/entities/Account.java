@@ -6,9 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Сущность лицевого счета, заведенного для каждого дома
@@ -40,7 +38,7 @@ public class Account {
 
     // Список счетчиков данного аккаунта
     @OneToMany(mappedBy = "account")
-    private Set<Meter> meters = new HashSet<>();
+    private List<Meter> meters = new ArrayList<>();
 
     // Список счетов, выставленных для данного аккаунта
     @OneToMany(mappedBy = "account")

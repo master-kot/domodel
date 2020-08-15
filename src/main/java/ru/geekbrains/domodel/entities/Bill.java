@@ -3,9 +3,12 @@ package ru.geekbrains.domodel.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.geekbrains.domodel.entities.constants.SendStatus;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Сущность счета (платежного документа).
@@ -44,11 +47,10 @@ public class Bill {
     @Column(name = "calculated", nullable = false)
     private boolean calculated;
 
-    // TODO сделать в виде перечисления
-    // Статус отправки счета пользователю может быть: NEW новая платежка, SENT отправлена пользователю,
-    // RECEIVED просмотрена пользователем, CANCELED отменена (отозвана) председателем (бухгалтером)
+    // Статус отправки счета пользователю
     @Column(name = "send_status", nullable = false)
-    private String sendStatus;
+    @Enumerated(EnumType.ORDINAL)
+    private SendStatus sendStatus;
 
     // Статус платежа, изменяется председателем (бухгалтером)
     @Column(name = "payment_status", nullable = false)

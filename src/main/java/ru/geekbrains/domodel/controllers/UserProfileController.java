@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.UserRepresentation;
-import ru.geekbrains.domodel.entities.enums.Messages;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+
+import static ru.geekbrains.domodel.entities.constants.Messages.PASSWORD_MISMATCH;
 
 /**
  * Контроллер модуля профиля пользователя
@@ -56,7 +57,7 @@ public class UserProfileController {
         }
 
         if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
-            bindingResult.rejectValue("password", "", Messages.PASSWORD_MISMATCH);
+            bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
             return "profile";
         }
 

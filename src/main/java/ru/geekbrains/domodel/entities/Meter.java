@@ -3,7 +3,7 @@ package ru.geekbrains.domodel.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.geekbrains.domodel.entities.enums.MeterType;
+import ru.geekbrains.domodel.entities.constants.MeterType;
 
 import javax.persistence.*;
 import java.util.*;

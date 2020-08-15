@@ -1,8 +1,10 @@
-package ru.geekbrains.domodel.entities.enums;
+package ru.geekbrains.domodel.entities.constants;
 
 import lombok.Getter;
 
-// Перечисление вариантов различных типов счетчиков
+/**
+ * Перечисление вариантов различных типов счетчиков
+  */
 public enum MeterType {
 
     ELECTRICITY_UNIFIED("Однотарифный счётчик электроэнергии"),

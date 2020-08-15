@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.geekbrains.domodel.entities.UserRepresentation;
-import ru.geekbrains.domodel.entities.enums.Messages;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+
+import static ru.geekbrains.domodel.entities.constants.Messages.*;
 
 /**
  * Главный контроллер web-приложения
@@ -75,16 +76,16 @@ public class MainController {
         }
 
         if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
-            bindingResult.rejectValue("password", "", Messages.PASSWORD_MISMATCH);
+            bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
             return "register";
         }
 
         if (userService.createUser(userData) != null) {
             model.addAttribute("message",
-                    String.format(Messages.USER_CREATED, userData.getUsername()));
+                    String.format(USER_CREATED, userData.getUsername()));
         } else {
             bindingResult.rejectValue("username", "",
-                    String.format(Messages.USER_HAS_ALREADY_CREATED, userData.getUsername()));
+                    String.format(USER_HAS_ALREADY_CREATED, userData.getUsername()));
         }
         return "register";
     }

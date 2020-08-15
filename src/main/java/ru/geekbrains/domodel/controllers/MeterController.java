@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
-import ru.geekbrains.domodel.entities.enums.Roles;
+import ru.geekbrains.domodel.entities.constants.Roles;
 import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.MeterService;
 
@@ -30,7 +30,7 @@ public class MeterController {
     private final AccountService accountService;
 
     @GetMapping("")
-    public String meter(Model model, Principal principal) {
+    public String getMetersPage(Model model, Principal principal) {
         List<Account> accounts = accountService.getAccountsByUserUserame(principal.getName());
         for (Account account : accounts) {
             //TODO: исправить логику
@@ -39,7 +39,7 @@ public class MeterController {
             Meter meter = account.getMeters().stream().findFirst().get();
             model.addAttribute("meterDatas", meter.getMeterDatas());
         }
-        return "meters";
+        return "meters/meters";
     }
 
     @PostMapping("/submit")
@@ -49,13 +49,13 @@ public class MeterController {
     }
 
     @GetMapping("/add")
-    public String addPage(Model model, Principal principal) {
+    public String getAddPage(Model model, Principal principal) {
         model.addAttribute("accounts", accountService.getAccountsByUserUserame(principal.getName()));
-        return "meterAddPage";
+        return "meters/addMeter";
     }
 
     @PostMapping("/add")
-    public String addOne(Meter meter) {
+    public String addMeter(Meter meter) {
         meterService.save(meter);
         return "redirect:/meters";
     }

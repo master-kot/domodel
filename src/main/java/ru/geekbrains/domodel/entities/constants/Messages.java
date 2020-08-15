@@ -1,4 +1,4 @@
-package ru.geekbrains.domodel.entities.enums;
+package ru.geekbrains.domodel.entities.constants;
 
 /**
  * Перечисление различных констант для сообщений

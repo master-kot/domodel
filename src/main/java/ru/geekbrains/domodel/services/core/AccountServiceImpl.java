@@ -8,6 +8,7 @@ import ru.geekbrains.domodel.repositories.AccountRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
 import ru.geekbrains.domodel.services.api.AccountService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,22 +37,18 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<Account> getAccountsByUserUserame(String username) {
-        //TODO думаю лучше отдавать просто пустой список аккаунтов если пользователь не найден
-        User user = userRepository.findByUsername(username).orElseThrow(
-               () -> new NullPointerException("not found User: " + username)
-       );
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (!optionalUser.isPresent()) {
+            return new ArrayList<>();
+        }
+        User user = optionalUser.get();
 
-       //TODO думаю лучше отдавать просто пустой список аккаунтов если они не найдены
-       return accountRepository.findAllByUser(user).orElseThrow(
-                () -> new NullPointerException("not found Account by User: " + username)
-       );
+        Optional<List<Account>> optionalAccounts = accountRepository.findAllByUser(user);
+        return optionalAccounts.orElseGet(ArrayList::new);
     }
 
     @Override
     public List<Account> getAccountsByUser(User user) {
-        //TODO  думаю лучше отдавать просто пустой список аккаунтов если они не найдены
-        return accountRepository.findAllByUser(user).orElseThrow(
-                () -> new NullPointerException("not found Account by User: " + user.getUsername())
-        );
+        return accountRepository.findAllByUser(user).orElseGet(ArrayList::new);
     }
 }

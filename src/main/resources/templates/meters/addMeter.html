@@ -4,12 +4,12 @@
       xmlns:sec="http://www.w3.org/1999/xhtml" lang="RU">
 <head>
     <meta charset="UTF-8">
-    <title>Meter add</title>
+    <title>Данные счетчика</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container" style="text-align: center" sec:authorize="isAuthenticated()">
-    <h2>Данные о счетчике</h2>
+    <h2>Добавить данные счетчика</h2>
     <form th:action="@{/meters/add}" method="POST">
         <div class="form-row row justify-content-center">
             <label>Участок
@@ -26,9 +26,9 @@
             </div>
             <div class="form-group col-md-3">
                 <select name="type" class="form-control">
-                    <option th:each="category : ${T(ru.geekbrains.domodel.entities.enums.MeterType).values()}"
+                    <option th:each="category : ${T(ru.geekbrains.domodel.entities.constants.MeterType).values()}"
                             th:value="${category}"
-                            th:text="${category.name}">
+                            th:text="${category.description}">
                     </option>
                 </select>
             </div>
