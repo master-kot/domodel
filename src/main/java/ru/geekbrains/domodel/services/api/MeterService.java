@@ -15,12 +15,12 @@ public interface MeterService {
     /**
      * Получить список счетчиков данного аккаунта
      */
-    Optional<List<Meter>> getAllMetersByAccount(Account account);
+    List<Meter> getAllMetersByAccount(Account account);
 
     /**
      * Получить список всех счетчиков
      */
-    Optional<List<Meter>> getAllMeters();
+    List<Meter> getAllMeters();
 
     /**
      * Получить счетчик по его серийному номеру
@@ -40,7 +40,7 @@ public interface MeterService {
     /**
      * Получить список всех показаний данного счетчика
      */
-    Optional<List<MeterData>> getAllMeterDataByMeter(Meter meter);
+    List<MeterData> getAllMeterDataByMeter(Meter meter);
 
     /**
      * Получить предыдущие (предпоследние в списке по дате) показания счетчика
@@ -48,9 +48,9 @@ public interface MeterService {
     Optional<MeterData> getPreviousMeterDataByMeter(Meter meter);
 
     /**
-     * Получить предыдущие (предпоследние в списке по дате) показания счетчика
+     * Получить предыдущие (предпоследние в списке по дате) показания списка счетчиков
      */
-    Optional<List<MeterData>> getPreviousMeterDatasByMeters(List<Meter> meter);
+    List<MeterData> getPreviousMeterDatasByMeters(List<Meter> meter);
 
     /**
      * Получить текущие (последние в списке по дате) показания счетчика
@@ -58,7 +58,7 @@ public interface MeterService {
     Optional<MeterData> getCurrentMeterDataByMeter(Meter meter);
 
     /**
-     * Получить текущие (последние в списке по дате) показания счетчика
+     * Получить текущие (последние в списке по дате) показания списка счетчиков
      */
-    Optional<List<MeterData>> getCurrentMeterDatasByMeters(List<Meter> meter);
+    List<MeterData> getCurrentMeterDatasByMeters(List<Meter> meter);
 }

@@ -10,6 +10,7 @@ import ru.geekbrains.domodel.repositories.MeterRepository;
 import ru.geekbrains.domodel.services.api.MeterService;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -25,13 +26,14 @@ public class MeterServiceImpl implements MeterService {
     private final MeterDataRepository meterDataRepository;
 
     @Override
-    public Optional<List<Meter>> getAllMetersByAccount(Account account) {
-        return meterRepository.findByAccount(account);
+    public List<Meter> getAllMetersByAccount(Account account) {
+        Optional<List<Meter>> optionalMeterList = meterRepository.findByAccount(account);
+        return optionalMeterList.orElseGet(ArrayList::new);
     }
 
     @Override
-    public Optional<List<Meter>> getAllMeters() {
-        return Optional.of(meterRepository.findAll());
+    public List<Meter> getAllMeters() {
+        return meterRepository.findAll();
     }
 
     @Override
@@ -55,8 +57,9 @@ public class MeterServiceImpl implements MeterService {
     }
 
     @Override
-    public Optional<List<MeterData>> getAllMeterDataByMeter(Meter meter) {
-        return meterDataRepository.findByMeter(meter);
+    public List<MeterData> getAllMeterDataByMeter(Meter meter) {
+        Optional<List<MeterData>> optionalMeterDataList = meterDataRepository.findAllByMeter(meter);
+        return optionalMeterDataList.orElseGet(ArrayList::new);
     }
 
     //TODO реализовать получение показаний для счетчика
@@ -67,8 +70,8 @@ public class MeterServiceImpl implements MeterService {
 
     //TODO реализовать получение показаний для списка счетчиков
     @Override
-    public Optional<List<MeterData>> getPreviousMeterDatasByMeters(List<Meter> meter) {
-        return Optional.empty();
+    public List<MeterData> getPreviousMeterDatasByMeters(List<Meter> meter) {
+        return new ArrayList<>();
     }
 
     //TODO реализовать получение показаний для счетчика
@@ -79,7 +82,7 @@ public class MeterServiceImpl implements MeterService {
 
     //TODO реализовать получение показаний для списка счетчиков
     @Override
-    public Optional<List<MeterData>> getCurrentMeterDatasByMeters(List<Meter> meter) {
-        return Optional.empty();
+    public List<MeterData> getCurrentMeterDatasByMeters(List<Meter> meter) {
+        return new ArrayList<>();
     }
 }

@@ -15,11 +15,5 @@ public interface MeterDataRepository extends JpaRepository<MeterData, Long> {
     /**
      * Получить список показаний счетчика
      */
-    Optional<List<MeterData>> findByMeter(Meter meter);
-    
-    //TODO реализовать
-    /**
-     * Получить последнее по дате (самое свежее) показание счетчика
-     */
-    Optional<MeterData> findLastMeterDataByMeter(Meter meter);
+    Optional<List<MeterData>> findAllByMeter(Meter meter);
 }
