@@ -33,7 +33,7 @@ public class PagesController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        return "/pages/about";
+        return "pages/about";
     }
 
     /**
@@ -44,7 +44,7 @@ public class PagesController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        return "/pages/contacts";
+        return "pages/contacts";
     }
 
     /**
@@ -55,6 +55,6 @@ public class PagesController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        return "/pages/personal";
+        return "pages/personal";
     }
 }
