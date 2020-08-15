@@ -43,7 +43,22 @@ public interface MeterService {
     Optional<List<MeterData>> getAllMeterDataByMeter(Meter meter);
 
     /**
-     * Получить последние по дате показания данного счетчика
+     * Получить предыдущие (предпоследние в списке по дате) показания счетчика
      */
-    Optional<MeterData> getLastMeterDataByMeter(Meter meter);
+    Optional<MeterData> getPreviousMeterDataByMeter(Meter meter);
+
+    /**
+     * Получить предыдущие (предпоследние в списке по дате) показания счетчика
+     */
+    Optional<List<MeterData>> getPreviousMeterDatasByMeters(List<Meter> meter);
+
+    /**
+     * Получить текущие (последние в списке по дате) показания счетчика
+     */
+    Optional<MeterData> getCurrentMeterDataByMeter(Meter meter);
+
+    /**
+     * Получить текущие (последние в списке по дате) показания счетчика
+     */
+    Optional<List<MeterData>> getCurrentMeterDatasByMeters(List<Meter> meter);
 }

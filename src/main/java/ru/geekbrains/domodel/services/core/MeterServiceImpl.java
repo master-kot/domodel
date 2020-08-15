@@ -59,9 +59,27 @@ public class MeterServiceImpl implements MeterService {
         return meterDataRepository.findByMeter(meter);
     }
 
-    //TODO реализовать получение последних по дате показаний счетчика
+    //TODO реализовать получение показаний для счетчика
     @Override
-    public Optional<MeterData> getLastMeterDataByMeter(Meter meter) {
+    public Optional<MeterData> getPreviousMeterDataByMeter(Meter meter) {
+        return Optional.empty();
+    }
+
+    //TODO реализовать получение показаний для списка счетчиков
+    @Override
+    public Optional<List<MeterData>> getPreviousMeterDatasByMeters(List<Meter> meter) {
+        return Optional.empty();
+    }
+
+    //TODO реализовать получение показаний для счетчика
+    @Override
+    public Optional<MeterData> getCurrentMeterDataByMeter(Meter meter) {
+        return Optional.empty();
+    }
+
+    //TODO реализовать получение показаний для списка счетчиков
+    @Override
+    public Optional<List<MeterData>> getCurrentMeterDatasByMeters(List<Meter> meter) {
         return Optional.empty();
     }
 }
