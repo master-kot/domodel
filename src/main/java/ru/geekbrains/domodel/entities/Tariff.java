@@ -34,4 +34,9 @@ public class Tariff {
     // Список счетчиков, для которых используется данный тариф
     @OneToMany(mappedBy = "tariff")
     private Set<Meter> meters = new HashSet<>();
+
+    // Значение по умолчанию, которое устанавливается в качестве показания за период,
+    // если показание не было заполнено
+    @Column(name = "default_increase_value")
+    private Double  defaultIncreaseValue;
 }

@@ -85,4 +85,9 @@ public class MeterServiceImpl implements MeterService {
     public List<MeterData> getCurrentMeterDatasByMeters(List<Meter> meter) {
         return new ArrayList<>();
     }
+
+    //TODO реализовать генерацию показаний для счетчиков с неподанными в данном периоде показаниями
+    @Override
+    public void generateDefaultMeterData() {
+    }
 }
