@@ -34,7 +34,7 @@ public class UserManagementController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
 

@@ -37,9 +37,9 @@ public class UserProfileController {
      */
     @GetMapping("")
     public String getUserProfilePage(Model model, Principal principal) {
-        model.addAttribute("user", userService.findUserByUsername(principal.getName()));
+        model.addAttribute("user", userService.getUserByUsername(principal.getName()));
         model.addAttribute("userData", new UserRepresentation());
-        return "/pages/profile";
+        return "pages/profile";
     }
 
     /**
@@ -50,15 +50,15 @@ public class UserProfileController {
                                     BindingResult bindingResult,
                                     Model model,
                                     Principal principal) {
-        User user = userService.findUserByUsername(principal.getName());
+        User user = userService.getUserByUsername(principal.getName());
         model.addAttribute("user", user);
         if (bindingResult.hasErrors()) {
-            return "/pages/profile";
+            return "pages/profile";
         }
 
         if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
             bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
-            return "/pages/profile";
+            return "pages/profile";
         }
 
         userService.updateUser(userData, user);

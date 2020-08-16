@@ -33,7 +33,7 @@ public class PagesController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        return "/pages/about";
+        return "pages/about";
     }
 
     /**
@@ -44,17 +44,28 @@ public class PagesController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        return "/pages/contacts";
+        return "pages/contacts";
     }
 
     /**
-     * Перехват запроса страницы контакты (ВРЕМЕННОЕ РЕШЕНИЕ)
+     * Перехват запроса страницы информации о профиле пользователя (ВРЕМЕННОЕ РЕШЕНИЕ)
      */
     @GetMapping("/personal")
     public String getPersonalPage(Model model, Principal principal) {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        return "/pages/personal";
+        return "pages/personal";
+    }
+
+    /**
+     * Перехват запроса страницы обращений (ВРЕМЕННОЕ РЕШЕНИЕ)
+     */
+    @GetMapping("/appeals")
+    public String getAppealsPage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
+        return "pages/appeals";
     }
 }

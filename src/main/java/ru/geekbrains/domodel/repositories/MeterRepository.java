@@ -17,7 +17,7 @@ public interface MeterRepository extends JpaRepository<Meter, Long> {
     /**
      * Получить список счетчиков аккаунта
      */
-    Optional<List<Meter>> findByAccount(Account account);
+    List<Meter> findByAccount(Account account);
 
     /**
      * Найти счетчик по его серийному номеру
