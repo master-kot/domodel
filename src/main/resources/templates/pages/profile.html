@@ -102,7 +102,7 @@
 							<p class="cabinet_personal_item">
 								Фото:
 							</p>
-							<img src="../img/personal_page/myfoto.png" alt="user foto">
+							<input type="image" th:src="@{'/img/personal_page/' + ${user.getPhotoLink()}}" alt="Фото">
 							<p  class="cabinet_personal_item">
 								Фамилия:
 							</p>
@@ -116,16 +116,16 @@
 								Иван
 							</p>
 							<p class="cabinet_personal_item">
-								№ лицевого счета: (ДОДЕЛАТЬ В ВИДЕ СПИСКА)
+								№ лицевого счета: (СДЕЛАТЬ В ВИДЕ СПИСКА)
 							</p>
 							<p class="cabinet_personal_value">
-								24
+								24  (СДЕЛАТЬ В ВИДЕ СПИСКА)
 							</p>
 							<p class="cabinet_personal_item">
-								Кол-во соток: (ДОДЕЛАТЬ В ВИДЕ СПИСКА)
+								Кол-во соток: (СДЕЛАТЬ В ВИДЕ СПИСКА)
 							</p>
 							<p class="cabinet_personal_value">
-								7
+								7 (СДЕЛАТЬ В ВИДЕ СПИСКА)
 							</p>
 						</article>
 						<div class="cabinet_personal_line"></div>
@@ -144,7 +144,7 @@
 									<td>Параметр</td><td>Текущее значение</td><td>Новое значение</td>
 								</tr>
 								<tr>
-									<td>Номер телефона</td>
+									<td>Номер телефона (Логин)</td>
 									<td th:text="${user.username}"/>
 									<td></td>
 								</tr>
@@ -207,7 +207,19 @@
 									</td>
 								</tr>
 								<tr>
-									<td colspan="3"><button type="submit" class="btn btn-success">Изменить профиль пользователя</button></td>
+									<td>Фотография профиля</td>
+									<td><input type="image" th:src="@{'/img/personal_page/' + ${user.getPhotoLink()}}" alt="Фото"></td>
+									<td>
+										<input type="text" id="photoLink" th:field="*{photoLink}" class="form-control" placeholder="Ссылка на фото">
+										<small class="form-text text-danger" th:each="err : ${#fields.errors('photoLink')}" th:text="${err}">Ошибка</small>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<!--Кнопки не видно-->
+										<input type="submit" name="submit" value="Изменить профиль"/>
+										<input type="button" name="cancel" value="Oтмена"/>
+									</td>
 								</tr>
 							</form>
 							</tbody>

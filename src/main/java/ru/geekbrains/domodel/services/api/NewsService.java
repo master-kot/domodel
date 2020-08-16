@@ -51,4 +51,10 @@ public interface NewsService {
      */
     News changeNews (Long id, Date creationDate, String shortText, String text, boolean visible, String picture);
 
+    /**
+     * Получить последнюю по дате новость
+     *
+     * @return новость
+     */
+    News getLastNews();
 }
