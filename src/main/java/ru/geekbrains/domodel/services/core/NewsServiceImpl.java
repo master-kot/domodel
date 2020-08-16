@@ -46,14 +46,29 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public News changeNews (Long id, Date creationDate, String shortText, String text, boolean visible, String picture) {
+    public News changeNews (Long id,
+                            Date creationDate,
+                            String shortText,
+                            String text,
+                            boolean visible,
+                            String pictureLink) {
         News news = newsRepository.getOne(id);
         if (news != null) {
             news.setShortText(shortText);
-            news.setText(text);
+            news.setFullText(text);
             news.setVisible(visible);
-            news.setPicture(picture);
+            news.setPictureLink(pictureLink);
             return newsRepository.save(news);
+        }
+        return null;
+    }
+
+    // TODO реализовать метод
+    @Override
+    public News getLastNews() {
+        List<News> newsList = newsRepository.findAll();
+        if (!newsList.isEmpty()) {
+            return newsList.get(newsList.size() - 1);
         }
         return null;
     }

@@ -36,7 +36,7 @@
 				<div class="header_center r-flex">
 					<nav id="nav-menu-container">
 						<ul class="menu r-flex">
-							<a href="index.html">
+							<a href="/">
 								<li >
 										новости
 								</li>
@@ -130,24 +130,21 @@
 						</p>
 					</div>
 				</article>
-				<article class="card_news r-flex">
-					<img src="./img/news/1/1.png" alt="news foto">
+				<article class="card_news r-flex" th:if="${lastNews != null}">
+					<input type="image" th:src="@{'/img/news/' + ${lastNews.id} + '/' + ${lastNews.pictureLink}}" alt="Фото">
 					<div class="card_header">
-						<h3>
-							Новость какая-то
+						<h3 th:text="${lastNews.shortText}">
 						</h3>
-						<p>
-							Очередное собрание состоиться 24 августа в 14:00
+						<p th:text="${lastNews.fullText}">
 						</p>
 					</div>
 					<div class="card_news__date">
-						<p>
-							17.08.2020
+						<p th:text="${lastNews.creationDate}">
 						</p>
 					</div>
 				</article>
 				<p class="news_archive">
-					<a href="#" >
+					<a href="/news" >
 						архив новостей
 					</a>
 				

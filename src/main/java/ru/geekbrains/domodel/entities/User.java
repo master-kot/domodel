@@ -25,7 +25,7 @@ public class User {
     private Long id;
 
     // Логин (телефон пользователя)
-    @Column(name = "login", nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     // Пароль

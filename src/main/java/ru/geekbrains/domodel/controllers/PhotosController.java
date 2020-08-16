@@ -25,13 +25,13 @@ public class PhotosController {
     }
 
     /**
-     * Перехват запроса списка фотографий
+     * Перехват запроса списка всех фотографий
      */
     @GetMapping("")
     public String getPhotosPage(Model model, Principal principal) {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        return "pages/photos";
+        return "photos/photos";
     }
 }
