@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -38,35 +38,35 @@
 						<ul class="menu r-flex">
 							<a href="index.html">
 								<li >
-										новости
+									новости
 								</li>
 							</a>
-							<a href="#">
-								<li>								
+							<a href="/pages/about">
+								<li>
 									о нас
 								</li>
 							</a>
-							<a href="./pages/foto.html">
+							<a href="/photos">
 								<li>
 									фото
 								</li>
 							</a>
-							<a href="#">
+							<a href="/pages/documents">
 								<li>
 									документы
 								</li>
 							</a>
-							<a href="#">
+							<a href="/pages/appeals">
 								<li>
 									обращения
 								</li>
 							</a>
-							<a href="#">
+							<a href="/votes">
 								<li>
 									голосования
 								</li>
 							</a>
-							<a href="./pages/contacts.html">
+							<a href="/pages/contacts">
 								<li>
 									контакты
 								</li>
@@ -82,10 +82,8 @@
 						</a>
 					</div>
 					<div class="logged">
-						<p>
-							Иван Петров
-						</p>
-						<a href="#">
+						<p th:text="'Пользователь ' + ${username}"/>
+						<a href="/profile">
 							личный кабинет
 						</a>
 					</div>

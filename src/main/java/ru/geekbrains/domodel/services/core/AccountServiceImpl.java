@@ -43,12 +43,11 @@ public class AccountServiceImpl implements AccountService {
         }
         User user = optionalUser.get();
 
-        Optional<List<Account>> optionalAccounts = accountRepository.findAllByUser(user);
-        return optionalAccounts.orElseGet(ArrayList::new);
+        return accountRepository.findAllByUser(user);
     }
 
     @Override
     public List<Account> getAccountsByUser(User user) {
-        return accountRepository.findAllByUser(user).orElseGet(ArrayList::new);
+        return accountRepository.findAllByUser(user);
     }
 }

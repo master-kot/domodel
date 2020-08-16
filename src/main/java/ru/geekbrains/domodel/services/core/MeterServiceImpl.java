@@ -27,8 +27,7 @@ public class MeterServiceImpl implements MeterService {
 
     @Override
     public List<Meter> getAllMetersByAccount(Account account) {
-        Optional<List<Meter>> optionalMeterList = meterRepository.findByAccount(account);
-        return optionalMeterList.orElseGet(ArrayList::new);
+        return meterRepository.findByAccount(account);
     }
 
     @Override
@@ -58,8 +57,7 @@ public class MeterServiceImpl implements MeterService {
 
     @Override
     public List<MeterData> getAllMeterDataByMeter(Meter meter) {
-        Optional<List<MeterData>> optionalMeterDataList = meterDataRepository.findAllByMeter(meter);
-        return optionalMeterDataList.orElseGet(ArrayList::new);
+        return meterDataRepository.findAllByMeter(meter);
     }
 
     //TODO реализовать получение показаний для счетчика

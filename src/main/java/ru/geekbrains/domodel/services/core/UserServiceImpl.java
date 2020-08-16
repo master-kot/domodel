@@ -30,19 +30,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserById(Long userId) {
+    public User getUserById(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         return user.orElse(null);
     }
 
     @Override
-    public User findUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         return user.orElse(null);
     }
 
     @Override
-    public List<User> findAllUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
@@ -73,15 +73,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UserRepresentation userData, User user) {
-            if (userData.getUsername() != null) user.setUsername(userData.getUsername());
-            if (userData.getPassword() != null && userData.getPassword() != "" &&
+            if (userData.getUsername() != null && !userData.getUsername().isEmpty()) {
+                user.setUsername(userData.getUsername());
+            }
+            if (userData.getPassword() != null && userData.getPassword().isEmpty() &&
                     userData.getPassword().equals(userData.getPasswordConfirm())) {
                 user.setPassword(passwordEncoder.encode(userData.getPassword()));
             }
-            if (userData.getFirstName() != null) user.setFirstName(userData.getFirstName());
-            if (userData.getSecondName() != null) user.setSecondName(userData.getSecondName());
-            if (userData.getMiddleName() != null) user.setMiddleName(userData.getMiddleName());
-            if (userData.getEmail() != null) user.setEmail(userData.getEmail());
+            if (userData.getFirstName() != null && !userData.getFirstName().isEmpty()) {
+                user.setFirstName(userData.getFirstName());
+            }
+            if (userData.getSecondName() != null && !userData.getSecondName().isEmpty()) {
+                user.setSecondName(userData.getSecondName());
+            }
+            if (userData.getMiddleName() != null && !userData.getMiddleName().isEmpty()) {
+                user.setMiddleName(userData.getMiddleName());
+            }
+            if (userData.getEmail() != null && !userData.getEmail().isEmpty()) {
+                user.setEmail(userData.getEmail());
+            }
             return userRepository.save(user);
     }
 }

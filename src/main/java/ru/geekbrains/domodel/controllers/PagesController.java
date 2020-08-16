@@ -48,7 +48,7 @@ public class PagesController {
     }
 
     /**
-     * Перехват запроса страницы контакты (ВРЕМЕННОЕ РЕШЕНИЕ)
+     * Перехват запроса страницы информации о профиле пользователя (ВРЕМЕННОЕ РЕШЕНИЕ)
      */
     @GetMapping("/personal")
     public String getPersonalPage(Model model, Principal principal) {
@@ -56,5 +56,16 @@ public class PagesController {
             model.addAttribute("username", principal.getName());
         }
         return "pages/personal";
+    }
+
+    /**
+     * Перехват запроса страницы обращений (ВРЕМЕННОЕ РЕШЕНИЕ)
+     */
+    @GetMapping("/appeals")
+    public String getAppealsPage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
+        return "pages/appeals";
     }
 }
