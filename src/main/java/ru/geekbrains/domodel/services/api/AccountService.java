@@ -4,7 +4,6 @@ import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.User;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Интерфейс сервиса лицевых счетов
@@ -14,7 +13,7 @@ public interface AccountService {
     /**
      * Получить лицевой счет по ID
      */
-    Optional<Account> getAccountById(Long id);
+    Account getAccountById(Long id);
 
     /**
      * Получить список всех лицевых счетов

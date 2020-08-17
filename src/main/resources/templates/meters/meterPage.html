@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Meter</title>
-<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">-->
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">-->
 </head>
 <body>
 <div>
@@ -11,24 +11,19 @@
 </div>
 <hr>
 <div>
-    <h3>Участок: <span th:text="${account.houseNumber}"></span></h3>
+    <p>Участок <span th:text="${account.houseNumber}"></span></p>
 </div>
+<hr>
 <div>
-    <h2>Подать данные по счётчику</h2>
+    <h3>Подать данные по счётчику</h3>
     <br>
-    <form th:action="@{/{account}/meters/submit(account=${account.id})}" method="post">
+    <p>Счетчик <span th:text="${meter.serialNumber}"></span></p>
+    <form th:action="@{/meters/submit}" method="post">
         <div class="form-group">
-            <label>Счетчик
-                <select name="meter" class="form-control">
-                    <option th:each="meter : ${meters}"
-                            th:value="${meter.id}"
-                            th:text="${meter.serialNumber}">
-                    </option>
-                </select>
-            </label>
             <label for="value">Введите показания</label>
             <input type="number" class="form-control" id="value" name="value" placeholder="Показания">
         </div>
+        <input type="hidden" class="form-control" id="meter" name="mater" th:value="${meter}">
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Подать</button>
         </div>
@@ -42,7 +37,6 @@
         <tr>
             <th>Участок</th>
             <th>Номер счетчика</th>
-            <th>Тип</th>
             <th>Дата</th>
             <th>Показатель</th>
         </tr>
@@ -52,9 +46,8 @@
             <!--/*@thymesVar id="meterData" type="ru.geekbrains.domodel.entities.MeterData"*/-->
             <td th:text="${meterData.meter.account.houseNumber}"></td>
             <td th:text="${meterData.meter.serialNumber}"></td>
-            <td th:text="${meterData.meter.type.description}"></td>
             <td th:text="${#dates.format(meterData.creationDate, 'dd-MM-yyyy')}"></td>
-            <td th:text="${meterData.value} + ' ' + ${meterData.meter.type.measure}"></td>
+            <td th:text="${meterData.value}"></td>
         </tr>
         </tbody>
     </table>

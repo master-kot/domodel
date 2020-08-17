@@ -31,7 +31,7 @@ public class MeterData {
     private Date creationDate;
 
     // Количество единиц (значение показания счетчика)
-    @Column(name = "value")
+    @Column(name = "value", nullable = false)
     private Double value;
     
     // Показания автоматически сгенерированы по среднему нормативу (true) или поданы пользователем (false)
