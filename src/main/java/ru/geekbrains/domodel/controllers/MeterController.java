@@ -44,6 +44,10 @@ public class MeterController {
         Meter meter = meterService.getMeter(Long.valueOf(id));
         model.addAttribute("meter", meter);
         model.addAttribute("account", meter.getAccount());
+
+        model.addAttribute("currentMeterData", meterService.getCurrentMeterDataByMeter(meter).orElse(null));
+        model.addAttribute("preMeterData", meterService.getPreviousMeterDataByMeter(meter).orElse(null));
+
         model.addAttribute("meterDatas", meterService.getAllMeterDataByMeter(meter));
         return "meters/meterPage";
     }

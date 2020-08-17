@@ -63,9 +63,13 @@ public class MeterServiceImpl implements MeterService {
         return meterDataRepository.findAllByMeterOrderByCreationDateDesc(meter);
     }
 
-    //TODO реализовать получение показаний для счетчика
+    //TODO реализовать получение показаний для счетчика (поискать лучшее вариант: сделать за "одно" обращение к бд)
     @Override
     public Optional<MeterData> getPreviousMeterDataByMeter(Meter meter) {
+        if (meterDataRepository.findTopByMeterOrderByCreationDateDesc(meter).isPresent()) {
+          MeterData md = meterDataRepository.findTopByMeterOrderByCreationDateDesc(meter).get();
+          return meterDataRepository.findFirstByMeterAndCreationDateBefore(meter, md.getCreationDate());
+        }
         return Optional.empty();
     }
 
@@ -75,10 +79,9 @@ public class MeterServiceImpl implements MeterService {
         return new ArrayList<>();
     }
 
-    //TODO реализовать получение показаний для счетчика
     @Override
     public Optional<MeterData> getCurrentMeterDataByMeter(Meter meter) {
-        return Optional.empty();
+        return meterDataRepository.findTopByMeterOrderByCreationDateDesc(meter);
     }
 
     //TODO реализовать получение показаний для списка счетчиков

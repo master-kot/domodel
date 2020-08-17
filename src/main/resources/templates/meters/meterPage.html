@@ -30,6 +30,22 @@
     </form>
 </div>
 <hr>
+<div th:if="${currentMeterData} != null">
+    <h2>Последние показание</h2>
+    <!--/*@thymesVar id="currentMeterData" type="ru.geekbrains.domodel.entities.MeterData"*/-->
+    <span th:text="${currentMeterData.meter.serialNumber}"></span>
+    <span th:text="${currentMeterData.creationDate}"></span>
+    <span th:text="${currentMeterData.value}"></span>
+</div>
+<br>
+<div th:if="${preMeterData} != null">
+    <h2>Предпоследнее показание</h2>
+    <!--/*@thymesVar id="preMeterData" type="ru.geekbrains.domodel.entities.MeterData"*/-->
+    <span th:text="${preMeterData.meter.serialNumber}"></span>
+    <span th:text="${preMeterData.creationDate}"></span>
+    <span th:text="${preMeterData.value}"></span>
+</div>
+<hr>
 <div>
     <h2>Последние показания</h2>
     <table class="table table-hover">
@@ -37,6 +53,7 @@
         <tr>
             <th>Участок</th>
             <th>Номер счетчика</th>
+            <th>Тип</th>
             <th>Дата</th>
             <th>Показатель</th>
         </tr>
@@ -46,8 +63,9 @@
             <!--/*@thymesVar id="meterData" type="ru.geekbrains.domodel.entities.MeterData"*/-->
             <td th:text="${meterData.meter.account.houseNumber}"></td>
             <td th:text="${meterData.meter.serialNumber}"></td>
+            <td th:text="${meterData.meter.type.description}"></td>
             <td th:text="${#dates.format(meterData.creationDate, 'dd-MM-yyyy')}"></td>
-            <td th:text="${meterData.value}"></td>
+            <td th:text="${meterData.value} + ' ' + ${meterData.meter.type.measure}"></td>
         </tr>
         </tbody>
     </table>
