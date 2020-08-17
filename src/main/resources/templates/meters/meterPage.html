@@ -64,7 +64,7 @@
             <td th:text="${meterData.meter.account.houseNumber}"></td>
             <td th:text="${meterData.meter.serialNumber}"></td>
             <td th:text="${meterData.meter.type.description}"></td>
-            <td th:text="${#dates.format(meterData.creationDate, 'dd-MM-yyyy')}"></td>
+            <td th:text="${#temporals.format(meterData.creationDate, 'dd-MM-yyyy')}"></td>
             <td th:text="${meterData.value} + ' ' + ${meterData.meter.type.measure}"></td>
         </tr>
         </tbody>

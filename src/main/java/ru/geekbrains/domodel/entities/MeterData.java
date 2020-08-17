@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Сущность данных показания счетчика
@@ -28,7 +28,7 @@ public class MeterData {
 
     // Дата создания показания
     @Column(name = "creation_date", nullable = false)
-    private Date creationDate;
+    private LocalDate creationDate;
 
     // Количество единиц (значение показания счетчика)
     @Column(name = "value", nullable = false)

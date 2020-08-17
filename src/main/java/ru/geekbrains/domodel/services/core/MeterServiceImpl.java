@@ -10,7 +10,10 @@ import ru.geekbrains.domodel.repositories.MeterRepository;
 import ru.geekbrains.domodel.services.api.MeterService;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Реализация сервиса счетчиков показаний
@@ -44,11 +47,16 @@ public class MeterServiceImpl implements MeterService {
         );
     }
 
-    //TODO реализовать сохранение показаний для счетчика согласно описанию в интерфейсе
     @Transactional
     @Override
     public void submitMeterData(MeterData meterData) {
-        meterData.setCreationDate(new Date());
+        meterData.setCreationDate(LocalDate.now());
+        Optional<MeterData> current = getCurrentMeterDataByMeter(meterData.getMeter());
+        if (current.isPresent()) {
+            if (current.get().getCreationDate().getMonth().equals(meterData.getCreationDate().getMonth())) {
+                meterData.setId(current.get().getId());
+            }
+        }
         meterDataRepository.save(meterData);
     }
 
