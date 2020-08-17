@@ -102,7 +102,7 @@
 							<p class="cabinet_personal_item">
 								Фото:
 							</p>
-							<input type="image" th:src="@{'/img/personal_page/' + ${user.getPhotoLink()}}" alt="Фото">
+							<input type="image" th:src="@{'/img/personal_page/' + ${user.photoLink}}" alt="Фото">
 							<p  class="cabinet_personal_item">
 								Фамилия:
 							</p>
@@ -208,9 +208,9 @@
 								</tr>
 								<tr>
 									<td>Фотография профиля</td>
-									<td><input type="image" th:src="@{'/img/personal_page/' + ${user.getPhotoLink()}}" alt="Фото"></td>
+									<td><input type="image" th:src="@{'/img/personal_page/' + ${user.photoLink}}" alt="Фото"></td>
 									<td>
-										<input type="text" id="photoLink" th:field="*{photoLink}" class="form-control" placeholder="Ссылка на фото">
+										<input type="image" id="photoLink" th:field="*{photoLink}" class="form-control" placeholder="Ссылка на фото">
 										<small class="form-text text-danger" th:each="err : ${#fields.errors('photoLink')}" th:text="${err}">Ошибка</small>
 									</td>
 								</tr>

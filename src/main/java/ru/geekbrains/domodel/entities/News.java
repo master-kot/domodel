@@ -34,13 +34,14 @@ public class News {
     @Column(name = "full_text", nullable = false)
     private String fullText;
 
-    // Обображается (true) ли новость на сайте или нет (false)
-    @Column(name = "visible", nullable = false)
-    private boolean visible;
-
     // Ссылка на адрес картинки новости
     @Column(name = "picture_link")
     private String pictureLink;
+
+    // TODO есть ли смысл в этом поле?
+    // Обображается (true) ли новость на сайте или нет (false)
+    @Column(name = "visible", nullable = false)
+    private boolean visible;
 
     // TODO переделать в виде перечисления
     // Тип новости
