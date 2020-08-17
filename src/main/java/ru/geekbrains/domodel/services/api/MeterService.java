@@ -28,7 +28,8 @@ public interface MeterService {
     Meter getMeterBySerialNumber(Integer serialNumber);
 
     /**
-     * Сохранить данные счетчика
+     * Сохранить данные счетчика. Предусмотреть, что показания могут быть поданы только раз в месяц.
+     * При попытке повторного сохранения показания в текущем месяце - изменять его
      */
     void save(Meter meter);
 
@@ -43,22 +44,22 @@ public interface MeterService {
     List<MeterData> getAllMeterDataByMeter(Meter meter);
 
     /**
-     * Получить предыдущие (предпоследние в списке по дате) показания счетчика
+     * Получить предыдущее (предпоследнее по дате в списке) показание счетчика
      */
     Optional<MeterData> getPreviousMeterDataByMeter(Meter meter);
 
     /**
-     * Получить предыдущие (предпоследние в списке по дате) показания списка счетчиков
+     * Получить предыдущие (предпоследние в списке по датам) показания для списка счетчиков
      */
     List<MeterData> getPreviousMeterDatasByMeters(List<Meter> meter);
 
     /**
-     * Получить текущие (последние в списке по дате) показания счетчика
+     * Получить текущее (последнее по дате в списке) показание счетчика
      */
     Optional<MeterData> getCurrentMeterDataByMeter(Meter meter);
 
     /**
-     * Получить текущие (последние в списке по дате) показания списка счетчиков
+     * Получить текущие (последние по датам в списке) показания для списка счетчиков
      */
     List<MeterData> getCurrentMeterDatasByMeters(List<Meter> meter);
 

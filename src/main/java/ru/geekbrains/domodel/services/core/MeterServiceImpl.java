@@ -49,6 +49,7 @@ public class MeterServiceImpl implements MeterService {
         meterDataRepository.save(meterData);
     }
 
+    //TODO реализовать сохранение показаний для счетчика согласно описанию в интерфейсе
     @Transactional
     @Override
     public void save(Meter meter) {
