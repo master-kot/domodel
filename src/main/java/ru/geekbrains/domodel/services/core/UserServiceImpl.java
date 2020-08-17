@@ -6,10 +6,13 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.UserRepresentation;
+import ru.geekbrains.domodel.repositories.AuthorityRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import java.util.*;
+
+import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 
 /**
  * Сервис пользователей
@@ -20,12 +23,18 @@ public class UserServiceImpl implements UserService {
     // Репозиторий пользователей
     private final UserRepository userRepository;
 
+    // Репозиторий ролей пользователя
+    private final AuthorityRepository authorityRepository;
+
     // Сервис шифрования паролей
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository,
+                           AuthorityRepository authorityRepository,
+                           BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.authorityRepository = authorityRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -64,10 +73,8 @@ public class UserServiceImpl implements UserService {
                 passwordEncoder.encode(userData.getPassword()),
                 true,
                 new Date());
-        Authority authority = new Authority();
-        authority.getUsers().add(newUser);
-        authority.setAuthority("ROLE_USER");
-        newUser.setAuthorities(new ArrayList<>(Collections.singletonList(authority)));
+        Authority authority = authorityRepository.findByAuthority(ROLE_USER);
+        newUser.getAuthorities().add(authority);
         return userRepository.save(newUser);
     }
 

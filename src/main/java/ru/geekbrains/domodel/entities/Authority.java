@@ -22,7 +22,7 @@ public class Authority implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     // Роль пользователя, варианты: ROLE_ADMIN - администратор сайта, ROLE_DIRECTOR - председатель СНТО,
     // ROLE_ACCOUNTANT - бухгалтер, ROLE_STAFF - персонал организации, ROLE_USER - пользователь сайта
