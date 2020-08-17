@@ -25,7 +25,7 @@ public class User {
     private Long id;
 
     // Логин (телефон пользователя)
-    @Column(name = "login", nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     // Пароль
@@ -36,11 +36,12 @@ public class User {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    // Список ролей данного пользователя
-    @OneToMany(fetch = EAGER,
-            mappedBy = "user",
-            cascade = CascadeType.ALL, //удаление ролей каскадом вслед за удалением пользователя
-            orphanRemoval = true) //удаление ролей не связанных ни с одним пользователем
+    @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "users_authorities",
+            // Внешний ключ для User в в таблице users_authorities
+            joinColumns = @JoinColumn(name = "user_id"),
+            // Внешний ключ для другой стороны, User в таблице users_authorities
+            inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private List<Authority> authorities = new ArrayList<>();
 
     // Дата создания

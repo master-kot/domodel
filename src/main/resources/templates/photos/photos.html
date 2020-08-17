@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="./css/styles.css" />
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-	<title>Domodel</title>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="../css/linearicons.css">
+	<link rel="stylesheet" href="../css/styles.css" />
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <title>Domodel</title>
 </head>
 <body>
-<div class="wrapper">
-	<div class="top">
+	<div class="wrapper">
+		<div class="top">
 		<header>
 			<div class="container r-flex">
 				<div class="header_left">
@@ -31,134 +34,224 @@
 					</a>
 				</div>
 				<div class="header_center r-flex">
-					<nav >
+					<nav id="nav-menu-container">
 						<ul class="menu r-flex">
-							<li >
-								<a href="/news">
+							<a href="/">
+								<li >
 									новости
-								</a>
-							</li>
-							<li>
-								<a href="/about">
+								</li>
+							</a>
+							<a href="/pages/about">
+								<li>
 									о нас
-								</a>
-							</li>
-							<li>
-								<a href="/photos">
+								</li>
+							</a>
+							<a href="/photos">
+								<li>
 									фото
-								</a>
-							</li>
-							<li>
-								<a href="/documents">
+								</li>
+							</a>
+							<a href="/pages/documents">
+								<li>
 									документы
-								</a>
-							</li>
-							<li>
-								<a href="/news">
+								</li>
+							</a>
+							<a href="/pages/appeals">
+								<li>
 									обращения
-								</a>
-							</li>
-							<li>
-								<a href="/votes">
+								</li>
+							</a>
+							<a href="/votes">
+								<li>
 									голосования
-								</a>
-							</li>
-							<li>
-								<a href="/contacts">
+								</li>
+							</a>
+							<a href="/pages/contacts">
+								<li>
 									контакты
-								</a>
-							</li>
+								</li>
+							</a>
 						</ul>
 					</nav>
 				</div>
 				<div class="header_right">
-					<img src="./img/home_page/avatar.png" alt="avatar"></img>
+					<img src="../img/home_page/avatar.png" alt="avatar"></img>
 					<div class="notlogged">
-						<a href="#openModal">
+						<a href="#" id="login">
 							войти
 						</a>
 					</div>
-					<div class="logged">
-						<p>
-							Иван Петров
-						</p>
-						<p>
+					<div class="logged" th:if="${username != null}">
+						<p th:text="'Пользователь ' + ${username}"/>
+						<a href="/profile">
 							личный кабинет
-						</p>
+						</a>
 					</div>
 				</div>
 			</div>
 		</header><!--header-->
 		<main >
-			<div class="container content">
-				<article class="card_news r-flex">
-					<img src="./img/news/1/1.png" alt="news foto"></img>
-					<div class="card_header card_header__impotant">
-						<h3>
-							ВАЖНАЯ НОВОСТЬ!
-						</h3>
-						<p>
-						<B>Пока не корректно работает ссылка "Войти", входим через эту <a th:href="@{/login}">страницу логина</a></B>
-						</p>
-						<p>
-						<B>Создать пользователя можно <a th:href="@{/register}">здесь</a></B>
-						</p>
-					</div>
-					<div class="card_news__date">
-						<p>
-							12.08.2020
-						</p>
-					</div>
-				</article>
-				<article class="card_news r-flex">
-					<img src="./img/news/1/1.png" alt="news foto"></img>
-					<div class="card_header">
-						<h3>
-							Новость вторая
-						</h3>
-						<p>
-							В ближайшие дни обещают много новых страниц!
-						</p>
-					</div>
-					<div class="card_news__date">
-						<p>
-							12.08.2020
-						</p>
-					</div>
-				</article>
-				<p class="news_archive">
-					<a href="/news/archive" >
-						архив новостей
-					</a>
-
-				</p>
+			<div class="container">
+				<div class="foto_container">
+					<section class="alboum">
+						<a href="#">
+							<h2 class="alboum_title">
+								Название альбома
+							</h2>
+						</a>
+						<span class="foto_number">
+							(12 фото)
+						</span>
+						<div class="images_box">
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+						</div>
+					</section>
+					<section >
+						<a href="#">
+							<h2 class="alboum_title">
+								Название альбома
+							</h2>
+						</a>
+						<span class="foto_number">
+							(12 фото)
+						</span>
+						<div class="images_box">
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+							<article>
+								<img src="../img/gallery/g1/f1.png" alt="gallery foto"></img>
+								<p>
+									12.08.2020
+								</p>
+							</article>
+						</div>
+					</section>
+					<p class="foto_archive">
+						<a href="/photos/archive">
+							архив фото
+						</a>
+					</p>
+				</div><!--foto_container-->
 			</div><!--container-->
 		</main> <!--main-->
-		<div id="openModal" class="modal">
+		<div id="loginForm" class="modal">
 			<div class="r-flex">
-				<p class="modal_close">
-					X
+				<p id="close_modal" class="modal_close">
+					<a href="#" class="close_X" id="close_X">
+						X
+					</a>
 				</p>
 				<h2>
 					АВТОРИЗАЦИЯ
 				</h2>
-				<form name="login" id="login" th:action="@{/authenticateTheUser}" method="post" class="r-flex">
-					<input type="text" id="username" name="username" placeholder="Номер телефона"/>
-					<small class="form-text text-danger" th:if="${param.error != null}">Введен некорректный телефон или пароль</small>
-					<input type="password" id="password" name="password" placeholder="Пароль"/>
+				<form name="login" id="login" action="#" method="post" class="r-flex">
+					<input type="text" name="username" placeholder="ЛОГИН(№ участка)"/>
+					<input type="password" name="username" placeholder="ПАРОЛЬ"/>
 					<div class="login_controls r-flex">
-						<input type="submit" name="submit" value="Войти"/>
-						<input type="button" name="cancel" value="Отмена"/>
+						<input type="submit" name="submit" value="вход"></input>
+						<input type="button" name="cancel" value="отмена"></input>
 					</div>
 				</form>
 			</div>
 		</div>
-	</div> <!--top-->
-	<footer>
-		<div class="container">
-
-		</div>
-	</footer> <!--footer-->
-</div> <!--wrapper-->
+		</div> <!--top-->
+		<footer>
+			<div class="container">
+				
+			</div>
+		</footer> <!--footer-->
+	</div> <!--wrapper-->
+	<script
+	  src="https://code.jquery.com/jquery-3.5.1.js"
+	  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	  crossorigin="anonymous"></script>
+	<script src="../js/main.js"></script>
 </body>
 </html>

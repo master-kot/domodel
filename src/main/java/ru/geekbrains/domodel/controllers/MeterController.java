@@ -58,7 +58,7 @@ public class MeterController {
     @GetMapping("/add")
     public String getAddPage(Model model, Principal principal) {
         model.addAttribute("accounts", accountService.getAccountsByUserUserame(principal.getName()));
-        return "meters/addMeter";
+        return "meters/add";
     }
 
     @PostMapping("/add")

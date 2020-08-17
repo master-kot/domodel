@@ -26,28 +26,30 @@ public class News {
     @Column(name = "creation_date", nullable = false)
     private Date creationDate;
 
-    // Краткий (основной текст) новости
+    // Краткий текст новости (заголовок)
     @Column(name = "short_text", nullable = false)
     private String shortText;
 
-    // Полный текст новости
-    @Column(name = "text", nullable = false)
-    private String text;
+    // Полный текст новости (содержание)
+    @Column(name = "full_text", nullable = false)
+    private String fullText;
 
+    // Ссылка на адрес картинки новости
+    @Column(name = "picture_link")
+    private String pictureLink;
+
+    // TODO есть ли смысл в этом поле?
     // Обображается (true) ли новость на сайте или нет (false)
     @Column(name = "visible", nullable = false)
     private boolean visible;
 
-    // Ссылка на адрес картинки новости
-    @Column(name = "picture")
-    private String picture;
-
+    // TODO переделать в виде перечисления
     // Тип новости
     @Column(name = "type")
     private String type;
 
     // Ссылка на пользователя - автора данной новости
     @ManyToOne
-    @JoinColumn(name = "author", nullable = false)
-    private User author;
+    @JoinColumn(name = "author_id", nullable = false)
+    private User authorId;
 }
