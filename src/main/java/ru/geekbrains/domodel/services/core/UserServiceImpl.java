@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
                 true,
                 new Date());
         Authority authority = new Authority();
-        authority.setUser(newUser);
+        authority.getUsers().add(newUser);
         authority.setAuthority("ROLE_USER");
         newUser.setAuthorities(new ArrayList<>(Collections.singletonList(authority)));
         return userRepository.save(newUser);
