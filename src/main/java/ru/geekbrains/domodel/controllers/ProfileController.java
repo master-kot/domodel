@@ -22,13 +22,13 @@ import static ru.geekbrains.domodel.entities.constants.Messages.PASSWORD_MISMATC
  */
 @Controller
 @RequestMapping("/profile")
-public class UserProfileController {
+public class ProfileController {
 
     // Сервис пользователей
     private final UserService userService;
 
     @Autowired
-    public UserProfileController(UserService userService) {
+    public ProfileController(UserService userService) {
         this.userService = userService;
     }
 
