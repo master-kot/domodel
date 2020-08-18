@@ -38,10 +38,10 @@
 						<ul class="menu r-flex">
 							<a href="/">
 								<li >
-										новости
+									главная
 								</li>
 							</a>
-							<a href="/pages/about">
+							<a href="/information/about">
 								<li>								
 									о нас
 								</li>
@@ -51,12 +51,12 @@
 									фото
 								</li>
 							</a>
-							<a href="/pages/documents">
+							<a href="/information/documents">
 								<li>
 									документы
 								</li>
 							</a>
-							<a href="/pages/appeals">
+							<a href="/appeals">
 								<li>
 									обращения
 								</li>
@@ -66,33 +66,44 @@
 									голосования
 								</li>
 							</a>
-							<a href="/pages/contacts">
+							<a href="/information/contacts">
 								<li>
 									контакты
 								</li>
-							</a>																																								
+							</a>
+							<a href="/management" sec:authorize="hasRole('ADMIN')">
+								<li>
+									управление
+								</li>
+							</a>
 						</ul>
 					</nav>
 				</div>
 				<div class="header_right">
-					<img src="./img/home_page/avatar.png" alt="avatar">
-					<div class="notlogged">
+					<img src="./img/home_page/avatar.png" alt="avatar" th:if="${username == null}">
+					<div class="notlogged" th:if="${username == null}">
 						<a href="#" id="login">
 							войти
+						</a><br>
+						<a href="/register" id="login">
+							зарегистрироваться
 						</a>
 					</div>
 					<div class="logged" th:if="${username != null}">
-						<p th:text="'Пользователь ' + ${username}"/>
+						<p th:text="'Пользователь: ' + ${username}"/>
 						<a href="/profile">
 							личный кабинет
-						</a>
+						</a><br>
+						<form th:action="@{/logout}" method="POST">
+							<input type="submit" value="выйти" />
+						</form>
 					</div>
 				</div>
 			</div>
 		</header><!--header-->
 		<main >
 			<div class="container content">
-				<div class="add_news">
+				<div class="add_news" sec:authorize="hasRole('ADMIN')">
 					<form name="add_news" method="post" action="#" class="r-flex">
 						<input type="text" placeholder="Введите название новости" name="news title" class="inputshadow">
 						<textarea placeholder="Введите описание новости" class="inputshadow"></textarea>
@@ -118,10 +129,7 @@
 							ВАЖНАЯ НОВОСТЬ!
 						</h3>
 						<p>
-							Пока не корректно работает ссылка "Войти", входим через эту <a th:href="@{pages/login}">страницу логина</a>
-						</p>
-						<p>
-							Создать пользователя можно <a th:href="@{/register}">здесь</a>
+							Пока не корректно работает ссылка "Войти", входим через эту <a th:href="@{login}">страницу логина</a>
 						</p>
 					</div>
 					<div class="card_news__date">
@@ -161,10 +169,9 @@
 				<h2>
 					АВТОРИЗАЦИЯ
 				</h2>
-				<!--посмотри пожалуйста как сделано в файле templates/old/login.html здесь почему то не работает-->
-				<form name="login" id="login" action="/authenticate" method="post" class="r-flex">
+				<form name="login" id="login" th:action="@{/login}" method="post" class="r-flex">
 					<input type="text" id="username" name="username" placeholder="Номер телефона"/>
-					<input type="password" id="password" name="username" placeholder="Пароль"/>
+					<input type="password" id="password" name="password" placeholder="Пароль"/>
 					<div class="login_controls r-flex">
 						<input type="submit" name="submit" value="Войти"></input>
 						<input type="button" name="cancel" value="Отмена"></input>
