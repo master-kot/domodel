@@ -62,6 +62,6 @@ public class Bill {
     private Requisites requisites;
 
     // Ссылка на калькуляцию (обоснование цены счета)
-    @OneToMany(mappedBy = "bill")
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
     private List<Calculation> calculations = new ArrayList<>();
 }
