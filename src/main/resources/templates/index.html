@@ -80,7 +80,7 @@
 					</nav>
 				</div>
 				<div class="header_right">
-					<img src="./img/home_page/avatar.png" alt="avatar" th:if="${username == null}">
+					<img src="./img/home_page/avatar.png" alt="avatar">
 					<div class="notlogged" th:if="${username == null}">
 						<a href="#" id="login">
 							войти
@@ -94,7 +94,7 @@
 						<a href="/profile">
 							личный кабинет
 						</a><br>
-						<form th:action="@{/logout}" method="POST">
+						<form action="/logout" method="post">
 							<input type="submit" value="выйти" />
 						</form>
 					</div>
@@ -122,22 +122,6 @@
 						</div>
 					</form>
 				</div>
-				<article class="card_news r-flex">
-					<img src="./img/news/1/1.png" alt="news foto">
-					<div class="card_header card_header__impotant">
-						<h3>
-							ВАЖНАЯ НОВОСТЬ!
-						</h3>
-						<p>
-							Пока не корректно работает ссылка "Войти", входим через эту <a th:href="@{login}">страницу логина</a>
-						</p>
-					</div>
-					<div class="card_news__date">
-						<p>
-							17.08.2020
-						</p>
-					</div>
-				</article>
 				<article class="card_news r-flex" th:if="${lastNews != null}">
 					<input type="image" th:src="@{'/img/news/' + ${lastNews.id} + '/' + ${lastNews.pictureLink}}" alt="Фото">
 					<div class="card_header">
@@ -169,12 +153,12 @@
 				<h2>
 					АВТОРИЗАЦИЯ
 				</h2>
-				<form name="login" id="login" th:action="@{/login}" method="post" class="r-flex">
+				<form name="login" id="login" action="/login" method="post" class="r-flex">
 					<input type="text" id="username" name="username" placeholder="Номер телефона"/>
 					<input type="password" id="password" name="password" placeholder="Пароль"/>
 					<div class="login_controls r-flex">
-						<input type="submit" name="submit" value="Войти"></input>
-						<input type="button" name="cancel" value="Отмена"></input>
+						<input type="submit" name="submit" value="Войти"/>
+						<input type="button" name="cancel" value="Отмена"/>
 					</div>
 				</form>
 			</div>

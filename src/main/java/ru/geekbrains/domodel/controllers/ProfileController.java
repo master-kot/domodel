@@ -37,6 +37,9 @@ public class ProfileController {
      */
     @GetMapping("")
     public String getUserProfilePage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
         model.addAttribute("user", userService.getUserByUsername(principal.getName()));
         model.addAttribute("userData", new UserRepresentation());
         return "pages/profile";
