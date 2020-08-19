@@ -44,11 +44,24 @@ public interface NewsService {
      * Изменить новость
      *
      * @param id идентификатор новости
-     * @param shortText краткий текст новости
-     * @param text полный текст новости
-     * @param visible видима ли новость
-     * @return изменить новость
+     * @param title заголовок новости
+     * @param fullText полный текст новости
+     * @param hidden видима ли новость
+     * @param pinned закреплена ли новость
+     * @param pictureLink ссылка на картинку новости
+     * @return измененная новость
      */
-    News changeNews (Long id, Date creationDate, String shortText, String text, boolean visible, String picture);
+    News changeNews (Long id,
+                     String title,
+                     String fullText,
+                     boolean hidden,
+                     boolean pinned,
+                     String pictureLink);
 
+    /**
+     * Получить последнюю по дате новость
+     *
+     * @return новость
+     */
+    News getLastNews();
 }

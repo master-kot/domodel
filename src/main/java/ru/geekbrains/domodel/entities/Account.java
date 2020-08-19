@@ -5,10 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-
-import static javax.persistence.FetchType.EAGER;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Сущность лицевого счета, заведенного для каждого дома
@@ -30,18 +28,23 @@ public class Account {
     @JoinColumn(name = "user_id")
     private User user;
 
+    // Улица (может быть не заполнено)
     @Column(name = "street")
     private String street;
 
-    // Номер дома, участка
+    // Номер дома или участка
     @Column(name = "house_number", nullable = false)
     private String houseNumber;
 
+    // Количество соток участка
+    @Column(name = "acres_number")
+    private String acresNumber;
+
     // Список счетчиков данного аккаунта
     @OneToMany(mappedBy = "account")
-    private Set<Meter> meters = new HashSet<>();
+    private List<Meter> meters = new ArrayList<>();
 
     // Список счетов, выставленных для данного аккаунта
     @OneToMany(mappedBy = "account")
-    private Set<Bill> bills = new HashSet<>();
+    private List<Bill> bills = new ArrayList<>();
 }

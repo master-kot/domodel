@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.geekbrains.domodel.entities.UserRepresentation;
-import ru.geekbrains.domodel.entities.constants.Messages;
+import ru.geekbrains.domodel.services.api.NewsService;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+
+import static ru.geekbrains.domodel.entities.constants.Messages.*;
 
 /**
  * Главный контроллер web-приложения
@@ -23,10 +25,13 @@ public class MainController {
 
     // Сервис пользователей
     private final UserService userService;
+    // Сервис новостей
+    private final NewsService newsService;
 
     @Autowired
-    public MainController(UserService userService) {
+    public MainController(UserService userService, NewsService newsService) {
         this.userService = userService;
+        this.newsService = newsService;
     }
 
     /**
@@ -37,7 +42,30 @@ public class MainController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
+        model.addAttribute("lastNews", newsService.getLastNews());
         return "index";
+    }
+
+    /**
+     * Перехват запроса страницы логина (ВРЕМЕННОЕ РЕШЕНИЕ)
+     */
+    @GetMapping("login")
+    public String getLoginPage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
+        return "pages/login";
+    }
+
+    /**
+     * Перехват запроса страницы обращений (ВРЕМЕННОЕ РЕШЕНИЕ)
+     */
+    @GetMapping("/appeals")
+    public String getAppealsPage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
+        return "pages/appeals";
     }
 
     /**
@@ -64,16 +92,16 @@ public class MainController {
         }
 
         if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
-            bindingResult.rejectValue("password", "", Messages.PASSWORD_MISMATCH);
+            bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
             return "register";
         }
 
         if (userService.createUser(userData) != null) {
             model.addAttribute("message",
-                    String.format(Messages.USER_CREATED, userData.getUsername()));
+                    String.format(USER_CREATED, userData.getUsername()));
         } else {
             bindingResult.rejectValue("username", "",
-                    String.format(Messages.USER_HAS_ALREADY_CREATED, userData.getUsername()));
+                    String.format(USER_HAS_ALREADY_CREATED, userData.getUsername()));
         }
         return "register";
     }

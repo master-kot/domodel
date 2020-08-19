@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class RequisitesServiceImpl implements RequisitesService {
 
-    //
+    // Репозиторий реквизитов
     private final RequisitesRepository requisitesRepository;
 
     @Autowired

@@ -10,24 +10,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.UserRepresentation;
-import ru.geekbrains.domodel.entities.constants.Messages;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+
+import static ru.geekbrains.domodel.entities.constants.Messages.PASSWORD_MISMATCH;
 
 /**
  * Контроллер модуля профиля пользователя
  */
 @Controller
 @RequestMapping("/profile")
-public class UserProfileController {
+public class ProfileController {
 
     // Сервис пользователей
     private final UserService userService;
 
     @Autowired
-    public UserProfileController(UserService userService) {
+    public ProfileController(UserService userService) {
         this.userService = userService;
     }
 
@@ -36,9 +37,9 @@ public class UserProfileController {
      */
     @GetMapping("")
     public String getUserProfilePage(Model model, Principal principal) {
-        model.addAttribute("user", userService.findUserByUsername(principal.getName()));
+        model.addAttribute("user", userService.getUserByUsername(principal.getName()));
         model.addAttribute("userData", new UserRepresentation());
-        return "profile";
+        return "pages/profile";
     }
 
     /**
@@ -49,15 +50,15 @@ public class UserProfileController {
                                     BindingResult bindingResult,
                                     Model model,
                                     Principal principal) {
-        User user = userService.findUserByUsername(principal.getName());
+        User user = userService.getUserByUsername(principal.getName());
         model.addAttribute("user", user);
         if (bindingResult.hasErrors()) {
-            return "profile";
+            return "pages/profile";
         }
 
         if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
-            bindingResult.rejectValue("password", "", Messages.PASSWORD_MISMATCH);
-            return "profile";
+            bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
+            return "pages/profile";
         }
 
         userService.updateUser(userData, user);

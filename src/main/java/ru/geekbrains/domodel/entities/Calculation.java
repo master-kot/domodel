@@ -7,8 +7,9 @@ import lombok.Setter;
 import javax.persistence.*;
 
 /**
- * Сущность калькуляции (обоснования цены счета) для конкретного счета.
- * Все поля сущности рассчитываются отдельным модулем калькуляции.
+ * Сущность калькуляции для каждой конкретной строки.
+ * Является обоснованием цены в виде отдельной строки в счете за каждую отдельную услугу.
+ * Все поля сущности рассчитываются модулем калькуляции.
  */
 @Entity
 @Getter
@@ -37,7 +38,7 @@ public class Calculation {
     @JoinColumn(name = "current_data")
     private MeterData currentData;
 
-    // Количество - разница паказаний
+    // Количество единиц - разница паказаний
     @Column(name = "amount")
     private Double amount;
 
@@ -45,7 +46,11 @@ public class Calculation {
     @Column(name = "price")
     private Double price;
 
-    // Стоимость за все
+    // Стоимость за все потребленные единицы
     @Column(name = "cost")
     private Double cost;
+
+    // true если калькуляция рассчитана по показаниям, false - если по нормативному значению
+    @Column(name = "calculated")
+    private boolean calculated;
 }

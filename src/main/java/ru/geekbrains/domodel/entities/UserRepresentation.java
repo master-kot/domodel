@@ -36,4 +36,6 @@ public class UserRepresentation {
 
     @Email
     private String email;
+
+    private String photoLink;
 }

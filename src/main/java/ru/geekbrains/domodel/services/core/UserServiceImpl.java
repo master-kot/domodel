@@ -6,10 +6,13 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.UserRepresentation;
+import ru.geekbrains.domodel.repositories.AuthorityRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import java.util.*;
+
+import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 
 /**
  * Сервис пользователей
@@ -20,29 +23,35 @@ public class UserServiceImpl implements UserService {
     // Репозиторий пользователей
     private final UserRepository userRepository;
 
+    // Репозиторий ролей пользователя
+    private final AuthorityRepository authorityRepository;
+
     // Сервис шифрования паролей
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository,
+                           AuthorityRepository authorityRepository,
+                           BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.authorityRepository = authorityRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public User findUserById(Long userId) {
+    public User getUserById(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         return user.orElse(null);
     }
 
     @Override
-    public User findUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         return user.orElse(null);
     }
 
     @Override
-    public List<User> findAllUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
@@ -64,24 +73,32 @@ public class UserServiceImpl implements UserService {
                 passwordEncoder.encode(userData.getPassword()),
                 true,
                 new Date());
-        Authority authority = new Authority();
-        authority.setUser(newUser);
-        authority.setAuthority("ROLE_USER");
-        newUser.setAuthorities(new ArrayList<>(Collections.singletonList(authority)));
+        Authority authority = authorityRepository.findByAuthority(ROLE_USER);
+        newUser.getAuthorities().add(authority);
         return userRepository.save(newUser);
     }
 
     @Override
     public User updateUser(UserRepresentation userData, User user) {
-            if (userData.getUsername() != null) user.setUsername(userData.getUsername());
-            if (userData.getPassword() != null && userData.getPassword() != "" &&
+            if (userData.getUsername() != null && !userData.getUsername().isEmpty()) {
+                user.setUsername(userData.getUsername());
+            }
+            if (userData.getPassword() != null && userData.getPassword().isEmpty() &&
                     userData.getPassword().equals(userData.getPasswordConfirm())) {
                 user.setPassword(passwordEncoder.encode(userData.getPassword()));
             }
-            if (userData.getFirstName() != null) user.setFirstName(userData.getFirstName());
-            if (userData.getSecondName() != null) user.setSecondName(userData.getSecondName());
-            if (userData.getMiddleName() != null) user.setMiddleName(userData.getMiddleName());
-            if (userData.getEmail() != null) user.setEmail(userData.getEmail());
+            if (userData.getFirstName() != null && !userData.getFirstName().isEmpty()) {
+                user.setFirstName(userData.getFirstName());
+            }
+            if (userData.getSecondName() != null && !userData.getSecondName().isEmpty()) {
+                user.setSecondName(userData.getSecondName());
+            }
+            if (userData.getMiddleName() != null && !userData.getMiddleName().isEmpty()) {
+                user.setMiddleName(userData.getMiddleName());
+            }
+            if (userData.getEmail() != null && !userData.getEmail().isEmpty()) {
+                user.setEmail(userData.getEmail());
+            }
             return userRepository.save(user);
     }
 }
