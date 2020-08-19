@@ -170,13 +170,13 @@
 					АВТОРИЗАЦИЯ
 				</h2>
 				<!--посмотри пожалуйста как сделано в файле templates/old/login.html здесь почему то не работает-->
-				<form name="login" id="login" th:action="@{/login}" method="post" class="r-flex" sec:authorize="isAnonymous()>
+				<form name="login" id="login" action="/login" method="post" class="r-flex" sec:authorize="isAnonymous()">
 
 					<input type="text" id="username" name="username" placeholder="Номер телефона"/>
 					<input type="password" id="password" name="password" placeholder="Пароль"/>
 					<div class="login_controls r-flex">
-						<input type="submit" name="submit" value="Войти"></input>
-						<input type="button" name="cancel" value="Отмена"></input>
+						<input type="submit" name="submit" value="Войти"/>
+						<input type="button" name="cancel" value="Отмена"/>
 					</div>
 					<a class="px-3" th:href="@{/register}">Зарегистрироваться</a>
 				</form>
