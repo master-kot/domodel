@@ -170,7 +170,7 @@
 					АВТОРИЗАЦИЯ
 				</h2>
 				<!--посмотри пожалуйста как сделано в файле templates/old/login.html здесь почему то не работает-->
-				<form name="login" id="login" action="@{/authenticate}" method="post" class="r-flex">
+				<form name="login" id="login" th:action="@{/login}" method="post" class="r-flex" sec:authorize="isAnonymous()>
 
 					<input type="text" id="username" name="username" placeholder="Номер телефона"/>
 					<input type="password" id="password" name="password" placeholder="Пароль"/>
