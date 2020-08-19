@@ -162,13 +162,14 @@
 					АВТОРИЗАЦИЯ
 				</h2>
 				<!--посмотри пожалуйста как сделано в файле templates/old/login.html здесь почему то не работает-->
-				<form name="login" id="login" action="/authenticate" method="post" class="r-flex">
+				<form name="login" id="login" action="@{/authenticate}" method="post" class="r-flex">
 					<input type="text" id="username" name="username" placeholder="Номер телефона"/>
 					<input type="password" id="password" name="username" placeholder="Пароль"/>
 					<div class="login_controls r-flex">
 						<input type="submit" name="submit" value="Войти"></input>
 						<input type="button" name="cancel" value="Отмена"></input>
 					</div>
+					<a class="px-3" th:href="@{/register}">Зарегистрироваться</a>
 				</form>
 			</div>
 		</div>
