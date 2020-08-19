@@ -3,6 +3,7 @@ package ru.geekbrains.domodel.services.core;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Bill;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.repositories.BillRepository;
@@ -42,7 +43,7 @@ public class BillServiceImpl implements BillService {
         if (user == null) {
             return null;
         } else {
-            return billRepository.findAllByUser(user);
+            return billRepository.findAllByAccount((Account) user.getAccounts().toArray()[0]); // заглушка
         }
     }
 
