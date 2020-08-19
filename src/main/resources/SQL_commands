@@ -13,8 +13,8 @@ INSERT INTO authorities (authority) VALUES ('ROLE_ADMIN'), ('ROLE_DIRECTOR'), ('
 INSERT INTO users_authorities (user_id, authority_id) VALUES (1, 1);
 
 ### МОДУЛЬ НОВОСТЕЙ ###
-CREATE TABLE news (id bigserial not null, creation_date timestamp not null, short_text varchar(255) not null, full_text varchar(2000) not null, visible boolean not null, picture_link varchar(255), type varchar(100), author_id bigint not null, FOREIGN KEY (author_id) REFERENCES users (id), PRIMARY KEY (id));
-INSERT INTO news (creation_date, short_text, full_text, visible, picture_link, author_id) VALUES ('2020-08-06', 'Заголовок новости', 'Полный текст последней по дате новости, загруженной из сервиса новостей', true, '1.png', 1);
+CREATE TABLE news (id bigserial not null, creation_date date not null, title varchar(255) not null, full_text varchar(2000) not null, picture_link varchar(255), hidden boolean not null, pinned boolean not null, author_id bigint not null, FOREIGN KEY (author_id) REFERENCES users (id), PRIMARY KEY (id));
+INSERT INTO news (creation_date, title, full_text, picture_link, hidden, pinned, author_id) VALUES ('2020-08-06', 'Заголовок новости', 'Полный текст последней по дате новости, загруженной из сервиса новостей', '1.png', false, true, 1);
 
 ### МОДУЛЬ НАЧИСЛЕНИЙ ###
 #TODO create table accounts
@@ -40,10 +40,10 @@ DROP TABLE accounts CASCADE;
 DROP TABLE bills CASCADE;
 DROP TABLE calculations CASCADE;
 DROP TABLE meters CASCADE;
-DROP TABLE meter_datas CASCADE;
-DROP TABLE requisites CASCADE;
-DROP TABLE tariffs CASCADE;
-DROP TABLE news CASCADE;
+DROP TABLE meter_datas;
+DROP TABLE requisites;
+DROP TABLE tariffs;
+DROP TABLE news;
 DROP TABLE users_authorities CASCADE;
 DROP TABLE authorities CASCADE;
 DROP TABLE users CASCADE;
