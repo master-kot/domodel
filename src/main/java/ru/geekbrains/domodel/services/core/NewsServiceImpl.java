@@ -47,16 +47,17 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public News changeNews (Long id,
-                            Date creationDate,
-                            String shortText,
-                            String text,
-                            boolean visible,
+                            String title,
+                            String fullText,
+                            boolean hidden,
+                            boolean pinned,
                             String pictureLink) {
         News news = newsRepository.getOne(id);
         if (news != null) {
-            news.setShortText(shortText);
-            news.setFullText(text);
-            news.setVisible(visible);
+            news.setTitle(title);
+            news.setFullText(fullText);
+            news.setHidden(hidden);
+            news.setPinned(pinned);
             news.setPictureLink(pictureLink);
             return newsRepository.save(news);
         }

@@ -38,10 +38,10 @@
 						<ul class="menu r-flex">
 							<a href="/">
 								<li >
-									новости
+									главная
 								</li>
 							</a>
-							<a href="/pages/about">
+							<a href="/information/about">
 								<li>
 									о нас
 								</li>
@@ -51,12 +51,12 @@
 									фото
 								</li>
 							</a>
-							<a href="/pages/documents">
+							<a href="/information/documents">
 								<li>
 									документы
 								</li>
 							</a>
-							<a href="/pages/appeals">
+							<a href="/appeals">
 								<li>
 									обращения
 								</li>
@@ -66,9 +66,14 @@
 									голосования
 								</li>
 							</a>
-							<a href="/pages/contacts">
+							<a href="/information/contacts">
 								<li>
 									контакты
+								</li>
+							</a>
+							<a href="/management" sec:authorize="hasRole('ADMIN')">
+								<li>
+									управление
 								</li>
 							</a>
 						</ul>
