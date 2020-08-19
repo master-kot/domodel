@@ -299,14 +299,21 @@ main{
 	margin: 13px 0 0 0;
 }
 .card_news__date{
+	flex-direction: column;
+	justify-content: space-beetween;
 	font-style: normal;
 	font-weight: 300;
 	font-size: 14px;
 	line-height: 17px;
 	text-align: right;
-	color: #404040;
 	width: 83px;
-	padding: 15px 13px 0 0;
+	padding: 15px 13px 13px 0;
+}
+.card_news__date  a{
+	font-size: 18px;
+	line-height: 22px;
+
+color: #404040;
 }
 .news_archive{
 	font-style: normal;
@@ -541,6 +548,22 @@ textarea{
 	line-height: 29px;
 	margin: 0 0 29px 0;
 }
+.contacts_container > h1 > a{
+	font-weight: 300;
+	font-size: 14px;
+	line-height: 17px;
+}
+form[name="contacts"] input{
+	display: block;
+	color: #000000;
+}
+form[name="contacts"] input .noteditable{
+	outline: none;
+	border: none;
+}
+form[name="contacts"] label{
+	color: #000000;
+}
 .contact_header, .requisites_header{
 	font-weight: 500;
 	font-size: 20px;
@@ -554,42 +577,45 @@ textarea{
 .requisites_section > article{
 	margin: 12px 0 0 145px
 }
-.contact_address > p:first-child{
+.contact_address > label{
 	padding: 0 39px 0 0;
 	font-weight: normal;
 	font-size: 18px;
 	line-height: 22px;
 }
-.contact_address > p:last-child{
+.contact_address > input{
 	flex-grow: 3;
 	font-weight: normal;
 	font-size: 20px;
 	line-height: 24px;
 	word-break: break-all;
+	font-weight: 300;
 }
-.contact_phone > p:first-child{
+.contact_phone > label{
 	flex-basis: 102px;
 	font-weight: normal;
 	font-size: 18px;
 	line-height: 22px;
 }
-.contact_phone > p:last-child{
+.contact_phone > input{
 	flex-grow: 3;
 	font-weight: normal;
 	font-size: 20px;
 	line-height: 24px;
+	font-weight: 300;
 }
-.contact_mail > p:first-child{
+.contact_mail > label{
 	flex-basis: 102px;
 	font-weight: normal;
 	font-size: 18px;
 	line-height: 22px;
 }
-.contact_mail> p:last-child{
+.contact_mail> input{
 	flex-grow: 3;
 	font-weight: normal;
 	font-size: 20px;
 	line-height: 24px;
+	font-weight: 300;
 }
 .company_name{
 	font-style: normal;
@@ -603,18 +629,19 @@ textarea{
 	padding-top: 36px;
 }
 
-.requisites_details > p:first-child{
+.requisites_details > label{
 	
 	font-weight: normal;
 	font-size: 18px;
 	line-height: 22px;
 }
-.requisites_details > p:last-child{
+.requisites_details > input{
 	flex-grow: 3;
 	font-weight: normal;
 	font-size: 20px;
 	line-height: 24px;
 	word-break: break-all;
+	font-weight: 300;
 }
 .inn{
 	padding: 0 53px 0 0;
@@ -762,6 +789,7 @@ img[alt="member2"]{
 	font-size: 20px;
 	line-height: 24px;
 	color: #404040;
+	margin: 48px 0 32px 0;
 }
 .cabinet_personal_line{
 	border: 1px solid #C4C4C4;
@@ -778,12 +806,19 @@ img[alt="member2"]{
 	line-height: 29px;
 	color: #404040;
 }
+.select_yard{
+	border-color: #FFF;
+}
 .cabinet_personal_item:nth-of-type(2){
 	margin: 21px 0 0 0;
+	font-weight: 300;
+	font-size: 24px;
+	line-height: 29px;
+	color: #404040;
 }
 .cabinet_personal_item:nth-of-type(4),
 .cabinet_personal_item:nth-of-type(6),
-.cabinet_personal_item:nth-of-type(8){
+.cabinet_personal_item:nth-of-type(7){
 	margin: 42px 0 0 0;
 }
 .cabinet_personal_value:last-child{
@@ -806,4 +841,82 @@ img[alt="member2"]{
 	border-radius: 21px;
 	border: 2px solid blue;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);	
+}
+/* Style the tab */
+.tab {
+  justify-content: flex-end;
+  padding: 0 200px 0 0;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: #FFF;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  border: 1px solid #FFF;
+  border-radius: 21px;
+}
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color:#FFF;
+  border: 1px solid blue;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 21px;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #FFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border: 1px solid blue;
+  border-radius: 21px;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  height: 80%;
+  justify-content: flex-end;
+}
+.tabcontent article{
+	justify-content: flex-end;
+	height: 27px;
+	margin: 0 0 10px 0;
+	
+}
+.tabcontent p{
+	margin: 0 35px;
+}
+.tabcontent a{
+	font-size: 14px;
+	line-height: 17px;
+	color: #000000;
+	padding: 6px 39px;
+	border: 1px solid blue;
+	border-radius: 21px;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.found_container{
+	flex-direction: column;
+	height: 100%;
+}
+.found_container > div{
+	font-size: 14px;
+	line-height: 17px;
+	text-align: right;
+	font-weight: normal;
+	flex-grow: 1;
+	align-items: flex-end;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.found_container > div > a{
+	display: block;
+	border: 1px solid #FFF;
+	box-shadow: none;
 }

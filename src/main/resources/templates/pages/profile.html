@@ -113,128 +113,181 @@
 							<p class="cabinet_personal_item">
 								Фото:
 							</p>
-							<input type="image" th:src="@{'/img/personal_page/' + ${user.photoLink}}" alt="Фото">
-							<p  class="cabinet_personal_item">
+							<img src="../img/personal_page/myfoto.png" alt="user foto">
+							<p class="cabinet_personal_item">
 								Фамилия:
 							</p>
-							<p th:text="${user.secondName}" class="cabinet_personal_value">
+							<p class="cabinet_personal_value">
 								Петров
 							</p>
 							<p class="cabinet_personal_item">
 								Имя:
 							</p>
-							<p th:text="${user.firstName}" class="cabinet_personal_value">
+							<p class="cabinet_personal_value">
 								Иван
 							</p>
 							<p class="cabinet_personal_item">
-								№ лицевого счета: (СДЕЛАТЬ В ВИДЕ СПИСКА)
+								№ участка (лицевого счета):
 							</p>
-							<p class="cabinet_personal_value">
-								24  (СДЕЛАТЬ В ВИДЕ СПИСКА)
-							</p>
+							<select class="cabinet_personal_value select_yard">
+								<option>
+									24
+								</option>
+							</select>
 							<p class="cabinet_personal_item">
-								Кол-во соток: (СДЕЛАТЬ В ВИДЕ СПИСКА)
+								Кол-во соток:
 							</p>
 							<p class="cabinet_personal_value">
-								7 (СДЕЛАТЬ В ВИДЕ СПИСКА)
+								7
 							</p>
 						</article>
 						<div class="cabinet_personal_line"></div>
-						<a href="/profile/change">
+						<a href="#">
 							редактировать
 						</a>
 					</section>
 					<section class="cabinet_general">
+						<!-- Tab links -->
+						<div class="tab r-flex">
+						  <button class="tablinks active" data-id="founds">Целевой платёж</button>
+						  <button class="tablinks" data-id="payments">Членский взнос</button>
+						  <button class="tablinks" data-id="meters">Счётчики</button>
+						</div>
 						<h2>
-							ОБЩАЯ ИНФОРМАЦИЯ профиля пользователя
+							ПЛАТЕЖИ
 						</h2>
-						<table class="table table-hover">
-							<tbody>
-							<form th:action="@{/profile/change}" method="post" th:object="${userData}">
-								<tr>
-									<td>Параметр</td><td>Текущее значение</td><td>Новое значение</td>
-								</tr>
-								<tr>
-									<td>Номер телефона (Логин)</td>
-									<td th:text="${user.username}"/>
-									<td></td>
-								</tr>
-								<tr>
-									<td>Пароль</td>
-									<td>
-										<input type="password" id="password" th:field="*{password}" class="form-control" placeholder="Новый пароль">
-										<small class="form-text text-danger" th:each="err : ${#fields.errors('password')}" th:text="${err}">Ошибка</small>
-									</td>
-									<td>
-										<input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" class="form-control" placeholder="Повторите пароль">
-										<small class="form-text text-danger" th:each="err : ${#fields.errors('passwordConfirm')}" th:text="${err}">Ошибка</small>
-									</td>
-								</tr>
-								<tr>
-									<td>Активен</td>
-									<td th:text="${user.enabled}"/>
-									<td></td>
-								</tr>
-								<tr>
-									<td>Список ролей</td>
-									<td th:text="${user.authorities}"/>
-									<td></td>
-								</tr>
-								<tr>
-									<td>Дата создания</td>
-									<td th:text="${user.creationDate}"/>
-									<td></td>
-								</tr>
-								<tr>
-									<td>Имя</td>
-									<td th:text="${user.firstName}"/>
-									<td>
-										<input type="text" id="firstName" th:field="*{firstName}" class="form-control" placeholder="Имя">
-										<small class="form-text text-danger" th:each="err : ${#fields.errors('firstName')}" th:text="${err}">Ошибка</small>
-									</td>
-								</tr>
-								<tr>
-									<td>Фамилия</td>
-									<td th:text="${user.secondName}"/>
-									<td>
-										<input type="text" id="secondName" th:field="*{secondName}" class="form-control" placeholder="Фамилия">
-										<small class="form-text text-danger" th:each="err : ${#fields.errors('secondName')}" th:text="${err}">Ошибка</small>
-									</td>
-								</tr>
-								<tr>
-									<td>Отчество</td>
-									<td th:text="${user.middleName}"/>
-									<td>
-										<input type="text" id="middleName" th:field="*{middleName}" class="form-control" placeholder="Отчество">
-										<small class="form-text text-danger" th:each="err : ${#fields.errors('middleName')}" th:text="${err}">Ошибка</small>
-									</td>
-								</tr>
-								<tr>
-									<td>Адрес почты</td>
-									<td th:text="${user.email}"/>
-									<td>
-										<input type="text" id="email" th:field="*{email}" class="form-control" placeholder="Адрес электронной почты">
-										<small class="form-text text-danger" th:each="err : ${#fields.errors('email')}" th:text="${err}">Ошибка</small>
-									</td>
-								</tr>
-								<tr>
-									<td>Фотография профиля</td>
-									<td><input type="image" th:src="@{'/img/personal_page/' + ${user.photoLink}}" alt="Фото"></td>
-									<td>
-										<input type="image" id="photoLink" th:field="*{photoLink}" class="form-control" placeholder="Ссылка на фото">
-										<small class="form-text text-danger" th:each="err : ${#fields.errors('photoLink')}" th:text="${err}">Ошибка</small>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="3">
-										<!--Кнопки не видно-->
-										<input type="submit" name="submit" value="Изменить профиль"/>
-										<input type="button" name="cancel" value="Oтмена"/>
-									</td>
-								</tr>
-							</form>
-							</tbody>
-						</table>
+						<!-- Tab content -->
+						<div id="founds" class="tabcontent" style="display: block;">
+							<div class="found_container r-flex">
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<div class="r-flex">
+									<a href="#">
+										Архив
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<div id="payments" class="tabcontent" >
+						  <h3>Вкладка членский взнос</h3>
+						  <p>Здесь будет информация о ваших членских взосах.</p>
+						</div>
+
+						<div id="meters" class="tabcontent">
+						  <h3>Счётчики</h3>
+						  <p>Здесь будет информация о ваших платежах за электоэнергию.</p>
+						</div>
 					</section>
 				</div><!--cabinet_container-->
 			</div><!--container-->

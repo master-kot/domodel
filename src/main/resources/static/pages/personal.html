@@ -136,9 +136,147 @@
 						</a>
 					</section>
 					<section class="cabinet_general">
+						<!-- Tab links -->
+						<div class="tab r-flex">
+						  <button class="tablinks active" data-id="founds">Целевой платёж</button>
+						  <button class="tablinks" data-id="payments">Членский взнос</button>
+						  <button class="tablinks" data-id="meters">Счётчики</button>
+						</div>
 						<h2>
-							ОБЩАЯ ИНФОРМАЦИЯ
+							ПЛАТЕЖИ
 						</h2>
+						<!-- Tab content -->
+						<div id="founds" class="tabcontent" style="display: block;">
+							<div class="found_container r-flex">
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<article class="r-flex">
+									<p class="pay_day">
+										14.08.2020
+									</p>
+									<p class="pay_description">
+										Ежемесячный платеж
+									</p>
+									<p class="pay_amaunt">
+										3500р.
+									</p>
+									<a href="#">
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<div class="r-flex">
+									<a href="#">
+										Архив
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<div id="payments" class="tabcontent" >
+						  <h3>Вкладка членский взнос</h3>
+						  <p>Здесь будет информация о ваших членских взосах.</p>
+						</div>
+
+						<div id="meters" class="tabcontent">
+						  <h3>Счётчики</h3>
+						  <p>Здесь будет информация о ваших платежах за электоэнергию.</p>
+						</div>
 					</section>
 				</div><!--cabinet_container-->
 			</div><!--container-->
@@ -153,12 +291,12 @@
 				<h2>
 					АВТОРИЗАЦИЯ
 				</h2>
-				<form name="login" id="login" action="#" method="post" class="r-flex">
-					<input type="text" name="username" placeholder="ЛОГИН(№ участка)"/>
-					<input type="password" name="username" placeholder="ПАРОЛЬ"/>
+				<form name="login" id="login" action="/login" method="post" class="r-flex">
+					<input type="text" id="username" name="username" placeholder="Номер телефона"/>
+					<input type="password" id="password" name="password" placeholder="Пароль"/>
 					<div class="login_controls r-flex">
-						<input type="submit" name="submit" value="вход"></input>
-						<input type="button" name="cancel" value="отмена"></input>
+						<input type="submit" name="submit" value="Войти"/>
+						<input type="button" name="cancel" value="Отмена"/>
 					</div>
 				</form>
 			</div>

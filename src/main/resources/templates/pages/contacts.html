@@ -105,117 +105,101 @@
 			<div class="container">
 				<div class="contacts_container">
 					<h1>
-						ООО “ДОМОДЕЛ”
+						ООО “ДОМОДЕЛ” <a href="#">Редактировать</a>
 					</h1>
-					<section class="contacts_section">
-						<h2 class="contact_header">
-							Контакты
-						</h2>
-						<article>
-							<div class="contact_address r-flex">
-								<p>
-									Адрес:
-								</p>
-								<p>
-									Московская область, домодедовский район, пос. Новая надежда, д.1 
-								</p>
-							</div>
-						</article>
-						<article>
-							<div class="contact_phone r-flex">
-								<p>
-									Телефон:
-								</p>
-								<p>
-									8(999)3124578 
-								</p>
-							</div>
-						</article>
-						<article>
-							<div class="contact_mail r-flex">
-								<p>
-									e-mail:
-								</p>
-								<p>
-									domodel@mail.ru
-								</p>
-							</div>
-						</article>
-					</section>
-					<section class="requisites_section">
-						<h2 class="requisites_header">
-							Реквизиты
-						</h2>
-						<article>
-							<h3 class="company_name">
-								ООО “ДОМОДЕЛ”
-							</h3>
-							<div class="requisites_details  r-flex">
-								
-								<p class="inn">
-									ИНН:
-								</p>
-								<p>
-									000000000001
-								</p>
-							</div>
-						</article>
-						<article>
-							<div class="requisites_details  r-flex">
-								
-								<p class="kpp">
-									КПП:
-								</p>
-								<p>
-									000000000000
-								</p>
-							</div>
-						</article>
-						<article>
-							<div class="requisites_details  r-flex">
-								
-								<p class="ogrn">
-									ОГРН:
-								</p>
-								<p>
-									0000000000000
-								</p>
-							</div>
-						</article>
-						<article>
-							<div class="requisites_details  r-flex">
-								
-								<p class="account">
-									Р/С:
-								</p>
-								<p>
-									324493100000000024578
-								</p>
-							</div>
-						</article>
-						<article>
-							<div class="requisites_details  r-flex">
-								
-								<p class="kc">
-									К/С:
-								</p>
-								<p>
-									89993100000000024578 
-								</p>
-							</div>
-						</article>
-						<article>
-							<div class="requisites_details r-flex">
-								
-								<p class="bic">
-									БИК:
-								</p>
-								<p>
-									000000000
-								</p>
-							</div>
-						</article>
-					</section>
+					<form name="contacts" method="post" action="#">
+						<section class="contacts_section">
+							<h2 class="contact_header">
+								Контакты
+							</h2>
+							<article>
+								<div class="contact_address r-flex">
+									<label for="address">
+										Адрес:
+									</label>
+									<input type="text" name="address" value="Московская область, домодедовский район, пос. Новая надежда, д.1"/>
+								</div>
+							</article>
+							<article>
+								<div class="contact_phone r-flex">
+									<label for="phone">
+										Телефон:
+									</label>
+									<input name="phone" type="tel" value="8(999)3124578"/>
+								</div>
+							</article>
+							<article>
+								<div class="contact_mail r-flex">
+									<label for="email">
+										e-mail:
+									</label>
+									<input type="email" name="email" value="domodel@mail.ru">
+								</div>
+							</article>
+						</section>
+						<section class="requisites_section">
+							<h2 class="requisites_header">
+								Реквизиты
+							</h2>
+							<article>
+								<h3 class="company_name">
+									ООО “ДОМОДЕЛ”
+								</h3>
+								<div class="requisites_details  r-flex">
+									
+									<label for="inn" class="inn">
+										ИНН:
+									</label>
+									<input type="number" name="inn" value="000000000001"/>
+								</div>
+							</article>
+							<article>
+								<div class="requisites_details  r-flex">
+									
+									<label for="kpp" class="kpp">
+										КПП:
+									</label>
+									<input type="number" name="kpp" value="000000000000">
+								</div>
+							</article>
+							<article>
+								<div class="requisites_details  r-flex">
+									
+									<label for="ogrn" class="ogrn">
+										ОГРН:
+									</label>
+									<input type="number" name="ogrn" value="0000000000000"/>
+								</div>
+							</article>
+							<article>
+								<div class="requisites_details  r-flex">
+									
+									<label for="account" class="account">
+										Р/С:
+									</label>
+									<input type="number" name="account" value="324493100000000024578"/>
+								</div>
+							</article>
+							<article>
+								<div class="requisites_details  r-flex">
+									
+									<label for="kc" class="kc">
+										К/С:
+									</label>
+									<input type="number" name="kc" value="89993100000000024578"/>
+								</div>
+							</article>
+							<article>
+								<div class="requisites_details r-flex">
+									
+									<label for="bic" class="bic">
+										БИК:
+									</label>
+									<input type="number" name="bic" value="000000000"/>
+								</div>
+							</article>
+						</section>
+					</form>
 				</div><!--contacts_container-->
 			</div><!--container-->
 		</main> <!--main-->
