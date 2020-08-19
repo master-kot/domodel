@@ -113,34 +113,36 @@
 							<p class="cabinet_personal_item">
 								Фото:
 							</p>
-							<input type="image" th:src="@{'/img/personal_page/' + ${user.photoLink}}" alt="Фото">
-							<p  class="cabinet_personal_item">
+							<img src="../img/personal_page/myfoto.png" alt="user foto">
+							<p class="cabinet_personal_item">
 								Фамилия:
 							</p>
-							<p th:text="${user.secondName}" class="cabinet_personal_value">
+							<p class="cabinet_personal_value">
 								Петров
 							</p>
 							<p class="cabinet_personal_item">
 								Имя:
 							</p>
-							<p th:text="${user.firstName}" class="cabinet_personal_value">
+							<p class="cabinet_personal_value">
 								Иван
 							</p>
 							<p class="cabinet_personal_item">
-								№ лицевого счета: (СДЕЛАТЬ В ВИДЕ СПИСКА)
+								№ участка (лицевого счета):
 							</p>
-							<p class="cabinet_personal_value">
-								24  (СДЕЛАТЬ В ВИДЕ СПИСКА)
-							</p>
+							<select class="cabinet_personal_value select_yard">
+								<option>
+									24
+								</option>
+							</select>
 							<p class="cabinet_personal_item">
-								Кол-во соток: (СДЕЛАТЬ В ВИДЕ СПИСКА)
+								Кол-во соток:
 							</p>
 							<p class="cabinet_personal_value">
-								7 (СДЕЛАТЬ В ВИДЕ СПИСКА)
+								7
 							</p>
 						</article>
 						<div class="cabinet_personal_line"></div>
-						<a href="/profile/change">
+						<a href="#">
 							редактировать
 						</a>
 					</section>
