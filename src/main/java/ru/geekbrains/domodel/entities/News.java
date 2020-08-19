@@ -26,8 +26,12 @@ public class News {
     @Column(name = "creation_date", nullable = false)
     private Date creationDate;
 
-    // Краткий текст новости (заголовок)
-    @Column(name = "short_text", nullable = false)
+    // Заголовок новости
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    // Краткий текст новости, ограниченный до 255 символов
+    @Transient
     private String shortText;
 
     // Полный текст новости (содержание)
@@ -38,15 +42,14 @@ public class News {
     @Column(name = "picture_link")
     private String pictureLink;
 
-    // TODO есть ли смысл в этом поле?
-    // Обображается (true) ли новость на сайте или нет (false)
-    @Column(name = "visible", nullable = false)
-    private boolean visible;
+    // Указатель публичности новости. Если false, новость отображается для всех посетителей,
+    // Если true, новость отображается только для зарегистрированных посетителей
+    @Column(name = "hidden", nullable = false)
+    private boolean hidden;
 
-    // TODO переделать в виде перечисления
-    // Тип новости
-    @Column(name = "type")
-    private String type;
+    // Указатель закрепления новости. Новость закреплена если true
+    @Column(name = "pinned", nullable = false)
+    private boolean pinned;
 
     // Ссылка на пользователя - автора данной новости
     @ManyToOne

@@ -141,7 +141,7 @@
 				<article class="card_news r-flex" th:if="${lastNews != null}">
 					<input type="image" th:src="@{'/img/news/' + ${lastNews.id} + '/' + ${lastNews.pictureLink}}" alt="Фото">
 					<div class="card_header">
-						<h3 th:text="${lastNews.shortText}">
+						<h3 th:text="${lastNews.title}">
 						</h3>
 						<p th:text="${lastNews.fullText}">
 						</p>
