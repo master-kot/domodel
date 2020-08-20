@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface BillRepository extends JpaRepository<Bill, Long> {
     List<Bill> findAllByAccount(Account user);
     List<Bill> findAllBySendStatus(SendStatus status);
-    List<Bill> findAllBySendStatusAAndAccount(SendStatus status, Account account);
+    List<Bill> findAllBySendStatusAndAccount(SendStatus status, Account account);
 
     //List<Bill> findAllByAccount(Account account);
 }

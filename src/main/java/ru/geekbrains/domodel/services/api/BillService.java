@@ -14,21 +14,37 @@ public interface BillService {
 
     /**
      * Получить список всех счетов
-     *
-     * @return список счетов
      */
     List<Bill> getAllBills();
 
+    /**
+     * Сохранить счет
+     */
     Bill save(Bill bill);
 
+    /**
+     * Найти счет по его номеру
+     */
     Bill findById(Long billId);
 
+    /**
+     * Найти все счета по имени пользователя
+     */
     List<Bill> findAllByUsername(String username);
 
-    // создать счет для аккаунта
+    /**
+     * Найти все счета для аккаунта
+     */
+    List<Bill> getAllBillsByAccount(Account account);
+
+    /**
+     * создать счет для аккаунта
+     */
     Bill createBillByAccount(Account account);
 
-    //  создать счета для всех аккаунтов
+    /**
+     * Создать счета для всех аккаунтов
+     */
     List<Bill> createAll();
 
     List<Bill> getAllByAccount(Account account);
@@ -37,5 +53,4 @@ public interface BillService {
     List<Bill> getAllByStatusAndAccount(SendStatus status, Account account);
     Bill changeById();
 
-    List<Bill> getAllBillsByAccount(Account account);
 }

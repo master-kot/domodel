@@ -51,6 +51,10 @@ public class News {
     @Column(name = "pinned", nullable = false)
     private boolean pinned;
 
+    // Указатель видимости новости. Новость отображается если true
+    @Column(name = "visible", nullable = false)
+    private boolean visible;
+
     // Ссылка на пользователя - автора данной новости
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)

@@ -3,6 +3,7 @@ package ru.geekbrains.domodel.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.geekbrains.domodel.entities.constants.BillType;
 import ru.geekbrains.domodel.entities.constants.SendStatus;
 
 import javax.persistence.*;
@@ -46,6 +47,12 @@ public class Bill {
     // true для счета, подсчитанного автоматически, false если сумма к оплате введена вручную
     @Column(name = "calculated", nullable = false)
     private boolean calculated;
+
+    //TODO возможно есть лучший вариант
+    // Статус отправки счета пользователю
+    @Column(name = "bill_type")
+    @Enumerated(EnumType.ORDINAL)
+    private BillType billType;
 
     // Статус отправки счета пользователю
     @Column(name = "send_status")

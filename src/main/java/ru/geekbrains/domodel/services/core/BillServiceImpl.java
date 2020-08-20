@@ -3,19 +3,15 @@ package ru.geekbrains.domodel.services.core;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.domodel.entities.*;
+import ru.geekbrains.domodel.entities.constants.BillType;
 import ru.geekbrains.domodel.entities.constants.SendStatus;
-import ru.geekbrains.domodel.entities.Account;
-import ru.geekbrains.domodel.entities.Bill;
 import ru.geekbrains.domodel.repositories.BillRepository;
-import ru.geekbrains.domodel.services.api.AccountService;
-import ru.geekbrains.domodel.services.api.BillService;
-import ru.geekbrains.domodel.services.api.MeterService;
-import ru.geekbrains.domodel.services.api.UserService;
+import ru.geekbrains.domodel.services.api.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Реализация сервиса счетов (платежных документов)
@@ -27,8 +23,9 @@ public class BillServiceImpl implements BillService {
     private final BillRepository billRepository;
     private final UserService userService;
     private final AccountService accountService;
-    //    private final TariffService tariffService;
+    private final TariffService tariffService;
     private final MeterService meterService;
+    private final RequisitesService requisitesService;
 
     @Override
     public List<Bill> getAllBills() {
@@ -64,7 +61,10 @@ public class BillServiceImpl implements BillService {
         bill.setCreationDate(new Date());
         bill.setTarget("Заглушка target");
         bill.setSendStatus(SendStatus.NEW);
-        bill.setRequisites(new Requisites()); // todo откуда брать реквизиты?
+        // TODO брать реквизиты нужно с сервиса реквизитов в зависимости что это за счет
+        // придумать как это будет реализовано
+        BillType billType = BillType.TEST;
+        bill.setRequisites(requisitesService.getRequisitesByBillType(billType));
 
         List<Meter> meterList = meterService.getAllMetersByAccount(account);
         for (Meter meter : meterList) {
@@ -73,7 +73,7 @@ public class BillServiceImpl implements BillService {
             if (meterDataList.size() > 2) {
                 MeterData meterDataPrev = meterDataList.get(meterDataList.size() - 2);
                 MeterData meterDataCurrent = meterDataList.get(meterDataList.size() - 1);
-                // todo нужна логика другая
+                // TODO нужна логика другая, на основе значений defaultIncreaseValue указанных в сущности Tariff
                 // если показания не обнавлялись больше 30 дней поставить посчитать по среднему (по умолчанию)
                 if ((new Date().getTime() - meterDataCurrent.getCreationDate().getTime()) / (24 * 60 * 60 * 1000) > 30) {
                     meterDataCurrent = new MeterData();
@@ -116,7 +116,7 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public List<Bill> getAllByStatusAndAccount(SendStatus status, Account account) {
-        return billRepository.findAllBySendStatusAAndAccount(status, account);
+        return billRepository.findAllBySendStatusAndAccount(status, account);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class BillServiceImpl implements BillService {
         return null;
     }
 
-   /*;public List<Bill> getAllBillsByAccount(Account account) {
+    public List<Bill> getAllBillsByAccount(Account account) {
         return billRepository.findAllByAccount(account);
-    }*/
+    }
 }

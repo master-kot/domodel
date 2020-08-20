@@ -1,10 +1,12 @@
 package ru.geekbrains.domodel.entities.constants;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Статус отправки счета пользователю
   */
+@RequiredArgsConstructor
 public enum SendStatus {
 
     NEW("Созданный новый счет"),
@@ -15,8 +17,4 @@ public enum SendStatus {
     @Getter
     // Описание статуса
     private final String description;
-
-    SendStatus(String description) {
-        this.description = description;
-    }
 }
