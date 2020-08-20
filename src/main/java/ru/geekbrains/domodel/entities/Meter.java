@@ -37,7 +37,7 @@ public class Meter {
     private Date checkDate;
 
     // Тип счетчика, содержит его описание и единицу измерения
-    @Column(name = "type", nullable = false)
+    @Column(name = "type")
     @Enumerated(EnumType.ORDINAL)
     private MeterType type;
 

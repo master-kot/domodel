@@ -24,7 +24,11 @@ public class Requisites {
 
     // Название юридического лица
     @Column(name = "company_name")
-    private Integer companyName;
+    private String companyName;
+
+    // Адрес юридического лица
+    @Column(name = "company_address")
+    private String companyAddress;
 
     // ИНН организации
     @Column(name = "inn")
@@ -40,7 +44,7 @@ public class Requisites {
 
     // Номер рассчетного счета
     @Column(name = "bank_account")
-    private Integer bankAccount;
+    private String bankAccount;
 
     // Наименование банка
     @Column(name = "bank_name")
@@ -52,7 +56,7 @@ public class Requisites {
 
     // Номер корреспондентского счета
     @Column(name = "correspondent_account")
-    private Integer correspondentAccount;
+    private String correspondentAccount;
 
     // Электронная почта организации
     @Column(name = "email")
