@@ -38,5 +38,5 @@ public class Tariff {
     // Значение по умолчанию, которое устанавливается в качестве показания за период,
     // если показание не было заполнено
     @Column(name = "default_increase_value")
-    private Double  defaultIncreaseValue;
+    private Double defaultIncreaseValue;
 }
