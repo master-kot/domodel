@@ -37,8 +37,8 @@ public class Account {
     private String houseNumber;
 
     // Количество соток участка
-    @Column(name = "acres_number")
-    private String acresNumber;
+    @Column(name = "acres_amount")
+    private Integer acresAmount;
 
     // Список счетчиков данного аккаунта
     @OneToMany(mappedBy = "account")

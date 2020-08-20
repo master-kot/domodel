@@ -8,6 +8,9 @@ import ru.geekbrains.domodel.entities.constants.SendStatus;
 
 import java.util.List;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Репозиторий счетов (платежных документов)
  */
@@ -16,4 +19,6 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
     List<Bill> findAllByAccount(Account user);
     List<Bill> findAllBySendStatus(SendStatus status);
     List<Bill> findAllBySendStatusAAndAccount(SendStatus status, Account account);
+
+    //List<Bill> findAllByAccount(Account account);
 }

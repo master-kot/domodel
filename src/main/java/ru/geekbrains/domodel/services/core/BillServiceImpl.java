@@ -3,8 +3,9 @@ package ru.geekbrains.domodel.services.core;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.domodel.entities.*;
 import ru.geekbrains.domodel.entities.constants.SendStatus;
+import ru.geekbrains.domodel.entities.Account;
+import ru.geekbrains.domodel.entities.Bill;
 import ru.geekbrains.domodel.repositories.BillRepository;
 import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.BillService;
@@ -14,6 +15,7 @@ import ru.geekbrains.domodel.services.api.UserService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Реализация сервиса счетов (платежных документов)
@@ -122,5 +124,7 @@ public class BillServiceImpl implements BillService {
         return null;
     }
 
-
+   /*;public List<Bill> getAllBillsByAccount(Account account) {
+        return billRepository.findAllByAccount(account);
+    }*/
 }

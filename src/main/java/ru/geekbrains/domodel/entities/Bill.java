@@ -48,7 +48,7 @@ public class Bill {
     private boolean calculated;
 
     // Статус отправки счета пользователю
-    @Column(name = "send_status", nullable = false)
+    @Column(name = "send_status")
     @Enumerated(EnumType.ORDINAL)
     private SendStatus sendStatus;
 

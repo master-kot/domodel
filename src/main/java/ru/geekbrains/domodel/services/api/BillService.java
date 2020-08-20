@@ -5,6 +5,7 @@ import ru.geekbrains.domodel.entities.Bill;
 import ru.geekbrains.domodel.entities.constants.SendStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Интерфейс сервиса счетов (платежных документов)
@@ -35,4 +36,6 @@ public interface BillService {
     List<Bill> getAllByStatus(SendStatus sendStatus);
     List<Bill> getAllByStatusAndAccount(SendStatus status, Account account);
     Bill changeById();
+
+    List<Bill> getAllBillsByAccount(Account account);
 }
