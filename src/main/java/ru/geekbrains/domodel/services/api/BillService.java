@@ -2,6 +2,7 @@ package ru.geekbrains.domodel.services.api;
 
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Bill;
+import ru.geekbrains.domodel.entities.constants.SendStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,10 +19,23 @@ public interface BillService {
      */
     List<Bill> getAllBills();
 
-    /**
-     * Получить список всех счетов
-     *
-     * @return список счетов
-     */
+    Bill save(Bill bill);
+
+    Bill findById(Long billId);
+
+    List<Bill> findAllByUsername(String username);
+
+    // создать счет для аккаунта
+    Bill createBillByAccount(Account account);
+
+    //  создать счета для всех аккаунтов
+    List<Bill> createAll();
+
+    List<Bill> getAllByAccount(Account account);
+
+    List<Bill> getAllByStatus(SendStatus sendStatus);
+    List<Bill> getAllByStatusAndAccount(SendStatus status, Account account);
+    Bill changeById();
+
     List<Bill> getAllBillsByAccount(Account account);
 }
