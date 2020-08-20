@@ -37,20 +37,26 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public void deleteNewsById(Long id) {
-        newsRepository.deleteById(id);
+       //newsRepository.deleteById(id);
+        //удаленная новость сохраняется в БД
+        getNewsById(id).setVisible(false);
     }
 
+    // TODO через POST
     @Override
     public News saveNews (News news) {
+        //TODO прописсать поля, сооздающиеся автоматически (дата, автор, visible); учесть, что закрепленных может быть только 2
         return newsRepository.save(news);
     }
 
+    // TODO через POST
     @Override
     public News changeNews (Long id,
                             String title,
                             String fullText,
                             boolean hidden,
                             boolean pinned,
+                            boolean visible, //можно через редактирование восстановить удаленную новость
                             String pictureLink) {
         News news = newsRepository.getOne(id);
         if (news != null) {
@@ -58,13 +64,14 @@ public class NewsServiceImpl implements NewsService {
             news.setFullText(fullText);
             news.setHidden(hidden);
             news.setPinned(pinned);
+            news.setVisible(visible);
             news.setPictureLink(pictureLink);
             return newsRepository.save(news);
         }
         return null;
     }
 
-    // TODO реализовать метод
+    // TODO реализовать метод получение последней новости (убрать этот метод из главного контроллера)
     @Override
     public News getLastNews() {
         List<News> newsList = newsRepository.findAll();
@@ -73,4 +80,19 @@ public class NewsServiceImpl implements NewsService {
         }
         return null;
     }
+
+    // TODO реализовать метод получения списка актуальных новвостей + в начале закрепленные (не более 2) + пагинация
+    @Override
+    public List<News> getAllVisibleNews() {
+        return null;
+    }
+
+    // TODO реализовать метод получения списка закрепленных новостей (2 штуки)
+    @Override
+    public List<News> getPinnedNews() {return null;}
+
+    // TODO реализовать метод получения списка новостей для незарегистрированных пользователей + пагинация
+    @Override
+    public List<News> getPublicNews() {return null;}
+
 }

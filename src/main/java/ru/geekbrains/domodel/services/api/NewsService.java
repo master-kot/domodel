@@ -38,7 +38,7 @@ public interface NewsService {
      * @param news новость, отдаваемая в репозиторий для сохранения
      * @return новость, сохраненная в репозитории
      */
-    public News saveNews (News news);
+    News saveNews (News news);
 
     /**
      * Изменить новость
@@ -48,6 +48,7 @@ public interface NewsService {
      * @param fullText полный текст новости
      * @param hidden видима ли новость
      * @param pinned закреплена ли новость
+     * @param visible актуальна ли новость
      * @param pictureLink ссылка на картинку новости
      * @return измененная новость
      */
@@ -56,6 +57,7 @@ public interface NewsService {
                      String fullText,
                      boolean hidden,
                      boolean pinned,
+                     boolean visible,
                      String pictureLink);
 
     /**
@@ -64,4 +66,27 @@ public interface NewsService {
      * @return новость
      */
     News getLastNews();
+
+    /**
+     * Получить список видимых новостей для зарегистрированных пользователей + вначале закрепленные новости + пагинация
+     *
+     * @return список новостей
+     */
+    List<News> getAllVisibleNews();
+
+    /**
+     * Получить список новостей для незарегистрированных пользователей + вначале закрепленные новости + пагинация
+     *
+     * @return список новостей
+     */
+    List<News> getPublicNews();
+
+    /**
+     * Получить список закрепленных новостей (не более 2)
+     *
+     * @return список новостей
+     */
+    List<News> getPinnedNews();
+
+
 }
