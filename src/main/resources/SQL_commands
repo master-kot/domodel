@@ -13,7 +13,7 @@ INSERT INTO authorities (authority) VALUES ('ROLE_ADMIN'), ('ROLE_DIRECTOR'), ('
 INSERT INTO users_authorities (user_id, authority_id) VALUES (1, 1);
 
 ### МОДУЛЬ НОВОСТЕЙ ###
-INSERT INTO news (creation_date, title, full_text, picture_link, hidden, pinned, author_id) VALUES ('2020-08-06', 'Заголовок новости', 'Полный текст последней по дате новости, загруженной из сервиса новостей', '1.png', false, true, 1);
+INSERT INTO news (creation_date, title, full_text, picture_link, hidden, pinned, visible, author_id) VALUES ('2020-08-06', 'Заголовок новости', 'Полный текст последней по дате новости, загруженной из сервиса новостей', '1.png', false, true, true, 1);
 
 ### ВВЕДЕНИЕ ДАННЫХ В МОДУЛИ ПЛАТЕЖНЫХ СЧЕТОВ И СЧЕТЧИКОВ ПОКАЗАНИЙ ###
 INSERT INTO accounts (user_id, street, house_number, acres_amount) VALUES (1, 'первая улица', '1й дом', 7);
