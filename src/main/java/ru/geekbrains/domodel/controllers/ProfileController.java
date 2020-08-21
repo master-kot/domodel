@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,7 @@ import static ru.geekbrains.domodel.entities.constants.Messages.PASSWORD_MISMATC
  */
 @Controller
 @RequestMapping("/profile")
+@RequiredArgsConstructor
 public class ProfileController {
 
     // Список необходимых сервисов
@@ -37,17 +39,6 @@ public class ProfileController {
     private final AccountService accountService;
     private final BillService billService;
     private final MeterService meterService;
-
-    @Autowired
-    public ProfileController(UserService userService,
-                             AccountService accountService,
-                             BillService billService,
-                             MeterService meterService) {
-        this.userService = userService;
-        this.accountService = accountService;
-        this.billService = billService;
-        this.meterService = meterService;
-    }
 
     /**
      * Перехват запроса на чтение профиля пользователя

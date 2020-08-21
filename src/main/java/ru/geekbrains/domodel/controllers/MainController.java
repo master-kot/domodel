@@ -1,6 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,18 +21,14 @@ import static ru.geekbrains.domodel.entities.constants.Messages.*;
  * Главный контроллер web-приложения
  */
 @Controller
+@RequiredArgsConstructor
 public class MainController {
 
     // Сервис пользователей
     private final UserService userService;
+
     // Сервис новостей
     private final NewsService newsService;
-
-    @Autowired
-    public MainController(UserService userService, NewsService newsService) {
-        this.userService = userService;
-        this.newsService = newsService;
-    }
 
     /**
      * Перехват запроса главной страницы
@@ -44,17 +40,6 @@ public class MainController {
         }
         model.addAttribute("lastNews", newsService.getLastNews());
         return "index";
-    }
-
-    /**
-     * Перехват запроса страницы логина (ВРЕМЕННОЕ РЕШЕНИЕ)
-     */
-    @GetMapping("login")
-    public String getLoginPage(Model model, Principal principal) {
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
-        }
-        return "pages/login";
     }
 
     /**
