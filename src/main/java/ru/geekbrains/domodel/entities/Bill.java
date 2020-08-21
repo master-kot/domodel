@@ -3,6 +3,7 @@ package ru.geekbrains.domodel.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.geekbrains.domodel.entities.constants.BillType;
 import ru.geekbrains.domodel.entities.constants.SendStatus;
 
 import javax.persistence.*;
@@ -47,8 +48,14 @@ public class Bill {
     @Column(name = "calculated", nullable = false)
     private boolean calculated;
 
+    //TODO возможно есть лучший вариант
     // Статус отправки счета пользователю
-    @Column(name = "send_status", nullable = false)
+    @Column(name = "bill_type")
+    @Enumerated(EnumType.ORDINAL)
+    private BillType billType;
+
+    // Статус отправки счета пользователю
+    @Column(name = "send_status")
     @Enumerated(EnumType.ORDINAL)
     private SendStatus sendStatus;
 
@@ -62,6 +69,6 @@ public class Bill {
     private Requisites requisites;
 
     // Ссылка на калькуляцию (обоснование цены счета)
-    @OneToMany(mappedBy = "bill")
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
     private List<Calculation> calculations = new ArrayList<>();
 }

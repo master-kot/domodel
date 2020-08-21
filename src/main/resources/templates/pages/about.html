@@ -38,10 +38,10 @@
 						<ul class="menu r-flex">
 							<a href="/">
 								<li >
-									новости
+									главная
 								</li>
 							</a>
-							<a href="/pages/about">
+							<a href="/information/about">
 								<li>
 									о нас
 								</li>
@@ -51,12 +51,12 @@
 									фото
 								</li>
 							</a>
-							<a href="/pages/documents">
+							<a href="/information/documents">
 								<li>
 									документы
 								</li>
 							</a>
-							<a href="/pages/appeals">
+							<a href="/appeals">
 								<li>
 									обращения
 								</li>
@@ -66,26 +66,37 @@
 									голосования
 								</li>
 							</a>
-							<a href="/pages/contacts">
+							<a href="/information/contacts">
 								<li>
 									контакты
+								</li>
+							</a>
+							<a href="/management" sec:authorize="hasRole('ADMIN')">
+								<li>
+									управление
 								</li>
 							</a>
 						</ul>
 					</nav>
 				</div>
 				<div class="header_right">
-					<img src="../img/home_page/avatar.png" alt="avatar"></img>
-					<div class="notlogged">
+					<img src="../img/home_page/avatar.png" alt="avatar">
+					<div class="notlogged" th:if="${username == null}">
 						<a href="#" id="login">
 							войти
+						</a><br>
+						<a href="/register" id="login">
+							зарегистрироваться
 						</a>
 					</div>
 					<div class="logged" th:if="${username != null}">
-						<p th:text="'Пользователь ' + ${username}"/>
+						<p th:text="'Пользователь: ' + ${username}"/>
 						<a href="/profile">
 							личный кабинет
-						</a>
+						</a><br>
+						<form action="/logout" method="post">
+							<input type="submit" value="выйти" />
+						</form>
 					</div>
 				</div>
 			</div>
@@ -210,12 +221,12 @@
 				<h2>
 					АВТОРИЗАЦИЯ
 				</h2>
-				<form name="login" id="login" action="#" method="post" class="r-flex">
-					<input type="text" name="username" placeholder="ЛОГИН(№ участка)"/>
-					<input type="password" name="username" placeholder="ПАРОЛЬ"/>
+				<form name="login" id="login" action="/login" method="post" class="r-flex">
+					<input type="text" id="username" name="username" placeholder="Номер телефона"/>
+					<input type="password" id="password" name="password" placeholder="Пароль"/>
 					<div class="login_controls r-flex">
-						<input type="submit" name="submit" value="вход"></input>
-						<input type="button" name="cancel" value="отмена"></input>
+						<input type="submit" name="submit" value="Войти"/>
+						<input type="button" name="cancel" value="Отмена"/>
 					</div>
 				</form>
 			</div>

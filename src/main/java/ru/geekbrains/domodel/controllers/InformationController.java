@@ -8,22 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.Principal;
 
 /**
- * Временый контроллер для различных страниц
+ * Контроллер информационных страниц
  */
 @Controller
-@RequestMapping("/pages")
-public class PagesController {
-
-    /**
-     * Перехват запроса страницы логина (ВРЕМЕННОЕ РЕШЕНИЕ)
-     */
-    @GetMapping("login")
-    public String getLoginPage(Model model, Principal principal) {
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
-        }
-        return "pages/login";
-    }
+@RequestMapping("/information")
+public class InformationController {
 
     /**
      * Перехват запроса страницы о компании (ВРЕМЕННОЕ РЕШЕНИЕ)
@@ -48,24 +37,13 @@ public class PagesController {
     }
 
     /**
-     * Перехват запроса страницы информации о профиле пользователя (ВРЕМЕННОЕ РЕШЕНИЕ)
+     * Перехват запроса страницы документы (ВРЕМЕННОЕ РЕШЕНИЕ)
      */
-    @GetMapping("/personal")
-    public String getPersonalPage(Model model, Principal principal) {
+    @GetMapping("/documents")
+    public String getDocumentsPage(Model model, Principal principal) {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        return "pages/personal";
-    }
-
-    /**
-     * Перехват запроса страницы обращений (ВРЕМЕННОЕ РЕШЕНИЕ)
-     */
-    @GetMapping("/appeals")
-    public String getAppealsPage(Model model, Principal principal) {
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
-        }
-        return "pages/appeals";
+        return "pages/documents";
     }
 }
