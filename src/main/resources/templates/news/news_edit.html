@@ -22,7 +22,7 @@
 					<p class="welcom">
 						Добро пожаловать
 					</p>
-					<a href="index.html">
+					<a href="/">
 						<svg width="135" height="40" viewBox="0 0 135 40" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 							<rect width="135" height="40" fill="url(#pattern0)"/>
 							<defs>
@@ -37,58 +37,67 @@
 				<div class="header_center r-flex">
 					<nav id="nav-menu-container">
 						<ul class="menu r-flex">
-							<a href="index.html">
+							<a href="/">
 								<li >
-										новости
+									главная
 								</li>
 							</a>
-							<a href="#">
+							<a href="/information/about">
 								<li>								
 									о нас
 								</li>
 							</a>
-							<a href="./pages/foto.html">
+							<a href="/photos">
 								<li>
 									фото
 								</li>
 							</a>
-							<a href="#">
+							<a href="/information/documents">
 								<li>
 									документы
 								</li>
 							</a>
-							<a href="#">
+							<a href="/appeals">
 								<li>
 									обращения
 								</li>
 							</a>
-							<a href="#">
+							<a href="/votes">
 								<li>
 									голосования
 								</li>
 							</a>
-							<a href="./pages/contacts.html">
+							<a href="/information/contacts">
 								<li>
 									контакты
 								</li>
-							</a>																																								
+							</a>
+							<a href="/management" sec:authorize="hasRole('ADMIN')">
+								<li>
+									управление
+								</li>
+							</a>
 						</ul>
 					</nav>
 				</div>
 				<div class="header_right">
-					<img src="../img/home_page/avatar.png" alt="avatar">
-					<div class="notlogged">
+					<img src="./img/home_page/avatar.png" alt="avatar">
+					<div class="notlogged" th:if="${username == null}">
 						<a href="#" id="login">
 							войти
+						</a><br>
+						<a href="/register" id="login">
+							зарегистрироваться
 						</a>
 					</div>
-					<div class="logged">
-						<p>
-							Иван Петров
-						</p>
-						<a href="#">
+					<div class="logged" th:if="${username != null}">
+						<p th:text="'Пользователь: ' + ${username}"/>
+						<a href="/profile">
 							личный кабинет
-						</a>
+						</a><br>
+						<form action="/logout" method="post">
+							<input type="submit" value="выйти" />
+						</form>
 					</div>
 				</div>
 			</div>
@@ -129,12 +138,12 @@
 				<h2>
 					АВТОРИЗАЦИЯ
 				</h2>
-				<form name="login" id="login" action="#" method="post" class="r-flex">
-					<input type="text" name="username" placeholder="ЛОГИН(№ участка)"/>
-					<input type="password" name="username" placeholder="ПАРОЛЬ"/>
+				<form name="login" id="login" action="/login" method="post" class="r-flex">
+					<input type="text" id="username" name="username" placeholder="Номер телефона"/>
+					<input type="password" id="password" name="password" placeholder="Пароль"/>
 					<div class="login_controls r-flex">
-						<input type="submit" name="submit" value="вход"></input>
-						<input type="button" name="cancel" value="отмена"></input>
+						<input type="submit" name="submit" value="Войти"></input>
+						<input type="button" name="cancel" value="Отмена"></input>
 					</div>
 				</form>
 			</div>
