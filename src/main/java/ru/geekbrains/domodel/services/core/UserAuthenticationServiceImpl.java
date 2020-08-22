@@ -6,10 +6,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.User;
-import ru.geekbrains.domodel.entities.constants.Messages;
 import ru.geekbrains.domodel.repositories.UserRepository;
 
 import java.util.Optional;
+
+import static ru.geekbrains.domodel.entities.constants.Messages.USER_NOT_FOUND;
 
 /**
  * Сервис, отвечающий за авторизацию пользователей
@@ -34,6 +35,6 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
                         user.getPassword(),
                         user.getAuthorities()
                 ))
-                .orElseThrow(() -> new UsernameNotFoundException(Messages.USER_NOT_FOUND));
+                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
     }
 }

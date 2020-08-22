@@ -1,40 +1,52 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ru.geekbrains.domodel.entities.constants.MeterType;
+
 import javax.persistence.*;
-import java.util.List;
+import java.util.*;
 
 /**
  * Сущность счетчика показаний. Если счетчик электричества двухтарифный,
- * необходимо создать два счетчика с разными type, но одним meterNumber
+ * необходимо создать два счетчика с разными type, но одним meterNumber.
  */
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "meters")
 public class Meter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
+    // Лицевой счет, к которому прикреплен данный счетчик
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
+
     // Серийный номер счетчика
-    @Column(name = "meter_number", nullable = false)
-    private Integer meterNumber;
+    @Column(name = "serial_number", nullable = false)
+    private Integer serialNumber;
 
-    // Тип счетчика, значения: ELECTRICITY_UNIFIED, ELECTRICITY_DAY, ELECTRICITY_NIGHT, GAS, HOT_WATER, COLD_WATER
-    @Column(name = "type", nullable = false)
-    private String type;
+    // Дата последней поверки счетчика
+    @Column(name = "check_date")
+    private Date checkDate;
 
-    //TODO Ссылка на таблицу со списком показаний счетчиков
-//    @OneToMany(mappedBy = "meter")
-//    private List<MeterData> meterDatas;
+    // Тип счетчика, содержит его описание и единицу измерения
+    @Column(name = "type")
+    @Enumerated(EnumType.ORDINAL)
+    private MeterType type;
 
-    //TODO Обратная ссылка на лицевой счет, нужна ли она?
-//    @ManyToOne
-//    @JoinColumn(name = "requisites", nullable = false)
-//    private Account account;
+    // Ссылка на рассчетный тариф для счетчика
+    @ManyToOne
+    @JoinColumn(name = "tariff_id")
+    private Tariff tariff;
 
-    //TODO геттеры и сеттеры для полей класса, обновить файл создания базы данных
-
-    public Meter() {
-    }
+    // Список показаний данного счетчика
+    @OneToMany(mappedBy = "meter")
+    private List<MeterData> meterDatas = new ArrayList<>();
 }

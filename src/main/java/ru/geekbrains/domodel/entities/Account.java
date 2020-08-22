@@ -1,12 +1,20 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Сущность лицевого счета, заведенного для каждого дома
  */
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "accounts")
 public class Account {
 
@@ -15,24 +23,28 @@ public class Account {
     @Column(name = "id")
     private Long id;
 
+    // Пользователь, к которому прикреплен данный лицевой счет
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
+    // Улица (может быть не заполнено)
     @Column(name = "street")
     private String street;
 
+    // Номер дома или участка
     @Column(name = "house_number", nullable = false)
     private String houseNumber;
 
-    //TODO ссылка на таблицу с данными счетчиков
-//    @OneToMany(mappedBy = "account")
-//    private List<Meter> meters;
+    // Количество соток участка
+    @Column(name = "acres_amount")
+    private Double acresAmount;
 
-    //TODO нужна ли обратная ссылка на пользователя?
+    // Список счетчиков данного аккаунта
+    @OneToMany(mappedBy = "account")
+    private List<Meter> meters = new ArrayList<>();
 
-    //TODO геттеры и сеттеры для полей класса, обновить файл создания базы данных
-
-    public Account() {
-    }
+    // Список счетов, выставленных для данного аккаунта
+    @OneToMany(mappedBy = "account")
+    private List<Bill> bills = new ArrayList<>();
 }

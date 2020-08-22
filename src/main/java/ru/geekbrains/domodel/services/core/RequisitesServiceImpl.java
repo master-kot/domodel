@@ -3,6 +3,7 @@ package ru.geekbrains.domodel.services.core;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Requisites;
+import ru.geekbrains.domodel.entities.constants.BillType;
 import ru.geekbrains.domodel.repositories.RequisitesRepository;
 import ru.geekbrains.domodel.services.api.RequisitesService;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Service
 public class RequisitesServiceImpl implements RequisitesService {
 
-    //
+    // Репозиторий реквизитов
     private final RequisitesRepository requisitesRepository;
 
     @Autowired
@@ -25,5 +26,11 @@ public class RequisitesServiceImpl implements RequisitesService {
     @Override
     public List<Requisites> getAllRequisites() {
         return requisitesRepository.findAll();
+    }
+
+    // TODO
+    @Override
+    public Requisites getRequisitesByBillType(BillType billType) {
+        return null;
     }
 }

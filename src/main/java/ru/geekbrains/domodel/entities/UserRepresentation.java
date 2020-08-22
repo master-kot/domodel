@@ -1,5 +1,9 @@
 package ru.geekbrains.domodel.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -7,6 +11,9 @@ import javax.validation.constraints.Size;
 /**
  * Представление сущности пользователя для работы с фронтэндом
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class UserRepresentation {
 
     @NotBlank
@@ -21,41 +28,16 @@ public class UserRepresentation {
     @Size(min = 5, message="Пароль должен быть не менее 5 символов")
     private String passwordConfirm;
 
+    private String firstName;
+
+    private String secondName;
+
+    private String middleName;
+
     @Email
     private String email;
 
-    public String getUsername() {
-        return username;
-    }
+    private String photoLink;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public UserRepresentation() {
-    }
+    private String address;
 }

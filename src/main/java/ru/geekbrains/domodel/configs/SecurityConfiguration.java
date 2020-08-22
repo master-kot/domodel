@@ -53,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/").permitAll()
-                .loginProcessingUrl("/authenticateTheUser")
+                .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/")
                 .failureUrl("/?error")
                 .and()
@@ -62,7 +62,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID")
                 .logoutSuccessUrl("/")
                 .and()
-                .rememberMe().key("uniqueAndSecret");
+                .rememberMe().key("uniqueAndSecret")
+                .and()
+                .csrf().disable();
     }
 
     @Bean

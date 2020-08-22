@@ -6,10 +6,13 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.UserRepresentation;
+import ru.geekbrains.domodel.repositories.AuthorityRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import java.util.*;
+
+import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 
 /**
  * Сервис пользователей
@@ -20,29 +23,35 @@ public class UserServiceImpl implements UserService {
     // Репозиторий пользователей
     private final UserRepository userRepository;
 
+    // Репозиторий ролей пользователя
+    private final AuthorityRepository authorityRepository;
+
     // Сервис шифрования паролей
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository,
+                           AuthorityRepository authorityRepository,
+                           BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.authorityRepository = authorityRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public User findUserById(Long userId) {
+    public User getUserById(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         return user.orElse(null);
     }
 
     @Override
-    public User findUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         return user.orElse(null);
     }
 
     @Override
-    public List<User> findAllUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
@@ -53,35 +62,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserRepresentation request) {
-        Optional<User> userFromDB = userRepository.findByUsername(request.getUsername());
-        if (userFromDB.isPresent()) {
+    public User createUser(UserRepresentation userData) {
+        Optional<User> optionalUser = userRepository.findByUsername(userData.getUsername());
+        if (optionalUser.isPresent()) {
             return null;
         }
 
-        User user = new User(
-                request.getUsername(),
-                passwordEncoder.encode(request.getPassword()),
+        User newUser = new User(
+                userData.getUsername(),
+                passwordEncoder.encode(userData.getPassword()),
                 true,
                 new Date());
-        user.setAuthorities(new ArrayList<>(Collections.singletonList(new Authority(user, "ROLE_USER"))));
-        return userRepository.save(user);
+        Authority authority = authorityRepository.findByAuthority(ROLE_USER);
+        newUser.getAuthorities().add(authority);
+        return userRepository.save(newUser);
     }
 
     @Override
-    public User updateUser(User userData, String username) {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setUsername(userData.getUsername());
-            user.setPassword(passwordEncoder.encode(userData.getPassword()));
-            user.setFirstName(userData.getFirstName());
-            user.setSecondName(userData.getSecondName());
-            user.setMiddleName(userData.getMiddleName());
-            user.setEmail(userData.getEmail());
+    public User updateUser(UserRepresentation userData, User user) {
+            if (userData.getUsername() != null && !userData.getUsername().isEmpty()) {
+                user.setUsername(userData.getUsername());
+            }
+            if (userData.getPassword() != null && userData.getPassword().isEmpty() &&
+                    userData.getPassword().equals(userData.getPasswordConfirm())) {
+                user.setPassword(passwordEncoder.encode(userData.getPassword()));
+            }
+            if (userData.getFirstName() != null && !userData.getFirstName().isEmpty()) {
+                user.setFirstName(userData.getFirstName());
+            }
+            if (userData.getSecondName() != null && !userData.getSecondName().isEmpty()) {
+                user.setSecondName(userData.getSecondName());
+            }
+            if (userData.getMiddleName() != null && !userData.getMiddleName().isEmpty()) {
+                user.setMiddleName(userData.getMiddleName());
+            }
+            if (userData.getEmail() != null && !userData.getEmail().isEmpty()) {
+                user.setEmail(userData.getEmail());
+            }
             return userRepository.save(user);
-        } else {
-            return null;
-        }
     }
 }

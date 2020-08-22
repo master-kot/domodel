@@ -1,6 +1,7 @@
 package ru.geekbrains.domodel.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,22 +11,19 @@ import ru.geekbrains.domodel.services.api.AccountService;
 import java.security.Principal;
 
 /**
- * Контроллер модуля новостей
+ * Контроллер лицевых счетов
  */
 @Controller
 @RequestMapping("/accounts")
+@RequiredArgsConstructor
+@Log4j2
 public class AccountController {
 
-    // Сервис реквизитов компании
+    // Сервис лицевых счетов
     private final AccountService accountService;
 
-    @Autowired
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
-    }
-
     /**
-     * Перехват запроса списка реквизитов компании
+     * Перехват запроса списка лицевых счетов
      */
     @GetMapping("")
     public String getAccountsPage(Model model, Principal principal) {

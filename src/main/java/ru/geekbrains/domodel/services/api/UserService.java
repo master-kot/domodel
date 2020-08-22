@@ -18,7 +18,7 @@ public interface UserService {
      * @param userId идентификатор пользователя
      * @return пользователь
      */
-    User findUserById(Long userId);
+    User getUserById(Long userId);
 
     /**
      * Найти пользователя по логину
@@ -26,14 +26,14 @@ public interface UserService {
      * @param username логин пользователя
      * @return пользователь
      */
-    User findUserByUsername(String username);
+    User getUserByUsername(String username);
 
     /**
      * Найти всех пользователей
      *
      * @return список пользователей
      */
-    List<User> findAllUsers();
+    List<User> getAllUsers();
 
     /**
      * Удалить пользователя по его идентификатору
@@ -46,15 +46,16 @@ public interface UserService {
     /**
      * Создать нового пользователя
      *
-     * @param request отображение пользователя
+     * @param userData отображение данных пользователя
      * @return новый пользователь, сохраненный в репозитории
      */
-    User createUser(UserRepresentation request);
+    User createUser(UserRepresentation userData);
 
     /**
      * Изменить данные пользователя
      *
-     * @param userData данные пользователя
+     * @param userData отображение данных пользователя
+     * @param user изменяемый пользователь
      */
-    User updateUser(User userData, String username);
+    User updateUser(UserRepresentation userData, User user);
 }
