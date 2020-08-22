@@ -1,6 +1,5 @@
 package ru.geekbrains.domodel.controllers;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;

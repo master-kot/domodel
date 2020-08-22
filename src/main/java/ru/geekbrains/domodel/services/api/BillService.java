@@ -4,6 +4,7 @@ import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Bill;
 import ru.geekbrains.domodel.entities.constants.SendStatus;
 
+import javax.persistence.Id;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,10 +48,13 @@ public interface BillService {
      */
     List<Bill> createAll();
 
+    /**
+     * Получить все счета данного аккаунта
+     */
     List<Bill> getAllByAccount(Account account);
 
-    List<Bill> getAllByStatus(SendStatus sendStatus);
-    List<Bill> getAllByStatusAndAccount(SendStatus status, Account account);
-    Bill changeById();
-
+    /**
+     * Изменить счет по номеру
+     */
+    Bill changeById(Long Id, Bill billData);
 }

@@ -55,7 +55,7 @@ public class Bill {
 
     // Ссылка на платежные реквизиты
     @ManyToOne
-    @JoinColumn(name = "requisites")
+    @JoinColumn(name = "requisites_id")
     private Requisites requisites;
 
     // Ссылка на калькуляцию (обоснование цены счета)
@@ -64,6 +64,6 @@ public class Bill {
 
     // Не используется в MVP 0
     // true для счета, подсчитанного автоматически, false если сумма к оплате введена вручную
-//    @Transient
-//    private boolean calculated;
+    @Transient
+    private boolean calculated;
 }

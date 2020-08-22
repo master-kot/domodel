@@ -16,6 +16,10 @@ import javax.persistence.*;
 @Table(name = "information")
 public class Information {
 
+    @Id
+    @Column(name = "company")
+    private String company;
+
     // Реквизиты компании
     @OneToOne
     @JoinColumn(name="requisites")
