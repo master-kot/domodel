@@ -1,6 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +17,7 @@ import java.security.Principal;
  */
 @Controller
 @RequestMapping("/management")
+@RequiredArgsConstructor
 public class ManagementController {
 
     // Сервис пользователей
@@ -24,12 +25,6 @@ public class ManagementController {
 
     // Сервис реквизитов
     private final RequisitesService requisitesService;
-
-    @Autowired
-    public ManagementController(UserService userService, RequisitesService requisitesService) {
-        this.userService = userService;
-        this.requisitesService = requisitesService;
-    }
 
     /**
      * Перехват запроса списка всех пользователей

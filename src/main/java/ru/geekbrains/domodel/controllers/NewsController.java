@@ -1,6 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,25 +16,33 @@ import java.security.Principal;
     //todo сделать страницу редакции отдельной новости
 @Controller
 @RequestMapping("/news")
+@RequiredArgsConstructor
 public class NewsController {
 
     // Сервис новостей
     private final NewsService newsService;
 
-    @Autowired
-    public NewsController(NewsService newsService) {
-        this.newsService = newsService;
-    }
-
     /**
-     * Перехват запроса списка новостей
+     * Перехват запроса архива новостей
      */
     @GetMapping("")
-    public String getNewsPage(Model model, Principal principal) {
+    public String getNewsArchivePage(Model model, Principal principal) {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
         model.addAttribute("news", newsService.getAllNews());
-        return "news";
+        return "news/news_archive";
+    }
+
+    /**
+     * Перехват запроса страницы редактирования новостей
+     */
+    @GetMapping("/edit")
+    public String getNewsEditPage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
+        model.addAttribute("news", newsService.getAllNews());
+        return "news/news_edit";
     }
 }

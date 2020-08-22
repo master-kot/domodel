@@ -117,176 +117,164 @@
 							<p class="cabinet_personal_item">
 								Фамилия:
 							</p>
-							<p class="cabinet_personal_value">
-								Петров
+							<p class="cabinet_personal_value" th:text="${user.secondName}">
+
 							</p>
 							<p class="cabinet_personal_item">
 								Имя:
 							</p>
-							<p class="cabinet_personal_value">
-								Иван
+							<p class="cabinet_personal_value" th:text="${user.firstName}">
+
 							</p>
 							<p class="cabinet_personal_item">
 								№ участка (лицевого счета):
 							</p>
-							<select class="cabinet_personal_value select_yard">
-								<option>
-									24
+							<select class="cabinet_personal_value select_yard" th:text="${account.houseNumber}">
+								<option th:each="category : ${accounts}"
+										th:value="${category}"
+										th:text="${category.description}">
 								</option>
 							</select>
 							<p class="cabinet_personal_item">
 								Кол-во соток:
 							</p>
-							<p class="cabinet_personal_value">
-								7
+							<p class="cabinet_personal_value" th:text="${account.acresAmount}">
+
 							</p>
 						</article>
 						<div class="cabinet_personal_line"></div>
-						<a href="#">
+						<a href="/profile/change">
 							редактировать
 						</a>
 					</section>
 					<section class="cabinet_general">
 						<!-- Tab links -->
 						<div class="tab r-flex">
-						  <button class="tablinks active" data-id="founds">Целевой платёж</button>
-						  <button class="tablinks" data-id="payments">Членский взнос</button>
-						  <button class="tablinks" data-id="meters">Счётчики</button>
+						  <button class="tablinks active" data-id="founds">Платёжи по счетчикам</button>
+						  <button class="tablinks" data-id="payments">Прочие платежи</button>
+						  <button class="tablinks" data-id="meters">Показания счётчиков</button>
 						</div>
 						<h2>
 							ПЛАТЕЖИ
 						</h2>
+						<p>
+							Информация о квитанциях по показаниям счетчиков:
+						</p>
 						<!-- Tab content -->
 						<div id="founds" class="tabcontent" style="display: block;">
 							<div class="found_container r-flex">
 								<article class="r-flex">
 									<p class="pay_day">
-										14.08.2020
+										Дата квитанции
 									</p>
 									<p class="pay_description">
-										Ежемесячный платеж
+										Назначение платежа
 									</p>
 									<p class="pay_amaunt">
-										3500р.
+										Сумма к оплате
 									</p>
-									<a href="#">
-										КВИТАНЦИЯ
-									</a>
+									<p class="pay_amaunt">
+
+									</p>
 								</article>
-								<article class="r-flex">
-									<p class="pay_day">
-										14.08.2020
+								<article class="r-flex" th:each="bill : ${calculatedBills}">
+									<p class="pay_day" th:text="${bill.creationDate}">
+
 									</p>
-									<p class="pay_description">
-										Ежемесячный платеж
+									<p class="pay_description" th:text="${bill.target}">
+
 									</p>
-									<p class="pay_amaunt">
-										3500р.
+									<p class="pay_amaunt" th:text="${bill.total}">
+
 									</p>
-									<a href="#">
-										КВИТАНЦИЯ
-									</a>
-								</article>
-								<article class="r-flex">
-									<p class="pay_day">
-										14.08.2020
-									</p>
-									<p class="pay_description">
-										Ежемесячный платеж
-									</p>
-									<p class="pay_amaunt">
-										3500р.
-									</p>
-									<a href="#">
-										КВИТАНЦИЯ
-									</a>
-								</article>
-								<article class="r-flex">
-									<p class="pay_day">
-										14.08.2020
-									</p>
-									<p class="pay_description">
-										Ежемесячный платеж
-									</p>
-									<p class="pay_amaunt">
-										3500р.
-									</p>
-									<a href="#">
-										КВИТАНЦИЯ
-									</a>
-								</article>
-								<article class="r-flex">
-									<p class="pay_day">
-										14.08.2020
-									</p>
-									<p class="pay_description">
-										Ежемесячный платеж
-									</p>
-									<p class="pay_amaunt">
-										3500р.
-									</p>
-									<a href="#">
-										КВИТАНЦИЯ
-									</a>
-								</article>
-								<article class="r-flex">
-									<p class="pay_day">
-										14.08.2020
-									</p>
-									<p class="pay_description">
-										Ежемесячный платеж
-									</p>
-									<p class="pay_amaunt">
-										3500р.
-									</p>
-									<a href="#">
-										КВИТАНЦИЯ
-									</a>
-								</article>
-								<article class="r-flex">
-									<p class="pay_day">
-										14.08.2020
-									</p>
-									<p class="pay_description">
-										Ежемесячный платеж
-									</p>
-									<p class="pay_amaunt">
-										3500р.
-									</p>
-									<a href="#">
-										КВИТАНЦИЯ
-									</a>
-								</article>
-								<article class="r-flex">
-									<p class="pay_day">
-										14.08.2020
-									</p>
-									<p class="pay_description">
-										Ежемесячный платеж
-									</p>
-									<p class="pay_amaunt">
-										3500р.
-									</p>
-									<a href="#">
+									<a th:href="@{'/profile/bills/' + ${account.id} + '/' + ${bill.id}}" >
 										КВИТАНЦИЯ
 									</a>
 								</article>
 								<div class="r-flex">
-									<a href="#">
-										Архив
+									<a href="/profile/bills/">
+										Архив счетов
 									</a>
 								</div>
 							</div>
 						</div>
 
 						<div id="payments" class="tabcontent" >
-						  <h3>Вкладка членский взнос</h3>
-						  <p>Здесь будет информация о ваших членских взосах.</p>
+							<div class="found_container r-flex">
+								Информация о прочих квитанциях (фиксированные платежи):
+								<article class="r-flex">
+									<p class="pay_day">
+										Дата квитанции
+									</p>
+									<p class="pay_description">
+										Назначение платежа
+									</p>
+									<p class="pay_amaunt">
+										Сумма к оплате
+									</p>
+									<p class="pay_amaunt">
+
+									</p>
+								</article>
+								<article class="r-flex" th:each="bill : ${fixedBills}">
+									<p class="pay_day" th:text="${bill.creationDate}">
+
+									</p>
+									<p class="pay_description" th:text="${bill.target}">
+
+									</p>
+									<p class="pay_amaunt" th:text="${bill.total}">
+
+									</p>
+									<a th:href="@{'/profile/bills/' + ${account.id} + '/' + ${bill.id}}" >
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<div class="r-flex">
+									<a href="/profile/bills/">
+										Архив счетов
+									</a>
+								</div>
+							</div>
 						</div>
 
 						<div id="meters" class="tabcontent">
-						  <h3>Счётчики</h3>
-						  <p>Здесь будет информация о ваших платежах за электоэнергию.</p>
+							<div class="found_container r-flex">
+								<h2>Информация о счетчиках:</h2>
+								<article class="r-flex">
+									<p class="pay_day">
+										Дата последней поверки счетчика
+									</p>
+									<p class="pay_description">
+										Тип счетчика
+									</p>
+									<p class="pay_amaunt">
+										Серийный номер счетчика
+									</p>
+									<p>
+										Посмотреть показания
+									</p>
+								</article>
+								<article class="r-flex" th:each="meter : ${meters}">
+									<p class="pay_day" th:text="${meter.checkDate}">
+
+									</p>
+									<p class="pay_description">
+										Однотарифный счётчик электроэнергии
+									</p>
+									<p class="pay_amaunt" th:text="${meter.serialNumber}">
+
+									</p>
+									<a th:href="@{'/profile/meters/' + ${meter.id}}" >
+										ПОКАЗАНИЯ
+									</a>
+								</article>
+								<div class="r-flex">
+									<a href="/profile/meters/">
+										Архив показаний
+									</a>
+								</div>
+							</div>
 						</div>
 					</section>
 				</div><!--cabinet_container-->
@@ -306,8 +294,8 @@
 					<input type="text" id="username" name="username" placeholder="Номер телефона"/>
 					<input type="password" id="password" name="password" placeholder="Пароль"/>
 					<div class="login_controls r-flex">
-						<input type="submit" name="submit" value="Войти"/>
-						<input type="button" name="cancel" value="Отмена"/>
+						<input type="submit" name="submit" value="Войти"></input>
+						<input type="button" name="cancel" value="Отмена"></input>
 					</div>
 				</form>
 			</div>

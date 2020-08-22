@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="./css/linearicons.css">
 	<link rel="stylesheet" href="./css/styles.css" />
+	<link href="./fontawesome/css/all.css" rel="stylesheet"> <!--load fontawesome all styles -->																						 
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <title>Domodel</title>
@@ -104,33 +105,39 @@
 		<main >
 			<div class="container content">
 				<div class="add_news" sec:authorize="hasRole('ADMIN')">
-					<form name="add_news" method="post" action="#" class="r-flex">
-						<input type="text" placeholder="Введите название новости" name="news title" class="inputshadow">
-						<textarea placeholder="Введите описание новости" class="inputshadow"></textarea>
-						<div class="add_news_controls r-flex">
-							<div class="add_news_controls_left">
-								<input type="checkbox" name="fixed" class="inputshadow"/>
-								<label for="fixed">Закрепить новость</label>
-								<input type="checkbox" name="public" class="inputshadow">
-								<label for="public">Публичная новость</label>
-							</div>
-							<div class="add_news_controls_right">
-								<input type="button" name="put image" value="Вставить картинку" class=""/>
-								<input type="button" name="put href" value="Вставить гиперссылку"/>
-								<input type="submit" name="submit news" value="Опубликовать"/>
+					<article class="add_news__top">
+						<a href="#">
+							<i class="fas fa-plus  fa-3x add_news_icon"></i>			
+						</a>
+						<span>
+							Добавить новость
+						</span>
+					</article>
+				</div>
+				<article class="card_news r-flex pinned" th:if="${lastNews != null}">
+					<img th:src="@{'/img/news/' + ${lastNews.id} + '/' + ${lastNews.pictureLink}}" alt="news foto">
+					<div class="card_news__body">
+						<div class="card_header card_header__impotant">
+							<h3 th:text="${lastNews.title}">
+							</h3>
+							<p th:text="${lastNews.fullText}">
+							</p>
+						</div>
+						<div class="card_news__controls r-flex">
+							<a href="#">
+								подробнее >
+							</a>
+							<div>
+								<a href="#">
+									Закрепить
+								</a>
+								<a href="#">
+									Редактировать
+								</a>
 							</div>
 						</div>
-					</form>
-				</div>
-				<article class="card_news r-flex" th:if="${lastNews != null}">
-					<input type="image" th:src="@{'/img/news/' + ${lastNews.id} + '/' + ${lastNews.pictureLink}}" alt="Фото">
-					<div class="card_header">
-						<h3 th:text="${lastNews.title}">
-						</h3>
-						<p th:text="${lastNews.fullText}">
-						</p>
 					</div>
-					<div class="card_news__date">
+					<div class="card_news__date  r-flex">
 						<p th:text="${lastNews.creationDate}">
 						</p>
 						<p>

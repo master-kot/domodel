@@ -76,7 +76,7 @@ public class NewsServiceImpl implements NewsService {
 
 
     @Override
-    //получение последней новости
+    //получение поcледней новости
     public News getLastNews() {
         List<News> newsList = getAllNews();
         if (!newsList.isEmpty()) {

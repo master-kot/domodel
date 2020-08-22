@@ -1,6 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,15 +14,11 @@ import java.security.Principal;
  */
 @Controller
 @RequestMapping("/contacts")
+@RequiredArgsConstructor
 public class ContactsController {
 
     // Сервис контактной информации компании
     private final ContactsService contactsService;
-
-    @Autowired
-    public ContactsController(ContactsService contactsService) {
-        this.contactsService = contactsService;
-    }
 
     /**
      * Перехват запроса страницы контактной информации

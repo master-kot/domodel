@@ -1,6 +1,7 @@
 package ru.geekbrains.domodel.controllers;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,12 +22,15 @@ import java.util.List;
  * Контроллер счетчиков показаний
  */
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/meters")
 @Secured({Roles.ROLE_ADMIN, Roles.ROLE_USER})
 public class MeterController {
 
+    // Сервис счетчиков
     private final MeterService meterService;
+
+    // Сервис уккаунтов
     private final AccountService accountService;
 
     @GetMapping("")

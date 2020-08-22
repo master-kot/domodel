@@ -17,9 +17,4 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
      * Найти список аккаунтов пользователя
      */
     List<Account> findAllByUser(User user);
-
-    /**
-     * Найти список аккаунтов пользователя по его логину
-     */
-    List<Account> findAllByUserUsername(String username);
 }
