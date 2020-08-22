@@ -38,7 +38,7 @@ public class Account {
 
     // Количество соток участка
     @Column(name = "acres_amount")
-    private Integer acresAmount;
+    private Double acresAmount;
 
     // Список счетчиков данного аккаунта
     @OneToMany(mappedBy = "account")

@@ -68,6 +68,10 @@ public class User {
     @Column(name = "photo_link")
     private String photoLink;
 
+    // Почтовый адрес
+    @Column(name = "address")
+    private String address;
+
     // Список лицевых счетов пользователя
     @OneToMany(mappedBy = "user")
     private Set<Account> accounts = new HashSet<>();

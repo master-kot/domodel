@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Статус отправки счета пользователю
   */
+@Getter
 @RequiredArgsConstructor
 public enum SendStatus {
 
@@ -14,7 +15,6 @@ public enum SendStatus {
     RECEIVED("Просмотрен пользователем"),
     CANCELED("Отменен администрацией");
 
-    @Getter
     // Описание статуса
     private final String description;
 }

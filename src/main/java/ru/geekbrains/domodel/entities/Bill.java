@@ -44,20 +44,10 @@ public class Bill {
     @Column(name = "total", nullable = false)
     private Double total;
 
-    // true для счета, подсчитанного автоматически, false если сумма к оплате введена вручную
-    @Column(name = "calculated", nullable = false)
-    private boolean calculated;
-
-    //TODO возможно есть лучший вариант
-    // Статус отправки счета пользователю
-    @Column(name = "bill_type")
+    // Тип платежного документа
+    @Column(name = "type")
     @Enumerated(EnumType.ORDINAL)
-    private BillType billType;
-
-    // Статус отправки счета пользователю
-    @Column(name = "send_status")
-    @Enumerated(EnumType.ORDINAL)
-    private SendStatus sendStatus;
+    private BillType type;
 
     // Статус платежа, изменяется председателем (бухгалтером)
     @Column(name = "payment_status", nullable = false)
@@ -65,10 +55,15 @@ public class Bill {
 
     // Ссылка на платежные реквизиты
     @ManyToOne
-    @JoinColumn(name = "requisites_id")
+    @JoinColumn(name = "requisites")
     private Requisites requisites;
 
     // Ссылка на калькуляцию (обоснование цены счета)
     @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
     private List<Calculation> calculations = new ArrayList<>();
+
+    // Не используется в MVP 0
+    // true для счета, подсчитанного автоматически, false если сумма к оплате введена вручную
+//    @Transient
+//    private boolean calculated;
 }
