@@ -52,7 +52,7 @@ public class News {
     private boolean pinned;
 
     // Указатель актуальности и видимости новости. Новость видна юзерам если true
-    @Column(name = "visible", nullable = true)
+    @Column(name = "visible", nullable = false)
     private boolean visible;
 
     // Ссылка на пользователя - автора данной новости

@@ -88,5 +88,10 @@ public interface NewsService {
      */
     List<News> getPinnedNews();
 
+    /**
+     *Закрепляем выбранную новость
+     *
+     */
+    void toPinnedNews(News news);
 
 }

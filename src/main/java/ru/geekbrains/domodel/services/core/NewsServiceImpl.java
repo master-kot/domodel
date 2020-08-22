@@ -6,6 +6,7 @@ import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.repositories.NewsRepository;
 import ru.geekbrains.domodel.services.api.NewsService;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -25,8 +26,10 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<News> getAllNews() {
-        return newsRepository.findAll();
+    public List<News> getAllNews() { //получаем отсортированный по дате (от свежих к старым) список всех новостей
+        List<News> list = newsRepository.findAll();
+        Collections.reverse(newsRepository.findAll());
+        return list;
     }
 
     @Override
@@ -37,9 +40,9 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public void deleteNewsById(Long id) {
-       //newsRepository.deleteById(id);
-        //удаленная новость сохраняется в БД
+       //удаляем новость, меняя ее видимость и удаляя ее из закрепленных
         getNewsById(id).setVisible(false);
+        getNewsById(id).setPinned(false);
     }
 
     // TODO через POST
@@ -71,28 +74,83 @@ public class NewsServiceImpl implements NewsService {
         return null;
     }
 
-    // TODO реализовать метод получение последней новости (убрать этот метод из главного контроллера)
+
     @Override
+    //получение последней новости
     public News getLastNews() {
-        List<News> newsList = newsRepository.findAll();
+        List<News> newsList = getAllNews();
         if (!newsList.isEmpty()) {
-            return newsList.get(newsList.size() - 1);
+            return newsList.get(0);
         }
         return null;
     }
 
-    // TODO реализовать метод получения списка актуальных новвостей + в начале закрепленные (не более 2) + пагинация
+    // TODO добавить пагинацию
     @Override
     public List<News> getAllVisibleNews() {
-        return null;
+        //список новостей актуальных новостей для зарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым
+        List<News> allNewsList =getAllNews();
+        List<News> pinnedNewsList =getPinnedNews();
+        List<News> newsList = null;
+        for (int i = 0; i < pinnedNewsList.size(); i++) { //добавляем закрпленные
+             newsList.add(pinnedNewsList.get(i));
+        }
+
+        for (int i = 0; i < allNewsList.size(); i++) { //добавляем остальные неудаленные новости
+            if (allNewsList.get(i).isVisible()&&!allNewsList.get(i).isPinned()) {
+                newsList.add(allNewsList.get(i));
+            }
+        }
+        return newsList;
     }
 
-    // TODO реализовать метод получения списка закрепленных новостей (2 штуки)
-    @Override
-    public List<News> getPinnedNews() {return null;}
 
-    // TODO реализовать метод получения списка новостей для незарегистрированных пользователей + пагинация
     @Override
-    public List<News> getPublicNews() {return null;}
+    public void toPinnedNews (News news) {
+        //Закрепляем выбранную новость,если закрепленных уже 2, то одну открепляем
+        List<News> pinnedNews = getPinnedNews();
+        if (pinnedNews.size()>1) pinnedNews.get(1).setPinned(false);
+        news.setPinned(true);
+    }
 
+
+    @Override
+    public List<News> getPinnedNews() {
+        //возвращает лист из 2 закрепленных новостей
+        List<News>allNewsList = getAllNews();
+        List<News> newsList=null;
+        byte counter = 0;
+        for (int i = 0; i <allNewsList.size() ; i++) {
+            if (allNewsList.get(i).isPinned()) {
+                newsList.add(allNewsList.get(i));
+                counter++;
+            }
+            if (counter==2) break;
+        }
+        return newsList;
+    }
+
+
+    @Override
+    public List<News> getPublicNews() {
+        //список новостей (10 штук) для незарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым
+        List<News> allNewsList =getAllNews();
+        List<News> pinnedNewsList =getPinnedNews();
+        List<News> newsList = null;
+        byte counter = 0;
+        for (int i = 0; i < pinnedNewsList.size(); i++) { //добавляем закрепленные, если они публичные
+            if (pinnedNewsList.get(i).isHidden()) {
+                newsList.add(pinnedNewsList.get(i));
+                counter++;
+            }
+        }
+        for (int i = 0; i < allNewsList.size(); i++) { //добавляем обычные новости до 10, если они видимы, публичны и незакреплены
+            if (allNewsList.get(i).isHidden()&&allNewsList.get(i).isVisible()&&!allNewsList.get(i).isPinned()) {
+                newsList.add(allNewsList.get(i));
+                counter++;
+            }
+            if (counter==10) break;
+        }
+        return newsList;
+    }
 }
