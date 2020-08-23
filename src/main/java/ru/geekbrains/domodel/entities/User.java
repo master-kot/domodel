@@ -60,7 +60,7 @@ public class User {
     @Column(name = "middle_name")
     private String middleName;
 
-    // Адрес электроной почты
+    // Адрес электронной почты
     @Column(name = "email", unique = true)
     private String email;
 

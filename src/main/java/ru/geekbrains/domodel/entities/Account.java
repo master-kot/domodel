@@ -44,7 +44,7 @@ public class Account {
     @OneToMany(mappedBy = "account")
     private List<Meter> meters = new ArrayList<>();
 
-    // Список счетов, выставленных для данного аккаунта
+    // Список платежных документов (счетов), выставленных для данного аккаунта
     @OneToMany(mappedBy = "account")
     private List<Bill> bills = new ArrayList<>();
 }
