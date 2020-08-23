@@ -16,7 +16,7 @@ public interface RequisitesService {
     List<Requisites> getAllRequisites();
 
     /**
-     * Получить список реквизитов компании
+     * Получить реквизиты компании по типу платежа
      */
     Requisites getRequisitesByBillType(BillType billType);
 }
