@@ -3,6 +3,7 @@ package ru.geekbrains.domodel.services.core;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.News;
+import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.repositories.NewsRepository;
 import ru.geekbrains.domodel.services.api.NewsService;
 
@@ -28,7 +29,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public List<News> getAllNews() { //получаем отсортированный по дате (от свежих к старым) список всех новостей
         List<News> list = newsRepository.findAll();
-        Collections.reverse(newsRepository.findAll());
+        Collections.reverse(list);
         return list;
     }
 
@@ -45,14 +46,20 @@ public class NewsServiceImpl implements NewsService {
         getNewsById(id).setPinned(false);
     }
 
-    // TODO через POST
+
     @Override
-    public News saveNews (News news) {
-        //TODO прописсать поля, сооздающиеся автоматически (дата, автор, visible); учесть, что закрепленных может быть только 2
-        return newsRepository.save(news);
+    public News createNews  (String title,
+                           String fullText,
+                           boolean hidden,
+                           boolean pinned,
+                           String pictureLink,
+                             User user) {
+
+    News newNews = new News(title, fullText, hidden, pinned, pictureLink, user);
+    return newsRepository.save(newNews);
     }
 
-    // TODO через POST
+    // TODO через POST   сооздающиеся автоматически (дата, автор, visible); учесть, что закрепленных может быть только 2
     @Override
     public News changeNews (Long id,
                             String title,
@@ -85,7 +92,7 @@ public class NewsServiceImpl implements NewsService {
         return null;
     }
 
-    // TODO добавить пагинацию
+    // TODO добавить пагинацию, в сигнатуру пойдет юзер и разделение возврата по доступу
     @Override
     public List<News> getAllVisibleNews() {
         //список новостей актуальных новостей для зарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым

@@ -1,6 +1,7 @@
 package ru.geekbrains.domodel.services.api;
 
 import ru.geekbrains.domodel.entities.News;
+import ru.geekbrains.domodel.entities.User;
 
 import java.util.Date;
 import java.util.List;
@@ -33,12 +34,22 @@ public interface NewsService {
     void deleteNewsById(Long id);
 
     /**
-     * Сохранить новость
+     * Cоздать новость
      *
-     * @param news новость, отдаваемая в репозиторий для сохранения
+
+     * @param title заголовок новости
+     * @param fullText полный текст новости
+     * @param hidden видима ли новость
+     * @param pinned закреплена ли новость
+     * @param pictureLink ссылка на картинку новости
      * @return новость, сохраненная в репозитории
      */
-    News saveNews (News news);
+    News createNews  (String title,
+                      String fullText,
+                      boolean hidden,
+                      boolean pinned,
+                      String pictureLink,
+                      User user);
 
     /**
      * Изменить новость

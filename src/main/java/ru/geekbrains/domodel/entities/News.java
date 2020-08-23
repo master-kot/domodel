@@ -17,6 +17,22 @@ import java.util.Date;
 @Table(name = "news")
 public class News {
 
+    public News(String title,
+                String fullText,
+                boolean hidden,
+                boolean pinned,
+                String pictureLink,
+                User author_id) {
+        creationDate = new Date();
+        this.title = title;
+        this.fullText = fullText;
+        this.hidden = hidden;
+        this.pinned = pinned;
+        this.pictureLink = pictureLink;
+        this.authorId = author_id;
+        this.visible = true;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
