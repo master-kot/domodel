@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Сущность тарифа
+ * Сущность тарифа для
  */
 @Entity
 @Getter
@@ -21,7 +21,7 @@ public class Tariff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     // Описание данного тарифа (для более понятного выбора тарифа при назначении на счетчик)
     @Column(name = "description", nullable = false)
@@ -35,8 +35,8 @@ public class Tariff {
     @OneToMany(mappedBy = "tariff")
     private Set<Meter> meters = new HashSet<>();
 
-    // Значение по умолчанию, которое устанавливается в качестве показания за период,
-    // если показание не было заполнено
-    @Column(name = "default_increase_value")
-    private Double defaultIncreaseValue;
+    // Значение по умолчанию, устанавливается в качестве показания за период, если показание не было подано
+    // НЕ ИСПОЛЬЗУЕТСЯ В MVP 0
+//    @Column(name = "default_increase_value")
+//    private Double defaultIncreaseValue;
 }

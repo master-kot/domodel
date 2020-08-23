@@ -58,6 +58,11 @@ public class News {
     @Column(name = "picture_link")
     private String pictureLink;
 
+    // Ссылка на пользователя - автора данной новости
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private User authorId;
+
     // Указатель публичности новости. Если false, новость отображается для всех посетителей,
     // Если true, новость отображается только для зарегистрированных посетителей
     @Column(name = "hidden", nullable = false)
@@ -70,9 +75,4 @@ public class News {
     // Указатель актуальности и видимости новости. Новость видна юзерам если true
     @Column(name = "visible", nullable = false)
     private boolean visible;
-
-    // Ссылка на пользователя - автора данной новости
-    @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false)
-    private User authorId;
 }

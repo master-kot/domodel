@@ -1,7 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +12,7 @@ import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Bill;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.UserRepresentation;
+import ru.geekbrains.domodel.entities.constants.BillType;
 import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.BillService;
 import ru.geekbrains.domodel.services.api.MeterService;
@@ -59,11 +59,15 @@ public class ProfileController {
             Account account = accounts.get(0);
             model.addAttribute("account", account);
             // TODO возможно лучше все остальные данные сразу подтягивать через аккаунт
-            model.addAttribute("calculatedBills", billService.getAllBillsByAccount(account)
-                    .stream().filter(Bill::isCalculated).collect(Collectors.toList()));
-            model.addAttribute("fixedBills", billService.getAllBillsByAccount(account)
-                    .stream().filter(b -> !b.isCalculated()).collect(Collectors.toList()));
-            // TODO еще здесь должны быть показания счетчиков
+            List<Bill> billList = billService.getAllBillsByAccount(account);
+            model.addAttribute("calculatedBills", billList
+                    .stream().filter(b -> b.getType() == BillType.MEMBERSHIP_FEE_CALCULATED ||
+                            b.getType() == BillType.OTHER_FEE_CALCULATED ).collect(Collectors.toList()));
+            model.addAttribute("fixedBills", billList
+                    .stream().filter(b -> b.getType() == BillType.MEMBERSHIP_FEE_FIXED ||
+                            b.getType() == BillType.OTHER_FEE_FIXED).collect(Collectors.toList()));
+            model.addAttribute("meterBills", billList
+                    .stream().filter(b -> b.getType() == BillType.METERS).collect(Collectors.toList()));
             model.addAttribute("meters", meterService.getAllMetersByAccount(account));
         } else {
             model.addAttribute("calculatedBills", new ArrayList<>());
