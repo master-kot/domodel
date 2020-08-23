@@ -21,7 +21,7 @@ public class Tariff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     // Описание данного тарифа (для более понятного выбора тарифа при назначении на счетчик)
     @Column(name = "description", nullable = false)
@@ -37,6 +37,6 @@ public class Tariff {
 
     // Значение по умолчанию, устанавливается в качестве показания за период, если показание не было подано
     // НЕ ИСПОЛЬЗУЕТСЯ В MVP 0
-//    @Transient
+//    @Column(name = "default_increase_value")
 //    private Double defaultIncreaseValue;
 }

@@ -58,7 +58,7 @@ public class BillServiceImpl implements BillService {
         bill.setAccount(account);
         bill.setCreationDate(new Date());
         bill.setTarget("Заглушка target");
-        // TODO брать реквизиты нужно с сервиса реквизитов в зависимости что это за счет
+        // TODO читаем алгоритм формирования счета
         BillType billType = BillType.METERS;
         bill.setRequisites(requisitesService.getRequisitesByBillType(billType));
 
@@ -69,18 +69,18 @@ public class BillServiceImpl implements BillService {
             if (meterDataList.size() > 2) {
                 MeterData meterDataPrev = meterDataList.get(meterDataList.size() - 2);
                 MeterData meterDataCurrent = meterDataList.get(meterDataList.size() - 1);
-                // TODO пока расчет платежа если показания не поданы можно закомментировать,
-                // НО НЕ УДАЛЯТЬ ЭТО БУДЕТ РЕАЛИЗОВАНО В MVP 1!!!
-                // TODO нужна логика другая, на основе значений defaultIncreaseValue указанных в сущности Tariff
-                // если показания не обнавлялись больше 30 дней поставить посчитать по среднему (по умолчанию)
+                // TODO пока расчет платежа если показания не поданы можно закомментировать.
+                // Логика автоматического рассчета текущих показаний на основе средних значений defaultIncreaseValue,
+                // указанных в сущности Tariff для случаев, когда показания не подавались больше 30 дней,
+                // будет реализована В MVP 1!!!
                 if ((new Date().getTime() - meterDataCurrent.getCreationDate().getTime()) / (24 * 60 * 60 * 1000) > 30) {
                     meterDataCurrent = new MeterData();
                     meterDataCurrent.setCreationDate(new Date());
 //                    meterDataCurrent.setValue(meter.getTariff().getDefaultIncreaseValue());
                     meterDataCurrent.setMeter(meter);
-                    calculation.setCalculated(false);
+//                    calculation.setCalculated(false);
                 }
-                else calculation.setCalculated(true);
+//                else calculation.setCalculated(true);
                 calculation.setPreviousData(meterDataPrev);
                 calculation.setCurrentData(meterDataCurrent);
                 calculation.setAmount(meterDataCurrent.getValue() - meterDataPrev.getValue());

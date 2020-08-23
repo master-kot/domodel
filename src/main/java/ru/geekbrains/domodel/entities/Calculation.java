@@ -52,6 +52,6 @@ public class Calculation {
 
     // НЕ ИСПОЛЬЗУЕТСЯ В MVP 0
     // true если калькуляция рассчитана по показаниям, false - если по нормативному значению
-    @Transient
-    private boolean calculated;
+//    @Column(name = "calculated")
+//    private boolean calculated;
 }

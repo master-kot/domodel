@@ -64,6 +64,6 @@ public class Bill {
 
     // Не используется в MVP 0
     // true для счета, подсчитанного автоматически, false если сумма к оплате введена вручную
-    @Transient
-    private boolean calculated;
+//    @Column(name = "calculated", nullable = false)
+//    private boolean calculated;
 }

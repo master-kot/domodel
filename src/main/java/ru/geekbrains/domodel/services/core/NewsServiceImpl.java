@@ -1,12 +1,11 @@
 package ru.geekbrains.domodel.services.core;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.repositories.NewsRepository;
 import ru.geekbrains.domodel.services.api.NewsService;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,15 +13,11 @@ import java.util.Optional;
  * Реализация сервиса новостей
  */
 @Service
+@RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
 
     // Репозиторий новостей
     private final NewsRepository newsRepository;
-
-    @Autowired
-    public NewsServiceImpl(NewsRepository newsRepository) {
-        this.newsRepository = newsRepository;
-    }
 
     @Override
     public List<News> getAllNews() {

@@ -32,7 +32,7 @@ public class Meter {
     @Column(name = "serial_number", nullable = false)
     private Integer serialNumber;
 
-    // Дата последней поверки счетчика
+    // Дата поверки счетчика
     @Column(name = "check_date")
     private Date checkDate;
 

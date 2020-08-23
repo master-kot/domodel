@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.services.core;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
  * Сервис пользователей
  */
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     // Репозиторий пользователей
@@ -28,15 +30,6 @@ public class UserServiceImpl implements UserService {
 
     // Сервис шифрования паролей
     private final BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository,
-                           AuthorityRepository authorityRepository,
-                           BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.authorityRepository = authorityRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public User getUserById(Long userId) {
