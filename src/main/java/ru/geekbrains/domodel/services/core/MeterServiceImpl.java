@@ -1,6 +1,7 @@
 package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
@@ -18,6 +19,7 @@ import java.util.Optional;
 /**
  * Реализация сервиса счетчиков показаний
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MeterServiceImpl implements MeterService {
@@ -98,9 +100,24 @@ public class MeterServiceImpl implements MeterService {
         return new ArrayList<>();
     }
 
-    //TODO реализовать генерацию показаний для счетчиков с неподанными в данном периоде показаниями
     @Override
     public void generateDefaultMeterData() {
+        LocalDate date = LocalDate.now();
+        int month = date.getMonthValue();
+        List<Meter> meters = getAllMeters();
+
+        if (!meters.isEmpty()) {
+            for (Meter meter : meters) {
+                if (getCurrentMeterDataByMeter(meter).isPresent()
+                        && getCurrentMeterDataByMeter(meter).get().getCreationDate().getMonth().getValue() == month) {
+                    log.info(String.format("показания %s уже поданны", meter));
+                } else {
+                    MeterData meterData = new MeterData(meter, date, meter.getTariff().getDefaultIncreaseValue(), true);
+                    meterDataRepository.save(meterData);
+                    log.info(String.format("новые показания для %s : %s", meter.getSerialNumber(), meterData));
+                }
+            }
+        }
     }
 
     @Override
