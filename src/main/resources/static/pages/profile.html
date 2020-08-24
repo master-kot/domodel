@@ -103,104 +103,181 @@
 		</header><!--header-->
 		<main >
 			<div class="container">
-				<div class="contacts_container">
-					<h1>
-						ООО “ДОМОДЕЛ” <a href="#">Редактировать</a>
-					</h1>
-					<form name="contacts" method="post" action="#">
-						<section class="contacts_section">
-							<h2 class="contact_header">
-								Контакты
-							</h2>
-							<article>
-								<div class="contact_address r-flex">
-									<label for="address">
-										Адрес:
-									</label>
-									<input type="text" name="address" value="Московская область, домодедовский район, пос. Новая надежда, д.1"/>
+				<div class="cabinet_container r-flex">
+					<section class="cabinet_personal">
+						<h2>
+							ЛИЧНЫЕ ДАННЫЕ
+						</h2>
+						<div class="cabinet_personal_line"></div>
+						<article>
+							<p class="cabinet_personal_item">
+								Фото:
+							</p>
+							<img src="../img/personal_page/myfoto.png" alt="user foto">
+							<p class="cabinet_personal_item">
+								Фамилия:
+							</p>
+							<p class="cabinet_personal_value" th:text="${user.secondName}">
+
+							</p>
+							<p class="cabinet_personal_item">
+								Имя:
+							</p>
+							<p class="cabinet_personal_value" th:text="${user.firstName}">
+
+							</p>
+							<p class="cabinet_personal_item">
+								№ участка (лицевого счета):
+							</p>
+							<select class="cabinet_personal_value select_yard" th:text="${account.houseNumber}">
+								<option th:each="category : ${accounts}"
+										th:value="${category}"
+										th:text="${category.description}">
+								</option>
+							</select>
+							<p class="cabinet_personal_item">
+								Кол-во соток:
+							</p>
+							<p class="cabinet_personal_value" th:text="${account.acresAmount}">
+
+							</p>
+						</article>
+						<div class="cabinet_personal_line"></div>
+						<a href="/profile/change">
+							редактировать
+						</a>
+					</section>
+					<section class="cabinet_general">
+						<!-- Tab links -->
+						<div class="tab r-flex">
+						  <button class="tablinks active" data-id="founds">Платёжи по счетчикам</button>
+						  <button class="tablinks" data-id="payments">Прочие платежи</button>
+						  <button class="tablinks" data-id="meters">Показания счётчиков</button>
+						</div>
+						<h2>
+							ПЛАТЕЖИ
+						</h2>
+						<p>
+							Информация о квитанциях по показаниям счетчиков:
+						</p>
+						<!-- Tab content -->
+						<div id="founds" class="tabcontent" style="display: block;">
+							<div class="found_container r-flex">
+								<article class="r-flex">
+									<p class="pay_day">
+										Дата квитанции
+									</p>
+									<p class="pay_description">
+										Назначение платежа
+									</p>
+									<p class="pay_amaunt">
+										Сумма к оплате
+									</p>
+									<p class="pay_amaunt">
+
+									</p>
+								</article>
+								<article class="r-flex" th:each="bill : ${calculatedBills}">
+									<p class="pay_day" th:text="${bill.creationDate}">
+
+									</p>
+									<p class="pay_description" th:text="${bill.target}">
+
+									</p>
+									<p class="pay_amaunt" th:text="${bill.total}">
+
+									</p>
+									<a th:href="@{'/profile/bills/' + ${account.id} + '/' + ${bill.id}}" >
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<div class="r-flex">
+									<a href="/profile/bills/">
+										Архив счетов
+									</a>
 								</div>
-							</article>
-							<article>
-								<div class="contact_phone r-flex">
-									<label for="phone">
-										Телефон:
-									</label>
-									<input name="phone" type="tel" value="8(999)3124578"/>
+							</div>
+						</div>
+
+						<div id="payments" class="tabcontent" >
+							<div class="found_container r-flex">
+								Информация о прочих квитанциях (фиксированные платежи):
+								<article class="r-flex">
+									<p class="pay_day">
+										Дата квитанции
+									</p>
+									<p class="pay_description">
+										Назначение платежа
+									</p>
+									<p class="pay_amaunt">
+										Сумма к оплате
+									</p>
+									<p class="pay_amaunt">
+
+									</p>
+								</article>
+								<article class="r-flex" th:each="bill : ${fixedBills}">
+									<p class="pay_day" th:text="${bill.creationDate}">
+
+									</p>
+									<p class="pay_description" th:text="${bill.target}">
+
+									</p>
+									<p class="pay_amaunt" th:text="${bill.total}">
+
+									</p>
+									<a th:href="@{'/profile/bills/' + ${account.id} + '/' + ${bill.id}}" >
+										КВИТАНЦИЯ
+									</a>
+								</article>
+								<div class="r-flex">
+									<a href="/profile/bills/">
+										Архив счетов
+									</a>
 								</div>
-							</article>
-							<article>
-								<div class="contact_mail r-flex">
-									<label for="email">
-										e-mail:
-									</label>
-									<input type="email" name="email" value="domodel@mail.ru">
+							</div>
+						</div>
+
+						<div id="meters" class="tabcontent">
+							<div class="found_container r-flex">
+								<h2>Информация о счетчиках:</h2>
+								<article class="r-flex">
+									<p class="pay_day">
+										Дата последней поверки счетчика
+									</p>
+									<p class="pay_description">
+										Тип счетчика
+									</p>
+									<p class="pay_amaunt">
+										Серийный номер счетчика
+									</p>
+									<p>
+										Посмотреть показания
+									</p>
+								</article>
+								<article class="r-flex" th:each="meter : ${meters}">
+									<p class="pay_day" th:text="${meter.checkDate}">
+
+									</p>
+									<p class="pay_description">
+										Однотарифный счётчик электроэнергии
+									</p>
+									<p class="pay_amaunt" th:text="${meter.serialNumber}">
+
+									</p>
+									<a th:href="@{'/profile/meters/' + ${meter.id}}" >
+										ПОКАЗАНИЯ
+									</a>
+								</article>
+								<div class="r-flex">
+									<a href="/profile/meters/">
+										Архив показаний
+									</a>
 								</div>
-							</article>
-						</section>
-						<section class="requisites_section">
-							<h2 class="requisites_header">
-								Реквизиты
-							</h2>
-							<article>
-								<h3 class="company_name">
-									ООО “ДОМОДЕЛ”
-								</h3>
-								<div class="requisites_details  r-flex">
-									
-									<label for="inn" class="inn">
-										ИНН:
-									</label>
-									<input type="number" name="inn" value="000000000001"/>
-								</div>
-							</article>
-							<article>
-								<div class="requisites_details  r-flex">
-									
-									<label for="kpp" class="kpp">
-										КПП:
-									</label>
-									<input type="number" name="kpp" value="000000000000">
-								</div>
-							</article>
-							<article>
-								<div class="requisites_details  r-flex">
-									
-									<label for="ogrn" class="ogrn">
-										ОГРН:
-									</label>
-									<input type="number" name="ogrn" value="0000000000000"/>
-								</div>
-							</article>
-							<article>
-								<div class="requisites_details  r-flex">
-									
-									<label for="account" class="account">
-										Р/С:
-									</label>
-									<input type="number" name="account" value="324493100000000024578"/>
-								</div>
-							</article>
-							<article>
-								<div class="requisites_details  r-flex">
-									
-									<label for="kc" class="kc">
-										К/С:
-									</label>
-									<input type="number" name="kc" value="89993100000000024578"/>
-								</div>
-							</article>
-							<article>
-								<div class="requisites_details r-flex">
-									
-									<label for="bic" class="bic">
-										БИК:
-									</label>
-									<input type="number" name="bic" value="000000000"/>
-								</div>
-							</article>
-						</section>
-					</form>
-				</div><!--contacts_container-->
+							</div>
+						</div>
+					</section>
+				</div><!--cabinet_container-->
 			</div><!--container-->
 		</main> <!--main-->
 		<div id="loginForm" class="modal">
@@ -217,8 +294,8 @@
 					<input type="text" id="username" name="username" placeholder="Номер телефона"/>
 					<input type="password" id="password" name="password" placeholder="Пароль"/>
 					<div class="login_controls r-flex">
-						<input type="submit" name="submit" value="Войти"/>
-						<input type="button" name="cancel" value="Отмена"/>
+						<input type="submit" name="submit" value="Войти"></input>
+						<input type="button" name="cancel" value="Отмена"></input>
 					</div>
 				</form>
 			</div>

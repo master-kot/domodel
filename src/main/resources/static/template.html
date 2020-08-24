@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head th:replace="layouts :: header(title)"></head>
+
+<body>
+
+<nav th:replace="layouts :: navbar(Home)"></nav>
+
+<div class="container">
+    <h1>Шаблон</h1>
+</div>
+<div th:replace="layouts :: footer"></div>
+</body>
+</html>

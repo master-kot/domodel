@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="../css/linearicons.css">
 	<link rel="stylesheet" href="../css/styles.css" />
+	<link href="../fontawesome/css/all.css" rel="stylesheet"> <!--load fontawesome all styles -->
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <title>Domodel</title>
@@ -42,7 +43,7 @@
 								</li>
 							</a>
 							<a href="/information/about">
-								<li>
+								<li>								
 									о нас
 								</li>
 							</a>
@@ -102,105 +103,71 @@
 			</div>
 		</header><!--header-->
 		<main >
-			<div class="container">
-				<div class="contacts_container">
-					<h1>
-						ООО “ДОМОДЕЛ” <a href="#">Редактировать</a>
-					</h1>
-					<form name="contacts" method="post" action="#">
-						<section class="contacts_section">
-							<h2 class="contact_header">
-								Контакты
-							</h2>
-							<article>
-								<div class="contact_address r-flex">
-									<label for="address">
-										Адрес:
-									</label>
-									<input type="text" name="address" value="Московская область, домодедовский район, пос. Новая надежда, д.1"/>
-								</div>
-							</article>
-							<article>
-								<div class="contact_phone r-flex">
-									<label for="phone">
-										Телефон:
-									</label>
-									<input name="phone" type="tel" value="8(999)3124578"/>
-								</div>
-							</article>
-							<article>
-								<div class="contact_mail r-flex">
-									<label for="email">
-										e-mail:
-									</label>
-									<input type="email" name="email" value="domodel@mail.ru">
-								</div>
-							</article>
-						</section>
-						<section class="requisites_section">
-							<h2 class="requisites_header">
-								Реквизиты
-							</h2>
-							<article>
-								<h3 class="company_name">
-									ООО “ДОМОДЕЛ”
-								</h3>
-								<div class="requisites_details  r-flex">
-									
-									<label for="inn" class="inn">
-										ИНН:
-									</label>
-									<input type="number" name="inn" value="000000000001"/>
-								</div>
-							</article>
-							<article>
-								<div class="requisites_details  r-flex">
-									
-									<label for="kpp" class="kpp">
-										КПП:
-									</label>
-									<input type="number" name="kpp" value="000000000000">
-								</div>
-							</article>
-							<article>
-								<div class="requisites_details  r-flex">
-									
-									<label for="ogrn" class="ogrn">
-										ОГРН:
-									</label>
-									<input type="number" name="ogrn" value="0000000000000"/>
-								</div>
-							</article>
-							<article>
-								<div class="requisites_details  r-flex">
-									
-									<label for="account" class="account">
-										Р/С:
-									</label>
-									<input type="number" name="account" value="324493100000000024578"/>
-								</div>
-							</article>
-							<article>
-								<div class="requisites_details  r-flex">
-									
-									<label for="kc" class="kc">
-										К/С:
-									</label>
-									<input type="number" name="kc" value="89993100000000024578"/>
-								</div>
-							</article>
-							<article>
-								<div class="requisites_details r-flex">
-									
-									<label for="bic" class="bic">
-										БИК:
-									</label>
-									<input type="number" name="bic" value="000000000"/>
-								</div>
-							</article>
-						</section>
-					</form>
-				</div><!--contacts_container-->
+			<div class="container content">
+				<div class="add_news">
+					<article class="add_news__top">
+						<span>
+							Архив новостей
+						</span>
+					</article>
+				</div>
+				<article class="card_news r-flex pinned">
+					<img src="../img/news/1/1.png" alt="news foto">
+					<div class="card_news__body">
+						<div class="card_header card_header__impotant">
+							<h3>
+								ВАЖНО!
+							</h3>
+							<p>
+								Очередное собрание состоиться 24 августа в 14:00
+							</p>
+						</div>
+						<div class="card_news__controls r-flex">
+							<a href="#">
+								подробнее >
+							</a>
+						</div>
+					</div>
+					<div class="card_news__date r-flex">
+						<p>
+							17.08.2020
+						</p>
+						<p>
+							<a href="#">
+								Удалить
+							</a>
+						</a>
+					</div>
+				</article>
+				<article class="card_news r-flex">
+					<img src="../img/news/1/1.png" alt="news foto">
+					<div class="card_news__body">
+						<div class="card_header">
+							<h3>
+								Новость какая-то
+							</h3>
+							<p>
+								Очередное собрание состоиться 24 августа в 14:00
+							</p>
+						</div>
+						<div class="card_news__controls r-flex">
+							<a href="#">
+								подробнее >
+							</a>
+						</div>
+					</div>
+					<div class="card_news__date r-flex">
+						<p>
+							17.08.2020
+						</p>
+						<p>
+							<a href="#">
+								Удалить
+							</a>
+						</a>
+					</div>
+				</article>
+				
 			</div><!--container-->
 		</main> <!--main-->
 		<div id="loginForm" class="modal">
@@ -217,8 +184,8 @@
 					<input type="text" id="username" name="username" placeholder="Номер телефона"/>
 					<input type="password" id="password" name="password" placeholder="Пароль"/>
 					<div class="login_controls r-flex">
-						<input type="submit" name="submit" value="Войти"/>
-						<input type="button" name="cancel" value="Отмена"/>
+						<input type="submit" name="submit" value="Войти"></input>
+						<input type="button" name="cancel" value="Отмена"></input>
 					</div>
 				</form>
 			</div>
@@ -234,6 +201,6 @@
 	  src="https://code.jquery.com/jquery-3.5.1.js"
 	  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 	  crossorigin="anonymous"></script>
-	<script src="../js/main.js"></script>
+	<script src="./js/main.js"></script>
 </body>
 </html>
