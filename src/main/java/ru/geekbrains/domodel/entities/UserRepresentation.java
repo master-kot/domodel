@@ -38,4 +38,6 @@ public class UserRepresentation {
     private String email;
 
     private String photoLink;
+
+    private String address;
 }

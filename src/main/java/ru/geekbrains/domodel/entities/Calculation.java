@@ -9,7 +9,7 @@ import javax.persistence.*;
 /**
  * Сущность калькуляции для каждой конкретной строки.
  * Является обоснованием цены в виде отдельной строки в счете за каждую отдельную услугу.
- * Все поля сущности рассчитываются модулем калькуляции.
+ * Все поля сущности заполняется при формировании платежного документа.
  */
 @Entity
 @Getter
@@ -50,7 +50,8 @@ public class Calculation {
     @Column(name = "cost")
     private Double cost;
 
+    // НЕ ИСПОЛЬЗУЕТСЯ В MVP 0
     // true если калькуляция рассчитана по показаниям, false - если по нормативному значению
-    @Column(name = "calculated")
-    private boolean calculated;
+//    @Column(name = "calculated")
+//    private boolean calculated;
 }

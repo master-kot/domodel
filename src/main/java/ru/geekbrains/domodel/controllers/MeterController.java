@@ -5,7 +5,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.domodel.entities.Account;
@@ -16,18 +15,21 @@ import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.MeterService;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
- * Контроллер счетчиков показаний.
- * В пути к счетчикам должен быть accountId.
+ * Контроллер счетчиков показаний
  */
 @Controller
-@AllArgsConstructor
-@RequestMapping("/{accountId}/meters")
+@RequiredArgsConstructor
+@RequestMapping("/meters")
 @Secured({Roles.ROLE_ADMIN, Roles.ROLE_USER})
 public class MeterController {
 
+    // Сервис счетчиков
     private final MeterService meterService;
+
+    // Сервис уккаунтов
     private final AccountService accountService;
 
     @GetMapping("")

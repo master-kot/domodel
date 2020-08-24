@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.services.core;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,15 +17,11 @@ import static ru.geekbrains.domodel.entities.constants.Messages.USER_NOT_FOUND;
  * Сервис, отвечающий за авторизацию пользователей
  */
 @Service
+@AllArgsConstructor
 public class UserAuthenticationServiceImpl implements UserDetailsService {
 
     // Репозиторий пользователей
     private final UserRepository userRepository;
-
-    @Autowired
-    public UserAuthenticationServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

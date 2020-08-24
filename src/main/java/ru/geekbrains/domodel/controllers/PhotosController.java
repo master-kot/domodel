@@ -1,6 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,15 +14,11 @@ import java.security.Principal;
  */
 @Controller
 @RequestMapping("/photos")
+@RequiredArgsConstructor
 public class PhotosController {
 
     // Сервис фотогалереи
     private final PhotosService photosService;
-
-    @Autowired
-    public PhotosController(PhotosService photosService) {
-        this.photosService = photosService;
-    }
 
     /**
      * Перехват запроса списка всех фотографий

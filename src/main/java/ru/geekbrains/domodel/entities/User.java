@@ -60,13 +60,17 @@ public class User {
     @Column(name = "middle_name")
     private String middleName;
 
-    // Адрес электроной почты
+    // Адрес электронной почты
     @Column(name = "email", unique = true)
     private String email;
 
     // Ссылка на адрес фотографии
     @Column(name = "photo_link")
     private String photoLink;
+
+    // Почтовый адрес
+    @Column(name = "address")
+    private String address;
 
     // Список лицевых счетов пользователя
     @OneToMany(mappedBy = "user")

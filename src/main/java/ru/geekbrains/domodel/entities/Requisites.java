@@ -42,7 +42,7 @@ public class Requisites {
     @Column(name = "ogrn")
     private Integer ogrn;
 
-    // Номер рассчетного счета
+    // Номер расчетного счета
     @Column(name = "bank_account")
     private String bankAccount;
 

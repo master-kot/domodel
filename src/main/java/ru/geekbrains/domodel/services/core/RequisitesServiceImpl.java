@@ -1,6 +1,6 @@
 package ru.geekbrains.domodel.services.core;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Requisites;
 import ru.geekbrains.domodel.entities.constants.BillType;
@@ -13,15 +13,11 @@ import java.util.List;
  * Реализация сервиса реквизитов компании
  */
 @Service
+@RequiredArgsConstructor
 public class RequisitesServiceImpl implements RequisitesService {
 
     // Репозиторий реквизитов
     private final RequisitesRepository requisitesRepository;
-
-    @Autowired
-    public RequisitesServiceImpl(RequisitesRepository requisitesRepository) {
-        this.requisitesRepository = requisitesRepository;
-    }
 
     @Override
     public List<Requisites> getAllRequisites() {
