@@ -71,6 +71,7 @@ public interface MeterService {
      * на основании заданного в сущности Тариф значения по умолчанию для этого типа счетчика.
      * Предусмотреть защиту от повторного запуска метода в одном расчетном месяце (периоде)
      */
+    @Deprecated
     void generateDefaultMeterData();
 
     List<MeterData> getAllDataByMeters(List<Meter> meters);

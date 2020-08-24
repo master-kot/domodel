@@ -102,22 +102,22 @@ public class MeterServiceImpl implements MeterService {
 
     @Override
     public void generateDefaultMeterData() {
-        LocalDate date = LocalDate.now();
-        int month = date.getMonthValue();
-        List<Meter> meters = getAllMeters();
-
-        if (!meters.isEmpty()) {
-            for (Meter meter : meters) {
-                if (getCurrentMeterDataByMeter(meter).isPresent()
-                        && getCurrentMeterDataByMeter(meter).get().getCreationDate().getMonth().getValue() == month) {
-                    log.info(String.format("показания %s уже поданны", meter));
-                } else {
-                    MeterData meterData = new MeterData(meter, date, meter.getTariff().getDefaultIncreaseValue(), true);
-                    meterDataRepository.save(meterData);
-                    log.info(String.format("новые показания для %s : %s", meter.getSerialNumber(), meterData));
-                }
-            }
-        }
+//        LocalDate date = LocalDate.now();
+//        int month = date.getMonthValue();
+//        List<Meter> meters = getAllMeters();
+//
+//        if (!meters.isEmpty()) {
+//            for (Meter meter : meters) {
+//                if (getCurrentMeterDataByMeter(meter).isPresent()
+//                        && getCurrentMeterDataByMeter(meter).get().getCreationDate().getMonth().getValue() == month) {
+//                    log.info(String.format("показания %s уже поданны", meter));
+//                } else {
+//                    MeterData meterData = new MeterData(meter, date, meter.getTariff().getDefaultIncreaseValue(), true);
+//                    meterDataRepository.save(meterData);
+//                    log.info(String.format("новые показания для %s : %s", meter.getSerialNumber(), meterData));
+//                }
+//            }
+//        }
     }
 
     @Override
