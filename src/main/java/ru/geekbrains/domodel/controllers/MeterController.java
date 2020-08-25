@@ -41,14 +41,6 @@ public class MeterController {
     public String getMetersPage(Model model, Principal principal) {
         List<Account> accounts = accountService.getAccountsByUserUserame(principal.getName());
         model.addAttribute("accounts", accounts);
-        List<MeterData> meterDataList = new ArrayList<>();
-        // TODO написать человеческий поиск всех показаний всех счетчиков аккаунта за один метод
-        for (Account account : accounts) {
-            for (Meter meter : account.getMeters()) {
-                meterDataList.addAll(meterService.getAllMeterDataByMeter(meter));
-            }
-        }
-        model.addAttribute("meterDatas", meterDataList);
         return "meters/meters";
     }
 

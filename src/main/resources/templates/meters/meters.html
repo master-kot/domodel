@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Meter</title>
@@ -67,19 +67,24 @@
     <table class="table table-hover">
         <thead class="thead-dark">
         <tr>
-            <th>Участок</th>
-            <th>Номер счетчика</th>
-            <th>Дата</th>
-            <th>Показатель</th>
+            <th width="100">Участок</th>
+            <th width="100">Номер счетчика</th>
+            <th width="100">Дата создания</th>
+            <th width="100">Показатель</th>
         </tr>
         </thead>
-        <tbody>
-        <tr th:each="meterData, iterator : ${meterDatas}">
-            <td th:text="${meterData.meter.account.houseNumber}"></td>
-            <td th:text="${meterData.meter.serialNumber}"></td>
-            <td th:text="${#temporals.format(meterData.creationDate, 'dd-MM-yyyy')}"></td>
-            <td th:text="${meterData.value}"></td>
-        </tr>
+        <tbody th:each="account, iterator : ${accounts}">
+        <tr th:each="meter, iterator : ${account.meters}">
+            <td colspan="4">
+                <table class="table table-hover">
+                    <tr th:each="meterData, iterator : ${meter.meterDatas}">
+                        <td th:text="${meterData.meter.account.houseNumber}" width="100"></td>
+                        <td th:text="${meterData.meter.serialNumber}" width="100"></td>
+                        <td th:text="${#temporals.format(meterData.creationDate, 'dd-MM-yyyy')}" width="100"></td>
+                        <td th:text="${meterData.value}" width="100"></td>
+                    </tr>
+                </table>
+            </td>
         </tbody>
     </table>
 </div>
