@@ -83,7 +83,7 @@
 				<div class="header_right">
 					<img src="../img/home_page/avatar.png" alt="avatar">
 					<div class="notlogged" th:if="${username == null}">
-						<a href="#" id="login">
+						<a href="#loginForm" id="login">
 							войти
 						</a><br>
 						<a href="/register" id="login">
@@ -121,17 +121,19 @@
 							<form name="contacts" method="post" action="#">
 								<div class="r-flex">
 									<label for="phone">Телефон:</label>
-									<input type="tel" name="phone" value="+7 (985) 358-12-54"/>
+									<input type="tel" name="phone" value="+7 (985) 358-12-54" disabled/>
 								</div>
 								<div class="r-flex">
 									<label for="email" >Электронная почта:</label>
-									<input type="email" name="email" value="dgkhsglirnlsdfi@yandex.ru"/>
+									<input type="email" name="email" value="dgkhsglirnlsdfi@yandex.ru" disabled/>
 								</div>
 								<div class="r-flex">
 									<label for="address" >Почтовый адрес:</label>
-									<textarea name="address">123534 г. Москва, ул. ЕНисейская, д. 10, корп. 1, кв. 23</textarea>
+									<textarea name="address" disabled>123534 г. Москва, ул. ЕНисейская, д. 10, корп. 1, кв. 23</textarea>
 								</div>
-								     
+								<input type="hidden" name="firstname" value="ВЛАДИМИР" />
+								<input type="hidden" name="lastname" value="ХАРЛАМОВ" />
+								<input type="hidden"/>
 							</form>
 						</section>
 						<section class="profile_address">
@@ -158,7 +160,7 @@
 						<i class="fas fa-pencil-alt"></i> 
 						Фото
 					</a>
-					<a href="#">
+					<a href="#" id="fio_link">
 						<i class="fas fa-pencil-alt"></i>
 						Фамилия и Имя
 					</a>
@@ -185,6 +187,26 @@
 				</aside>
 			</div><!--profile_container-->
 		</div><!--container-->
+		<div id="profile_fio" class="modal_profile">
+			<div class="r-flex">
+				<p id="close_modal fio" class="modal_close">
+					<a href="#" class="close_X" id="fio_close_X">
+						X
+					</a>
+				</p>
+				<h2>
+					Фамилия и Имя
+				</h2>
+				<form name="profile_fio" id="profile_form" action="#" method="post" class="r-flex">
+					<input type="text" id="firstname" name="firstname" value="ВЛАДИМИР"/>
+					<input type="text" id="lastname" name="lastname" value="ХАРЛАМОВ"/>
+					<div class="login_controls r-flex">
+						<input type="button" name="cancel" id="cancel_fio" value="Отменить"></input>
+						<input type="submit" name="submit" id="submit_fio" value="Сохранить"></input>
+					</div>
+				</form>
+			</div>
+		</div>
 		<div id="loginForm" class="modal">
 			<div class="r-flex">
 				<p id="close_modal" class="modal_close">

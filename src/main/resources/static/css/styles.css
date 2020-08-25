@@ -400,11 +400,29 @@ main{
 	z-index: 99999;
 	pointer-events: none;
 }
+.modal_profile{
+	display: none;
+	position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+	background-color: rgba(229, 229, 229, 0.9);
+	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+	z-index: 99999;
+	pointer-events: none;
+}
 .modal:target {
     /* display: block; */
     pointer-events: auto;
 }
-.modal > div{
+.modal_profile:target {
+    display: block; 
+    pointer-events: auto;
+}
+.modal > div,
+.modal_profile > div
+{
 	position: relative;
 	width: 400px;
 	height: 250px;
@@ -415,7 +433,9 @@ main{
 	flex-direction: column;
 	justify-content: flex-start;
 }
-.modal div h2{
+.modal div h2,
+.modal_profile div h2
+{
 	font-style: normal;
 	font-weight: bold;
 	font-size: 24px;
@@ -467,6 +487,26 @@ input[type="button"]:hover{
 	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
 	border-color: blue;
 }
+form[name="profile_fio"]{
+	flex-direction: column;
+	justify-content: space-around;
+	height: 200px;
+	padding: 40px 40px 20px 40px;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 22px;
+	text-align: center;
+	color: #404040;
+}
+form[name="profile_fio"] > input{
+	padding: 8px 7px;
+	background-color: #F4F4F4;
+	box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 5px;
+	border-color: #F4F4F4;
+}
+
 .login_controls{
 	height: 40px;
 	justify-content: center;
@@ -1081,7 +1121,11 @@ img[alt="member2"]{
 	line-height: 20px;
 	color: #000000;
 	border: 1px solid #FFF;
-	
+	 resize: none; 	
+}
+.profile_content form  input:disabled,
+.profile_content form  textarea:disabled{
+	background-color: #FFF;
 }
 .profile_content form  div:first-child input{
 	margin: 0 0 0 80px;
