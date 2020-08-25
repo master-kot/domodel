@@ -34,7 +34,7 @@ public class MeterController {
     // Сервис лицевых счетов
     private final AccountService accountService;
 
-    //
+    // Сервис тарифов
     private final TariffService tariffService;
 
     @GetMapping("")
@@ -42,12 +42,9 @@ public class MeterController {
         List<Account> accounts = accountService.getAccountsByUserUserame(principal.getName());
         model.addAttribute("accounts", accounts);
         List<MeterData> meterDataList = new ArrayList<>();
+        // TODO написать человеческий поиск всех показаний всех счетчиков аккаунта за один метод
         for (Account account : accounts) {
-            //TODO: исправить логику
-            model.addAttribute("meters", account.getMeters());
-            List<Meter> meterList = account.getMeters();
-            // TODO написать человеческий поиск всех показаний всех счетчиков аккаунта за один метод
-            for (Meter meter : meterList) {
+            for (Meter meter : account.getMeters()) {
                 meterDataList.addAll(meterService.getAllMeterDataByMeter(meter));
             }
         }

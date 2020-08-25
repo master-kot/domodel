@@ -18,32 +18,23 @@
 <div>
     <h2>Подать данные по счётчику</h2>
     <br>
-    <form th:action="@{/meters/submit}" method="post">
-        <div class="form-group">
-            <label>Участок
-                <select class="form-control">
-                    <option th:each="account : ${accounts}"
-                            th:value="${account.id}"
-                            th:text="${account.houseNumber}">
-                    </option>
-                </select>
-            </label>
-            <label>Счетчик
+        <div class="form-group" th:each="account : ${accounts}">
+            <form th:action="@{/meters/submit}" method="post">
+            <label th:text="'Участок: ' + ${account.houseNumber}"></label>
+            <label>Счетчик:
                 <select name="meter" class="form-control">
-                    <option th:each="meter, interator : ${meters}"
+                    <option th:each="meter, interator : ${account.meters}"
                             th:value="${meter.id}"
                             th:text="${meter.serialNumber}">
                     </option>
                 </select>
             </label>
-            <label for="value">Введите показания</label>
+            <label for="value">Введите показания: </label>
             <input type="number" class="form-control" id="value" name="value" placeholder="Показания">
             <!--                <small class="form-text text-danger" th:if="${param.error != null}">Введен некорректный телефон или пароль</small>-->
+                <button type="submit" class="btn btn-primary">Подать</button>
+            </form>
         </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Подать</button>
-        </div>
-    </form>
 </div>
 <hr>
 <div>
