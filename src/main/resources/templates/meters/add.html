@@ -28,6 +28,10 @@
                 <label for="model">Модель счетчика</label>
                 <input type="text" class="form-control" id="model" name="model" placeholder="Модель счетчика">
             </div>
+            <div class="form-group">
+                <label for="stringDate">Дата плановой поверки</label>
+                <input type="text" class="form-control" id="stringDate" name="stringDate" placeholder="Дата поверки" value="22-02-2022">
+            </div>
             <label>Тип счетчика
                 <select name="type" class="form-control">
                     <option th:each="category : ${T(ru.geekbrains.domodel.entities.constants.MeterType).values()}"
@@ -37,7 +41,7 @@
                 </select>
             </label>
             <label>Тариф
-                <select name="account" class="form-control">
+                <select name="tariff" class="form-control">
                     <option th:each="tariff : ${tariffs}"
                             th:value="${tariff.id}"
                             th:text="${tariff.description}">

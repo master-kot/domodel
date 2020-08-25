@@ -40,18 +40,18 @@ public class MeterController {
     @GetMapping("")
     public String getMetersPage(Model model, Principal principal) {
         List<Account> accounts = accountService.getAccountsByUserUserame(principal.getName());
+        model.addAttribute("accounts", accounts);
+        List<MeterData> meterDataList = new ArrayList<>();
         for (Account account : accounts) {
             //TODO: исправить логику
-            model.addAttribute("account", account);
             model.addAttribute("meters", account.getMeters());
             List<Meter> meterList = account.getMeters();
             // TODO написать человеческий поиск всех показаний всех счетчиков аккаунта за один метод
-            List<MeterData> meterDataList = new ArrayList<>();
             for (Meter meter : meterList) {
                 meterDataList.addAll(meterService.getAllMeterDataByMeter(meter));
             }
-            model.addAttribute("meterDatas", meterDataList);
         }
+        model.addAttribute("meterDatas", meterDataList);
         return "meters/meters";
     }
 

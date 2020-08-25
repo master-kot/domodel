@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Сущность новости для связи ее с БД
@@ -24,7 +24,7 @@ public class News {
 
     // Дата создания
     @Column(name = "creation_date", nullable = false)
-    private Date creationDate;
+    private LocalDate creationDate;
 
     // Заголовок новости
     @Column(name = "title", nullable = false)

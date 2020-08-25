@@ -6,6 +6,7 @@ import lombok.Setter;
 import ru.geekbrains.domodel.entities.constants.MeterType;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -35,9 +36,13 @@ public class Meter {
     // Модель счетчика
     private String model;
 
+    // TODO избавиться от строкового значения даты
+    @Transient
+    private String stringDate;
+
     // Дата плановой поверки счетчика
     @Column(name = "check_date")
-    private Date checkDate;
+    private LocalDate checkDate;
 
     // Тип счетчика, содержит его описание и единицу измерения
     @Column(name = "type")

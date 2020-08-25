@@ -4,11 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.geekbrains.domodel.entities.constants.BillType;
-import ru.geekbrains.domodel.entities.constants.SendStatus;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,7 +33,7 @@ public class Bill {
 
     // Дата создания
     @Column(name = "creation_date", nullable = false)
-    private Date creationDate;
+    private LocalDate creationDate;
 
     // Назначение платежа
     @Column(name = "target", nullable = false)

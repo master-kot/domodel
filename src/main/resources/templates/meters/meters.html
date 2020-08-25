@@ -59,12 +59,12 @@
             <th>Рассчетный тариф</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody th:each="account : ${accounts}">
         <tr th:each="meter, iterator : ${account.meters}">
             <td th:text="${meter.account.houseNumber}"></td>
             <td th:text="${meter.serialNumber}"></td>
             <td th:text="${meter.model}"></td>
-            <td th:text="${#dates.format(meter.checkDate, 'dd-MM-yyyy')}"></td>
+            <td th:text="${#temporals.format(meter.checkDate, 'dd-MM-yyyy')}"></td>
             <td th:text="${meter.type.description}"></td>
             <td th:text="${meter.tariff.description}"></td>
         </tr>
@@ -86,7 +86,7 @@
         <tr th:each="meterData, iterator : ${meterDatas}">
             <td th:text="${meterData.meter.account.houseNumber}"></td>
             <td th:text="${meterData.meter.serialNumber}"></td>
-            <td th:text="${#dates.format(meterData.creationDate, 'dd-MM-yyyy')}"></td>
+            <td th:text="${#temporals.format(meterData.creationDate, 'dd-MM-yyyy')}"></td>
             <td th:text="${meterData.value}"></td>
         </tr>
         </tbody>
