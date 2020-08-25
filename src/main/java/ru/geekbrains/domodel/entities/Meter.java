@@ -32,6 +32,9 @@ public class Meter {
     @Column(name = "serial_number", nullable = false)
     private Integer serialNumber;
 
+    @Column(name = "model", length = 50)
+    private String model;
+
     // Дата поверки счетчика
     @Column(name = "check_date")
     private Date checkDate;
