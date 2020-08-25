@@ -30,9 +30,12 @@ public class Meter {
 
     // Серийный номер счетчика
     @Column(name = "serial_number", nullable = false)
-    private Integer serialNumber;
+    private String serialNumber;
 
-    // Дата поверки счетчика
+    // Модель счетчика
+    private String model;
+
+    // Дата плановой поверки счетчика
     @Column(name = "check_date")
     private Date checkDate;
 
@@ -41,7 +44,7 @@ public class Meter {
     @Enumerated(EnumType.ORDINAL)
     private MeterType type;
 
-    // Ссылка на рассчетный тариф для счетчика
+    // Ссылка на расчетный тариф для счетчика
     @ManyToOne
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;

@@ -24,7 +24,7 @@
                 <select class="form-control">
                     <option th:each="account : ${accounts}"
                             th:value="${account.id}"
-                            th:text="${account.getHouseNumber()}">
+                            th:text="${account.houseNumber}">
                     </option>
                 </select>
             </label>
@@ -32,12 +32,12 @@
                 <select name="meter" class="form-control">
                     <option th:each="meter, interator : ${meters}"
                             th:value="${meter.id}"
-                            th:text="${meter.meterNumber}">
+                            th:text="${meter.serialNumber}">
                     </option>
                 </select>
             </label>
-            <label for="amount">Введите показания</label>
-            <input type="number" class="form-control" id="amount" name="amount" placeholder="Показания">
+            <label for="value">Введите показания</label>
+            <input type="number" class="form-control" id="value" name="value" placeholder="Показания">
             <!--                <small class="form-text text-danger" th:if="${param.error != null}">Введен некорректный телефон или пароль</small>-->
         </div>
         <div class="form-group">
@@ -46,6 +46,31 @@
     </form>
 </div>
 <hr>
+<div>
+    <h2>Список счетчиков</h2>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Участок</th>
+            <th>Серийный номер </th>
+            <th>Модель счетчика</th>
+            <th>Дата плановой поверки</th>
+            <th>Тип счетчика показаний</th>
+            <th>Рассчетный тариф</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="meter, iterator : ${account.meters}">
+            <td th:text="${meter.account.houseNumber}"></td>
+            <td th:text="${meter.serialNumber}"></td>
+            <td th:text="${meter.model}"></td>
+            <td th:text="${#dates.format(meter.checkDate, 'dd-MM-yyyy')}"></td>
+            <td th:text="${meter.type.description}"></td>
+            <td th:text="${meter.tariff.description}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <div>
     <h2>Последние показания</h2>
     <table class="table table-hover">
@@ -59,11 +84,10 @@
         </thead>
         <tbody>
         <tr th:each="meterData, iterator : ${meterDatas}">
-            <!--/*@thymesVar id="meterData" type="ru.geekbrains.domodel.entities.MeterData"*/-->
             <td th:text="${meterData.meter.account.houseNumber}"></td>
-            <td th:text="${meterData.meter.meterNumber}"></td>
+            <td th:text="${meterData.meter.serialNumber}"></td>
             <td th:text="${#dates.format(meterData.creationDate, 'dd-MM-yyyy')}"></td>
-            <td th:text="${meterData.amount}"></td>
+            <td th:text="${meterData.value}"></td>
         </tr>
         </tbody>
     </table>
