@@ -5,13 +5,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="../css/linearicons.css">
 	<link rel="stylesheet" href="../css/styles.css" />
+	<link href="../fontawesome/css/all.css" rel="stylesheet"> <!--load fontawesome all styles -->																						 
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <title>Domodel</title>
 </head>
 <body>
 	<div class="wrapper">
-		<div class="top">
+		<div class="top gradient_profile">
 		<header>
 			<div class="container r-flex">
 				<div class="header_left">
@@ -101,185 +102,89 @@
 				</div>
 			</div>
 		</header><!--header-->
-		<main >
-			<div class="container">
-				<div class="cabinet_container r-flex">
-					<section class="cabinet_personal">
-						<h2>
-							ЛИЧНЫЕ ДАННЫЕ
-						</h2>
-						<div class="cabinet_personal_line"></div>
-						<article>
-							<p class="cabinet_personal_item">
-								Фото:
-							</p>
-							<img src="../img/personal_page/myfoto.png" alt="user foto">
-							<p class="cabinet_personal_item">
-								Фамилия:
-							</p>
-							<p class="cabinet_personal_value" th:text="${user.secondName}">
-
-							</p>
-							<p class="cabinet_personal_item">
-								Имя:
-							</p>
-							<p class="cabinet_personal_value" th:text="${user.firstName}">
-
-							</p>
-							<p class="cabinet_personal_item">
-								№ участка (лицевого счета):
-							</p>
-							<select class="cabinet_personal_value select_yard" th:text="${account.houseNumber}">
-								<option th:each="category : ${accounts}"
-										th:value="${category}"
-										th:text="${category.description}">
-								</option>
-							</select>
-							<p class="cabinet_personal_item">
-								Кол-во соток:
-							</p>
-							<p class="cabinet_personal_value" th:text="${account.acresAmount}">
-
-							</p>
-						</article>
-						<div class="cabinet_personal_line"></div>
-						<a href="/profile/change">
-							редактировать
-						</a>
-					</section>
-					<section class="cabinet_general">
-						<!-- Tab links -->
-						<div class="tab r-flex">
-						  <button class="tablinks active" data-id="founds">Платёжи по счетчикам</button>
-						  <button class="tablinks" data-id="payments">Прочие платежи</button>
-						  <button class="tablinks" data-id="meters">Показания счётчиков</button>
-						</div>
-						<h2>
-							ПЛАТЕЖИ
-						</h2>
-						<p>
-							Информация о квитанциях по показаниям счетчиков:
-						</p>
-						<!-- Tab content -->
-						<div id="founds" class="tabcontent" style="display: block;">
-							<div class="found_container r-flex">
-								<article class="r-flex">
-									<p class="pay_day">
-										Дата квитанции
-									</p>
-									<p class="pay_description">
-										Назначение платежа
-									</p>
-									<p class="pay_amaunt">
-										Сумма к оплате
-									</p>
-									<p class="pay_amaunt">
-
-									</p>
-								</article>
-								<article class="r-flex" th:each="bill : ${calculatedBills}">
-									<p class="pay_day" th:text="${bill.creationDate}">
-
-									</p>
-									<p class="pay_description" th:text="${bill.target}">
-
-									</p>
-									<p class="pay_amaunt" th:text="${bill.total}">
-
-									</p>
-									<a th:href="@{'/profile/bills/' + ${account.id} + '/' + ${bill.id}}" >
-										КВИТАНЦИЯ
-									</a>
-								</article>
+		<div class="container">
+			<div class="profile_container r-flex">
+				<main class="r-flex">
+					<h1>
+						ПРОФИЛЬ
+					</h1>
+					<div></div>
+					<img src="../img/profile_page/avatar.png" alt="avatar" />
+					<h2>
+						ВЛАДИМИР ХАРЛАМОВ
+					</h2>
+					<div class="profile_content r-flex">
+						<section class="contacts_data">
+							<h3>
+								Контактные данные:
+							</h3>
+							<form name="contacts" method="post" action="#">
 								<div class="r-flex">
-									<a href="/profile/bills/">
-										Архив счетов
-									</a>
+									<label for="phone">Телефон:</label>
+									<input type="tel" name="phone" value="+7 (985) 358-12-54"/>
 								</div>
-							</div>
-						</div>
-
-						<div id="payments" class="tabcontent" >
-							<div class="found_container r-flex">
-								Информация о прочих квитанциях (фиксированные платежи):
-								<article class="r-flex">
-									<p class="pay_day">
-										Дата квитанции
-									</p>
-									<p class="pay_description">
-										Назначение платежа
-									</p>
-									<p class="pay_amaunt">
-										Сумма к оплате
-									</p>
-									<p class="pay_amaunt">
-
-									</p>
-								</article>
-								<article class="r-flex" th:each="bill : ${fixedBills}">
-									<p class="pay_day" th:text="${bill.creationDate}">
-
-									</p>
-									<p class="pay_description" th:text="${bill.target}">
-
-									</p>
-									<p class="pay_amaunt" th:text="${bill.total}">
-
-									</p>
-									<a th:href="@{'/profile/bills/' + ${account.id} + '/' + ${bill.id}}" >
-										КВИТАНЦИЯ
-									</a>
-								</article>
 								<div class="r-flex">
-									<a href="/profile/bills/">
-										Архив счетов
-									</a>
+									<label for="email" >Электронная почта:</label>
+									<input type="email" name="email" value="dgkhsglirnlsdfi@yandex.ru"/>
 								</div>
-							</div>
-						</div>
-
-						<div id="meters" class="tabcontent">
-							<div class="found_container r-flex">
-								<h2>Информация о счетчиках:</h2>
-								<article class="r-flex">
-									<p class="pay_day">
-										Дата последней поверки счетчика
-									</p>
-									<p class="pay_description">
-										Тип счетчика
-									</p>
-									<p class="pay_amaunt">
-										Серийный номер счетчика
-									</p>
-									<p>
-										Посмотреть показания
-									</p>
-								</article>
-								<article class="r-flex" th:each="meter : ${meters}">
-									<p class="pay_day" th:text="${meter.checkDate}">
-
-									</p>
-									<p class="pay_description">
-										Однотарифный счётчик электроэнергии
-									</p>
-									<p class="pay_amaunt" th:text="${meter.serialNumber}">
-
-									</p>
-									<a th:href="@{'/profile/meters/' + ${meter.id}}" >
-										ПОКАЗАНИЯ
-									</a>
-								</article>
 								<div class="r-flex">
-									<a href="/profile/meters/">
-										Архив показаний
-									</a>
+									<label for="address" >Почтовый адрес:</label>
+									<textarea name="address">123534 г. Москва, ул. ЕНисейская, д. 10, корп. 1, кв. 23</textarea>
 								</div>
-							</div>
-						</div>
-					</section>
-				</div><!--cabinet_container-->
-			</div><!--container-->
-		</main> <!--main-->
+								     
+							</form>
+						</section>
+						<section class="profile_address">
+							<h3>
+								Мои адреса:
+							</h3>
+							<p>
+								1. СНТ "Юбилейный" МО, Ногинский район поселок им. Воровского,
+							</p>
+							<span>
+								участок №28 - площадь участка: 6,28 соток.
+							</span>
+							<p>
+								2. СНТ "Юбилейный" МО, Ногинский район поселок им. Воровского,
+							</p>
+							<span>
+								участок №29 - площадь участка: 7,15 соток.
+							</span>
+						</section>
+					</div>
+				</main>
+				<aside class="r-flex">
+					<a href="#">
+						<i class="fas fa-pencil-alt"></i> 
+						Фото
+					</a>
+					<a href="#">
+						<i class="fas fa-pencil-alt"></i>
+						Фамилия и Имя
+					</a>
+					<a href="#">
+						<i class="fas fa-pencil-alt"></i>
+						Телефон
+					</a>
+					<a href="#">
+						<i class="fas fa-pencil-alt"></i>
+						Электронная почта
+					</a>
+					<a href="#">
+						<i class="fas fa-pencil-alt"></i>
+						Почтовый адрес
+					</a>
+					<a href="#">
+						<i class="fas fa-pencil-alt"></i>
+						Обо мне
+					</a>
+					<a href="#">
+						<i class="fas fa-pencil-alt"></i>
+						Сменить пароль
+					</a>
+				</aside>
+			</div><!--profile_container-->
+		</div><!--container-->
 		<div id="loginForm" class="modal">
 			<div class="r-flex">
 				<p id="close_modal" class="modal_close">
