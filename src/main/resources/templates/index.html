@@ -114,17 +114,20 @@
 						</span>
 					</article>
 				</div>
-				<article class="card_news r-flex pinned" th:if="${lastNews != null}">
-					<img th:src="@{'/img/news/' + ${lastNews.id} + '/' + ${lastNews.pictureLink}}" alt="news foto">
+				<!--/*@thymesVar id="allVisibleNews" type="ru.geekbrains.domodel.entities.News"*/-->
+				<span th:if="${relevantNews.size() == 0}">Новостей пока нет</span>
+				<tr th:each="news : ${relevantNews}">
+				<article class="card_news r-flex pinned">
+					<img th:src="@{'/img/news/' + ${news.id} + '/' + ${news.pictureLink}}" alt="news foto">
 					<div class="card_news__body">
 						<div class="card_header card_header__impotant">
-							<h3 th:text="${lastNews.title}">
+							<h3 th:text="${news.title}">
 							</h3>
-							<p th:text="${lastNews.fullText}">
+							<p th:text="${news.fullText}">
 							</p>
 						</div>
 						<div class="card_news__controls r-flex">
-							<a href="#">
+							<a href="/news/news_single">
 								подробнее >
 							</a>
 							<div>
@@ -138,7 +141,7 @@
 						</div>
 					</div>
 					<div class="card_news__date  r-flex">
-						<p th:text="${lastNews.creationDate}">
+						<p th:text="${news.creationDate}">
 						</p>
 						<p>
 							<a href="#">
@@ -147,6 +150,7 @@
 						</a>
 					</div>
 				</article>
+				</tr>
 				<p class="news_archive">
 					<a href="/news" >
 						архив новостей

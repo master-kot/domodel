@@ -1,6 +1,7 @@
 package ru.geekbrains.domodel.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,11 +27,11 @@ public class NewsController {
      * Перехват запроса архива новостей
      */
     @GetMapping("")
-    public String getNewsArchivePage(Model model, Principal principal) {
+    public String getNewsArchivePage(Model model, Principal principal, Authentication authentication) {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        model.addAttribute("news", newsService.getAllNews());
+        model.addAttribute("newsArchive", newsService.getNewsArchive(authentication));
         return "news/news_archive";
     }
 
@@ -38,11 +39,23 @@ public class NewsController {
      * Перехват запроса страницы редактирования новостей
      */
     @GetMapping("/edit")
-    public String getNewsEditPage(Model model, Principal principal) {
+    public String getNewsEditPage(Model model, Principal principal, Authentication authentication) {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
         model.addAttribute("news", newsService.getAllNews());
         return "news/news_edit";
+    }
+
+    /**
+     * Перехват запроса страницы 1 новости
+     */
+    @GetMapping("/news_single")
+    public String getSingleNewsPage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
+        model.addAttribute("newsById", newsService.getNewsById(1L));
+        return "news/news_single";
     }
 }

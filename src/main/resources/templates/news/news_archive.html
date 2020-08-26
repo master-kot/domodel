@@ -115,7 +115,8 @@
 					</article>
 				</div>
 				<!--/*@thymesVar id="allVisibleNews" type="ru.geekbrains.domodel.entities.News"*/-->
-				<tr th:each="news : ${allVisibleNews}">
+				<span th:if="${newsArchive.size() == 0}">Новостей пока нет</span>
+				<tr th:each="news : ${newsArchive}">
 				<article class="card_news r-flex pinned">
 					<img src="../img/news/1/1.png" alt="news foto"/>
 					<div class="card_news__body">
@@ -129,7 +130,7 @@
 							</p>
 						</div>
 						<div class="card_news__controls r-flex">
-							<a href="#">
+							<a href="/news/news_single">
 								подробнее >
 							</a>
 						</div>
@@ -140,41 +141,13 @@
 						</p>
 						<p>
 							<a href="#">
-								Удалить
+								Изменить
 							</a>
 						</a>
 					</div>
 				</article>
 				</tr>
-				<article class="card_news r-flex">
-					<img src="../img/news/1/1.png" alt="news foto">
-					<div class="card_news__body">
-						<div class="card_header">
-							<h3>
-								Новость какая-то
-							</h3>
-							<p>
-								Очередное собрание состоиться 24 августа в 14:00
-							</p>
-						</div>
-						<div class="card_news__controls r-flex">
-							<a href="#">
-								подробнее >
-							</a>
-						</div>
-					</div>
-					<div class="card_news__date r-flex">
-						<p>
-							17.08.2020
-						</p>
-						<p>
-							<a href="#">
-								Удалить
-							</a>
-						</a>
-					</div>
-				</article>
-				
+
 			</div><!--container-->
 		</main> <!--main-->
 		<div id="loginForm" class="modal">

@@ -1,5 +1,7 @@
 package ru.geekbrains.domodel.services.api;
 
+import org.springframework.security.core.Authentication;
+import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.entities.User;
 
@@ -32,6 +34,10 @@ public interface NewsService {
      * @param id идентификатор новости
      */
     void deleteNewsById(Long id);
+
+    List<News> getNewsArchive(Authentication authentication);
+    List<News> getRelevantNews(Authentication authentication);
+
 
     /**
      * Cоздать новость
