@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * Сущность должностного лица компании, используется в модуле информации о компани
@@ -24,7 +23,7 @@ public class Person {
 
     // Должность
     @Column(name = "position")
-    private Date position;
+    private String position;
 
     // Информация о должностном лице
     @Column(name = "description")

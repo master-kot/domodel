@@ -1,22 +1,22 @@
 package ru.geekbrains.domodel.services.api;
 
+import ru.geekbrains.domodel.entities.Tariff;
+
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Сервис тарифов
  */
 public interface TariffService {
 
-    // TODO
     /**
      * Получить тариф по его Id
      */
+    List<Tariff> getAllTariffs();
 
-    // TODO
     /**
-     * Создать новый тариф
+     * Получить тариф по его Id
      */
-
-    // TODO
-    /**
-     * Изменить тариф
-     */
+    Optional<Tariff> getById(Integer id);
 }

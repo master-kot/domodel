@@ -8,8 +8,8 @@ import ru.geekbrains.domodel.entities.constants.BillType;
 import ru.geekbrains.domodel.repositories.BillRepository;
 import ru.geekbrains.domodel.services.api.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,7 +56,7 @@ public class BillServiceImpl implements BillService {
         //  прикрепляем номер счета (либо делаем это при создании счета) - номер счета это id bill
         Bill bill = new Bill();
         bill.setAccount(account);
-        bill.setCreationDate(new Date());
+        bill.setCreationDate(LocalDate.now());
         bill.setTarget("Заглушка target");
         // TODO читаем алгоритм формирования счета
         BillType billType = BillType.METERS;
@@ -73,9 +73,9 @@ public class BillServiceImpl implements BillService {
                 // Логика автоматического рассчета текущих показаний на основе средних значений defaultIncreaseValue,
                 // указанных в сущности Tariff для случаев, когда показания не подавались больше 30 дней,
                 // будет реализована В MVP 1!!!
-                if ((new Date().getTime() - meterDataCurrent.getCreationDate().getTime()) / (24 * 60 * 60 * 1000) > 30) {
+                if (LocalDate.now().getMonth().compareTo(meterDataCurrent.getCreationDate().getMonth()) < 1) {
                     meterDataCurrent = new MeterData();
-                    meterDataCurrent.setCreationDate(new Date());
+                    meterDataCurrent.setCreationDate(LocalDate.now());
 //                    meterDataCurrent.setValue(meter.getTariff().getDefaultIncreaseValue());
                     meterDataCurrent.setMeter(meter);
 //                    calculation.setCalculated(false);
