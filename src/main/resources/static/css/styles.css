@@ -1163,3 +1163,90 @@ img[alt="member2"]{
 	margin: 20px 0 0 0;
 	line-height: 30px;
 }
+/*personal_meters*/
+.member_meters{
+	padding: 22px 120px 0 120px;
+}
+.member_meters > h2{
+	font-weight: 600;
+	font-size: 20px;
+	line-height: 24px;
+	color: #000000;
+	text-align: left;
+}
+.member_meters > h2 > a{
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 17px;
+	color: #000000;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	background-color: #EBEBEB;
+	border-radius: 10px;
+	padding: 2px 7px;
+	margin: 0 0 0 48px;
+	white-space: nowrap;
+}
+.electric_box,
+.cold_water_box,
+.hot_water_box {
+	padding: 22px 120px 0 120px;
+}
+.hot_water_box{
+	padding: 22px 120px 38px 120px;
+}
+.previos_numbers,
+.current_numbers{
+	background-color: #EBEBEB;background-color: #EBEBEB;
+	border-radius: 10px;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 10px;
+	width: 224px;
+	height: 63px;
+	padding: 4px;
+	flex-direction: column;
+    justify-content: center;
+}
+.current_numbers{
+	justify-content: space-between;
+}
+.previos_numbers > p,
+.current_numbers > p
+{
+	font-weight: 500;
+	font-size: 12px;
+	line-height: 15px;
+	text-align: center;
+	color: #000000;
+	padding: 1px 0;
+}
+.previos_numbers > p b{
+	font-weight: 500;
+	font-size: 20px;
+	line-height: 24px;
+}
+.current_numbers input{
+	font-weight: 500;
+	font-size: 20px;
+	line-height: 24px;
+	text-align: center;
+	background-color: #EBEBEB;
+	border: 1px solid #EBEBEB;
+	color: #C9C1C1;
+}
+input[type="submit"].send_value:active{
+	background-color: #C0BFFF;
+}
+input[type="submit"].send_value {
+	font-weight: 500;
+	font-size: 18px;
+	line-height: 22px;
+	text-align: center;
+	color: #000000;
+	background-color: #EBEBEB;
+	border: 1px solid #EBEBEB;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 10px;
+	width: 224px;
+	height: 63px;
+	padding: 4px;
+}
