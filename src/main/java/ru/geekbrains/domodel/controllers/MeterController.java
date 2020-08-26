@@ -16,7 +16,6 @@ import ru.geekbrains.domodel.services.api.MeterService;
 import ru.geekbrains.domodel.services.api.TariffService;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +40,7 @@ public class MeterController {
     public String getMetersPage(Model model, Principal principal) {
         List<Account> accounts = accountService.getAccountsByUserUserame(principal.getName());
         model.addAttribute("accounts", accounts);
-        return "meters/meters";
+        return "meters/meters_user";
     }
 
     @PostMapping("/submit")
@@ -54,7 +53,7 @@ public class MeterController {
     public String getAddPage(Model model, Principal principal) {
         model.addAttribute("accounts", accountService.getAccountsByUserUserame(principal.getName()));
         model.addAttribute("tariffs", tariffService.getAllTariffs());
-        return "meters/add";
+        return "meters/meters_add";
     }
 
     @PostMapping("/add")

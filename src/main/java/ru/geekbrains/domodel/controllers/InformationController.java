@@ -24,7 +24,7 @@ public class InformationController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        return "pages/about";
+        return "information/about";
     }
 
     /**
@@ -35,7 +35,7 @@ public class InformationController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        return "pages/contacts";
+        return "information/contacts";
     }
 
     /**
@@ -46,6 +46,6 @@ public class InformationController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        return "pages/documents";
+        return "information/documents";
     }
 }

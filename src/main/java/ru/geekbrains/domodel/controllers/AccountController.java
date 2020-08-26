@@ -31,6 +31,6 @@ public class AccountController {
             model.addAttribute("username", principal.getName());
         }
         model.addAttribute("accounts", accountService.getAllAccounts());
-        return "accounts";
+        return "profile/accounts";
     }
 }
