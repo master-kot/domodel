@@ -118,10 +118,10 @@
 								< назад
 							</a>
 							<div>
-								<a href="#">
+								<a href="#" sec:authorize="hasRole('ADMIN')">
 									Закрепить
 								</a>
-								<a href="#">
+								<a href="#" sec:authorize="hasRole('ADMIN')">
 									Редактировать
 								</a>
 							</div>
@@ -130,7 +130,7 @@
 					<div class="card_news__date r-flex">
 						<p th:text="${newsById.creationDate}">
 						</p>
-							<a href="#">
+							<a href="#" sec:authorize="hasRole('ADMIN')">
 								Удалить
 							</a>
 						</a>

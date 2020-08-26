@@ -37,7 +37,7 @@ public interface NewsService {
 
     List<News> getNewsArchive(Authentication authentication);
     List<News> getRelevantNews(Authentication authentication);
-
+    News saveNews(News newNews);
 
     /**
      * Cоздать новость

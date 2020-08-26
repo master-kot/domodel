@@ -50,12 +50,12 @@ public class NewsServiceImpl implements NewsService {
         return news.orElse(null);
     }
 
+    //todo сделать пагинацию
     @Override
     //Архив новостей
     public List<News> getNewsArchive(org.springframework.security.core.Authentication authentication) {
-        List<News> newsArchive = new ArrayList<>();
-        if (authentication.getName().equals("admin")) newsArchive = getAllNews();
-        else newsArchive = getAllVisibleNews();
+        List<News> newsArchive = getAllVisibleNews();
+        if (authentication.getName().equals("admin")) newsArchive.addAll(getDeletedNews());
         return newsArchive;
     }
 
@@ -72,7 +72,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<News> getAllVisibleNews() {
-        //список новостей актуальных новостей для зарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым
+        //список неудаленных новостей для зарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым
         List<News> allNewsList = getAllNews();
         List<News> pinnedNewsList = getPinnedNews();
         List<News> newsList = new ArrayList<News>();
@@ -87,6 +87,19 @@ public class NewsServiceImpl implements NewsService {
         }
         return newsList;
     }
+
+    public List<News> getDeletedNews() {
+        //список удаленных новостей
+        List<News> allNewsList = getAllNews();
+        List<News> newsList = new ArrayList<News>();
+        for (int i = 0; i < allNewsList.size(); i++) {
+            if (!allNewsList.get(i).isVisible()) {
+                newsList.add(allNewsList.get(i));
+            }
+        }
+        return newsList;
+    }
+
 
     @Override
     public List<News> getPinnedNews() {
@@ -135,7 +148,7 @@ public class NewsServiceImpl implements NewsService {
         getNewsById(id).setPinned(false);
     }
 
-
+    //todo создание новости по параметрам
     @Override
     public News createNews(String title,
                            String fullText,
@@ -145,6 +158,11 @@ public class NewsServiceImpl implements NewsService {
                            User user) {
 
         News newNews = new News(title, fullText, hidden, pinned, pictureLink, user);
+        return newsRepository.save(newNews);
+    }
+    //todo создание новости
+    @Override
+    public News saveNews(News newNews) {
         return newsRepository.save(newNews);
     }
 

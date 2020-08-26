@@ -130,9 +130,8 @@
 							</p>
 						</div>
 						<div class="card_news__controls r-flex">
-							<a href="/news/news_single">
-								подробнее >
-							</a>
+							<a th:href="@{'/news/news_single/' + ${news.id}}"> подробнее > </a>
+
 						</div>
 					</div>
 					<div class="card_news__date r-flex">
@@ -140,7 +139,7 @@
 							<td th:text="${news.creationDate}"/>
 						</p>
 						<p>
-							<a href="#">
+							<a href="#" sec:authorize="hasRole('ADMIN')">
 								Изменить
 							</a>
 						</a>

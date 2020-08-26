@@ -5,7 +5,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.geekbrains.domodel.entities.Meter;
+import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.services.api.NewsService;
 
 import java.security.Principal;
@@ -47,15 +51,23 @@ public class NewsController {
         return "news/news_edit";
     }
 
+    @PostMapping("/add")
+    public String addNews(News news) {
+        newsService.saveNews(news);
+        return "redirect:/news";
+    }
+
+
     /**
      * Перехват запроса страницы 1 новости
      */
-    @GetMapping("/news_single")
-    public String getSingleNewsPage(Model model, Principal principal) {
+    @GetMapping("/news_single/{id}")
+    public String getSingleNewsPage(Model model, Principal principal, @PathVariable Long id) {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        model.addAttribute("newsById", newsService.getNewsById(1L));
+        model.addAttribute("newsById", newsService.getNewsById(id));
         return "news/news_single";
     }
+
 }

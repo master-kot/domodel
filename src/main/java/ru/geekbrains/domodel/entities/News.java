@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDate;
+
 
 /**
  * Сущность новости для связи ее с БД
@@ -23,7 +25,7 @@ public class News {
                 boolean pinned,
                 String pictureLink,
                 User author_id) {
-        creationDate = new Date();
+        this.creationDate = LocalDate.now();
         this.title = title;
         this.fullText = fullText;
         this.hidden = hidden;

@@ -127,10 +127,9 @@
 							</p>
 						</div>
 						<div class="card_news__controls r-flex">
-							<a href="/news/news_single">
-								подробнее >
+							<a th:href="@{'/news/news_single/' + ${news.id}}"> подробнее >
 							</a>
-							<div>
+							<div sec:authorize="hasRole('ADMIN')">
 								<a href="#">
 									Закрепить
 								</a>
@@ -144,14 +143,14 @@
 						<p th:text="${news.creationDate}">
 						</p>
 						<p>
-							<a href="#">
+							<a href="#" sec:authorize="hasRole('ADMIN')">
 								Удалить
 							</a>
 						</a>
 					</div>
 				</article>
 				</tr>
-				<p class="news_archive">
+				<p class="news_archive" sec:authorize ="isAuthenticated()">
 					<a href="/news" >
 						архив новостей
 					</a>
