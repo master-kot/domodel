@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Meter</title>
@@ -18,53 +18,73 @@
 <div>
     <h2>Подать данные по счётчику</h2>
     <br>
-    <form th:action="@{/meters/submit}" method="post">
-        <div class="form-group">
-            <label>Участок
-                <select class="form-control">
-                    <option th:each="account : ${accounts}"
-                            th:value="${account.id}"
-                            th:text="${account.getHouseNumber()}">
-                    </option>
-                </select>
-            </label>
-            <label>Счетчик
+        <div class="form-group" th:each="account : ${accounts}">
+            <form th:action="@{/meters/submit}" method="post">
+            <label th:text="'Участок: ' + ${account.houseNumber}"></label>
+            <label>Счетчик:
                 <select name="meter" class="form-control">
-                    <option th:each="meter, interator : ${meters}"
+                    <option th:each="meter, interator : ${account.meters}"
                             th:value="${meter.id}"
-                            th:text="${meter.meterNumber}">
+                            th:text="${meter.serialNumber}">
                     </option>
                 </select>
             </label>
-            <label for="amount">Введите показания</label>
-            <input type="number" class="form-control" id="amount" name="amount" placeholder="Показания">
+            <label for="value">Введите показания: </label>
+            <input type="number" class="form-control" id="value" name="value" placeholder="Показания">
             <!--                <small class="form-text text-danger" th:if="${param.error != null}">Введен некорректный телефон или пароль</small>-->
+                <button type="submit" class="btn btn-primary">Подать</button>
+            </form>
         </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Подать</button>
-        </div>
-    </form>
 </div>
 <hr>
+<div>
+    <h2>Список счетчиков</h2>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Участок</th>
+            <th>Серийный номер </th>
+            <th>Модель счетчика</th>
+            <th>Дата плановой поверки</th>
+            <th>Тип счетчика показаний</th>
+            <th>Рассчетный тариф</th>
+        </tr>
+        </thead>
+        <tbody th:each="account : ${accounts}">
+        <tr th:each="meter, iterator : ${account.meters}">
+            <td th:text="${meter.account.houseNumber}"></td>
+            <td th:text="${meter.serialNumber}"></td>
+            <td th:text="${meter.model}"></td>
+            <td th:text="${#temporals.format(meter.checkDate, 'dd-MM-yyyy')}"></td>
+            <td th:text="${meter.type.description}"></td>
+            <td th:text="${meter.tariff.description}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <div>
     <h2>Последние показания</h2>
     <table class="table table-hover">
         <thead class="thead-dark">
         <tr>
-            <th>Участок</th>
-            <th>Номер счетчика</th>
-            <th>Дата</th>
-            <th>Показатель</th>
+            <th width="100">Участок</th>
+            <th width="100">Номер счетчика</th>
+            <th width="100">Дата создания</th>
+            <th width="100">Показатель</th>
         </tr>
         </thead>
-        <tbody>
-        <tr th:each="meterData, iterator : ${meterDatas}">
-            <!--/*@thymesVar id="meterData" type="ru.geekbrains.domodel.entities.MeterData"*/-->
-            <td th:text="${meterData.meter.account.houseNumber}"></td>
-            <td th:text="${meterData.meter.meterNumber}"></td>
-            <td th:text="${#dates.format(meterData.creationDate, 'dd-MM-yyyy')}"></td>
-            <td th:text="${meterData.amount}"></td>
-        </tr>
+        <tbody th:each="account, iterator : ${accounts}">
+        <tr th:each="meter, iterator : ${account.meters}">
+            <td colspan="4">
+                <table class="table table-hover">
+                    <tr th:each="meterData, iterator : ${meter.meterDatas}">
+                        <td th:text="${meterData.meter.account.houseNumber}" width="100"></td>
+                        <td th:text="${meterData.meter.serialNumber}" width="100"></td>
+                        <td th:text="${#temporals.format(meterData.creationDate, 'dd-MM-yyyy')}" width="100"></td>
+                        <td th:text="${meterData.value}" width="100"></td>
+                    </tr>
+                </table>
+            </td>
         </tbody>
     </table>
 </div>

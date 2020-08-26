@@ -13,8 +13,10 @@ import ru.geekbrains.domodel.entities.MeterData;
 import ru.geekbrains.domodel.entities.constants.Roles;
 import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.MeterService;
+import ru.geekbrains.domodel.services.api.TariffService;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,19 +31,16 @@ public class MeterController {
     // Сервис счетчиков
     private final MeterService meterService;
 
-    // Сервис уккаунтов
+    // Сервис лицевых счетов
     private final AccountService accountService;
+
+    // Сервис тарифов
+    private final TariffService tariffService;
 
     @GetMapping("")
     public String getMetersPage(Model model, Principal principal) {
         List<Account> accounts = accountService.getAccountsByUserUserame(principal.getName());
-        for (Account account : accounts) {
-            //TODO: исправить логику
-            model.addAttribute("account", account);
-            model.addAttribute("meters", account.getMeters());
-            Meter meter = account.getMeters().stream().findFirst().get();
-            model.addAttribute("meterDatas", meter.getMeterDatas());
-        }
+        model.addAttribute("accounts", accounts);
         return "meters/meters";
     }
 
@@ -54,6 +53,7 @@ public class MeterController {
     @GetMapping("/add")
     public String getAddPage(Model model, Principal principal) {
         model.addAttribute("accounts", accountService.getAccountsByUserUserame(principal.getName()));
+        model.addAttribute("tariffs", tariffService.getAllTariffs());
         return "meters/add";
     }
 

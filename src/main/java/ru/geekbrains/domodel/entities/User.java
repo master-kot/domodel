@@ -5,7 +5,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.FetchType.EAGER;
 
@@ -46,7 +50,7 @@ public class User {
 
     // Дата создания
     @Column(name = "creation_date")
-    private Date creationDate;
+    private LocalDate creationDate;
 
     // Имя
     @Column(name = "first_name")
@@ -79,7 +83,7 @@ public class User {
     public User(String username,
                 String password,
                 boolean enabled,
-                Date creationDate) {
+                LocalDate creationDate) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
