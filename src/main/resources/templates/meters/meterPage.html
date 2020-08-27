@@ -15,39 +15,7 @@
 </div>
 <hr>
 <div>
-    <h3>Подать данные по счётчику</h3>
-    <br>
-    <p>Счетчик <span th:text="${meter.serialNumber}"></span></p>
-    <form th:action="@{/meters/submit}" method="post">
-        <div class="form-group">
-            <label for="value">Введите показания</label>
-            <input type="number" class="form-control" id="value" name="value" placeholder="Показания">
-        </div>
-        <input type="hidden" class="form-control" id="meter" name="mater" th:value="${meter}">
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Подать</button>
-        </div>
-    </form>
-</div>
-<hr>
-<div th:if="${currentMeterData} != null">
-    <h2>Последние показание</h2>
-    <!--/*@thymesVar id="currentMeterData" type="ru.geekbrains.domodel.entities.MeterData"*/-->
-    <span th:text="${currentMeterData.meter.serialNumber}"></span>
-    <span th:text="${currentMeterData.creationDate}"></span>
-    <span th:text="${currentMeterData.value}"></span>
-</div>
-<br>
-<div th:if="${preMeterData} != null">
-    <h2>Предпоследнее показание</h2>
-    <!--/*@thymesVar id="preMeterData" type="ru.geekbrains.domodel.entities.MeterData"*/-->
-    <span th:text="${preMeterData.meter.serialNumber}"></span>
-    <span th:text="${preMeterData.creationDate}"></span>
-    <span th:text="${preMeterData.value}"></span>
-</div>
-<hr>
-<div>
-    <h2>Последние показания</h2>
+    <h2>Архив показания</h2>
     <table class="table table-hover">
         <thead class="thead-dark">
         <tr>
