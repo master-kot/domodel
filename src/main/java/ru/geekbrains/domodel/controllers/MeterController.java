@@ -46,13 +46,13 @@ public class MeterController {
     }
 
     @GetMapping("/{id}")
-    public String meterPage(@PathVariable String id, Model model) {
+    public String getMetersArchivePage(@PathVariable String id, Model model) {
         Meter meter = meterService.getMeter(Long.valueOf(id));
         model.addAttribute("meter", meter);
         model.addAttribute("account", meter.getAccount());
 
         model.addAttribute("meterDatas", meterService.getAllMeterDataByMeter(meter));
-        return "meters/meterPage";
+        return "meters/meters_archive";
     }
 
     @PostMapping("/submit")
