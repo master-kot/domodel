@@ -40,13 +40,13 @@ public class ProfileController {
     // TODO привести в нормальный вид все методы
     @GetMapping("")
     public String getProfilePage(Model model, Principal principal) {
-//        if (principal != null) {
-//            model.addAttribute("username", principal.getName());
-//        }
-//        User user = userService.getUserByUsername(principal.getName());
-//        if (user != null) {
-//            model.addAttribute("user", user);
-//        }
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
+        User user = userService.getUserByUsername(principal.getName());
+        if (user != null) {
+            model.addAttribute("user", user);
+        }
 //        List<Account> accounts = accountService.getAccountsByUser(user);
 //        model.addAttribute("accounts", accounts);
 //        if (accounts.size() != 0) {
