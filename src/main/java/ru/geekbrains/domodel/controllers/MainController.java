@@ -43,17 +43,6 @@ public class MainController {
     }
 
     /**
-     * Перехват запроса страницы обращений (ВРЕМЕННОЕ РЕШЕНИЕ)
-     */
-    @GetMapping("/appeals")
-    public String getAppealsPage(Model model, Principal principal) {
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
-        }
-        return "pages/appeals";
-    }
-
-    /**
      * Перехват запроса регистрации нового пользователя
      */
     @GetMapping("/register")

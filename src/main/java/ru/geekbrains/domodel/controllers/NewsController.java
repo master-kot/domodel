@@ -43,4 +43,16 @@ public class NewsController {
         model.addAttribute("news", newsService.getAllNews());
         return "news/news_edit";
     }
+
+    /**
+     * Перехват запроса страницы редактирования новостей
+     */
+    @GetMapping("/single")
+    public String getNewsSinglePage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
+        model.addAttribute("news", newsService.getAllNews());
+        return "news/news_single";
+    }
 }

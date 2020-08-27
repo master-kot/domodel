@@ -1,7 +1,6 @@
 package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Authority;
@@ -11,7 +10,9 @@ import ru.geekbrains.domodel.repositories.AuthorityRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
 import ru.geekbrains.domodel.services.api.UserService;
 
-import java.util.*;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
                 userData.getUsername(),
                 passwordEncoder.encode(userData.getPassword()),
                 true,
-                new Date());
+                LocalDate.now());
         Authority authority = authorityRepository.findByAuthority(ROLE_USER);
         newUser.getAuthorities().add(authority);
         return userRepository.save(newUser);

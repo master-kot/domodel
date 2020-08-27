@@ -5,7 +5,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.domodel.entities.Account;
@@ -30,16 +29,17 @@ public class MeterController {
     // Сервис счетчиков
     private final MeterService meterService;
 
-    // Сервис уккаунтов
+    // Сервис лицевых счетов
     private final AccountService accountService;
+
+    // Сервис тарифов
+    private final TariffService tariffService;
 
     @GetMapping("")
     public String getMetersPage(Model model, Principal principal) {
         List<Account> accounts = accountService.getAccountsByUserUserame(principal.getName());
         model.addAttribute("accounts", accounts);
-//        model.addAttribute("meters", account.getMeters());
-//        model.addAttribute("meterDatas", meterService.getAllDataByMeters(account.getMeters()));
-        return "meters/meters";
+        return "meters/meters_user";
     }
 
     @GetMapping("/{id}")
@@ -64,7 +64,8 @@ public class MeterController {
     @GetMapping("/add")
     public String getAddPage(Model model, Principal principal) {
         model.addAttribute("accounts", accountService.getAccountsByUserUserame(principal.getName()));
-        return "meters/add";
+        model.addAttribute("tariffs", tariffService.getAllTariffs());
+        return "meters/meters_add";
     }
 
     @PostMapping("/add")

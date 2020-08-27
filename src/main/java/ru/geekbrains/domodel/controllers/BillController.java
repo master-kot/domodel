@@ -12,7 +12,7 @@ import ru.geekbrains.domodel.services.api.BillService;
 import java.security.Principal;
 
 /**
- * Контроллер счетов (платежных документов)
+ * Контроллер платежей
  */
 @Controller
 @RequestMapping("/bills")
@@ -22,7 +22,8 @@ public class BillController {
     // Сервис счетов
     private final BillService billService;
 
-    private static final String BILL_CREATE_OR_UPDATE_FORM = "bills/bill-form";
+    private static final String BILL_EDIT_FORM = "bills/bills_edit";
+    private static final String BILL_ADD_FORM = "bills/bills_add";
 
     @InitBinder
     public void setAllowedFields(WebDataBinder dataBinder) {
@@ -41,38 +42,37 @@ public class BillController {
         } else {
             model.addAttribute("bills", billService.findAllByUsername(principal.getName()));
         }
-        return "bills/bill-list";
+        return "bills/bills_user";
     }
 
     @GetMapping("/{billId}")
     public String showBill(@PathVariable Long billId, Model model) {
         model.addAttribute("bill", billService.findById(billId));
-        return "/bills/bill-details";
+        return "/bills/bills_details";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/add")
     public String showCreationForm(Model model) {
         model.addAttribute("bill", new Bill());
-        return BILL_CREATE_OR_UPDATE_FORM;
+        return BILL_ADD_FORM;
     }
 
-    @PostMapping("/new")
+    @PostMapping("/add")
     public String processCreationForm(Bill bill) {
         Bill savedBill = billService.save(bill);
         return "redirect:/bills/" + savedBill.getId();
     }
 
-    @GetMapping("/{billId}/edit")
+    @GetMapping("/edit/{billId}")
     public String showUpdateBillForm(@PathVariable Long billId, Model model) {
         model.addAttribute(billService.findById(billId));
-        return BILL_CREATE_OR_UPDATE_FORM;
+        return BILL_EDIT_FORM;
     }
 
-    @PostMapping("/{billId}/edit")
+    @PostMapping("/edit/{billId}")
     public String processUpdateBillForm(Bill bill, @PathVariable Long billId) {
         bill.setId(billId);
         Bill savedBill = billService.save(bill);
         return "redirect:/bills/" + savedBill.getId();
     }
-
 }

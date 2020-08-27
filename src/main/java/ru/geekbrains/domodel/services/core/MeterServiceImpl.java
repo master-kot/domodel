@@ -1,7 +1,6 @@
 package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
@@ -12,6 +11,7 @@ import ru.geekbrains.domodel.services.api.MeterService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +19,6 @@ import java.util.Optional;
 /**
  * Реализация сервиса счетчиков показаний
  */
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MeterServiceImpl implements MeterService {
@@ -49,6 +48,7 @@ public class MeterServiceImpl implements MeterService {
         );
     }
 
+    //TODO реализовать сохранение показаний для счетчика согласно описанию в интерфейсе
     @Transactional
     @Override
     public void submitMeterData(MeterData meterData) {
@@ -65,7 +65,15 @@ public class MeterServiceImpl implements MeterService {
     @Transactional
     @Override
     public void save(Meter meter) {
-        meterRepository.save(meter);
+        //TODO сделать нормальные проверки
+        if (meter.getAccount() != null &&
+        meter.getSerialNumber() != null) {
+            // TODO сделать проверку регулярными выражениями
+            if (meter.getStringDate() != null) {
+                meter.setCheckDate(LocalDate.parse(meter.getStringDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            }
+            meterRepository.save(meter);
+        }
     }
 
     @Override

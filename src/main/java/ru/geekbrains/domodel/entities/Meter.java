@@ -30,21 +30,21 @@ public class Meter {
 
     // Серийный номер счетчика
     @Column(name = "serial_number", nullable = false)
-    private Integer serialNumber;
+    private String serialNumber;
 
-    @Column(name = "model", length = 50)
+    // Модель счетчика
     private String model;
 
     // Дата поверки счетчика
     @Column(name = "check_date")
-    private Date checkDate;
+    private LocalDate checkDate;
 
     // Тип счетчика, содержит его описание и единицу измерения
     @Column(name = "type")
     @Enumerated(EnumType.ORDINAL)
     private MeterType type;
 
-    // Ссылка на рассчетный тариф для счетчика
+    // Ссылка на расчетный тариф для счетчика
     @ManyToOne
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;

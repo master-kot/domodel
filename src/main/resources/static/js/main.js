@@ -19,6 +19,32 @@ $(document).ready(function() {
 			$('#loginForm').css('display', 'none').css('pointer-events', 'none');
 		});
 	}
+	if($('#fio_link').length){
+		$('#fio_link').on('click', function(e){
+			e.preventDefault();
+			$('#profile_fio').css('display', 'block').css('pointer-events', 'auto');
+		});
+	}
+	if($('#profile_fio').length){
+		$('#cancel_fio').on('click', function(e){
+			e.preventDefault();
+			$('#profile_fio').css('display', 'none').css('pointer-events', 'none');
+			// location.replace(location.pathname);
+		});
+		$('#fio_close_X').on('click', function(e){
+			e.preventDefault();
+			$('#profile_fio').css('display', 'none').css('pointer-events', 'none');
+		});
+		$('#submit_fio').on('click', function(e){
+			e.preventDefault();
+			let $firstname = $('#firstname').val();
+			let $lastname = $('#lastname').val();
+			$('form[name="contacts"] input[name="firstname"]').val($firstname);
+			$('form[name="contacts"] input[name="lastname"]').val($lastname);
+			// console.log($('form[name="contacts"] input[name="firstname"]').val());
+			// $('form[name="contacts"]').submit();
+		});
+	}
 	//location.replace(location.pathname)
     //------- Mobile Nav  js --------//  
 
