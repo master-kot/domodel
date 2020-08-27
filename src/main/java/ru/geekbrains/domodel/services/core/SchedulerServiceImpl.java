@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.services.api.MeterService;
 
 /**
- * Сервис для функционала(действий) по расписанию.
+ * Сервис для функционала (действий) по расписанию.
  */
-
 @Service
 @RequiredArgsConstructor
 public class SchedulerService {
 
+    // Репозиторий счетчиков
     private final MeterService meterService;
 
     /**
