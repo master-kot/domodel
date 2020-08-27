@@ -11,7 +11,6 @@ import ru.geekbrains.domodel.services.api.MeterService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +24,11 @@ public class MeterServiceImpl implements MeterService {
 
     private final MeterRepository meterRepository;
     private final MeterDataRepository meterDataRepository;
+
+    @Override
+    public Meter getMeter(Long id) {
+        return meterRepository.findById(id).orElseThrow(() -> new RuntimeException("not found meter by id: " + id));
+    }
 
     @Override
     public List<Meter> getAllMetersByAccount(Account account) {
@@ -48,31 +52,41 @@ public class MeterServiceImpl implements MeterService {
     @Override
     public void submitMeterData(MeterData meterData) {
         meterData.setCreationDate(LocalDate.now());
+        Optional<MeterData> current = getCurrentMeterDataByMeter(meterData.getMeter());
+        if (current.isPresent()) {
+            if (current.get().getCreationDate().getMonth().equals(meterData.getCreationDate().getMonth())) {
+                meterData.setId(current.get().getId());
+            }
+        }
         meterDataRepository.save(meterData);
     }
 
     @Transactional
     @Override
     public void save(Meter meter) {
-        //TODO сделать нормальные проверки
-        if (meter.getAccount() != null &&
-        meter.getSerialNumber() != null) {
-            // TODO сделать проверку регулярными выражениями
-            if (meter.getStringDate() != null) {
-                meter.setCheckDate(LocalDate.parse(meter.getStringDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-            }
-            meterRepository.save(meter);
-        }
+//        //TODO сделать нормальные проверки
+//        if (meter.getAccount() != null &&
+//        meter.getSerialNumber() != null) {
+//            // TODO сделать проверку регулярными выражениями
+//            if (meter.getStringDate() != null) {
+//                meter.setCheckDate(LocalDate.parse(meter.getStringDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+//            }
+//            meterRepository.save(meter);
+//        }
     }
 
     @Override
     public List<MeterData> getAllMeterDataByMeter(Meter meter) {
-        return meterDataRepository.findAllByMeter(meter);
+        return meterDataRepository.findAllByMeterOrderByCreationDateDesc(meter);
     }
 
-    //TODO реализовать получение показаний для счетчика
+    //TODO реализовать получение показаний для счетчика (поискать лучшее вариант: сделать за "одно" обращение к бд)
     @Override
     public Optional<MeterData> getPreviousMeterDataByMeter(Meter meter) {
+        if (meterDataRepository.findTopByMeterOrderByCreationDateDesc(meter).isPresent()) {
+          MeterData md = meterDataRepository.findTopByMeterOrderByCreationDateDesc(meter).get();
+          return meterDataRepository.findFirstByMeterAndCreationDateBefore(meter, md.getCreationDate());
+        }
         return Optional.empty();
     }
 
@@ -82,10 +96,9 @@ public class MeterServiceImpl implements MeterService {
         return new ArrayList<>();
     }
 
-    //TODO реализовать получение показаний для счетчика
     @Override
     public Optional<MeterData> getCurrentMeterDataByMeter(Meter meter) {
-        return Optional.empty();
+        return meterDataRepository.findTopByMeterOrderByCreationDateDesc(meter);
     }
 
     //TODO реализовать получение показаний для списка счетчиков
@@ -94,8 +107,33 @@ public class MeterServiceImpl implements MeterService {
         return new ArrayList<>();
     }
 
-    //TODO реализовать генерацию показаний для счетчиков с неподанными в данном периоде показаниями
     @Override
     public void generateDefaultMeterData() {
+//        LocalDate date = LocalDate.now();
+//        int month = date.getMonthValue();
+//        List<Meter> meters = getAllMeters();
+//
+//        if (!meters.isEmpty()) {
+//            for (Meter meter : meters) {
+//                if (getCurrentMeterDataByMeter(meter).isPresent()
+//                        && getCurrentMeterDataByMeter(meter).get().getCreationDate().getMonth().getValue() == month) {
+//                    log.info(String.format("показания %s уже поданны", meter));
+//                } else {
+//                    MeterData meterData = new MeterData(meter, date, meter.getTariff().getDefaultIncreaseValue(), true);
+//                    meterDataRepository.save(meterData);
+//                    log.info(String.format("новые показания для %s : %s", meter.getSerialNumber(), meterData));
+//                }
+//            }
+//        }
+    }
+
+    @Override
+    public List<MeterData> getAllDataByMeters(List<Meter> meters) {
+        List<MeterData> result = new ArrayList<>();
+        for(Meter m : meters) {
+            result.addAll(m.getMeterDatas());
+        }
+        result.sort((o1, o2) -> o2.getCreationDate().compareTo(o1.getCreationDate()));
+        return result;
     }
 }

@@ -7,7 +7,8 @@ import ru.geekbrains.domodel.entities.constants.MeterType;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Сущность счетчика показаний. Если счетчик электричества двухтарифный,
@@ -36,11 +37,7 @@ public class Meter {
     // Модель счетчика
     private String model;
 
-    // TODO избавиться от строкового значения даты
-    @Transient
-    private String stringDate;
-
-    // Дата плановой поверки счетчика
+    // Дата поверки счетчика
     @Column(name = "check_date")
     private LocalDate checkDate;
 

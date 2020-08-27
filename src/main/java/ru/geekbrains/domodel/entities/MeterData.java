@@ -31,7 +31,7 @@ public class MeterData {
     private LocalDate creationDate;
 
     // Количество единиц (значение показания счетчика)
-    @Column(name = "value")
+    @Column(name = "value", nullable = false)
     private Double value;
 
     // НЕ ИСПОЛЬЗУЕТСЯ В MVP 0

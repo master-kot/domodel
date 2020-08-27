@@ -12,6 +12,8 @@ import java.util.Optional;
  */
 public interface MeterService {
 
+    Meter getMeter(Long id);
+
     /**
      * Получить список счетчиков данного аккаунта
      */
@@ -69,5 +71,8 @@ public interface MeterService {
      * на основании заданного в сущности Тариф значения по умолчанию для этого типа счетчика.
      * Предусмотреть защиту от повторного запуска метода в одном расчетном месяце (периоде)
      */
+    @Deprecated
     void generateDefaultMeterData();
+
+    List<MeterData> getAllDataByMeters(List<Meter> meters);
 }

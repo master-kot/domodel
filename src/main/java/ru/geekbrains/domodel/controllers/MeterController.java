@@ -5,6 +5,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.domodel.entities.Account;
@@ -40,13 +41,24 @@ public class MeterController {
     public String getMetersPage(Model model, Principal principal) {
         List<Account> accounts = accountService.getAccountsByUserUserame(principal.getName());
         model.addAttribute("accounts", accounts);
+        model.addAttribute("meterData", new MeterData());
         return "meters/meters_user";
+    }
+
+    @GetMapping("/{id}")
+    public String getMetersArchivePage(@PathVariable String id, Model model) {
+        Meter meter = meterService.getMeter(Long.valueOf(id));
+        model.addAttribute("meter", meter);
+        model.addAttribute("account", meter.getAccount());
+
+        model.addAttribute("meterDatas", meterService.getAllMeterDataByMeter(meter));
+        return "meters/meters_archive";
     }
 
     @PostMapping("/submit")
     public String submitData(MeterData meterData) {
         meterService.submitMeterData(meterData);
-        return "redirect:/meters";
+        return "redirect:/meters/";
     }
 
     @GetMapping("/add")

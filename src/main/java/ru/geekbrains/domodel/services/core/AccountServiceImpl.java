@@ -26,8 +26,8 @@ public class AccountServiceImpl implements AccountService {
     private final UserRepository userRepository;
 
     @Override
-    public Optional<Account> getAccountById(Long id) {
-        return accountRepository.findById(id);
+    public Account getAccountById(Long id) {
+        return accountRepository.findById(id).orElseThrow(() -> new RuntimeException("account not exist"));
     }
 
     @Override
