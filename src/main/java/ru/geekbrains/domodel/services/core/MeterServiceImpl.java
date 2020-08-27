@@ -11,7 +11,6 @@ import ru.geekbrains.domodel.services.api.MeterService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -65,15 +64,15 @@ public class MeterServiceImpl implements MeterService {
     @Transactional
     @Override
     public void save(Meter meter) {
-        //TODO сделать нормальные проверки
-        if (meter.getAccount() != null &&
-        meter.getSerialNumber() != null) {
-            // TODO сделать проверку регулярными выражениями
-            if (meter.getStringDate() != null) {
-                meter.setCheckDate(LocalDate.parse(meter.getStringDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-            }
-            meterRepository.save(meter);
-        }
+//        //TODO сделать нормальные проверки
+//        if (meter.getAccount() != null &&
+//        meter.getSerialNumber() != null) {
+//            // TODO сделать проверку регулярными выражениями
+//            if (meter.getStringDate() != null) {
+//                meter.setCheckDate(LocalDate.parse(meter.getStringDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+//            }
+//            meterRepository.save(meter);
+//        }
     }
 
     @Override

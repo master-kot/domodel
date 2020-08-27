@@ -6,7 +6,9 @@ import lombok.Setter;
 import ru.geekbrains.domodel.entities.constants.MeterType;
 
 import javax.persistence.*;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Сущность счетчика показаний. Если счетчик электричества двухтарифный,
