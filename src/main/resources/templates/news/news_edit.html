@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -109,15 +109,15 @@
 						Image preview
 					</h4>
 					<img alt="image preview" src="../img/news/1/1.png"/>
-					<form name="add_news" method="post" action="#" class="r-flex" sec:authorize="hasRole('ADMIN')">
+					<form name="add_news" action="@{/edit}" method="POST"  class="r-flex" sec:authorize="hasRole('ADMIN')">
 						<input type="text" placeholder="Введите название новости" name="news title" class="inputshadow">
-						<textarea placeholder="Введите описание новости" class="inputshadow"></textarea>
+						<textarea placeholder="Введите описание новости" class="ic"></textarea>
 						<div class="add_news_controls r-flex">
 							<div class="add_news_controls_left">
-								<input type="checkbox" name="fixed" class="inputshadow"/>
-								<label for="fixed">Закрепить новость</label>
-								<input type="checkbox" name="public" class="inputshadow">
-								<label for="public">Публичная новость</label>
+								<input type="checkbox" name="pinned" class="inputshadow"/>
+								<label for="pinned">Закрепить новость</label>
+								<input type="checkbox" name="hidden" class="inputshadow">
+								<label for="hidden">Публичная новость</label>
 							</div>
 							<div class="add_news_controls_right">
 								<input type="button" name="put image" value="Вставить/Изменить картинку" class=""/>

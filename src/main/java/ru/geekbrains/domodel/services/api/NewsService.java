@@ -1,6 +1,9 @@
 package ru.geekbrains.domodel.services.api;
 
+import org.springframework.security.core.Authentication;
+import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.News;
+import ru.geekbrains.domodel.entities.User;
 
 import java.util.Date;
 import java.util.List;
@@ -32,13 +35,27 @@ public interface NewsService {
      */
     void deleteNewsById(Long id);
 
+    List<News> getNewsArchive(Authentication authentication);
+    List<News> getRelevantNews(Authentication authentication);
+    News saveNews(News newNews);
+
     /**
-     * Сохранить новость
+     * Cоздать новость
      *
-     * @param news новость, отдаваемая в репозиторий для сохранения
+
+     * @param title заголовок новости
+     * @param fullText полный текст новости
+     * @param hidden видима ли новость
+     * @param pinned закреплена ли новость
+     * @param pictureLink ссылка на картинку новости
      * @return новость, сохраненная в репозитории
      */
-    public News saveNews (News news);
+    News createNews  (String title,
+                      String fullText,
+                      boolean hidden,
+                      boolean pinned,
+                      String pictureLink,
+                      User user);
 
     /**
      * Изменить новость
@@ -48,6 +65,7 @@ public interface NewsService {
      * @param fullText полный текст новости
      * @param hidden видима ли новость
      * @param pinned закреплена ли новость
+     * @param visible актуальна ли новость
      * @param pictureLink ссылка на картинку новости
      * @return измененная новость
      */
@@ -56,6 +74,7 @@ public interface NewsService {
                      String fullText,
                      boolean hidden,
                      boolean pinned,
+                     boolean visible,
                      String pictureLink);
 
     /**
@@ -64,4 +83,32 @@ public interface NewsService {
      * @return новость
      */
     News getLastNews();
+
+    /**
+     * Получить список видимых новостей для зарегистрированных пользователей + вначале закрепленные новости + пагинация
+     *
+     * @return список новостей
+     */
+    List<News> getAllVisibleNews();
+
+    /**
+     * Получить список новостей для незарегистрированных пользователей + вначале закрепленные новости + пагинация
+     *
+     * @return список новостей
+     */
+    List<News> getPublicNews();
+
+    /**
+     * Получить список закрепленных новостей (не более 2)
+     *
+     * @return список новостей
+     */
+    List<News> getPinnedNews();
+
+    /**
+     *Закрепляем выбранную новость
+     *
+     */
+    void toPinnedNews(News news);
+
 }

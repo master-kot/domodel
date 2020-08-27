@@ -32,11 +32,13 @@
         </tr>
         <tr>
             <td>Индекс</td>
+            <td>Заголовок</td>
             <td>Дата создания</td>
-            <td>Краткий текст</td>
             <td>Полный текст</td>
-            <td>Новость видима</td>
             <td>Адрес картинки</td>
+            <td>Новость публична</td>
+            <td>Новость закреплена</td>
+            <td>Новость актуальна</td>
             <td>Автор</td>
         </tr>
         <tr th:each="item : ${news}">
@@ -47,6 +49,7 @@
             <td th:text="${item.pictureLink}"/>
             <td th:text="${item.hidden}"/>
             <td th:text="${item.pinned}"/>
+            <td th:text="${item.visible}"/>
             <td th:text="${item.authorId.username}"/>
         </tr>
         </tbody>

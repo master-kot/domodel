@@ -106,7 +106,7 @@
 			<div class="container content">
 				<div class="add_news" sec:authorize="hasRole('ADMIN')">
 					<article class="add_news__top">
-						<a href="#">
+						<a href="/news/edit">
 							<i class="fas fa-plus  fa-3x add_news_icon"></i>			
 						</a>
 						<span>
@@ -114,20 +114,22 @@
 						</span>
 					</article>
 				</div>
-				<article class="card_news r-flex pinned" th:if="${lastNews != null}">
-					<img th:src="@{'/img/news/' + ${lastNews.id} + '/' + ${lastNews.pictureLink}}" alt="news foto">
+				<!--/*@thymesVar id="allVisibleNews" type="ru.geekbrains.domodel.entities.News"*/-->
+				<span th:if="${relevantNews.size() == 0}">Новостей пока нет</span>
+				<tr th:each="news : ${relevantNews}">
+				<article class="card_news r-flex pinned">
+					<img th:src="@{'/img/news/' + ${news.id} + '/' + ${news.pictureLink}}" alt="news foto">
 					<div class="card_news__body">
 						<div class="card_header card_header__impotant">
-							<h3 th:text="${lastNews.title}">
+							<h3 th:text="${news.title}">
 							</h3>
-							<p th:text="${lastNews.fullText}">
+							<p th:text="${news.fullText}">
 							</p>
 						</div>
 						<div class="card_news__controls r-flex">
-							<a href="#">
-								подробнее >
+							<a th:href="@{'/news/news_details/' + ${news.id}}"> подробнее >
 							</a>
-							<div>
+							<div sec:authorize="hasRole('ADMIN')">
 								<a href="#">
 									Закрепить
 								</a>
@@ -138,16 +140,17 @@
 						</div>
 					</div>
 					<div class="card_news__date  r-flex">
-						<p th:text="${lastNews.creationDate}">
+						<p th:text="${news.creationDate}">
 						</p>
 						<p>
-							<a href="#">
+							<a href="#" sec:authorize="hasRole('ADMIN')">
 								Удалить
 							</a>
 						</a>
 					</div>
 				</article>
-				<p class="news_archive">
+				</tr>
+				<p class="news_archive" sec:authorize ="isAuthenticated()">
 					<a href="/news" >
 						архив новостей
 					</a>

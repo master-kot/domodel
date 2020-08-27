@@ -1,6 +1,7 @@
 package ru.geekbrains.domodel.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,11 +35,11 @@ public class MainController {
      * Перехват запроса главной страницы
      */
     @GetMapping("")
-    public String getHomePage(@RequestParam(required = false) String error, Model model, Principal principal) {
+    public String getHomePage(@RequestParam(required = false) String error, Model model, Principal principal, Authentication authentication) {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        model.addAttribute("lastNews", newsService.getLastNews());
+        model.addAttribute("relevantNews", newsService.getRelevantNews(authentication));
         return "index";
     }
 

@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDate;
+
 
 /**
  * Сущность новости для связи ее с БД
@@ -16,6 +18,26 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Table(name = "news")
 public class News {
+
+    public News(String title,
+                String fullText,
+                boolean hidden,
+                boolean pinned,
+                String pictureLink,
+                User author_id) {
+        this.creationDate = LocalDate.now();
+        this.title = title;
+        this.fullText = fullText;
+        this.hidden = hidden;
+        this.pinned = pinned;
+        this.pictureLink = pictureLink;
+        this.authorId = author_id;
+        this.visible = true;
+
+        int limit = 20;//TODO исправить на нужное значение
+        if (fullText.length()>limit)
+            this.shortText = fullText.substring(0,limit);
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,7 +78,7 @@ public class News {
     @Column(name = "pinned", nullable = false)
     private boolean pinned;
 
-    // Указатель видимости новости. Новость отображается если true
+    // Указатель актуальности и видимости новости. Новость видна юзерам если true
     @Column(name = "visible", nullable = false)
     private boolean visible;
 }
