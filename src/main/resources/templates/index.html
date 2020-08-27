@@ -127,7 +127,7 @@
 							</p>
 						</div>
 						<div class="card_news__controls r-flex">
-							<a th:href="@{'/news/news_single/' + ${news.id}}"> подробнее >
+							<a th:href="@{'/news/news_details/' + ${news.id}}"> подробнее >
 							</a>
 							<div sec:authorize="hasRole('ADMIN')">
 								<a href="#">

@@ -51,23 +51,23 @@ public class NewsController {
         return "news/news_edit";
     }
 
-    @PostMapping("/add")
+    @PostMapping("/edit")
     public String addNews(News news) {
         newsService.saveNews(news);
-        return "redirect:/news";
+        return "news/news_edit";
     }
 
 
     /**
      * Перехват запроса страницы 1 новости
      */
-    @GetMapping("/news_single/{id}")
+    @GetMapping("/news_details/{id}")
     public String getSingleNewsPage(Model model, Principal principal, @PathVariable Long id) {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
         model.addAttribute("newsById", newsService.getNewsById(id));
-        return "news/news_single";
+        return "news/news_details";
     }
 
 }
