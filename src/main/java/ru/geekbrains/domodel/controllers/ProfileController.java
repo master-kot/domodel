@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.UserRepresentation;
-import ru.geekbrains.domodel.services.api.AccountService;
-import ru.geekbrains.domodel.services.api.BillService;
-import ru.geekbrains.domodel.services.api.MeterService;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import javax.validation.Valid;
@@ -28,11 +25,12 @@ import static ru.geekbrains.domodel.entities.constants.Messages.PASSWORD_MISMATC
 @RequiredArgsConstructor
 public class ProfileController {
 
+    // Адреса шаблонов страниц
+    private static final String PROFILE_EDIT_FORM = "profile/profile_edit";
+    private static final String PROFILE_USER_FORM = "profile/profile_user";
+
     // Список необходимых сервисов
     private final UserService userService;
-    private final AccountService accountService;
-    private final BillService billService;
-    private final MeterService meterService;
 
     /**
      * Перехват запроса на чтение профиля пользователя
@@ -47,6 +45,7 @@ public class ProfileController {
         if (user != null) {
             model.addAttribute("user", user);
         }
+//        model.addAttribute("userData", new UserRepresentation());
 //        List<Account> accounts = accountService.getAccountsByUser(user);
 //        model.addAttribute("accounts", accounts);
 //        if (accounts.size() != 0) {
@@ -68,26 +67,13 @@ public class ProfileController {
 //            model.addAttribute("fixedBills", new ArrayList<>());
 //            model.addAttribute("meters", new ArrayList<>());
 //        }
-        return "profile/profile";
+        return PROFILE_USER_FORM;
     }
 
     /**
      * Перехват запроса на изменение профиля пользователя
      */
-    @GetMapping("/change")
-    public String getProfileChangePage(Model model, Principal principal) {
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
-            model.addAttribute("user", userService.getUserByUsername(principal.getName()));
-        }
-        model.addAttribute("userData", new UserRepresentation());
-        return "profile/change_profile";
-    }
-
-    /**
-     * Перехват запроса на изменение профиля пользователя
-     */
-    @PostMapping("/change")
+    @PostMapping("/edit")
     public String changeUserProfile(@Valid @ModelAttribute("userData") UserRepresentation userData,
                                     BindingResult bindingResult,
                                     Model model,
@@ -95,15 +81,31 @@ public class ProfileController {
         User user = userService.getUserByUsername(principal.getName());
         model.addAttribute("user", user);
         if (bindingResult.hasErrors()) {
-            return "profile/change_profile";
+            return PROFILE_EDIT_FORM;
         }
 
         if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
             bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
-            return "profile/change_profile";
+            return PROFILE_EDIT_FORM;
         }
 
         userService.updateUser(userData, user);
-        return "redirect:/change";
+        return "redirect:" + PROFILE_EDIT_FORM;
+    }
+
+    /**
+     * Перехват запроса на изменение ФИО пользователя
+     */
+    @PostMapping("/edit/name")
+    public String editUserNames(@Valid @ModelAttribute("user") User user,
+                                    BindingResult bindingResult,
+                                    Principal principal) {
+        if (user.getLastName() != null ||
+                user.getFirstName() != null ||
+                user.getPatronymic() != null) {
+//            bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
+            userService.editUser(user, principal.getName());
+        }
+        return "redirect:" + PROFILE_EDIT_FORM;
     }
 }

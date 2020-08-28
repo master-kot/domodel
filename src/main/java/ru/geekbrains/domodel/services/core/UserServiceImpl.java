@@ -84,15 +84,43 @@ public class UserServiceImpl implements UserService {
             if (userData.getFirstName() != null && !userData.getFirstName().isEmpty()) {
                 user.setFirstName(userData.getFirstName());
             }
-            if (userData.getSecondName() != null && !userData.getSecondName().isEmpty()) {
-                user.setSecondName(userData.getSecondName());
+            if (userData.getLastName() != null && !userData.getLastName().isEmpty()) {
+                user.setLastName(userData.getLastName());
             }
-            if (userData.getMiddleName() != null && !userData.getMiddleName().isEmpty()) {
-                user.setMiddleName(userData.getMiddleName());
+            if (userData.getPatronymic() != null && !userData.getPatronymic().isEmpty()) {
+                user.setPatronymic(userData.getPatronymic());
             }
             if (userData.getEmail() != null && !userData.getEmail().isEmpty()) {
                 user.setEmail(userData.getEmail());
             }
             return userRepository.save(user);
+    }
+
+    @Override
+    public void editUser(User userData, String username) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        User user;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+        } else {
+            return;
+        }
+
+        if (user.getUsername() != null && !user.getUsername().isEmpty()) {
+            user.setUsername(userData.getUsername());
+        }
+        if (userData.getFirstName() != null && !userData.getFirstName().isEmpty()) {
+            user.setFirstName(userData.getFirstName());
+        }
+        if (userData.getLastName() != null && !userData.getLastName().isEmpty()) {
+            user.setLastName(userData.getLastName());
+        }
+        if (userData.getPatronymic() != null && !userData.getPatronymic().isEmpty()) {
+            user.setPatronymic(userData.getPatronymic());
+        }
+        if (userData.getEmail() != null && !userData.getEmail().isEmpty()) {
+            user.setEmail(userData.getEmail());
+        }
+        userRepository.save(user);
     }
 }

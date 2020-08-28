@@ -58,4 +58,12 @@ public interface UserService {
      * @param user изменяемый пользователь
      */
     User updateUser(UserRepresentation userData, User user);
+
+    /**
+     * Изменить данные пользователя
+     *
+     * @param userData пользователь с измененными данными
+     * @param username логин пользователя
+     */
+    void editUser(User userData, String username);
 }

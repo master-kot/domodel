@@ -28,9 +28,9 @@ public class Account {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // Улица (может быть не заполнено)
+    // Адрес объекта (может быть не заполнен)
     @Column(name = "street")
-    private String street;
+    private String address;
 
     // Номер дома или участка
     @Column(name = "house_number", nullable = false)

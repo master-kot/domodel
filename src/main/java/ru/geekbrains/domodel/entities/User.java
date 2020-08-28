@@ -58,11 +58,11 @@ public class User {
 
     // Фамилия
     @Column(name = "second_name")
-    private String secondName;
+    private String lastName;
 
     // Отчество
     @Column(name = "middle_name")
-    private String middleName;
+    private String patronymic;
 
     // Адрес электронной почты
     @Column(name = "email", unique = true)
@@ -75,6 +75,10 @@ public class User {
     // Почтовый адрес
     @Column(name = "address")
     private String address;
+
+    // Обо мне
+    @Column(name = "about")
+    private String about;
 
     // Список лицевых счетов пользователя
     @OneToMany(mappedBy = "user")
