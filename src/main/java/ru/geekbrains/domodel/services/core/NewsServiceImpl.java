@@ -63,7 +63,7 @@ public class NewsServiceImpl implements NewsService {
 //        if (authentication.getName().equals("admin")) newsArchive.addAll(getDeletedNews());
 //        return newsArchive;
         PageRequest pageable = new PageRequest(1,2);
-                List<News> newsArchive = new ArrayList<>();
+        List<News> newsArchive = new ArrayList<>();
         Page<News> page = newsRepository.findAll(pageable);
         if (authentication.getName().equals("admin")) newsArchive.addAll(getDeletedNews());
         for (int i = 0; i <= page.getTotalPages(); i++) {

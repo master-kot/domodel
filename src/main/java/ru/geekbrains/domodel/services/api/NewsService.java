@@ -115,3 +115,4 @@ public interface NewsService {
     void toPinnedNews(News news);
 
 }
+

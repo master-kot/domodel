@@ -24,7 +24,7 @@ import static ru.geekbrains.domodel.entities.constants.Messages.*;
  * Контроллер новостей
  */
 //todo по идее это страница архива новостей. Прикрутить пагинацию, в зависимости от типа юзера выдавать разные списки
-    //todo сделать страницу редакции отдельной новости
+//todo сделать страницу редакции отдельной новости
 @Controller
 @RequestMapping("/news")
 @RequiredArgsConstructor
