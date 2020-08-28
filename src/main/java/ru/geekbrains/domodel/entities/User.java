@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,12 +31,21 @@ public class User {
     private Long id;
 
     // Логин (телефон пользователя)
+    @NotBlank
+    @Size(min = 5, message="Номер телефона не менее 5 символов")
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     // Пароль
+    @NotBlank
+    @Size(min = 5, message="Пароль должен быть не менее 5 символов")
     @Column(name = "password", nullable = false)
     private String password;
+
+    @NotBlank
+    @Size(min = 5, message="Пароль должен быть не менее 5 символов")
+    @Transient
+    private String passwordConfirm;
 
     // Пользователь активен (true) или заблокирован (false)
     @Column(name = "enabled", nullable = false)

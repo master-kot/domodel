@@ -105,8 +105,7 @@ public class UserServiceImpl implements UserService {
         } else {
             return;
         }
-
-        if (user.getUsername() != null && !user.getUsername().isEmpty()) {
+        if (userData.getUsername() != null && !userData.getUsername().isEmpty()) {
             user.setUsername(userData.getUsername());
         }
         if (userData.getFirstName() != null && !userData.getFirstName().isEmpty()) {

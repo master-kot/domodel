@@ -91,7 +91,7 @@
                         </a>
                     </div>
                     <div class="logged" th:if="${username != null}">
-                        <p th:text="'Пользователь: ' + ${username}"/>
+                        <p th:text="'Пользователь: ' + ${username}"></p>
                         <a href="/profile">
                             личный кабинет
                         </a><br>
@@ -141,7 +141,8 @@
                             <p th:each="account, iterator : ${user.accounts}">
                                 <span th:text="${account.address}">
                                 </span><br>
-                                <span th:text="'участок: ' + ${account.houseNumber} + ', площадь участка: ' + ${account.acresAmount} + ' соток.' ">
+                                <span th:text="'Участок: ' + ${account.houseNumber} +
+                                ', площадь участка: ' + ${account.acresAmount} + ' соток.' ">
                                 </span>
                             </p>
                         </section>
@@ -191,11 +192,14 @@
                 </h2>
                 <form name="profile_fio" id="profile_form" th:action="@{/profile/edit/name}" th:object="${user}" method="post" class="r-flex" >
                     <input type="text" id="lastName" name="lastName" th:field="*{lastName}" th:value="*{lastName}"/>
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('lastName')}" th:text="${err}">Ошибка</small>
                     <input type="text" id="firstName" name="firstName" th:field="*{firstName}" th:value="*{firstName}"/>
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('firstName')}" th:text="${err}">Ошибка</small>
                     <input type="text" id="patronymic" name="patronymic" th:field="*{patronymic}" th:value="*{patronymic}"/>
+                    <small class="form-text text-danger" th:each="err : ${#fields.errors('patronymic')}" th:text="${err}">Ошибка</small>
                     <div class="login_controls r-flex">
                         <input type="button" name="cancel" id="cancel_fio" value="Отменить"/>
-                        <input type="submit" name="submit" id="submit_fio" value="Сохранить"/>
+                        <input type="submit" name="submit" value="Сохранить"/>
                     </div>
                 </form>
             </div>
