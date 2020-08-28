@@ -24,36 +24,27 @@ public class Meter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Лицевой счет, к которому прикреплен данный счетчик
-    @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
-
     // Серийный номер счетчика
     @Column(name = "serial_number", nullable = false)
     private String serialNumber;
 
     // Модель счетчика
+    @Column(name = "model")
     private String model;
 
-    // Дата поверки счетчика
+    // Дата плановой поверки счетчика
     @Column(name = "check_date")
     private LocalDate checkDate;
 
-    //TODO: очистить после подтверждения изменений
-//    @Column(name = "type")
-//    @Enumerated(EnumType.ORDINAL)
-//    private MeterType type;
-
-    // Тип счетчика, содержит его описание и единицу измерения
+    // Лицевой счет, к которому прикреплен данный счетчик
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
+
+    // Тип счетчика
+    @ManyToOne
+    @JoinColumn(name = "type_id", nullable = false)
     private MeterType type;
-
-    // Ссылка на расчетный тариф для счетчика
-    @ManyToOne
-    @JoinColumn(name = "tariff_id")
-    private Tariff tariff;
 
     // Список показаний данного счетчика
     @OneToMany(mappedBy = "meter")

@@ -25,10 +25,18 @@ INSERT INTO tariffs (description, price) VALUES ('Ночной тариф на �
 INSERT INTO tariffs (description, price) VALUES ('Тариф на газ', 11);
 INSERT INTO tariffs (description, price) VALUES ('Тариф на горячую воду', 77);
 INSERT INTO tariffs (description, price) VALUES ('Тариф на холодную воду', 22);
-INSERT INTO meters (account_id, serial_number, model, check_date, type, tariff_id) VALUES (1, '9988776655', 'Модель 1', '2021-05-10', 0, 1);
-INSERT INTO meters (account_id, serial_number, model, check_date, type, tariff_id) VALUES (1, '9876543210', 'Модель 2', '2021-06-30', 1, 2);
-INSERT INTO meters (account_id, serial_number, model, check_date, type, tariff_id) VALUES (2, '0123456789', 'Модель 3', '2022-07-20', 2, 3);
-INSERT INTO meters (account_id, serial_number, model, check_date, type, tariff_id) VALUES (2, '1122335566', 'Модель 4', '2022-08-25', 3, 4);
+INSERT INTO meter_type (description, measure, tariff_id) VALUES ('Счётчик электроэнергии (однотарифный)', 'кВТ/час', 1);
+INSERT INTO meter_type (description, measure, tariff_id) VALUES ('Счётчик электроэнергии (дневной)', 'кВТ/час', 2);
+INSERT INTO meter_type (description, measure, tariff_id) VALUES ('Счётчик электроэнергии (ночной)', 'кВТ/час', 3);
+INSERT INTO meter_type (description, measure, tariff_id) VALUES ('Счётчик газа', 'куб.метров', 4);
+INSERT INTO meter_type (description, measure, tariff_id) VALUES ('Счётчик горячей воды', 'куб.метров', 5);
+INSERT INTO meter_type (description, measure, tariff_id) VALUES ('Счётчик холодной воды', 'куб.метров', 6);
+INSERT INTO meters (serial_number, model, check_date, account_id, type_id) VALUES ('9988776655', 'Модель 1', '2021-05-10', 1, 1);
+INSERT INTO meters (serial_number, model, check_date, account_id, type_id) VALUES ('9876543210', 'Модель 2', '2021-06-30', 1, 2);
+INSERT INTO meters (serial_number, model, check_date, account_id, type_id) VALUES ('0123456789', 'Модель 3', '2022-07-20', 1, 3);
+INSERT INTO meters (serial_number, model, check_date, account_id, type_id) VALUES ('1122335566', 'Модель 4', '2022-08-25', 2, 4);
+INSERT INTO meters (serial_number, model, check_date, account_id, type_id) VALUES ('0123456789', 'Модель 3', '2022-07-20', 2, 5);
+INSERT INTO meters (serial_number, model, check_date, account_id, type_id) VALUES ('1122335566', 'Модель 4', '2022-08-25', 2, 6);
 INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (1, '2020-07-20', 55);
 INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (1, '2020-08-20', 70);
 INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (2, '2020-07-15', 30);
@@ -37,22 +45,19 @@ INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (3, '2020-07-19',
 INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (3, '2020-08-23', 88);
 INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (4, '2020-07-30', 51);
 INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (4, '2020-08-31', 95);
-INSERT INTO requisites (company_name, company_address, inn, kpp, ogrn, bank_account, bank_name, bik, correspondent_account, email, phone_number) VALUES ('ООО “ДОМОДЕЛ”', 'Московская область, домодедовский район', 11111111, 22222222, 33333333, '324493100000000024578', 'Банк Москвы', 44444444, '89993100000000024578', 'domodel@mail.ru', '89123456789');
-INSERT INTO bills (account_id, creation_date, target, total, payment_status, requisites_id) VALUES (1, '2020-08-20', 'назначение платежа: счетчики', 333, true, 1);
-INSERT INTO bills (account_id, creation_date, target, total, payment_status, requisites_id) VALUES (1, '2020-08-20', 'назначение платежа: взнос', 555, false, 1);
+INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (5, '2020-05-05', 11);
+INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (6, '2020-06-09', 22);
+INSERT INTO requisites (company_name, company_address, inn, kpp, ogrn, bank_account, bank_name, bik, correspondent_account) VALUES ('ООО “ДОМОДЕЛ”', 'Московская область, домодедовский район', 11111111, 22222222, 33333333, '324493100000000024578', 'Банк Москвы', 44444444, '89993100000000024578');
+INSERT INTO bills (creation_date, target, total, type, payment_status, account_id, requisites_id) VALUES ('2020-05-11', 'Платеж за счетчики воды', 333, 1, true, 1, 1);
+INSERT INTO bills (creation_date, target, total, type, payment_status, account_id, requisites_id) VALUES ('2020-06-19', 'Членский взнос за май в 444 руб.', 444, 2, false, 1, 1);
+INSERT INTO bills (creation_date, target, total, type, payment_status, account_id, requisites_id) VALUES ('2020-07-25', 'Членский взнос по тарифу за сотку', 555, 3, false, 1, 1);
+INSERT INTO bills (creation_date, target, total, type, payment_status, account_id, requisites_id) VALUES ('2020-08-29', 'Прочий платеж размером 777 руб.', 777, 4, true, 2, 1);
+INSERT INTO bills (creation_date, target, total, type, payment_status, account_id, requisites_id) VALUES ('2020-09-01', 'Прочий платеж по тарифу за сотку', 888, 5, false, 2, 1);
 INSERT INTO calculations (bill_id, previous_data, current_data, amount, price, cost) VALUES (1, 1, 2, 77, 9, 693);
+
 
 ### МОДУЛЬ ИНФОРМАЦИИ О КОМПАНИИ ###
 
-
-## МОДУЛЬ СЧЕТЧИКОВ ##
-## ТИП СЧЕТЧИКОВ ##
-INSERT INTO meter_type (description, measure)VALUES ('Счётчик электроэнергии (однотарифный)', 'кВТ/час');
-INSERT INTO meter_type (description, measure)VALUES ('Счётчик электроэнергии (дневной)', 'кВТ/час');
-INSERT INTO meter_type (description, measure)VALUES ('Счётчик электроэнергии (ночной)', 'кВТ/час');
-INSERT INTO meter_type (description, measure)VALUES ('Счётчик газа', 'куб.метров');
-INSERT INTO meter_type (description, measure)VALUES ('Счётчик горячей воды', 'куб.метров');
-INSERT INTO meter_type (description, measure)VALUES ('Счётчик холодной воды', 'куб.метров');
 
 ### РАБОТА С БД ###
 
@@ -60,13 +65,15 @@ SELECT * FROM products;
 SELECT * FROM users;
 SELECT * FROM authorities;
 
-DROP TABLE accounts CASCADE;
 DROP TABLE bills CASCADE;
 DROP TABLE calculations CASCADE;
-DROP TABLE meters CASCADE;
 DROP TABLE meter_datas;
-DROP TABLE requisites CASCADE;
+DROP TABLE meters CASCADE;
+DROP TABLE meter_type CASCADE;
 DROP TABLE tariffs;
+DROP TABLE requisites CASCADE;
+DROP TABLE information CASCADE;
+DROP TABLE accounts CASCADE;
 DROP TABLE news;
 DROP TABLE users_authorities CASCADE;
 DROP TABLE authorities CASCADE;

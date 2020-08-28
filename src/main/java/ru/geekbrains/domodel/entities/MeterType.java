@@ -8,7 +8,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Сущность различных типов счетчиков.
+ * Сущность различных типов счетчиков. Примеры заполнения:
+ * "Счётчик электроэнергии (однотарифный)", "кВТ/час",
+ * "Счётчик электроэнергии (дневной)", "кВТ/час",
+ * "Счётчик электроэнергии (ночной)", "кВТ/час",
+ * "Счётчик газа", "куб.метров",
+ * "Счётчик горячей воды", "куб.метров",
+ * "Счётчик холодной воды", "куб.метров"
  */
 
 @Entity
@@ -22,12 +28,17 @@ public class MeterType {
     private Integer id;
 
     // Описание счетчика
-    @Column(nullable = false, unique = true)
+    @Column(name = "description", nullable = false, unique = true)
     private String description;
 
     // Единица измерения показаний счетчика
-    @Column(nullable = false)
-    private String measure;
+    @Column(name = "measure_unit", nullable = false)
+    private String measureUnit;
+
+    // Ссылка на расчетный тариф для данного типа счетчика
+    @OneToOne
+    @JoinColumn(name = "tariff_id")
+    private Tariff tariff;
 
     // Список счетчиков, для которых используется данный тариф
     @OneToMany(mappedBy = "type")
