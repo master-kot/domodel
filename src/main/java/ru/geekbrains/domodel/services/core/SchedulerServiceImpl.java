@@ -9,7 +9,7 @@ import ru.geekbrains.domodel.services.api.MeterService;
  */
 @Service
 @RequiredArgsConstructor
-public class SchedulerService {
+public class SchedulerServiceImpl {
 
     // Репозиторий счетчиков
     private final MeterService meterService;

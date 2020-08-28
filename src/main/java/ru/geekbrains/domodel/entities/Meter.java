@@ -3,7 +3,6 @@ package ru.geekbrains.domodel.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.geekbrains.domodel.entities.constants.MeterType;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -41,9 +40,14 @@ public class Meter {
     @Column(name = "check_date")
     private LocalDate checkDate;
 
+    //TODO: очистить после подтверждения изменений
+//    @Column(name = "type")
+//    @Enumerated(EnumType.ORDINAL)
+//    private MeterType type;
+
     // Тип счетчика, содержит его описание и единицу измерения
-    @Column(name = "type")
-    @Enumerated(EnumType.ORDINAL)
+    @ManyToOne
+    @JoinColumn(name = "type_id")
     private MeterType type;
 
     // Ссылка на расчетный тариф для счетчика
