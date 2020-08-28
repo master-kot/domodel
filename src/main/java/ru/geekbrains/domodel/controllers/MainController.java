@@ -24,10 +24,11 @@ import static ru.geekbrains.domodel.entities.constants.Messages.*;
 @RequiredArgsConstructor
 public class MainController {
 
-    // Сервис пользователей
-    private final UserService userService;
+    // Имена шаблонов страниц
+    private static final String REGISTER_FORM = "register";
 
-    // Сервис новостей
+    // Необходимые сервисы
+    private final UserService userService;
     private final NewsService newsService;
 
     /**
@@ -51,7 +52,7 @@ public class MainController {
             model.addAttribute("username", principal.getName());
         }
         model.addAttribute("userData", new UserRepresentation());
-        return "register";
+        return REGISTER_FORM;
     }
 
     /**
@@ -62,12 +63,12 @@ public class MainController {
                                BindingResult bindingResult,
                                Model model) {
         if (bindingResult.hasErrors()) {
-            return "register";
+            return REGISTER_FORM;
         }
 
         if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
             bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
-            return "register";
+            return REGISTER_FORM;
         }
 
         if (userService.createUser(userData) != null) {
@@ -77,6 +78,6 @@ public class MainController {
             bindingResult.rejectValue("username", "",
                     String.format(USER_HAS_ALREADY_CREATED, userData.getUsername()));
         }
-        return "register";
+        return REGISTER_FORM;
     }
 }

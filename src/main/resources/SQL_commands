@@ -25,12 +25,12 @@ INSERT INTO tariffs (description, price) VALUES ('Ночной тариф на �
 INSERT INTO tariffs (description, price) VALUES ('Тариф на газ', 11);
 INSERT INTO tariffs (description, price) VALUES ('Тариф на горячую воду', 77);
 INSERT INTO tariffs (description, price) VALUES ('Тариф на холодную воду', 22);
-INSERT INTO meter_type (description, measure, tariff_id) VALUES ('Счётчик электроэнергии (однотарифный)', 'кВТ/час', 1);
-INSERT INTO meter_type (description, measure, tariff_id) VALUES ('Счётчик электроэнергии (дневной)', 'кВТ/час', 2);
-INSERT INTO meter_type (description, measure, tariff_id) VALUES ('Счётчик электроэнергии (ночной)', 'кВТ/час', 3);
-INSERT INTO meter_type (description, measure, tariff_id) VALUES ('Счётчик газа', 'куб.метров', 4);
-INSERT INTO meter_type (description, measure, tariff_id) VALUES ('Счётчик горячей воды', 'куб.метров', 5);
-INSERT INTO meter_type (description, measure, tariff_id) VALUES ('Счётчик холодной воды', 'куб.метров', 6);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик электроэнергии (однотарифный)', 'кВТ/час', 1);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик электроэнергии (дневной)', 'кВТ/час', 2);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик электроэнергии (ночной)', 'кВТ/час', 3);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик газа', 'куб.метров', 4);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик горячей воды', 'куб.метров', 5);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик холодной воды', 'куб.метров', 6);
 INSERT INTO meters (serial_number, model, check_date, account_id, type_id) VALUES ('9988776655', 'Модель 1', '2021-05-10', 1, 1);
 INSERT INTO meters (serial_number, model, check_date, account_id, type_id) VALUES ('9876543210', 'Модель 2', '2021-06-30', 1, 2);
 INSERT INTO meters (serial_number, model, check_date, account_id, type_id) VALUES ('0123456789', 'Модель 3', '2022-07-20', 1, 3);

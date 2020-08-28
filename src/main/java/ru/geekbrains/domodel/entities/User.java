@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,19 +29,14 @@ public class User {
     private Long id;
 
     // Логин (телефон пользователя)
-    @NotBlank
-    @Size(min = 5, message="Номер телефона не менее 5 символов")
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     // Пароль
-    @NotBlank
-    @Size(min = 5, message="Пароль должен быть не менее 5 символов")
     @Column(name = "password", nullable = false)
     private String password;
 
-    @NotBlank
-    @Size(min = 5, message="Пароль должен быть не менее 5 символов")
+    // Подтверждение пароля
     @Transient
     private String passwordConfirm;
 
@@ -51,6 +44,7 @@ public class User {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
+    // Список ролей пользователя
     @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "users_authorities",
             // Внешний ключ для User в в таблице users_authorities
