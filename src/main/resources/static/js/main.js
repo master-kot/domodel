@@ -42,7 +42,7 @@ $(document).ready(function() {
 			$('form[name="contacts"] input[name="firstname"]').val($firstname);
 			$('form[name="contacts"] input[name="lastname"]').val($lastname);
 			// console.log($('form[name="contacts"] input[name="firstname"]').val());
-			// $('form[name="contacts"]').submit();
+			$('form[name="contacts"]').submit();
 		});
 	}
 	//location.replace(location.pathname)
