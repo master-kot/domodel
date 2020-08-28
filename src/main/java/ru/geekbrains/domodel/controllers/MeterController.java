@@ -57,7 +57,9 @@ public class MeterController {
 
     @PostMapping("/submit")
     public String submitData(MeterData meterData) {
-        meterService.submitMeterData(meterData);
+        if (meterData.getValue() != null && meterData.getValue() != 0) {
+            meterService.submitMeterData(meterData);
+        }
         return "redirect:/meters/";
     }
 
