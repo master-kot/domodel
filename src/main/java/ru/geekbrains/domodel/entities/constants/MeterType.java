@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Перечисление вариантов различных типов счетчиков
   */
+@Deprecated
 @Getter
 @RequiredArgsConstructor
 public enum MeterType {

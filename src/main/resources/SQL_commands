@@ -45,6 +45,15 @@ INSERT INTO calculations (bill_id, previous_data, current_data, amount, price, c
 ### МОДУЛЬ ИНФОРМАЦИИ О КОМПАНИИ ###
 
 
+## МОДУЛЬ СЧЕТЧИКОВ ##
+## ТИП СЧЕТЧИКОВ ##
+INSERT INTO meter_type (description, measure)VALUES ('Счётчик электроэнергии (однотарифный)', 'кВТ/час');
+INSERT INTO meter_type (description, measure)VALUES ('Счётчик электроэнергии (дневной)', 'кВТ/час');
+INSERT INTO meter_type (description, measure)VALUES ('Счётчик электроэнергии (ночной)', 'кВТ/час');
+INSERT INTO meter_type (description, measure)VALUES ('Счётчик газа', 'куб.метров');
+INSERT INTO meter_type (description, measure)VALUES ('Счётчик горячей воды', 'куб.метров');
+INSERT INTO meter_type (description, measure)VALUES ('Счётчик холодной воды', 'куб.метров');
+
 ### РАБОТА С БД ###
 
 SELECT * FROM products;

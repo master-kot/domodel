@@ -28,7 +28,7 @@ public class Tariff {
     private String description;
 
     // Цена за единицу
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private Double price;
 
     // Список счетчиков, для которых используется данный тариф
