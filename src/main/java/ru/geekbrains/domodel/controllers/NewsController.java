@@ -7,18 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.News;
-import ru.geekbrains.domodel.entities.UserRepresentation;
-import ru.geekbrains.domodel.repositories.NewsRepository;
 import ru.geekbrains.domodel.services.api.NewsService;
 
 import javax.validation.Valid;
 import java.security.Principal;
-
-import static ru.geekbrains.domodel.entities.constants.Messages.*;
 
 /**
  * Контроллер новостей
@@ -35,12 +29,15 @@ public class NewsController {
 
 
     /**
-     * Перехват запроса архива новостей
+     * Перехват запроса определенной страницы архива новостей
      */
     @GetMapping("news_archive/{id}")
-    public String getNewsArchivePage(Model model, Principal principal, Authentication authentication, Pageable pageable, @PathVariable int id) {
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
+    public String getNewsArchivePage(@PathVariable int id,
+                                     Model model,
+                                     Authentication authentication,
+                                     Pageable pageable) {
+        if (authentication != null) {
+            model.addAttribute("username", authentication.getName());
         }
         if (id == 0) id =1;
         Pageable pageRequest = PageRequest.of(id, 2);
@@ -53,35 +50,47 @@ public class NewsController {
     }
 
     /**
-     * Перехват запроса страницы редактирования новостей
+     * Перехват запроса страницы редактирования одной новости
      */
-    @GetMapping("/edit")
-    public String getNewsEditPage(Model model, Principal principal) {
+    @GetMapping("/edit/{id}")
+    public String getNewsEditPage(@PathVariable("id") Long id,
+                                  Model model,
+                                  Principal principal) {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        model.addAttribute("news", new News());
+        model.addAttribute("news", newsService.getNewsById(id));
         return "news/news_edit";
     }
 
+    /**
+     * Перехват запроса редактирования новости
+     */
     @PostMapping("/edit")
-    public String addNews(@Valid @ModelAttribute("newsData") News newsData, Model model, Principal principal) {
+    public String addNews(@Valid @ModelAttribute("news") News news,
+                          Model model,
+                          Principal principal) {
         if (principal != null) {
-            model.addAttribute("newsData", newsService.saveNews(newsData));
+            model.addAttribute("username", principal.getName());
         }
-        return "news/news_edit";
+        //TODO здесь нужно изменить новость а не сохранить
+        //проверить что поля не пусты, убрать из шаблона все скрытые поля кроме id
+        model.addAttribute("news", newsService.saveNews(news));
+        return "redirect:/news/edit/" + news.getId();
     }
 
 
     /**
-     * Перехват запроса страницы 1 новости
+     * Перехват запроса страницы одной новости
      */
-    @GetMapping("/news_details/{id}")
-    public String getSingleNewsPage(Model model, Principal principal, @PathVariable Long id) {
+    @GetMapping("/details/{id}")
+    public String getSingleNewsPage(@PathVariable Long id,
+                                    Model model,
+                                    Principal principal) {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        model.addAttribute("newsById", newsService.getNewsById(id));
+        model.addAttribute("news", newsService.getNewsById(id));
         return "news/news_details";
     }
 
