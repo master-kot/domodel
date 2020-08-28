@@ -115,39 +115,41 @@
 					</article>
 				</div>
 				<!--/*@thymesVar id="allVisibleNews" type="ru.geekbrains.domodel.entities.News"*/-->
-				<span th:if="${newsArchive.size() == 0}">Новостей пока нет</span>
-				<tr th:each="news : ${newsArchive}">
-				<article class="card_news r-flex pinned">
-					<img src="../img/news/1/1.png" alt="news foto"/>
-					<div class="card_news__body">
-						<div class="card_header card_header__impotant">
+				<!--/*@thymesVar id="newsArchive" type="ru.geekbrains.domodel.entities.News"*/-->
+				<span ></span>
+				<tr th:each="news : ${all}">
+					<article class="card_news r-flex pinned">
+						<img src="../img/news/1/1.png" alt="news foto"/>
+						<div class="card_news__body">
+							<div class="card_header card_header__impotant">
 
-							<h3>
+								<h3>
 									<td th:text="${news.title}"/>
-							</h3>
-							<p>
+								</h3>
+								<p>
 								<td th:text="${news.fullText}"/>
-							</p>
-						</div>
-						<div class="card_news__controls r-flex">
-							<a th:href="@{'/news/news_details/' + ${news.id}}"> подробнее > </a>
+								</p>
+							</div>
+							<div class="card_news__controls r-flex">
+								<a th:href="@{'/news/news_details/' + ${news.id}}"> подробнее > </a>
 
+							</div>
 						</div>
-					</div>
-					<div class="card_news__date r-flex">
-						<p>
+						<div class="card_news__date r-flex">
+							<p>
 							<td th:text="${news.creationDate}"/>
-						</p>
-						<p>
-							<a href="#" sec:authorize="hasRole('ADMIN')">
-								Редактировать
-							</a>
-						</a>
-					</div>
-				</article>
+							</p>
+							<p>
+								<a href="#" sec:authorize="hasRole('ADMIN')">
+									Редактировать
+								</a>
+								</a>
+						</div>
+					</article>
 				</tr>
 
 			</div><!--container-->
+
 		</main> <!--main-->
 		<div id="loginForm" class="modal">
 			<div class="r-flex">

@@ -109,14 +109,14 @@
 						Image preview
 					</h4>
 					<img alt="image preview" src="../img/news/1/1.png"/>
-					<form name="add_news" action="@{/edit}" method="POST"  class="r-flex" sec:authorize="hasRole('ADMIN')">
-						<input type="text" placeholder="Введите название новости" name="news title" class="inputshadow">
-						<textarea placeholder="Введите описание новости" class="ic"></textarea>
+					<form  name="add_news" action="#" th:action="@{/edit}" method="POST"  class="r-flex" th:object="${newsData}" sec:authorize="hasRole('ADMIN')">
+						<input type="text" th:field="*{newsData.title}" placeholder="Введите название новости"  name="news title" class="inputshadow">
+						<textarea th:field="*{newsData.fulltext}" placeholder="Введите описание новости" class="ic"></textarea>
 						<div class="add_news_controls r-flex">
 							<div class="add_news_controls_left">
-								<input type="checkbox" name="pinned" class="inputshadow"/>
+								<input type="checkbox" name="pinned" th:field="*{newsData.pinned}" class="inputshadow"/>
 								<label for="pinned">Закрепить новость</label>
-								<input type="checkbox" name="hidden" class="inputshadow">
+								<input type="checkbox" name="hidden" th:field="*{newsData.hidden}" class="inputshadow">
 								<label for="hidden">Публичная новость</label>
 							</div>
 							<div class="add_news_controls_right">
