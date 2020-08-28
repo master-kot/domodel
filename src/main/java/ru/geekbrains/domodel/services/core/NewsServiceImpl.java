@@ -2,6 +2,11 @@ package ru.geekbrains.domodel.services.core;
 
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.News;
@@ -54,9 +59,22 @@ public class NewsServiceImpl implements NewsService {
     @Override
     //Архив новостей
     public List<News> getNewsArchive(org.springframework.security.core.Authentication authentication) {
-        List<News> newsArchive = getAllVisibleNews();
+//        List<News> newsArchive = getAllVisibleNews();
+//        if (authentication.getName().equals("admin")) newsArchive.addAll(getDeletedNews());
+//        return newsArchive;
+        PageRequest pageable = new PageRequest(1,2);
+                List<News> newsArchive = new ArrayList<>();
+        Page<News> page = newsRepository.findAll(pageable);
         if (authentication.getName().equals("admin")) newsArchive.addAll(getDeletedNews());
+        for (int i = 0; i <= page.getTotalPages(); i++) {
+            List<News> listPage = newsRepository.findAll(pageable.next()).getContent();
+
+            newsArchive.addAll(listPage);
+        }
         return newsArchive;
+    }
+    public Page<News> findAll(Pageable pageable) {
+        return newsRepository.findAll(pageable);
     }
 
     @Override

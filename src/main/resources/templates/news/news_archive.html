@@ -115,8 +115,9 @@
 					</article>
 				</div>
 				<!--/*@thymesVar id="allVisibleNews" type="ru.geekbrains.domodel.entities.News"*/-->
-				<span th:if="${newsArchive.size() == 0}">Новостей пока нет</span>
-				<tr th:each="news : ${newsArchive}">
+				<!--/*@thymesVar id="newsArchive" type="ru.geekbrains.domodel.entities.News"*/-->
+				<span ></span>
+				<tr th:each="news : ${all}">
 				<article class="card_news r-flex pinned">
 					<img src="../img/news/1/1.png" alt="news foto"/>
 					<div class="card_news__body">
