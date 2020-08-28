@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Сущность тарифа для
+ * Сущность тарифа для счетчиков показаний
  */
 @Entity
 @Getter

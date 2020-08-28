@@ -16,22 +16,38 @@
                 <select name="account" class="form-control">
                     <option th:each="account : ${accounts}"
                             th:value="${account.id}"
-                            th:text="${account.getHouseNumber()}">
+                            th:text="${account.houseNumber}">
                     </option>
                 </select>
             </label>
             <div class="form-group">
-                <label for="meterNumber">Серийный номер счетчика</label>
-                <input type="text" class="form-control" id="meterNumber" name="meterNumber" placeholder="Серийный номер">
+                <label for="serialNumber">Серийный номер счетчика</label>
+                <input type="text" class="form-control" id="serialNumber" name="serialNumber" placeholder="Серийный номер">
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group">
+                <label for="model">Модель счетчика</label>
+                <input type="text" class="form-control" id="model" name="model" placeholder="Модель счетчика">
+            </div>
+            <div class="form-group">
+                <label for="stringDate">Дата плановой поверки</label>
+                <input type="text" class="form-control" id="stringDate" name="stringDate" placeholder="Дата поверки" value="22-02-2022">
+            </div>
+            <label>Тип счетчика
                 <select name="type" class="form-control">
                     <option th:each="category : ${T(ru.geekbrains.domodel.entities.constants.MeterType).values()}"
                             th:value="${category}"
                             th:text="${category.description}">
                     </option>
                 </select>
-            </div>
+            </label>
+            <label>Тариф
+                <select name="tariff" class="form-control">
+                    <option th:each="tariff : ${tariffs}"
+                            th:value="${tariff.id}"
+                            th:text="${tariff.description}">
+                    </option>
+                </select>
+            </label>
         </div>
         <button type="submit" class="btn btn-success">Добавить</button>
     </form>

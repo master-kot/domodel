@@ -6,6 +6,7 @@ import lombok.Setter;
 import ru.geekbrains.domodel.entities.constants.MeterType;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -30,18 +31,25 @@ public class Meter {
 
     // Серийный номер счетчика
     @Column(name = "serial_number", nullable = false)
-    private Integer serialNumber;
+    private String serialNumber;
 
-    // Дата поверки счетчика
+    // Модель счетчика
+    private String model;
+
+    // TODO избавиться от строкового значения даты
+    @Transient
+    private String stringDate;
+
+    // Дата плановой поверки счетчика
     @Column(name = "check_date")
-    private Date checkDate;
+    private LocalDate checkDate;
 
     // Тип счетчика, содержит его описание и единицу измерения
     @Column(name = "type")
     @Enumerated(EnumType.ORDINAL)
     private MeterType type;
 
-    // Ссылка на рассчетный тариф для счетчика
+    // Ссылка на расчетный тариф для счетчика
     @ManyToOne
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;
