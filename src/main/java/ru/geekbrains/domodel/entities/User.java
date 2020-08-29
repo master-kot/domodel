@@ -62,11 +62,11 @@ public class User {
     private String firstName;
 
     // Фамилия
-    @Column(name = "second_name")
+    @Column(name = "last_name")
     private String lastName;
 
     // Отчество
-    @Column(name = "middle_name")
+    @Column(name = "patronymic")
     private String patronymic;
 
     // Адрес электронной почты

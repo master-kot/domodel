@@ -54,7 +54,7 @@ public class Bill {
 
     // Ссылка на платежные реквизиты
     @ManyToOne
-    @JoinColumn(name = "requisites_id")
+    @JoinColumn(name = "requisites_id", nullable = false)
     private Requisites requisites;
 
     // Ссылка на калькуляцию (обоснование цены счета)

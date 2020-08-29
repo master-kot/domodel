@@ -29,7 +29,7 @@ public class Account {
     private User user;
 
     // Адрес объекта (может быть не заполнен)
-    @Column(name = "street")
+    @Column(name = "address")
     private String address;
 
     // Номер дома или участка

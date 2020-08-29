@@ -62,14 +62,14 @@ public class MainController {
     public String registerUser(@Valid @ModelAttribute("userData") UserRepresentation userData,
                                BindingResult bindingResult,
                                Model model) {
-        if (bindingResult.hasErrors()) {
-            return REGISTER_FORM;
-        }
-
-        if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
-            bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
-            return REGISTER_FORM;
-        }
+//        if (bindingResult.hasErrors()) {
+//            return REGISTER_FORM;
+//        }
+//
+//        if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
+//            bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
+//            return REGISTER_FORM;
+//        }
 
         if (userService.createUser(userData) != null) {
             model.addAttribute("message",
