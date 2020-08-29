@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,7 +22,7 @@
                     <p class="welcom">
                         Добро пожаловать
                     </p>
-                    <a href="../index.html">
+                    <a href="/">
                         <svg width="135" height="40" viewBox="0 0 135 40" fill="none" xmlns="http://www.w3.org/2000/svg"
                              xmlns:xlink="http://www.w3.org/1999/xlink">
                             <rect width="135" height="40" fill="url(#pattern0)"/>
@@ -41,55 +40,67 @@
                 <div class="header_center r-flex">
                     <nav id="nav-menu-container">
                         <ul class="menu r-flex">
-                            <a href="index.html">
-                                <li>
-                                    новости
+                            <a href="/">
+                                <li >
+                                    главная
                                 </li>
                             </a>
-                            <a href="#">
+                            <a href="/information/about">
                                 <li>
                                     о нас
                                 </li>
                             </a>
-                            <a href="./pages/foto.html">
+                            <a href="/photos">
                                 <li>
                                     фото
                                 </li>
                             </a>
-                            <a href="#">
+                            <a href="/information/documents">
                                 <li>
                                     документы
                                 </li>
                             </a>
-                            <a href="#">
+                            <a href="/appeals">
                                 <li>
                                     обращения
                                 </li>
                             </a>
-                            <a href="#">
+                            <a href="/votes">
                                 <li>
                                     голосования
                                 </li>
                             </a>
-                            <a href="./pages/contacts.html">
+                            <a href="/information/contacts">
                                 <li>
                                     контакты
+                                </li>
+                            </a>
+                            <a href="/management" sec:authorize="hasRole('ADMIN')">
+                                <li>
+                                    управление
                                 </li>
                             </a>
                         </ul>
                     </nav>
                 </div>
                 <div class="header_right">
-                    <img src="../img/home_page/avatar.png" alt="avatar"></img>
-                    <div class="notlogged">
+                    <img src="../img/home_page/avatar.png" alt="avatar">
+                    <div class="notlogged" th:if="${username == null}">
                         <a href="#" id="login">
                             войти
+                        </a><br>
+                        <a href="/register" id="login">
+                            зарегистрироваться
                         </a>
                     </div>
-                    <div class="logged">
-                        <p>
-                            Иван Петров
-                        </p>
+                    <div class="logged" th:if="${username != null}">
+                        <p th:text="'Пользователь: ' + ${username}"/>
+                        <a href="/profile">
+                            личный кабинет
+                        </a><br>
+                        <form action="/logout" method="post">
+                            <input type="submit" value="выйти" />
+                        </form>
                     </div>
                 </div>
             </div>
@@ -105,15 +116,12 @@
                         <article>
                             <div class="cabinet_top r-flex">
                                 <img src="../img/personal_page/myfoto.png" alt="user foto">
-                                <div class="cabinet_fio">
-                                    <p>
-                                        Владимир
+                                <div class="cabinet_fio" th:if="${user != null}">
+                                    <p th:text="${user.firstName}">
                                     </p>
-                                    <p>
-                                        Харламов
+                                    <p th:text="${user.lastName}">
                                     </p>
-                                    <p class="cabinet_phone">
-                                        +7 (312) 4657980
+                                    <p class="cabinet_phone" th:text="${user.username}">
                                     </p>
                                 </div>
                             </div>
@@ -223,15 +231,14 @@
                                             Объект:
                                         </h3>
                                         <p class="payment_subject"
-                                           th:text="${account.address} + ', участок №' + ${account.houseNumber}">
-                                            СНТ "Юбилейный" МО, Ногинский район поселок им. Воровского, участок №28
+                                           th:text="${account.address} + ', участок № ' + ${account.houseNumber}">
                                         </p>
                                     </div>
                                 </article>
+
                                 <div th:each="meter : ${account.meters}">
                                     <article class="member_meters r-flex">
                                         <h2 th:text="${meter.type.description} + ', №' + ${meter.serialNumber}">
-                                            Счетчик электроэнергии, заводской № 36498
 <!--                                            TODO:Thyamleaf затерает <a>, вынесена из тега <h2> -->
 <!--                                            <a th:href="@{/meters/{id}(id=${meter.id})}">Архив показаний</a>-->
                                         </h2>
@@ -296,6 +303,7 @@
                 <form name="login" id="login" action="/login" method="post" class="r-flex">
                     <input type="text" id="username" name="username" placeholder="Номер телефона"/>
                     <input type="password" id="password" name="password" placeholder="Пароль"/>
+                    <div><input type="checkbox" name="remember-me" checked/> запомнить меня</div>
                     <div class="login_controls r-flex">
                         <input type="submit" name="submit" value="Войти"/>
                         <input type="button" name="cancel" value="Отмена"/>

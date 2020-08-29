@@ -25,7 +25,7 @@ import static ru.geekbrains.domodel.entities.constants.Messages.*;
 public class MainController {
 
     // Имена шаблонов страниц
-    private static final String REGISTER_FORM = "register";
+    private static final String REGISTER_FORM = "temp/register";
 
     // Необходимые сервисы
     private final UserService userService;

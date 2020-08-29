@@ -7,9 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.entities.Bill;
+import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.BillService;
-
-import java.security.Principal;
 
 /**
  * Контроллер платежей
@@ -19,8 +18,9 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class BillController {
 
-    // Сервис счетов
+    // Сервисы
     private final BillService billService;
+    private final AccountService accountService;
 
     private static final String BILL_EDIT_FORM = "bills/bills_edit";
     private static final String BILL_ADD_FORM = "bills/bills_add";
@@ -31,17 +31,18 @@ public class BillController {
     }
 
     @GetMapping("")
-    public String getBillsPage(Model model, Principal principal, Authentication authentication) {
-        assert principal != null;
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
+    public String getBillsPage(Model model, Authentication authentication) {
+        if (authentication != null) {
+            String username = authentication.getName();
+            model.addAttribute("username", username);
+            model.addAttribute("accounts", accountService.getAccountsByUserUserame(username));
         }
-        // todo сделать нормально на случай если у админа больше одной роли
-        if ("admin".equals(authentication.getName())) {
-            model.addAttribute("bills", billService.getAllBills());
-        } else {
-            model.addAttribute("bills", billService.findAllByUsername(principal.getName()));
-        }
+        // TODO заготовка на будущее
+//        if (authentication.getAuthorities().contains(ROLE_ADMIN)) {
+//            model.addAttribute("bills", billService.getAllBills());
+//        } else {
+//            model.addAttribute("bills", billService.findAllByUsername(authentication.getName()));
+//        }
         return "bills/bills_user";
     }
 

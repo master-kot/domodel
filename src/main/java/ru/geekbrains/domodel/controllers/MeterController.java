@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
+import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.constants.Roles;
 import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.MeterService;
 import ru.geekbrains.domodel.services.api.TariffService;
+import ru.geekbrains.domodel.services.api.UserService;
 
 import java.security.Principal;
-import java.util.List;
 
 /**
  * Контроллер счетчиков показаний
@@ -28,19 +28,20 @@ import java.util.List;
 @Secured({Roles.ROLE_ADMIN, Roles.ROLE_USER})
 public class MeterController {
 
-    // Сервис счетчиков
+    // Список сервисов
     private final MeterService meterService;
-
-    // Сервис лицевых счетов
     private final AccountService accountService;
-
-    // Сервис тарифов
     private final TariffService tariffService;
+    private final UserService userService;
 
     @GetMapping("")
     public String getMetersPage(Model model, Principal principal) {
-        List<Account> accounts = accountService.getAccountsByUserUserame(principal.getName());
-        model.addAttribute("accounts", accounts);
+        if (principal != null) {
+            User user = userService.getUserByUsername(principal.getName());
+            model.addAttribute("username", user.getUsername());
+            model.addAttribute("user", user);
+            model.addAttribute("accounts", user.getAccounts());
+        }
         model.addAttribute("meterData", new MeterData());
         return "meters/meters_user";
     }
