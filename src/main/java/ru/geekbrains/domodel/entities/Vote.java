@@ -47,7 +47,7 @@ public class Vote {
 
     // Список ссылок на документы (2 шт.), загружается  при необходимости
     @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)
-    private List<DocumentLink> documentLinks = new ArrayList<>();
+    private List<Document> documents = new ArrayList<>();
 
     // Список голосов
     @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)

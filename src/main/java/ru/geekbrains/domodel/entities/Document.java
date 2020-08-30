@@ -13,19 +13,23 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "document_links")
-public class DocumentLink {
+@Table(name = "documents")
+public class Document {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    // Заголовок (наименование)
+    @Column(name = "title")
+    private String title;
+
     // Ссылка на адрес документа
     @Column(name = "link_address", nullable = false)
     private String linkAddress;
 
-    // Голосование, которому соответствует картинка
+    // Голосование, которому соответствует документ
     @ManyToOne
     @JoinColumn(name = "vote_id")
     private Vote vote;

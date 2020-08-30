@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.geekbrains.domodel.entities.UserRepresentation;
+import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.services.api.NewsService;
 import ru.geekbrains.domodel.services.api.UserService;
 
@@ -51,7 +51,7 @@ public class MainController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        model.addAttribute("userData", new UserRepresentation());
+        model.addAttribute("userData", new UserDto());
         return REGISTER_FORM;
     }
 
@@ -59,7 +59,7 @@ public class MainController {
      * Перехват запроса создания нового пользователя
      */
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("userData") UserRepresentation userData,
+    public String registerUser(@Valid @ModelAttribute("userData") UserDto userData,
                                BindingResult bindingResult,
                                Model model) {
 //        if (bindingResult.hasErrors()) {

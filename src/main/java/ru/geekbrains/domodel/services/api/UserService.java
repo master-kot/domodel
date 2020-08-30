@@ -2,7 +2,7 @@ package ru.geekbrains.domodel.services.api;
 
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.User;
-import ru.geekbrains.domodel.entities.UserRepresentation;
+import ru.geekbrains.domodel.dto.UserDto;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public interface UserService {
      * @param userData отображение данных пользователя
      * @return новый пользователь, сохраненный в репозитории
      */
-    User createUser(UserRepresentation userData);
+    User createUser(UserDto userData);
 
     /**
      * Изменить данные пользователя
@@ -57,7 +57,7 @@ public interface UserService {
      * @param userData отображение данных пользователя
      * @param user изменяемый пользователь
      */
-    User updateUser(UserRepresentation userData, User user);
+    User updateUser(UserDto userData, User user);
 
     /**
      * Изменить данные пользователя

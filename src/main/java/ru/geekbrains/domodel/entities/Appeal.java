@@ -24,11 +24,6 @@ public class Appeal {
     @Column(name = "id")
     private Long id;
 
-    // Пользователь - автор обращения
-    @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false)
-    private User authorId;
-
     // Дата создания
     @Column(name = "creation_date", nullable = false)
     private LocalDate creationDate;
@@ -49,6 +44,11 @@ public class Appeal {
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private AppealStatus status;
+
+    // Пользователь - автор обращения
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private User authorId;
 
     // Список ссылок на фотографии
     @OneToMany(mappedBy = "appeal", cascade = CascadeType.ALL)

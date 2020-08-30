@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.domodel.entities.User;
-import ru.geekbrains.domodel.entities.UserRepresentation;
+import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import javax.validation.Valid;
@@ -53,7 +53,7 @@ public class ProfileController {
      * Перехват запроса на изменение профиля пользователя
      */
     @PostMapping("/edit")
-    public String changeUserProfile(@Valid @ModelAttribute("userData") UserRepresentation userData,
+    public String changeUserProfile(@Valid @ModelAttribute("userData") UserDto userData,
                                     BindingResult bindingResult,
                                     Model model,
                                     Principal principal) {

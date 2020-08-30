@@ -1,4 +1,4 @@
-package ru.geekbrains.domodel.entities;
+package ru.geekbrains.domodel.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserRepresentation {
+public class UserDto {
 
     @NotBlank
     @Size(min = 5, message="Номер телефона не менее 5 символов")
