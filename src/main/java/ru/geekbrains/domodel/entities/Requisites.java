@@ -57,12 +57,4 @@ public class Requisites {
     // Номер корреспондентского счета
     @Column(name = "correspondent_account")
     private String correspondentAccount;
-
-    // Электронная почта организации
-    @Column(name = "email")
-    private String email;
-
-    // Телефонный номер организации
-    @Column(name = "phone_number")
-    private String phoneNumber;
 }

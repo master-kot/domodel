@@ -2,11 +2,8 @@ package ru.geekbrains.domodel.services.api;
 
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Bill;
-import ru.geekbrains.domodel.entities.constants.SendStatus;
 
-import javax.persistence.Id;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Интерфейс сервиса счетов (платежных документов)

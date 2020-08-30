@@ -83,15 +83,15 @@
                 <div class="header_right">
                     <img src="../img/home_page/avatar.png" alt="avatar">
                     <div class="notlogged" th:if="${username == null}">
-                        <a href="#loginForm" id="login">
+                        <a href="#loginForm">
                             войти
                         </a><br>
-                        <a href="/register" id="login">
+                        <a href="/register">
                             зарегистрироваться
                         </a>
                     </div>
                     <div class="logged" th:if="${username != null}">
-                        <p th:text="'Пользователь: ' + ${username}"/>
+                        <p th:text="'Пользователь: ' + ${username}"></p>
                         <a href="/profile">
                             личный кабинет
                         </a><br>
@@ -110,48 +110,41 @@
                     </h1>
                     <div></div>
                     <img src="../img/profile_page/avatar.png" alt="avatar" />
-                    <h2>
-                        ВЛАДИМИР ХАРЛАМОВ
+                    <h2 th:text="${user.lastName} + ' ' + ${user.firstName} + ' ' + ${user.patronymic}">
                     </h2>
                     <div class="profile_content r-flex">
                         <section class="contacts_data">
                             <h3>
                                 Контактные данные:
                             </h3>
-                            <form name="contacts" method="post" action="#">
+                            <form name="contacts" method="post" th:action="@{/profile/edit}" th:object="${user}">
                                 <div class="r-flex">
-                                    <label for="phone">Телефон:</label>
-                                    <input type="tel" name="phone" value="+7 (985) 358-12-54" disabled/>
+                                    <label for="username">Телефон:</label>
+                                    <input type="text" name="username" th:field="*{username}" disabled/>
+                                    <small class="form-text text-danger" th:each="err : ${#fields.errors('username')}" th:text="${err}">Ошибка</small>
                                 </div>
                                 <div class="r-flex">
                                     <label for="email" >Электронная почта:</label>
-                                    <input type="email" name="email" value="dgkhsglirnlsdfi@yandex.ru" disabled/>
+                                    <input type="email" id="email" th:field="*{email}" disabled/>
+                                    <small class="form-text text-danger" th:each="err : ${#fields.errors('email')}" th:text="${err}">Ошибка</small>
                                 </div>
                                 <div class="r-flex">
                                     <label for="address" >Почтовый адрес:</label>
-                                    <textarea name="address" disabled>123534 г. Москва, ул. ЕНисейская, д. 10, корп. 1, кв. 23</textarea>
+                                    <textarea id="address" th:field="*{address}" disabled></textarea>
                                 </div>
-                                <input type="hidden" name="firstname" value="ВЛАДИМИР" />
-                                <input type="hidden" name="lastname" value="ХАРЛАМОВ" />
-                                <input type="hidden"/>
                             </form>
                         </section>
                         <section class="profile_address">
                             <h3>
                                 Мои адреса:
                             </h3>
-                            <p>
-                                1. СНТ "Юбилейный" МО, Ногинский район поселок им. Воровского,
+                            <p th:each="account, iterator : ${user.accounts}">
+                                <span th:text="${account.address}">
+                                </span><br>
+                                <span th:text="'Участок: ' + ${account.houseNumber} +
+                                ', площадь участка: ' + ${account.acresAmount} + ' соток.' ">
+                                </span>
                             </p>
-                            <span>
-								участок №28 - площадь участка: 6,28 соток.
-							</span>
-                            <p>
-                                2. СНТ "Юбилейный" МО, Ногинский район поселок им. Воровского,
-                            </p>
-                            <span>
-								участок №29 - площадь участка: 7,15 соток.
-							</span>
                         </section>
                     </div>
                 </main>
@@ -162,7 +155,7 @@
                     </a>
                     <a href="#" id="fio_link">
                         <i class="fas fa-pencil-alt"></i>
-                        Фамилия и Имя
+                        Фамилия, Имя
                     </a>
                     <a href="#">
                         <i class="fas fa-pencil-alt"></i>
@@ -195,14 +188,15 @@
                     </a>
                 </p>
                 <h2>
-                    Фамилия и Имя
+                    Фамилия, Имя, Отчество
                 </h2>
-                <form name="profile_fio" id="profile_form" action="#" method="post" class="r-flex">
-                    <input type="text" id="firstname" name="firstname" value="ВЛАДИМИР"/>
-                    <input type="text" id="lastname" name="lastname" value="ХАРЛАМОВ"/>
+                <form name="profile_fio" id="profile_form" th:action="@{/profile/edit/name}" th:object="${user}" method="post" class="r-flex" >
+                    <input type="text" id="lastName" name="lastName" th:field="*{lastName}" th:value="*{lastName}"/>
+                    <input type="text" id="firstName" name="firstName" th:field="*{firstName}" th:value="*{firstName}"/>
+                    <input type="text" id="patronymic" name="patronymic" th:field="*{patronymic}" th:value="*{patronymic}"/>
                     <div class="login_controls r-flex">
-                        <input type="button" name="cancel" id="cancel_fio" value="Отменить"></input>
-                        <input type="submit" name="submit" id="submit_fio" value="Сохранить"></input>
+                        <input type="button" name="cancel" id="cancel_fio" value="Отменить"/>
+                        <input type="submit" name="submit" value="Сохранить"/>
                     </div>
                 </form>
             </div>
@@ -220,9 +214,10 @@
                 <form name="login" id="login" action="/login" method="post" class="r-flex">
                     <input type="text" id="username" name="username" placeholder="Номер телефона"/>
                     <input type="password" id="password" name="password" placeholder="Пароль"/>
+                    <div><input type="checkbox" name="remember-me" checked/> запомнить меня</div>
                     <div class="login_controls r-flex">
-                        <input type="submit" name="submit" value="Войти"></input>
-                        <input type="button" name="cancel" value="Отмена"></input>
+                        <input type="submit" name="submit" value="Войти"/>
+                        <input type="button" name="cancel" value="Отмена"/>
                     </div>
                 </form>
             </div>

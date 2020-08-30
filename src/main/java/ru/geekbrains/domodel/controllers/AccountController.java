@@ -19,6 +19,10 @@ import java.security.Principal;
 @Log4j2
 public class AccountController {
 
+    // Адреса шаблонов страниц
+    private static final String ACCOUNTS_ADMIN_FORM = "profile/accounts_admin";
+    private static final String ACCOUNTS_EDIT_FORM = "profile/accounts_edit";
+
     // Сервис лицевых счетов
     private final AccountService accountService;
 
@@ -31,6 +35,18 @@ public class AccountController {
             model.addAttribute("username", principal.getName());
         }
         model.addAttribute("accounts", accountService.getAllAccounts());
-        return "profile/accounts";
+        return ACCOUNTS_ADMIN_FORM;
+    }
+
+    /**
+     * Перехват запроса списка лицевых счетов
+     */
+    @GetMapping("/edit")
+    public String getAccountsEditPage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
+        model.addAttribute("accounts", accountService.getAllAccounts());
+        return ACCOUNTS_EDIT_FORM;
     }
 }

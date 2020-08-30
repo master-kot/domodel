@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,7 +21,7 @@
                     <p class="welcom">
                         Добро пожаловать
                     </p>
-                    <a href="../index.html">
+                    <a href="/">
                         <svg width="135" height="40" viewBox="0 0 135 40" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <rect width="135" height="40" fill="url(#pattern0)"/>
                             <defs>
@@ -36,55 +36,67 @@
                 <div class="header_center r-flex">
                     <nav id="nav-menu-container">
                         <ul class="menu r-flex">
-                            <a href="index.html">
+                            <a href="/">
                                 <li >
-                                    новости
+                                    главная
                                 </li>
                             </a>
-                            <a href="#">
+                            <a href="/information/about">
                                 <li>
                                     о нас
                                 </li>
                             </a>
-                            <a href="./pages/foto.html">
+                            <a href="/photos">
                                 <li>
                                     фото
                                 </li>
                             </a>
-                            <a href="#">
+                            <a href="/information/documents">
                                 <li>
                                     документы
                                 </li>
                             </a>
-                            <a href="#">
+                            <a href="/appeals">
                                 <li>
                                     обращения
                                 </li>
                             </a>
-                            <a href="#">
+                            <a href="/votes">
                                 <li>
                                     голосования
                                 </li>
                             </a>
-                            <a href="./pages/contacts.html">
+                            <a href="/information/contacts">
                                 <li>
                                     контакты
+                                </li>
+                            </a>
+                            <a href="/management" sec:authorize="hasRole('ADMIN')">
+                                <li>
+                                    управление
                                 </li>
                             </a>
                         </ul>
                     </nav>
                 </div>
                 <div class="header_right">
-                    <img src="../img/home_page/avatar.png" alt="avatar"></img>
-                    <div class="notlogged">
+                    <img src="../img/home_page/avatar.png" alt="avatar">
+                    <div class="notlogged" th:if="${username == null}">
                         <a href="#" id="login">
                             войти
+                        </a><br>
+                        <a href="/register" id="login">
+                            зарегистрироваться
                         </a>
                     </div>
-                    <div class="logged">
-                        <p>
-                            Иван Петров
-                        </p>
+                    <div class="logged" th:if="${username != null}">
+                        <p th:text="'Пользователь: ' + ${username}"/>
+                        <a href="/profile">
+                            личный кабинет
+                        </a><br>
+                        <form action="/logout" method="post">
+                            <input type="submit" value="выйти" />
+                        </form>
                     </div>
                 </div>
             </div>
@@ -100,16 +112,16 @@
                         <article>
                             <div class="cabinet_top r-flex">
                                 <img src="../img/personal_page/myfoto.png" alt="user foto">
-                                <div class="cabinet_fio">
-                                    <p>
-                                        Владимир
-                                    </p>
-                                    <p>
-                                        Харламов
-                                    </p>
-                                    <p class="cabinet_phone">
-                                        +7 (312) 4657980
-                                    </p>
+                                <div class="cabinet_top r-flex">
+                                    <img src="../img/personal_page/myfoto.png" alt="user foto">
+                                    <div class="cabinet_fio" th:if="${user != null}">
+                                        <p th:text="${user.firstName}">
+                                        </p>
+                                        <p th:text="${user.lastName}">
+                                        </p>
+                                        <p class="cabinet_phone" th:text="${user.username}">
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                             <!-- Tab links -->
@@ -127,38 +139,27 @@
                                 СЧЕТА И ВЗНОСЫ
                             </h2>
                             <div class="cabinet_personal_line"></div>
-                            <div class="payments_container">
+                            <div class="payments_container" th:each="account : ${accounts}">
                                 <article>
                                     <div class="r-flex">
                                         <h3 class="payment_header">
                                             Объект:
                                         </h3>
-                                        <p class="payment_subject">
-                                            СНТ "Юбилейный" МО, Ногинский район поселок им. Воровского, участок №28
+                                        <p class="payment_subject"
+                                           th:text="${account.address} + ', участок № ' + ${account.houseNumber}">
                                         </p>
                                     </div>
                                 </article>
+
                                 <article class="member_payments r-flex">
                                     <div class="member_payments__description">
                                         <h3>
                                             Членские взносы
                                         </h3>
-                                        <p class="last_payment">
-                                            Последний оплаченный счет - август 2020
-                                        </p>
                                         <p>
                                             Неоплаченные счета: отсутствуют
                                         </p>
                                         <ul>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
                                             <li>
                                                 15 май 2020 - 1200 руб.
                                             </li>
@@ -179,24 +180,9 @@
                                             Платежи по счетчикам
                                         </h3>
                                         <p>
-                                            Последняя передача показаний приборов учета - 03.08.2019
-                                        </p>
-                                        <p class="last_payment">
-                                            Последний оплаченный счет - август 2020
-                                        </p>
-                                        <p>
                                             Неоплаченные счета: отсутствуют
                                         </p>
                                         <ul>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
                                             <li>
                                                 15 май 2020 - 1200 руб.
                                             </li>
@@ -206,7 +192,7 @@
                                         </ul>
                                     </div>
                                     <div>
-                                        <a href="#" class="pay_link">
+                                        <a href="/bills/archive" class="pay_link">
                                             Оплатить
                                         </a>
                                     </div>
@@ -214,27 +200,12 @@
                                 <article class="member_payments r-flex">
                                     <div class="member_payments__description">
                                         <h3>
-                                            Прочие платежи и взносы
+                                            Прочие платежи
                                         </h3>
-                                        <p>
-                                            Размер целевых взносов в 2020г. не установлен
-                                        </p>
-                                        <p class="last_payment">
-                                            Последний оплаченный счет - август 2020
-                                        </p>
                                         <p>
                                             Неоплаченные счета: отсутствуют
                                         </p>
                                         <ul>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
                                             <li>
                                                 15 май 2020 - 1200 руб.
                                             </li>
@@ -250,133 +221,7 @@
                                     </div>
                                 </article>
                                 <div class="archive_link_container">
-                                    <a href="#" class="payments_archive__link">
-                                        Архив платежей
-                                    </a>
-                                </div>
-                                <article>
-                                    <div class="r-flex">
-                                        <h3 class="payment_header">
-                                            Объект:
-                                        </h3>
-                                        <p class="payment_subject">
-                                            СНТ "Юбилейный" МО, Ногинский район поселок им. Воровского, участок №29
-                                        </p>
-                                    </div>
-                                </article>
-                                <article class="member_payments r-flex">
-                                    <div class="member_payments__description">
-                                        <h3>
-                                            Членские взносы
-                                        </h3>
-                                        <p class="last_payment">
-                                            Последний оплаченный счет - август 2020
-                                        </p>
-                                        <p>
-                                            Неоплаченные счета: отсутствуют
-                                        </p>
-                                        <ul>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="pay_link">
-                                            Оплатить
-                                        </a>
-                                    </div>
-                                </article>
-                                <article class="member_payments r-flex">
-                                    <div class="member_payments__description">
-                                        <h3>
-                                            Платежи по счетчикам
-                                        </h3>
-                                        <p>
-                                            Последняя передача показаний приборов учета - 03.08.2019
-                                        </p>
-                                        <p class="last_payment">
-                                            Последний оплаченный счет - август 2020
-                                        </p>
-                                        <p>
-                                            Неоплаченные счета: отсутствуют
-                                        </p>
-                                        <ul>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="pay_link">
-                                            Оплатить
-                                        </a>
-                                    </div>
-                                </article>
-                                <article class="member_payments r-flex">
-                                    <div class="member_payments__description">
-                                        <h3>
-                                            Прочие платежи и взносы
-                                        </h3>
-                                        <p>
-                                            Размер целевых взносов в 2020г. не установлен
-                                        </p>
-                                        <p class="last_payment">
-                                            Последний оплаченный счет - август 2020
-                                        </p>
-                                        <p>
-                                            Неоплаченные счета: отсутствуют
-                                        </p>
-                                        <ul>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                            <li>
-                                                15 май 2020 - 1200 руб.
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="pay_link">
-                                            Оплатить
-                                        </a>
-                                    </div>
-                                </article>
-                                <div class="archive_link_container">
-                                    <a href="#" class="payments_archive__link">
+                                    <a href="/bills/archive" class="payments_archive__link">
                                         Архив платежей
                                     </a>
                                 </div>
@@ -404,6 +249,7 @@
                 <form name="login" id="login" action="/login" method="post" class="r-flex">
                     <input type="text" id="username" name="username" placeholder="Номер телефона"/>
                     <input type="password" id="password" name="password" placeholder="Пароль"/>
+                    <div><input type="checkbox" name="remember-me" checked/> запомнить меня</div>
                     <div class="login_controls r-flex">
                         <input type="submit" name="submit" value="Войти"/>
                         <input type="button" name="cancel" value="Отмена"/>

@@ -3,7 +3,6 @@ package ru.geekbrains.domodel.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.geekbrains.domodel.entities.constants.MeterType;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -25,31 +24,27 @@ public class Meter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Лицевой счет, к которому прикреплен данный счетчик
-    @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
-
     // Серийный номер счетчика
     @Column(name = "serial_number", nullable = false)
     private String serialNumber;
 
     // Модель счетчика
+    @Column(name = "model")
     private String model;
 
-    // Дата поверки счетчика
+    // Дата плановой поверки счетчика
     @Column(name = "check_date")
     private LocalDate checkDate;
 
-    // Тип счетчика, содержит его описание и единицу измерения
-    @Column(name = "type")
-    @Enumerated(EnumType.ORDINAL)
-    private MeterType type;
-
-    // Ссылка на расчетный тариф для счетчика
+    // Лицевой счет, к которому прикреплен данный счетчик
     @ManyToOne
-    @JoinColumn(name = "tariff_id")
-    private Tariff tariff;
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
+
+    // Тип счетчика
+    @ManyToOne
+    @JoinColumn(name = "type_id", nullable = false)
+    private MeterType type;
 
     // Список показаний данного счетчика
     @OneToMany(mappedBy = "meter")

@@ -9,7 +9,7 @@ import ru.geekbrains.domodel.services.api.InformationService;
 import java.util.Optional;
 
 /**
- * Реализация сервиса информации компании
+ * Реализация сервиса информации о компании
  */
 @Service
 @RequiredArgsConstructor

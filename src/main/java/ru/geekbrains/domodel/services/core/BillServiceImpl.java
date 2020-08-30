@@ -4,7 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.*;
-import ru.geekbrains.domodel.entities.constants.BillType;
+import ru.geekbrains.domodel.entities.BillType;
 import ru.geekbrains.domodel.repositories.BillRepository;
 import ru.geekbrains.domodel.services.api.*;
 
@@ -84,9 +84,9 @@ public class BillServiceImpl implements BillService {
                 calculation.setPreviousData(meterDataPrev);
                 calculation.setCurrentData(meterDataCurrent);
                 calculation.setAmount(meterDataCurrent.getValue() - meterDataPrev.getValue());
-                calculation.setPrice(meter.getTariff().getPrice());
+                calculation.setPrice(meter.getType().getTariff().getPrice());
                 calculation.setBill(bill);
-                calculation.setCost(calculation.getAmount() * meter.getTariff().getPrice());
+                calculation.setCost(calculation.getAmount() * meter.getType().getTariff().getPrice());
                 bill.getCalculations().add(calculation);
             }
         }
