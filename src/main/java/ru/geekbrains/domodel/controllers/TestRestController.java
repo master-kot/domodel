@@ -30,7 +30,7 @@ public class TestRestController {
      */
     @GetMapping(path = "/news", produces = PRODUCE_TYPE)
     public List<News> getAllNews() {
-        return newsService.getAllNews();
+        return newsService.readAllNews();
     }
 
     /**
@@ -52,8 +52,9 @@ public class TestRestController {
     /**
      * Перехват запроса удаления новости
      */
-    @DeleteMapping(path = "/news/{id}")
-    public void deleteNews(@PathVariable("id") Long id) {
-        newsService.deleteNewsById(id);
-    }
+    //TODO исправить с удаления на изменение
+//    @DeleteMapping(path = "/news/{id}")
+//    public void deleteNews(@PathVariable("id") Long id) {
+//        newsService.updateNewsById(id);
+//    }
 }

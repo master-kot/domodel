@@ -31,6 +31,7 @@ public class NewsController {
     /**
      * Перехват запроса определенной страницы архива новостей
      */
+    //todo сделать пагинацию
     @GetMapping("news_archive/{id}")
     public String getNewsArchivePage(@PathVariable int id,
                                      Model model,
@@ -39,13 +40,12 @@ public class NewsController {
         if (authentication != null) {
             model.addAttribute("username", authentication.getName());
         }
-        if (id == 0) id =1;
-        Pageable pageRequest = PageRequest.of(id, 2);
-        model.addAttribute("all", newsService.findAll(pageRequest));
-        //model.addAttribute("newsArchive", newsService.getNewsArchive(authentication));
-        Page<News> page = newsService.findAll(pageRequest);
-
-        model.addAttribute("page", page);
+//        if (id == 0) id =1;
+//        Pageable pageRequest = PageRequest.of(id, 2);
+//        model.addAttribute("all", newsService.findAll(pageRequest));
+        model.addAttribute("newsArchive", newsService.readNewsArchive(authentication));
+//        Page<News> page = newsService.findAll(pageRequest);
+//        model.addAttribute("page", page);
         return "news/news_archive";
     }
 
@@ -59,7 +59,7 @@ public class NewsController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        model.addAttribute("news", newsService.getNewsById(id));
+        model.addAttribute("news", newsService.readNewsById(id));
         return "news/news_edit";
     }
 
@@ -90,7 +90,7 @@ public class NewsController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        model.addAttribute("news", newsService.getNewsById(id));
+        model.addAttribute("news", newsService.readNewsById(id));
         return "news/news_details";
     }
 

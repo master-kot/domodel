@@ -68,21 +68,21 @@ public interface NewsService {
     News updateVisibilityNewsById(Long id , boolean visible);
 
 
-//    /**
-//     * Сохранить новость
-//     * @param newNewsDto данные с фронта
-//     * @return новость, сохраненная в репозитории
-//     */
-//    News saveNews(NewsDto newNewsDto);
+    /**
+     * Сохранить новость
+     * @param news данные с фронта
+     * @return новость, сохраненная в репозитории
+     */
+    News saveNews(News news);
 
 
     // Page<News> findAll(Pageable pageable);
 
-//    /**
-//     * Получить список всех новостей
-//     * @return список новостей
-//     */
-//    List<News> readAllNews();
+    /**
+     * Получить список всех новостей
+     * @return список новостей
+     */
+    List<News> readAllNews();
 
     //    /**
 //     * Получить последнюю по дате новость

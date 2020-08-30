@@ -122,7 +122,7 @@ public class NewsServiceImpl implements NewsService {
     //ЧТЕНИЕ
 
     //сохранение новости
-    private News saveNews(News newNews) {
+    public News saveNews(News newNews) {
         return newsRepository.save(newNews);
     }
 
@@ -137,7 +137,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     //получаем отсортированный по дате (от свежих к старым) список всех новостей
-    private List<News> readAllNews() {
+    public List<News> readAllNews() {
         List<News> list = newsRepository.findAll();
         Collections.reverse(list);
         return list;

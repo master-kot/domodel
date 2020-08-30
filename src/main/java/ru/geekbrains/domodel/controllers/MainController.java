@@ -40,7 +40,7 @@ public class MainController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        model.addAttribute("relevantNews", newsService.getRelevantNews(authentication));
+        model.addAttribute("relevantNews", newsService.readRelevantNews(authentication));
         return "index";
     }
 

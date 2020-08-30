@@ -45,7 +45,7 @@ public class NewsDto {
     @NotBlank
     private boolean visible;
 
-    //todo с автором надо покумекать
+    //todo с автором надо покумекать, по идее Имя юзера + фамилия
     @NotBlank
-    private User authorId;
+    private String userName;
 }
