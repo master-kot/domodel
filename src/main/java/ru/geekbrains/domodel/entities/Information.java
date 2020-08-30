@@ -23,14 +23,14 @@ public class Information {
 
     // Наименование блока
     @Column(name = "block_name", nullable = false)
-    private String blockName;
+    private String title;
 
     // Текст блока
     @Column(name = "text", nullable = false)
     private String text;
 
-    // Указатель публичности блока. Если false, блок отображается для всех посетителей,
-    // Если true, новость отображается только для зарегистрированных посетителей
+    // Указатель публичности блока. Если false - блок отображается для всех посетителей,
+    // если true - только для зарегистрированных
     @Column(name = "hidden", nullable = false)
     private boolean hidden;
 }

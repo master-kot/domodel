@@ -13,6 +13,9 @@ INSERT INTO users (username, password, enabled, creation_date, first_name, last_
 INSERT INTO authorities (authority) VALUES ('ROLE_ADMIN'), ('ROLE_DIRECTOR'), ('ROLE_USER');
 INSERT INTO users_authorities (user_id, authority_id) VALUES (1, 1), (2, 3);
 
+### МОДУЛЬ ГОЛОВСОВАНИЯ ###
+CREATE TABLE votes (id bigserial not null, title varchar(50) not null, text varchar(500) not null, start_date date not null, end_date date not null, PRIMARY KEY (id));
+
 ### МОДУЛЬ НОВОСТЕЙ ###
 INSERT INTO news (creation_date, title, full_text, picture_link, author_id, hidden, pinned, visible) VALUES ('2020-08-06', 'Заголовок первой новости', 'Полный текст первой новости, загруженной из сервиса новостей', '1.png', 1, false, false, true);
 INSERT INTO news (creation_date, title, full_text, picture_link, author_id, hidden, pinned, visible) VALUES ('2020-08-20', 'Заголовок второй новости', 'Полный текст второй новости, загруженной из сервиса новостей. Новость закреплена и должны отображаться первой!', '1.png', 1, false, true, true);

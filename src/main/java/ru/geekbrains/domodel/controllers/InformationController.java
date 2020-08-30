@@ -52,4 +52,15 @@ public class InformationController {
         }
         return "information/documents";
     }
+
+    /**
+     * Перехват запроса страницы реквизитов
+     */
+    @GetMapping("/requisites")
+    public String getRequisitesPage(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("username", principal.getName());
+        }
+        return "information/requisites";
+    }
 }

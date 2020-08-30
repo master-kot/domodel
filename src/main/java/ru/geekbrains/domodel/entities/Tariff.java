@@ -21,7 +21,7 @@ public class Tariff {
     @Column(name = "id")
     private Integer id;
 
-    // Описание данного тарифа (для более понятного выбора тарифа при назначении на счетчик)
+    // Описание тарифа (для более понятного выбора тарифа при назначении на счетчик)
     @Column(name = "description", nullable = false)
     private String description;
 
