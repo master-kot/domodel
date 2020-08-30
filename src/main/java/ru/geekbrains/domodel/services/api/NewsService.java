@@ -112,7 +112,7 @@ public interface NewsService {
      *Закрепляем выбранную новость
      *
      */
-    void toPinnedNews(News news);
+    void pinnedNews(News news);
 
 }
 

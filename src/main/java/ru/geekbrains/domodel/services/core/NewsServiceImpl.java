@@ -208,7 +208,7 @@ public class NewsServiceImpl implements NewsService {
 
 
     @Override
-    public void toPinnedNews(News news) {
+    public void pinnedNews(News news) {
         //Закрепляем выбранную новость,если закрепленных уже 2, то одну открепляем
         List<News> pinnedNews = getPinnedNews();
         if (pinnedNews.size() > 1) pinnedNews.get(1).setPinned(false);
