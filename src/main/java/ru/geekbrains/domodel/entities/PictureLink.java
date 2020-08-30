@@ -19,7 +19,7 @@ public class PictureLink {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     // Ссылка на адрес картинки
     @Column(name = "link_address", nullable = false)
