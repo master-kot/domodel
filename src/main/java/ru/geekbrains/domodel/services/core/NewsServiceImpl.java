@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.domodel.dto.NewsDto;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.entities.User;
@@ -30,27 +31,12 @@ public class NewsServiceImpl implements NewsService {
         this.newsRepository = newsRepository;
     }
 
-    @Override
-    //получение поcледней новости
-    public News getLastNews() {
-        List<News> newsList = getAllNews();
-        if (!newsList.isEmpty()) {
-            return newsList.get(0);
-        }
-        return null;
-    }
 
-    @Override
-    //получаем отсортированный по дате (от свежих к старым) список всех новостей
-    public List<News> getAllNews() {
-        List<News> list = newsRepository.findAll();
-        Collections.reverse(list);
-        return list;
-    }
+    //ЧТЕНИЕ
 
     @Override
     //получаем новость по id
-    public News getNewsById(Long id) {
+    public News readNewsById(Long id) {
         Optional<News> news = newsRepository.findById(id);
         return news.orElse(null);
     }
@@ -58,14 +44,14 @@ public class NewsServiceImpl implements NewsService {
     //todo сделать пагинацию
     @Override
     //Архив новостей
-    public List<News> getNewsArchive(org.springframework.security.core.Authentication authentication) {
+    public List<News> readNewsArchive(org.springframework.security.core.Authentication authentication) {
 //        List<News> newsArchive = getAllVisibleNews();
 //        if (authentication.getName().equals("admin")) newsArchive.addAll(getDeletedNews());
 //        return newsArchive;
-        PageRequest pageable = new PageRequest(1,2);
+        PageRequest pageable = new PageRequest(1, 2);
         List<News> newsArchive = new ArrayList<>();
         Page<News> page = newsRepository.findAll(pageable);
-        if (authentication.getName().equals("admin")) newsArchive.addAll(getDeletedNews());
+        if (authentication.getName().equals("admin")) newsArchive.addAll(readDeletedNews());
         for (int i = 0; i <= page.getTotalPages(); i++) {
             List<News> listPage = newsRepository.findAll(pageable.next()).getContent();
 
@@ -73,26 +59,100 @@ public class NewsServiceImpl implements NewsService {
         }
         return newsArchive;
     }
-    public Page<News> findAll(Pageable pageable) {
-        return newsRepository.findAll(pageable);
-    }
 
     @Override
     // Новости на главную страницу
-    public List<News> getRelevantNews(org.springframework.security.core.Authentication authentication) {
+    public List<News> readRelevantNews(org.springframework.security.core.Authentication authentication) {
         List<News> newsRelevant = new ArrayList<>();
-        if (authentication == null) newsRelevant = getPublicNews();
-        else newsRelevant = getAllVisibleNews();
-        if (newsRelevant.size()>10) newsRelevant.subList(0,9);
+        if (authentication == null) newsRelevant = readPublicNews();
+        else newsRelevant = readAllVisibleNews();
+        if (newsRelevant.size() > 10) newsRelevant.subList(0, 9);
         return newsRelevant;
     }
 
+    // РЕДАКТИРОВАНИЕ
+
+    //todo сделать метод создание новости по параметрам с фронта
+    @Override
+    public News createNews(NewsDto newsDto) {
+        // News newNews = new News(title, fullText, hidden, pinned, pictureLink, user);
+        //return newsRepository.save(newNews);
+        return null;
+    }
+
+
+    // РЕДАКТИРОВАНИЕ
 
     @Override
-    public List<News> getAllVisibleNews() {
+    public News updateVisibilityNewsById(Long id, boolean visible) {
+        //удаляем новость, меняя ее видимость и удаляя ее из закрепленных
+        readNewsById(id).setVisible(false);
+        readNewsById(id).setPinned(false);
+        return null;
+    }
+
+    // TODO через POST сделать метод изменения новости; учесть, что закрепленных может быть только 2
+    @Override
+    public News updateNewsById(Long id, NewsDto newsDto) {
+        News news = newsRepository.getOne(id);
+//        if (news != null) {
+//            news.setTitle(title);
+//            news.setFullText(fullText);
+//            news.setHidden(hidden);
+//            news.setPinned(pinned);
+//            news.setVisible(visible);
+//            news.setPictureLink(pictureLink);
+//            return newsRepository.save(news);
+//        }
+        return null;
+    }
+
+    @Override
+    public News updatePinningNewsById(Long id, boolean pinned) {
+        //Закрепляем выбранную новость,если закрепленных уже 2, то одну открепляем
+        List<News> pinnedNews = readPinnedNews();
+        if (pinnedNews.size() > 1) pinnedNews.get(1).setPinned(false);
+        readNewsById(id).setPinned(pinned);
+        return null;
+    }
+
+
+
+    //ДОПОЛНИТЕЛЬНЫЕ МЕТОДЫ
+    //ЧТЕНИЕ
+
+    //сохранение новости
+    private News saveNews(News newNews) {
+        return newsRepository.save(newNews);
+    }
+
+
+    //получение поcледней новости
+    private News readLastNews() {
+        List<News> newsList = readAllNews();
+        if (!newsList.isEmpty()) {
+            return newsList.get(0);
+        }
+        return null;
+    }
+
+    //получаем отсортированный по дате (от свежих к старым) список всех новостей
+    private List<News> readAllNews() {
+        List<News> list = newsRepository.findAll();
+        Collections.reverse(list);
+        return list;
+    }
+
+    private Page<News> findAll(Pageable pageable) {
+        return newsRepository.findAll(pageable);
+    }
+
+
+    //РЕДАКТИРОВАНИЕ
+    private List<News> readAllVisibleNews() {
         //список неудаленных новостей для зарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым
-        List<News> allNewsList = getAllNews();
-        List<News> pinnedNewsList = getPinnedNews();
+        List<News> allNewsList = readAllNews();
+        List<News> pinnedNewsList = readPinnedNews();
         List<News> newsList = new ArrayList<News>();
         for (int i = 0; i < pinnedNewsList.size(); i++) { //добавляем закрпленные
             newsList.add(pinnedNewsList.get(i));
@@ -106,9 +166,9 @@ public class NewsServiceImpl implements NewsService {
         return newsList;
     }
 
-    public List<News> getDeletedNews() {
+    private List<News> readDeletedNews() {
         //список удаленных новостей
-        List<News> allNewsList = getAllNews();
+        List<News> allNewsList = readAllNews();
         List<News> newsList = new ArrayList<News>();
         for (int i = 0; i < allNewsList.size(); i++) {
             if (!allNewsList.get(i).isVisible()) {
@@ -118,11 +178,9 @@ public class NewsServiceImpl implements NewsService {
         return newsList;
     }
 
-
-    @Override
-    public List<News> getPinnedNews() {
+    private List<News> readPinnedNews() {
         //возвращает лист из 2 закрепленных новостей
-        List<News> allNewsList = getAllNews();
+        List<News> allNewsList = readAllNews();
         List<News> newsList = new ArrayList<>();
         byte counter = 0;
         for (int i = 0; i < allNewsList.size(); i++) {
@@ -135,11 +193,10 @@ public class NewsServiceImpl implements NewsService {
         return newsList;
     }
 
-    @Override
-    public List<News> getPublicNews() {
+    private List<News> readPublicNews() {
         //список новостей (10 штук) для незарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым
-        List<News> allNewsList = getAllNews();
-        List<News> pinnedNewsList = getPinnedNews();
+        List<News> allNewsList = readAllNews();
+        List<News> pinnedNewsList = readPinnedNews();
         List<News> newsList = new ArrayList<>();
         byte counter = 0;
         for (int i = 0; i < pinnedNewsList.size(); i++) { //добавляем закрепленные, если они публичные
@@ -157,63 +214,5 @@ public class NewsServiceImpl implements NewsService {
         }
         return newsList;
     }
-
-    // РЕДАКТИРОВАНИЕ
-    @Override
-    public void deleteNewsById(Long id) {
-        //удаляем новость, меняя ее видимость и удаляя ее из закрепленных
-        getNewsById(id).setVisible(false);
-        getNewsById(id).setPinned(false);
-    }
-
-    //todo создание новости по параметрам
-    @Override
-    public News createNews(String title,
-                           String fullText,
-                           boolean hidden,
-                           boolean pinned,
-                           String pictureLink,
-                           User user) {
-
-        News newNews = new News(title, fullText, hidden, pinned, pictureLink, user);
-        return newsRepository.save(newNews);
-    }
-    //todo создание новости
-    @Override
-    public News saveNews(News newNews) {
-        return newsRepository.save(newNews);
-    }
-
-    // TODO через POST   сооздающиеся автоматически (дата, автор, visible); учесть, что закрепленных может быть только 2
-    @Override
-    public News changeNews(Long id,
-                           String title,
-                           String fullText,
-                           boolean hidden,
-                           boolean pinned,
-                           boolean visible, //можно через редактирование восстановить удаленную новость
-                           String pictureLink) {
-        News news = newsRepository.getOne(id);
-        if (news != null) {
-            news.setTitle(title);
-            news.setFullText(fullText);
-            news.setHidden(hidden);
-            news.setPinned(pinned);
-            news.setVisible(visible);
-            news.setPictureLink(pictureLink);
-            return newsRepository.save(news);
-        }
-        return null;
-    }
-
-
-    @Override
-    public void pinnedNews(News news) {
-        //Закрепляем выбранную новость,если закрепленных уже 2, то одну открепляем
-        List<News> pinnedNews = getPinnedNews();
-        if (pinnedNews.size() > 1) pinnedNews.get(1).setPinned(false);
-        news.setPinned(true);
-    }
-
 
 }

@@ -3,6 +3,7 @@ package ru.geekbrains.domodel.services.api;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
+import ru.geekbrains.domodel.dto.NewsDto;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.entities.User;
@@ -15,104 +16,96 @@ import java.util.List;
  */
 public interface NewsService {
 
-    /**
-     * Получить список новостей
-     *
-     * @return список новостей
-     */
-    List<News> getAllNews();
-
+    //ЧТЕНИЕ
     /**
      * Получить новость по ее идентификатору
-     *
      * @param id идентификатор новости
      * @return новость
      */
-    News getNewsById(Long id);
+    News readNewsById(Long id);
 
     /**
-     * Удалить новость по ее идентификатору
-     *
-     * @param id идентификатор новости
+     * Получить список архива новостей
+     * @return список новостей
      */
-    void deleteNewsById(Long id);
+    List<News> readNewsArchive(Authentication authentication);
 
-    List<News> getNewsArchive(Authentication authentication);
-    List<News> getRelevantNews(Authentication authentication);
-    News saveNews(News newNews);
-    Page<News> findAll(Pageable pageable);
+    /**
+     * Получить список актуальных новостей для главной страницы
+     * @return список новостей
+     */
+    List<News> readRelevantNews(Authentication authentication);
 
+
+
+    //РЕДАКТИРОВАНИЕ
     /**
      * Cоздать новость
-     *
-
-     * @param title заголовок новости
-     * @param fullText полный текст новости
-     * @param hidden видима ли новость
-     * @param pinned закреплена ли новость
-     * @param pictureLink ссылка на картинку новости
+     * @param newsDto данные с фронта
      * @return новость, сохраненная в репозитории
      */
-    News createNews  (String title,
-                      String fullText,
-                      boolean hidden,
-                      boolean pinned,
-                      String pictureLink,
-                      User user);
+    News createNews  (NewsDto newsDto);
 
     /**
      * Изменить новость
-     *
      * @param id идентификатор новости
-     * @param title заголовок новости
-     * @param fullText полный текст новости
-     * @param hidden видима ли новость
-     * @param pinned закреплена ли новость
-     * @param visible актуальна ли новость
-     * @param pictureLink ссылка на картинку новости
      * @return измененная новость
      */
-    News changeNews (Long id,
-                     String title,
-                     String fullText,
-                     boolean hidden,
-                     boolean pinned,
-                     boolean visible,
-                     String pictureLink);
-
-    /**
-     * Получить последнюю по дате новость
-     *
-     * @return новость
-     */
-    News getLastNews();
-
-    /**
-     * Получить список видимых новостей для зарегистрированных пользователей + вначале закрепленные новости + пагинация
-     *
-     * @return список новостей
-     */
-    List<News> getAllVisibleNews();
-
-    /**
-     * Получить список новостей для незарегистрированных пользователей + вначале закрепленные новости + пагинация
-     *
-     * @return список новостей
-     */
-    List<News> getPublicNews();
-
-    /**
-     * Получить список закрепленных новостей (не более 2)
-     *
-     * @return список новостей
-     */
-    List<News> getPinnedNews();
+    News updateNewsById (Long id, NewsDto newsDto);
 
     /**
      *Закрепляем выбранную новость
-     *
+     *@param id идентификатор новости
+     *@param pinned флажок закреплена ли новость true - закреплена
      */
-    void pinnedNews(News news);
+    News updatePinningNewsById(Long id, boolean pinned);
 
+    /**
+     * изменение видимости новости
+     * @param id идентификатор новости
+     * @param visible флажок видимости новости
+     */
+    News updateVisibilityNewsById(Long id , boolean visible);
+
+
+//    /**
+//     * Сохранить новость
+//     * @param newNewsDto данные с фронта
+//     * @return новость, сохраненная в репозитории
+//     */
+//    News saveNews(NewsDto newNewsDto);
+
+
+    // Page<News> findAll(Pageable pageable);
+
+//    /**
+//     * Получить список всех новостей
+//     * @return список новостей
+//     */
+//    List<News> readAllNews();
+
+    //    /**
+//     * Получить последнюю по дате новость
+//     * @return новость
+//     */
+//    News readLastNews();
+//
+//    /**
+//     * Получить список видимых новостей для зарегистрированных пользователей + вначале закрепленные новости + пагинация
+//     * @return список новостей
+//     */
+//    List<News> readAllVisibleNews();
+//
+//    /**
+//     * Получить список новостей для незарегистрированных пользователей + вначале закрепленные новости + пагинация
+//     * @return список новостей
+//     */
+//    List<News> readPublicNews();
+//
+//    /**
+//     * Получить список закрепленных новостей (не более 2)
+//     * @return список новостей
+//     */
+//    List<News> readPinnedNews();
 }
 
