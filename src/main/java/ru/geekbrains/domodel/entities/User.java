@@ -81,10 +81,6 @@ public class User {
     @Column(name = "address")
     private String address;
 
-    // Обо мне
-    @Column(name = "about")
-    private String about;
-
     // Список лицевых счетов пользователя
     @OneToMany(mappedBy = "user")
     private Set<Account> accounts = new HashSet<>();
