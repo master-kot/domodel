@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface TariffService {
 
     /**
-     * Получить тариф по его Id
+     * Получить список всех тарифов
      */
     List<Tariff> getAllTariffs();
 

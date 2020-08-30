@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.geekbrains.domodel.entities.UserRepresentation;
+import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.services.api.NewsService;
 import ru.geekbrains.domodel.services.api.UserService;
 
@@ -25,10 +25,11 @@ import static ru.geekbrains.domodel.entities.constants.Messages.*;
 @RequiredArgsConstructor
 public class MainController {
 
-    // Сервис пользователей
-    private final UserService userService;
+    // Имена шаблонов страниц
+    private static final String REGISTER_FORM = "temp/register";
 
-    // Сервис новостей
+    // Необходимые сервисы
+    private final UserService userService;
     private final NewsService newsService;
 
     /**
@@ -51,25 +52,25 @@ public class MainController {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
-        model.addAttribute("userData", new UserRepresentation());
-        return "register";
+        model.addAttribute("userData", new UserDto());
+        return REGISTER_FORM;
     }
 
     /**
      * Перехват запроса создания нового пользователя
      */
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("userData") UserRepresentation userData,
+    public String registerUser(@Valid @ModelAttribute("userData") UserDto userData,
                                BindingResult bindingResult,
                                Model model) {
-        if (bindingResult.hasErrors()) {
-            return "register";
-        }
-
-        if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
-            bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
-            return "register";
-        }
+//        if (bindingResult.hasErrors()) {
+//            return REGISTER_FORM;
+//        }
+//
+//        if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
+//            bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
+//            return REGISTER_FORM;
+//        }
 
         if (userService.createUser(userData) != null) {
             model.addAttribute("message",
@@ -78,6 +79,6 @@ public class MainController {
             bindingResult.rejectValue("username", "",
                     String.format(USER_HAS_ALREADY_CREATED, userData.getUsername()));
         }
-        return "register";
+        return REGISTER_FORM;
     }
 }

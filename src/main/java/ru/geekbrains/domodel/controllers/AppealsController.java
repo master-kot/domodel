@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.geekbrains.domodel.services.api.AppealsService;
 
 import java.security.Principal;
 
@@ -15,6 +16,9 @@ import java.security.Principal;
 @RequestMapping("/appeals")
 @RequiredArgsConstructor
 public class AppealsController {
+
+    // Сервис обращений
+    private final AppealsService appealsService;
 
     /**
      * Перехват запроса главной страницы обращений

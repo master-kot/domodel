@@ -21,11 +21,6 @@ public class MeterData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Счетчик, которому соответствует данное показание
-    @ManyToOne
-    @JoinColumn(name = "meter_id", nullable = false)
-    private Meter meter;
-
     // Дата создания показания
     @Column(name = "creation_date", nullable = false)
     private LocalDate creationDate;
@@ -33,6 +28,11 @@ public class MeterData {
     // Количество единиц (значение показания счетчика)
     @Column(name = "value", nullable = false)
     private Double value;
+
+    // Счетчик, которому соответствует данное показание
+    @ManyToOne
+    @JoinColumn(name = "meter_id", nullable = false)
+    private Meter meter;
 
     // НЕ ИСПОЛЬЗУЕТСЯ В MVP 0
     // Показания автоматически сгенерированы по среднему нормативу (true) или поданы пользователем (false)

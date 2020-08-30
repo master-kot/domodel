@@ -15,7 +15,7 @@
 </div>
 <hr>
 <div>
-    <h2>Архив показания</h2>
+    <h2>Архив показаний</h2>
     <table class="table table-hover">
         <thead class="thead-dark">
         <tr>
@@ -33,7 +33,7 @@
             <td th:text="${meterData.meter.serialNumber}"></td>
             <td th:text="${meterData.meter.type.description}"></td>
             <td th:text="${#temporals.format(meterData.creationDate, 'dd-MM-yyyy')}"></td>
-            <td th:text="${meterData.value} + ' ' + ${meterData.meter.type.measure}"></td>
+            <td th:text="${meterData.value}"></td>
         </tr>
         </tbody>
     </table>

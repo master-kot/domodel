@@ -5,7 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.User;
-import ru.geekbrains.domodel.entities.UserRepresentation;
+import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.repositories.AuthorityRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
 import ru.geekbrains.domodel.services.api.UserService;
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserRepresentation userData) {
+    public User createUser(UserDto userData) {
         Optional<User> optionalUser = userRepository.findByUsername(userData.getUsername());
         if (optionalUser.isPresent()) {
             return null;
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UserRepresentation userData, User user) {
+    public User updateUser(UserDto userData, User user) {
             if (userData.getUsername() != null && !userData.getUsername().isEmpty()) {
                 user.setUsername(userData.getUsername());
             }
@@ -84,15 +84,42 @@ public class UserServiceImpl implements UserService {
             if (userData.getFirstName() != null && !userData.getFirstName().isEmpty()) {
                 user.setFirstName(userData.getFirstName());
             }
-            if (userData.getSecondName() != null && !userData.getSecondName().isEmpty()) {
-                user.setSecondName(userData.getSecondName());
+            if (userData.getLastName() != null && !userData.getLastName().isEmpty()) {
+                user.setLastName(userData.getLastName());
             }
-            if (userData.getMiddleName() != null && !userData.getMiddleName().isEmpty()) {
-                user.setMiddleName(userData.getMiddleName());
+            if (userData.getPatronymic() != null && !userData.getPatronymic().isEmpty()) {
+                user.setPatronymic(userData.getPatronymic());
             }
             if (userData.getEmail() != null && !userData.getEmail().isEmpty()) {
                 user.setEmail(userData.getEmail());
             }
             return userRepository.save(user);
+    }
+
+    @Override
+    public void editUser(User userData, String username) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        User user;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+        } else {
+            return;
+        }
+        if (userData.getUsername() != null && !userData.getUsername().isEmpty()) {
+            user.setUsername(userData.getUsername());
+        }
+        if (userData.getFirstName() != null && !userData.getFirstName().isEmpty()) {
+            user.setFirstName(userData.getFirstName());
+        }
+        if (userData.getLastName() != null && !userData.getLastName().isEmpty()) {
+            user.setLastName(userData.getLastName());
+        }
+        if (userData.getPatronymic() != null && !userData.getPatronymic().isEmpty()) {
+            user.setPatronymic(userData.getPatronymic());
+        }
+        if (userData.getEmail() != null && !userData.getEmail().isEmpty()) {
+            user.setEmail(userData.getEmail());
+        }
+        userRepository.save(user);
     }
 }

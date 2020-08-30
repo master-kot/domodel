@@ -5,11 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Сущность информации о компании
+ * Сущность единичного блока информации о компании
  */
 @Entity
 @Getter
@@ -19,23 +17,20 @@ import java.util.List;
 public class Information {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    // Реквизиты компании
-    @OneToOne
-    @JoinColumn(name="requisites")
-    private Requisites requisites;
+    // Наименование блока
+    @Column(name = "block_name", nullable = false)
+    private String title;
 
-    // Список должностных лиц, видимых зарегистрированным пользователям на странице КОНТАКТЫ
-    @OneToMany(mappedBy = "contactInformation")
-    private List<Person> contactPersons = new ArrayList<>();
+    // Текст блока
+    @Column(name = "text", nullable = false)
+    private String text;
 
-    // Список должностных лиц, отображаемых на странице О НАС в разделе РУКОВОДСТВО
-    @OneToMany(mappedBy = "managementInformation")
-    private List<Person> managementPersons = new ArrayList<>();
-
-    // Список должностных лиц, отображаемых на странице О НАС в разделе РЕВИЗИОННАЯ КОМИССИЯ
-    @OneToMany(mappedBy = "revisionInformation")
-    private List<Person> revisionPersons = new ArrayList<>();
+    // Указатель публичности блока. Если false - блок отображается для всех посетителей,
+    // если true - только для зарегистрированных
+    @Column(name = "hidden", nullable = false)
+    private boolean hidden;
 }
