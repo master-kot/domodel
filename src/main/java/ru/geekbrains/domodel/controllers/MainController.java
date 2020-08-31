@@ -18,67 +18,100 @@ import java.security.Principal;
 
 import static ru.geekbrains.domodel.entities.constants.Messages.*;
 
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ru.geekbrains.domodel.entities.News;
+
+import java.util.List;
+
 /**
  * Главный контроллер web-приложения
  */
-@Controller
+@CrossOrigin
+@RestController
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class MainController {
 
-    // Имена шаблонов страниц
-    private static final String REGISTER_FORM = "temp/register";
+    // Тип объекта
+    private final String PRODUCE_TYPE = "application/json";
 
     // Необходимые сервисы
-    private final UserService userService;
     private final NewsService newsService;
 
     /**
-     * Перехват запроса главной страницы
+     * Перехват запроса списка новостей для главной страницы
      */
-    @GetMapping("")
-    public String getHomePage(@RequestParam(required = false) String error, Model model, Principal principal, Authentication authentication) {
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
-        }
-        model.addAttribute("relevantNews", newsService.readRelevantNews(authentication));
-        return "index";
-    }
-
-    /**
-     * Перехват запроса регистрации нового пользователя
-     */
-    @GetMapping("/register")
-    public String getRegisterPage(Model model, Principal principal) {
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
-        }
-        model.addAttribute("userData", new UserDto());
-        return REGISTER_FORM;
-    }
-
-    /**
-     * Перехват запроса создания нового пользователя
-     */
-    @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("userData") UserDto userData,
-                               BindingResult bindingResult,
-                               Model model) {
-//        if (bindingResult.hasErrors()) {
-//            return REGISTER_FORM;
-//        }
-//
-//        if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
-//            bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
-//            return REGISTER_FORM;
-//        }
-
-        if (userService.createUser(userData) != null) {
-            model.addAttribute("message",
-                    String.format(USER_CREATED, userData.getUsername()));
-        } else {
-            bindingResult.rejectValue("username", "",
-                    String.format(USER_HAS_ALREADY_CREATED, userData.getUsername()));
-        }
-        return REGISTER_FORM;
+    @GetMapping(produces = PRODUCE_TYPE)
+    public List<News> getAllNews() {
+        return newsService.readAllNews();
     }
 }
+
+//
+///**
+// * Главный контроллер web-приложения
+// */
+//@Controller
+//@RequiredArgsConstructor
+//public class MainController {
+//
+//    // Имена шаблонов страниц
+//    private static final String REGISTER_FORM = "temp/register";
+//
+//    // Необходимые сервисы
+//    private final UserService userService;
+//    private final NewsService newsService;
+//
+//    /**
+//     * Перехват запроса главной страницы
+//     */
+//    @GetMapping("")
+//    public String getHomePage(@RequestParam(required = false) String error, Model model, Principal principal, Authentication authentication) {
+//        if (principal != null) {
+//            model.addAttribute("username", principal.getName());
+//        }
+//        model.addAttribute("relevantNews", newsService.readRelevantNews(authentication));
+//        return "index";
+//    }
+//
+//    /**
+//     * Перехват запроса регистрации нового пользователя
+//     */
+//    @GetMapping("/register")
+//    public String getRegisterPage(Model model, Principal principal) {
+//        if (principal != null) {
+//            model.addAttribute("username", principal.getName());
+//        }
+//        model.addAttribute("userData", new UserDto());
+//        return REGISTER_FORM;
+//    }
+//
+//    /**
+//     * Перехват запроса создания нового пользователя
+//     */
+//    @PostMapping("/register")
+//    public String registerUser(@Valid @ModelAttribute("userData") UserDto userData,
+//                               BindingResult bindingResult,
+//                               Model model) {
+////        if (bindingResult.hasErrors()) {
+////            return REGISTER_FORM;
+////        }
+////
+////        if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
+////            bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
+////            return REGISTER_FORM;
+////        }
+//
+//        if (userService.createUser(userData) != null) {
+//            model.addAttribute("message",
+//                    String.format(USER_CREATED, userData.getUsername()));
+//        } else {
+//            bindingResult.rejectValue("username", "",
+//                    String.format(USER_HAS_ALREADY_CREATED, userData.getUsername()));
+//        }
+//        return REGISTER_FORM;
+//    }
+//}

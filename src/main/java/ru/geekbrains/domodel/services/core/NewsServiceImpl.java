@@ -128,7 +128,7 @@ public class NewsServiceImpl implements NewsService {
 
 
     //получение поcледней новости
-    private News readLastNews() {
+    public News readLastNews() {
         List<News> newsList = readAllNews();
         if (!newsList.isEmpty()) {
             return newsList.get(0);

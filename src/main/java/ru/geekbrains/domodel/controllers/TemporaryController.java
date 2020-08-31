@@ -52,7 +52,7 @@ public class TemporaryController {
     @GetMapping("")
     public String getHomePage(@RequestParam(required = false) String error, Model model, Principal principal) {
         addUsername(model, principal);
-        model.addAttribute("lastNews", newsService.getLastNews());
+        model.addAttribute("lastNews", newsService.readLastNews());
         return "index";
     }
 
@@ -282,7 +282,7 @@ public class TemporaryController {
     @GetMapping("/news")
     public String getNewsArchivePage(Model model, Principal principal) {
         addUsername(model, principal);
-        model.addAttribute("news", newsService.getAllNews());
+        model.addAttribute("news", newsService.readAllNews());
         return "news/news_archive";
     }
 
@@ -292,7 +292,7 @@ public class TemporaryController {
     @GetMapping("/news/edit")
     public String getNewsEditPage(Model model, Principal principal) {
         addUsername(model, principal);
-        model.addAttribute("news", newsService.getAllNews());
+        model.addAttribute("news", newsService.readAllNews());
         return "news/news_edit";
     }
 
@@ -302,7 +302,7 @@ public class TemporaryController {
     @GetMapping("/news/single")
     public String getNewsSinglePage(Model model, Principal principal) {
         addUsername(model, principal);
-        model.addAttribute("news", newsService.getAllNews());
+        model.addAttribute("news", newsService.readAllNews());
         return "news/news_single";
     }
 

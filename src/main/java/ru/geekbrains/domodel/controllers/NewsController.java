@@ -8,31 +8,39 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.domodel.dto.NewsDto;
 import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.services.api.NewsService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Контроллер новостей
  */
-//todo по идее это страница архива новостей. Прикрутить пагинацию, в зависимости от типа юзера выдавать разные списки
-//todo сделать страницу редакции отдельной новости
-@Controller
-@RequestMapping("/news")
+//todo перейти на рест, поднять все методы
+
+
+ /**
+ * Контроллер новостей
+ */
+@CrossOrigin
+@RestController
+@RequestMapping("/api/v1/news")
 @RequiredArgsConstructor
 public class NewsController {
 
     // Сервис новостей
     private final NewsService newsService;
 
-
     /**
      * Перехват запроса определенной страницы архива новостей
      */
-    //todo сделать пагинацию
-    @GetMapping("news_archive/{id}")
+    //todo починить, сделать пагинацию, переписать на REST
+    @GetMapping("/archive/{id}")
     public String getNewsArchivePage(@PathVariable int id,
                                      Model model,
                                      Authentication authentication,
@@ -49,24 +57,13 @@ public class NewsController {
         return "news/news_archive";
     }
 
-    /**
-     * Перехват запроса страницы редактирования одной новости
-     */
-    @GetMapping("/edit/{id}")
-    public String getNewsEditPage(@PathVariable("id") Long id,
-                                  Model model,
-                                  Principal principal) {
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
-        }
-        model.addAttribute("news", newsService.readNewsById(id));
-        return "news/news_edit";
-    }
+
 
     /**
-     * Перехват запроса редактирования новости
+     * Перехват запроса добавления новости
      */
-    @PostMapping("/edit")
+    //todo отправить в главный контроллер? переписать на REST, изменить секьюрити на токены, изменить News на NewsDto?
+    @PostMapping("")
     public String addNews(@Valid @ModelAttribute("news") News news,
                           Model model,
                           Principal principal) {
@@ -79,11 +76,11 @@ public class NewsController {
         return "redirect:/news/edit/" + news.getId();
     }
 
-
     /**
      * Перехват запроса страницы одной новости
      */
-    @GetMapping("/details/{id}")
+    //todo переделать на REST, переделать секьюрити на токены
+    @GetMapping("/{id}")
     public String getSingleNewsPage(@PathVariable Long id,
                                     Model model,
                                     Principal principal) {
@@ -93,5 +90,41 @@ public class NewsController {
         model.addAttribute("news", newsService.readNewsById(id));
         return "news/news_details";
     }
+
+     /**
+      * Перехват запроса изменения одной новости
+      */
+     //todo Написать метод на REST + секьюрити на токены
+     @PostMapping("/{id}")
+     public String setSingleNewsPage(@PathVariable Long id,
+                                     Model model,
+                                     Principal principal) {
+         if (principal != null) {
+             model.addAttribute("username", principal.getName());
+         }
+         model.addAttribute("news", newsService.readNewsById(id));
+         return "news/news_details";
+     }
+
+     /**
+      * Перехват запроса новости для изменения ее видимости (условное удаление)
+      * @param id номер новости
+      */
+     //todo добавить секьюрити. изменить News на NewsDto?
+    @PatchMapping ("/{id}")
+     public News updateVisibilityNewsById(@PathVariable Long id){
+        return newsService.updateVisibilityNewsById(id, false);
+    }
+
+
+     /**
+      * Перехват запроса новости для изменения ее видимости (условное удаление)
+      * @param id номер новости
+      */
+     //todo добавить секьюрити. изменить News на NewsDto?
+     @PatchMapping ("/{id}")
+     public News updatePinnedNewsById(@PathVariable Long id){
+         return newsService.updatePinningNewsById(id, true);
+     }
 
 }
