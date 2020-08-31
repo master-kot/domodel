@@ -5,44 +5,35 @@ CREATE SCHEMA domodel;
 SET SEARCH_PATH TO domodel;
 
 ### МОДУЛЬ АВТОРИЗАЦИИ ###
-CREATE TABLE users (id bigserial not null, username varchar(50) not null UNIQUE, password varchar(255) not null, enabled boolean not null, creation_date timestamp not null, first_name varchar(255), second_name varchar(255), middle_name varchar(255), email varchar(255) UNIQUE, photo_link varchar(255), address varchar(255), PRIMARY KEY (id));
+CREATE TABLE users (id bigserial not null, username varchar(50) not null UNIQUE, password varchar(255) not null, enabled boolean not null, creation_date timestamp not null, first_name varchar(255), last_name varchar(255), patronymic varchar(255), email varchar(255) UNIQUE, photo_link varchar(255), address varchar(255), PRIMARY KEY (id));
 CREATE TABLE authorities (id serial not null, authority varchar(100) not null, PRIMARY KEY (id));
 CREATE TABLE users_authorities (user_id bigint not null, authority_id int not null, FOREIGN KEY (user_id) REFERENCES users (id), FOREIGN KEY (authority_id) REFERENCES authorities (id));
-INSERT INTO users (username, password, enabled, creation_date, first_name, second_name, middle_name, email, photo_link, address) VALUES ('admin', '$2a$10$ArsakpPHT5jPbPEAeVc/lup1V4tJS9hqaa1PfRNIUy459JkPjK5xS', true, '2020-08-08', 'Иван', 'Иванов', 'Иванович', 'ivan@mail.ru', 'myfoto.png', 'Где эта улица, где этот дом');
+INSERT INTO users (username, password, enabled, creation_date, first_name, last_name, patronymic, email, photo_link, address) VALUES ('admin', '$2a$10$ArsakpPHT5jPbPEAeVc/lup1V4tJS9hqaa1PfRNIUy459JkPjK5xS', true, '2020-08-03', 'Иван', 'Иванов', 'Иванович', 'ivan@mail.ru', 'myfoto.png', 'г. Москва, ул. Большая, д. 1');
+INSERT INTO users (username, password, enabled, creation_date, first_name, last_name, patronymic, email, photo_link, address) VALUES ('user', '$2a$10$7v8.w1xVYIu6TKY3a58CX.xcmSXPpW6mVLTqB11kAn10jezppGdE2', true, '2020-08-30', 'Сергей', 'Сергеев', 'Сергеевич', 'sergey@mail.ru', 'sergey.png', 'г. Сочи, ул. Малая, д. 2');
 INSERT INTO authorities (authority) VALUES ('ROLE_ADMIN'), ('ROLE_DIRECTOR'), ('ROLE_USER');
-INSERT INTO users_authorities (user_id, authority_id) VALUES (1, 1);
+INSERT INTO users_authorities (user_id, authority_id) VALUES (1, 1), (2, 3);
+
+### МОДУЛЬ ГОЛОВСОВАНИЯ ###
+CREATE TABLE votes (id bigserial not null, title varchar(50) not null, text varchar(500) not null, start_date date not null, end_date date not null, PRIMARY KEY (id));
 
 ### МОДУЛЬ НОВОСТЕЙ ###
 INSERT INTO news (creation_date, title, full_text, picture_link, author_id, hidden, pinned, visible) VALUES ('2020-08-06', 'Заголовок первой новости', 'Полный текст первой новости, загруженной из сервиса новостей', '1.png', 1, false, false, true);
 INSERT INTO news (creation_date, title, full_text, picture_link, author_id, hidden, pinned, visible) VALUES ('2020-08-20', 'Заголовок второй новости', 'Полный текст второй новости, загруженной из сервиса новостей. Новость закреплена и должны отображаться первой!', '1.png', 1, false, true, true);
 
-### ВВЕДЕНИЕ ДАННЫХ В МОДУЛИ ПЛАТЕЖНЫХ СЧЕТОВ И СЧЕТЧИКОВ ПОКАЗАНИЙ ###
-INSERT INTO accounts (user_id, street, house_number, acres_amount) VALUES (1, 'Первая улица', '1й дом', 7);
-INSERT INTO accounts (user_id, street, house_number, acres_amount) VALUES (1, 'Вторая улица', '2й дом', 10);
-INSERT INTO tariffs (description, price) VALUES ('Единый тариф на электричество', 55);
-INSERT INTO tariffs (description, price) VALUES ('Дневной тариф на электричество', 66);
-INSERT INTO tariffs (description, price) VALUES ('Ночной тариф на электричество', 44);
-INSERT INTO tariffs (description, price) VALUES ('Тариф на газ', 11);
-INSERT INTO tariffs (description, price) VALUES ('Тариф на горячую воду', 77);
-INSERT INTO tariffs (description, price) VALUES ('Тариф на холодную воду', 22);
-INSERT INTO meters (account_id, serial_number, model, check_date, type, tariff_id) VALUES (1, '9988776655', 'Модель 1', '2021-05-10', 0, 1);
-INSERT INTO meters (account_id, serial_number, model, check_date, type, tariff_id) VALUES (1, '9876543210', 'Модель 2', '2021-06-30', 1, 2);
-INSERT INTO meters (account_id, serial_number, model, check_date, type, tariff_id) VALUES (2, '0123456789', 'Модель 3', '2022-07-20', 2, 3);
-INSERT INTO meters (account_id, serial_number, model, check_date, type, tariff_id) VALUES (2, '1122335566', 'Модель 4', '2022-08-25', 3, 4);
-INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (1, '2020-07-20', 55);
-INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (1, '2020-08-20', 70);
-INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (2, '2020-07-15', 30);
-INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (2, '2020-08-25', 40);
-INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (3, '2020-07-19', 66);
-INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (3, '2020-08-23', 88);
-INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (4, '2020-07-30', 51);
-INSERT INTO meter_datas (meter_id, creation_date, value)VALUES (4, '2020-08-31', 95);
-INSERT INTO requisites (company_name, company_address, inn, kpp, ogrn, bank_account, bank_name, bik, correspondent_account, email, phone_number) VALUES ('ООО “ДОМОДЕЛ”', 'Московская область, домодедовский район', 11111111, 22222222, 33333333, '324493100000000024578', 'Банк Москвы', 44444444, '89993100000000024578', 'domodel@mail.ru', '89123456789');
-INSERT INTO bills (account_id, creation_date, target, total, payment_status, requisites_id) VALUES (1, '2020-08-20', 'назначение платежа: счетчики', 333, true, 1);
-INSERT INTO bills (account_id, creation_date, target, total, payment_status, requisites_id) VALUES (1, '2020-08-20', 'назначение платежа: взнос', 555, false, 1);
-INSERT INTO calculations (bill_id, previous_data, current_data, amount, price, cost) VALUES (1, 1, 2, 77, 9, 693);
-
-### МОДУЛЬ ИНФОРМАЦИИ О КОМПАНИИ ###
+### МОДУЛИ ПЛАТЕЖНЫХ СЧЕТОВ И СЧЕТЧИКОВ ПОКАЗАНИЙ ###
+INSERT INTO accounts (user_id, address, house_number, acres_amount) VALUES (1, 'СНТ Малые собаки, Первая улица', '1й', 7), (2, 'СНТ Малые собаки, Вторая улица', '2й', 10), (2, 'СНТ Малые собаки, Третья улица', '3й', 15);
+INSERT INTO tariffs (description, price) VALUES ('Единый тариф на электричество', 5), ('Дневной тариф на электричество', 6), ('Ночной тариф на электричество', 4), ('Тариф на газ', 1), ('Тариф на горячую воду', 7), ('Тариф на холодную воду', 2);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик электроэнергии (однотарифный)', 'кВТ/час', 1), ('Счётчик электроэнергии (дневной)', 'кВТ/час', 2), ('Счётчик электроэнергии (ночной)', 'кВТ/час', 3);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик газа', 'куб.метров', 4), ('Счётчик горячей воды', 'куб.метров', 5), ('Счётчик холодной воды', 'куб.метров', 6);
+INSERT INTO meters (serial_number, model, check_date, account_id, type_id) VALUES ('9988776655', 'Модель 1', '2021-05-10', 1, 1), ('9876543210', 'Модель 2', '2021-06-30', 1, 2), ('0123456789', 'Модель 3', '2022-07-20', 2, 3);
+INSERT INTO meters (serial_number, model, check_date, account_id, type_id) VALUES ('1122335566', 'Модель 4', '2022-08-25', 2, 4), ('0123456789', 'Модель 3', '2022-07-20', 3, 5), ('1122335566', 'Модель 4', '2022-08-25', 3, 6);
+INSERT INTO meter_datas (meter_id, creation_date, value) VALUES (1, '2020-07-20', 55), (1, '2020-08-20', 70), (2, '2020-07-15', 30), (2, '2020-08-25', 40), (3, '2020-07-19', 66), (3, '2020-08-23', 88);
+INSERT INTO meter_datas (meter_id, creation_date, value) VALUES (4, '2020-07-30', 51), (4, '2020-08-31', 95), (5, '2020-05-05', 11), (5, '2020-06-06', 22), (6, '2020-07-07', 33), (6, '2020-08-08', 44);
+INSERT INTO requisites (company_name, company_address, inn, kpp, ogrn, bank_account, bank_name, bik, correspondent_account) VALUES ('ООО “ДОМОДЕЛ”', 'Московская область, домодедовский район', 11111111, 22222222, 33333333, '324493100000000024578', 'Банк Москвы', 44444444, '89993100000000024578');
+INSERT INTO bills (creation_date, target, total, type, payment_status, account_id, requisites_id) VALUES ('2020-05-11', 'Платеж за счетчики воды', 111, 1, true, 1, 1), ('2020-05-11', 'Платеж за счетчики воды', 222, 1, true, 2, 1), ('2020-05-11', 'Платеж за счетчики воды', 333, 1, true, 3, 1);
+INSERT INTO bills (creation_date, target, total, type, payment_status, account_id, requisites_id) VALUES ('2020-06-19', 'Членский взнос за май в 444 руб.', 444, 2, false, 1, 1), ('2020-07-25', 'Членский взнос по тарифу за сотку', 555, 3, false, 2, 1);
+INSERT INTO bills (creation_date, target, total, type, payment_status, account_id, requisites_id) VALUES ('2020-08-29', 'Прочий платеж размером 777 руб.', 777, 4, true, 3, 1), ('2020-09-01', 'Прочий платеж по тарифу за сотку', 888, 5, false, 2, 1);
+INSERT INTO calculations (bill_id, previous_data, current_data, amount, price, cost) VALUES (1, 1, 2, 15, 5, 111), (1, 3, 4, 22, 6, 222), (2, 5, 6, 77, 4, 333), (2, 7, 8, 15, 7, 111), (3, 5, 6, 99, 2, 222), (4, 1, 2, 88, 3, 333);
 
 
 ## МОДУЛЬ СЧЕТЧИКОВ ##
@@ -60,21 +51,21 @@ SELECT * FROM products;
 SELECT * FROM users;
 SELECT * FROM authorities;
 
-DROP TABLE accounts CASCADE;
 DROP TABLE bills CASCADE;
 DROP TABLE calculations CASCADE;
+DROP TABLE meter_datas CASCADE;
 DROP TABLE meters CASCADE;
-DROP TABLE meter_datas;
+DROP TABLE meter_type CASCADE;
+DROP TABLE tariffs CASCADE;
 DROP TABLE requisites CASCADE;
-DROP TABLE tariffs;
-DROP TABLE news;
+DROP TABLE information CASCADE;
+DROP TABLE accounts CASCADE;
+DROP TABLE news CASCADE;
+DROP TABLE votes CASCADE;
 DROP TABLE users_authorities CASCADE;
 DROP TABLE authorities CASCADE;
 DROP TABLE users CASCADE;
 
 alter table users drop column login;
 alter table users add column username varchar(50) not null UNIQUE;
-update users set photo_link = 'myfoto.png' where username = 'admin';
-CREATE TABLE news (id bigserial not null, creation_date date not null, title varchar(255) not null, full_text varchar(2000) not null, picture_link varchar(255), hidden boolean not null, pinned boolean not null, author_id bigint not null, FOREIGN KEY (author_id) REFERENCES users (id), PRIMARY KEY (id));
-
 update tariffs set price = 99 where id = 4;

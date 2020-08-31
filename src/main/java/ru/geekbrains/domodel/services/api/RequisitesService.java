@@ -1,7 +1,7 @@
 package ru.geekbrains.domodel.services.api;
 
 import ru.geekbrains.domodel.entities.Requisites;
-import ru.geekbrains.domodel.entities.constants.BillType;
+import ru.geekbrains.domodel.entities.BillType;
 
 import java.util.List;
 

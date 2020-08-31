@@ -3,7 +3,6 @@ package ru.geekbrains.domodel.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.geekbrains.domodel.entities.constants.BillType;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,11 +25,6 @@ public class Bill {
     @Column(name = "id")
     private Long id;
 
-    // Ссылка на лицевой номер пользователя
-    @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
-
     // Дата создания
     @Column(name = "creation_date", nullable = false)
     private LocalDate creationDate;
@@ -43,7 +37,7 @@ public class Bill {
     @Column(name = "total", nullable = false)
     private Double total;
 
-    // Тип платежного документа
+    // Тип платежа
     @Column(name = "type")
     @Enumerated(EnumType.ORDINAL)
     private BillType type;
@@ -52,12 +46,17 @@ public class Bill {
     @Column(name = "payment_status", nullable = false)
     private boolean paymentStatus;
 
+    // Ссылка на лицевой счет
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
+
     // Ссылка на платежные реквизиты
     @ManyToOne
-    @JoinColumn(name = "requisites_id")
+    @JoinColumn(name = "requisites_id", nullable = false)
     private Requisites requisites;
 
-    // Ссылка на калькуляцию (обоснование цены счета)
+    // Список калькуляций (обоснование цены счета)
     @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
     private List<Calculation> calculations = new ArrayList<>();
 

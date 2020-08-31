@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Сущность тарифа для счетчиков показаний
@@ -23,7 +21,7 @@ public class Tariff {
     @Column(name = "id")
     private Integer id;
 
-    // Описание данного тарифа (для более понятного выбора тарифа при назначении на счетчик)
+    // Описание тарифа (для более понятного выбора тарифа при назначении на счетчик)
     @Column(name = "description", nullable = false)
     private String description;
 
@@ -31,9 +29,9 @@ public class Tariff {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    // Список счетчиков, для которых используется данный тариф
-    @OneToMany(mappedBy = "tariff")
-    private Set<Meter> meters = new HashSet<>();
+    // Тип счетчиков, для которого используется данный тариф
+    @OneToOne(mappedBy = "tariff")
+    private MeterType meterType;
 
     // Значение по умолчанию, устанавливается в качестве показания за период, если показание не было подано
     // НЕ ИСПОЛЬЗУЕТСЯ В MVP 0

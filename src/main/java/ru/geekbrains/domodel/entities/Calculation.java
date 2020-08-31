@@ -23,6 +23,18 @@ public class Calculation {
     @Column(name = "id")
     private Long id;
 
+    // Количество единиц - разница паказаний
+    @Column(name = "amount")
+    private Double amount;
+
+    // Цена за единицу
+    @Column(name = "price")
+    private Double price;
+
+    // Стоимость за все потребленные единицы
+    @Column(name = "cost")
+    private Double cost;
+
     // Ссылка на номер счета
     @ManyToOne
     @JoinColumn(name = "bill_id")
@@ -37,18 +49,6 @@ public class Calculation {
     @OneToOne
     @JoinColumn(name = "current_data")
     private MeterData currentData;
-
-    // Количество единиц - разница паказаний
-    @Column(name = "amount")
-    private Double amount;
-
-    // Цена за единицу
-    @Column(name = "price")
-    private Double price;
-
-    // Стоимость за все потребленные единицы
-    @Column(name = "cost")
-    private Double cost;
 
     // НЕ ИСПОЛЬЗУЕТСЯ В MVP 0
     // true если калькуляция рассчитана по показаниям, false - если по нормативному значению

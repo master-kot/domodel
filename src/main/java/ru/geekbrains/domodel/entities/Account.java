@@ -23,14 +23,9 @@ public class Account {
     @Column(name = "id")
     private Long id;
 
-    // Пользователь, к которому прикреплен данный лицевой счет
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    // Улица (может быть не заполнено)
-    @Column(name = "street")
-    private String street;
+    // Адрес объекта (может быть не заполнен)
+    @Column(name = "address")
+    private String address;
 
     // Номер дома или участка
     @Column(name = "house_number", nullable = false)
@@ -39,6 +34,11 @@ public class Account {
     // Количество соток участка
     @Column(name = "acres_amount")
     private Double acresAmount;
+
+    // Пользователь, к которому прикреплен данный лицевой счет
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     // Список счетчиков данного аккаунта
     @OneToMany(mappedBy = "account")

@@ -36,10 +36,15 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    // Подтверждение пароля
+    @Transient
+    private String passwordConfirm;
+
     // Пользователь активен (true) или заблокирован (false)
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
+    // Список ролей пользователя
     @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "users_authorities",
             // Внешний ключ для User в в таблице users_authorities
@@ -57,12 +62,12 @@ public class User {
     private String firstName;
 
     // Фамилия
-    @Column(name = "second_name")
-    private String secondName;
+    @Column(name = "last_name")
+    private String lastName;
 
     // Отчество
-    @Column(name = "middle_name")
-    private String middleName;
+    @Column(name = "patronymic")
+    private String patronymic;
 
     // Адрес электронной почты
     @Column(name = "email", unique = true)

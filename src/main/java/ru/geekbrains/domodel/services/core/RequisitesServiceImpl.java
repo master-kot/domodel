@@ -3,7 +3,7 @@ package ru.geekbrains.domodel.services.core;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.Requisites;
-import ru.geekbrains.domodel.entities.constants.BillType;
+import ru.geekbrains.domodel.entities.BillType;
 import ru.geekbrains.domodel.repositories.RequisitesRepository;
 import ru.geekbrains.domodel.services.api.RequisitesService;
 
