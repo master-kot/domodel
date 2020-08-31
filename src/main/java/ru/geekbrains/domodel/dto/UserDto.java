@@ -1,32 +1,24 @@
 package ru.geekbrains.domodel.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import ru.geekbrains.domodel.entities.User;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
- * Представление сущности пользователя для работы с фронтэндом
+ * DTO представление сущности Пользователь
  */
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
 
-    @NotBlank
-    @Size(min = 5, message="Номер телефона не менее 5 символов")
+    private Long id;
+
     private String username;
 
-    @NotBlank
-    @Size(min = 5, message="Пароль должен быть не менее 5 символов")
     private String password;
-
-    @NotBlank
-    @Size(min = 5, message="Пароль должен быть не менее 5 символов")
-    private String passwordConfirm;
 
     private String firstName;
 
@@ -34,10 +26,49 @@ public class UserDto {
 
     private String patronymic;
 
-    @Email
     private String email;
 
     private String photoLink;
 
     private String address;
+
+    private Set<AccountDto> accounts;
+
+    public User toUser(){
+        User user = new User();
+        user.setId(id);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPatronymic(patronymic);
+        user.setEmail(email);
+        user.setPhotoLink(photoLink);
+        user.setAddress(address);
+        user.setAccounts(accounts
+                .stream()
+                .map(AccountDto::toAccount)
+                .collect(Collectors.toSet()));
+
+        return user;
+    }
+
+    public static UserDto fromUser(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(user.getPassword());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setPatronymic(user.getPatronymic());
+        userDto.setEmail(user.getEmail());
+        userDto.setPhotoLink(user.getPhotoLink());
+        userDto.setAddress(user.getAddress());
+        userDto.setAccounts(user.getAccounts()
+                .stream()
+                .map(AccountDto::fromAccount)
+                .collect(Collectors.toSet()));
+
+        return userDto;
+    }
 }

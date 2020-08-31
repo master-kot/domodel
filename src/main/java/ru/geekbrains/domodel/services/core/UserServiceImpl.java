@@ -3,9 +3,9 @@ package ru.geekbrains.domodel.services.core;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.User;
-import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.repositories.AuthorityRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
 import ru.geekbrains.domodel.services.api.UserService;
@@ -23,14 +23,14 @@ import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    // Сервис шифрования паролей
+    private final BCryptPasswordEncoder passwordEncoder;
+
     // Репозиторий пользователей
     private final UserRepository userRepository;
 
     // Репозиторий ролей пользователя
     private final AuthorityRepository authorityRepository;
-
-    // Сервис шифрования паролей
-    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public User getUserById(Long userId) {
@@ -56,15 +56,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserDto userData) {
-        Optional<User> optionalUser = userRepository.findByUsername(userData.getUsername());
+    public User createUser(UserDto userDto) {
+        Optional<User> optionalUser = userRepository.findByUsername(userDto.getUsername());
         if (optionalUser.isPresent()) {
             return null;
         }
 
         User newUser = new User(
-                userData.getUsername(),
-                passwordEncoder.encode(userData.getPassword()),
+                userDto.getUsername(),
+                passwordEncoder.encode(userDto.getPassword()),
                 true,
                 LocalDate.now());
         Authority authority = authorityRepository.findByAuthority(ROLE_USER);
@@ -73,31 +73,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UserDto userData, User user) {
-            if (userData.getUsername() != null && !userData.getUsername().isEmpty()) {
-                user.setUsername(userData.getUsername());
+    public User updateUser(UserDto userDto, User user) {
+            if (userDto.getUsername() != null && !userDto.getUsername().isEmpty()) {
+                user.setUsername(userDto.getUsername());
             }
-            if (userData.getPassword() != null && userData.getPassword().isEmpty() &&
-                    userData.getPassword().equals(userData.getPasswordConfirm())) {
-                user.setPassword(passwordEncoder.encode(userData.getPassword()));
+            if (userDto.getFirstName() != null && !userDto.getFirstName().isEmpty()) {
+                user.setFirstName(userDto.getFirstName());
             }
-            if (userData.getFirstName() != null && !userData.getFirstName().isEmpty()) {
-                user.setFirstName(userData.getFirstName());
+            if (userDto.getLastName() != null && !userDto.getLastName().isEmpty()) {
+                user.setLastName(userDto.getLastName());
             }
-            if (userData.getLastName() != null && !userData.getLastName().isEmpty()) {
-                user.setLastName(userData.getLastName());
+            if (userDto.getPatronymic() != null && !userDto.getPatronymic().isEmpty()) {
+                user.setPatronymic(userDto.getPatronymic());
             }
-            if (userData.getPatronymic() != null && !userData.getPatronymic().isEmpty()) {
-                user.setPatronymic(userData.getPatronymic());
-            }
-            if (userData.getEmail() != null && !userData.getEmail().isEmpty()) {
-                user.setEmail(userData.getEmail());
+            if (userDto.getEmail() != null && !userDto.getEmail().isEmpty()) {
+                user.setEmail(userDto.getEmail());
             }
             return userRepository.save(user);
     }
 
-    @Override
-    public void editUser(User userData, String username) {
+    public void updateUser(UserDto userDto, String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
         User user;
         if (optionalUser.isPresent()) {
@@ -105,20 +100,20 @@ public class UserServiceImpl implements UserService {
         } else {
             return;
         }
-        if (userData.getUsername() != null && !userData.getUsername().isEmpty()) {
-            user.setUsername(userData.getUsername());
+        if (userDto.getUsername() != null && !userDto.getUsername().isEmpty()) {
+            user.setUsername(userDto.getUsername());
         }
-        if (userData.getFirstName() != null && !userData.getFirstName().isEmpty()) {
-            user.setFirstName(userData.getFirstName());
+        if (userDto.getFirstName() != null && !userDto.getFirstName().isEmpty()) {
+            user.setFirstName(userDto.getFirstName());
         }
-        if (userData.getLastName() != null && !userData.getLastName().isEmpty()) {
-            user.setLastName(userData.getLastName());
+        if (userDto.getLastName() != null && !userDto.getLastName().isEmpty()) {
+            user.setLastName(userDto.getLastName());
         }
-        if (userData.getPatronymic() != null && !userData.getPatronymic().isEmpty()) {
-            user.setPatronymic(userData.getPatronymic());
+        if (userDto.getPatronymic() != null && !userDto.getPatronymic().isEmpty()) {
+            user.setPatronymic(userDto.getPatronymic());
         }
-        if (userData.getEmail() != null && !userData.getEmail().isEmpty()) {
-            user.setEmail(userData.getEmail());
+        if (userDto.getEmail() != null && !userDto.getEmail().isEmpty()) {
+            user.setEmail(userDto.getEmail());
         }
         userRepository.save(user);
     }

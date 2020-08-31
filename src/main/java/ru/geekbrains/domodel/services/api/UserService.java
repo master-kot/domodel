@@ -46,24 +46,24 @@ public interface UserService {
     /**
      * Создать нового пользователя
      *
-     * @param userData отображение данных пользователя
+     * @param userDto отображение данных пользователя
      * @return новый пользователь, сохраненный в репозитории
      */
-    User createUser(UserDto userData);
+    User createUser(UserDto userDto);
 
     /**
      * Изменить данные пользователя
      *
-     * @param userData отображение данных пользователя
+     * @param userDto отображение данных пользователя
      * @param user изменяемый пользователь
      */
-    User updateUser(UserDto userData, User user);
+    User updateUser(UserDto userDto, User user);
 
     /**
      * Изменить данные пользователя
      *
-     * @param userData пользователь с измененными данными
+     * @param userDto пользователь с измененными данными
      * @param username логин пользователя
      */
-    void editUser(User userData, String username);
+    void updateUser(UserDto userDto, String username);
 }

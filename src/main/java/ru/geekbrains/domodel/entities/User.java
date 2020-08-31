@@ -28,7 +28,7 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    // Логин (телефон пользователя)
+    // Логин или телефон
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -36,15 +36,11 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    // Подтверждение пароля
-    @Transient
-    private String passwordConfirm;
-
     // Пользователь активен (true) или заблокирован (false)
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    // Список ролей пользователя
+    // Список ролей
     @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "users_authorities",
             // Внешний ключ для User в в таблице users_authorities
@@ -81,7 +77,7 @@ public class User {
     @Column(name = "address")
     private String address;
 
-    // Список лицевых счетов пользователя
+    // Список лицевых счетов
     @OneToMany(mappedBy = "user")
     private Set<Account> accounts = new HashSet<>();
 

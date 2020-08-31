@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.Bill;
@@ -15,8 +14,6 @@ import ru.geekbrains.domodel.services.api.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-
-import static ru.geekbrains.domodel.entities.constants.Messages.*;
 
 /**
  * Временный контроллер web-приложения для совместимости со старой версией фронта приложения
@@ -66,22 +63,22 @@ public class TemporaryController {
         return REGISTER_FORM;
     }
 
-    /**
-     * Перехват запроса создания нового пользователя
-     */
-    @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("userData") UserDto userData,
-                               BindingResult bindingResult,
-                               Model model) {
-        if (userService.createUser(userData) != null) {
-            model.addAttribute("message",
-                    String.format(USER_CREATED, userData.getUsername()));
-        } else {
-            bindingResult.rejectValue("username", "",
-                    String.format(USER_HAS_ALREADY_CREATED, userData.getUsername()));
-        }
-        return REGISTER_FORM;
-    }
+//    /**
+//     * Перехват запроса создания нового пользователя
+//     */
+//    @PostMapping("/register")
+//    public String registerUser(@Valid @ModelAttribute("userData") UserDto userData,
+//                               BindingResult bindingResult,
+//                               Model model) {
+//        if (userService.createUser(userData) != null) {
+//            model.addAttribute("message",
+//                    String.format(USER_CREATED, userData.getUsername()));
+//        } else {
+//            bindingResult.rejectValue("username", "",
+//                    String.format(USER_HAS_ALREADY_CREATED, userData.getUsername()));
+//        }
+//        return REGISTER_FORM;
+//    }
 
     // TODO Методы контроллера счетчиков
 
@@ -333,35 +330,35 @@ public class TemporaryController {
         return PROFILE_USER_FORM;
     }
 
-    /**
-     * Перехват запроса на изменение профиля пользователя
-     */
-    @PostMapping("/profile/edit")
-    public String changeUserProfile(@Valid @ModelAttribute("userData") UserDto userData,
-                                    BindingResult bindingResult,
-                                    Model model,
-                                    Principal principal) {
-        User user = userService.getUserByUsername(principal.getName());
-        model.addAttribute("user", user);
-        if (bindingResult.hasErrors()) {
-            return PROFILE_EDIT_FORM;
-        }
-        if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
-            bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
-            return PROFILE_EDIT_FORM;
-        }
-        userService.updateUser(userData, user);
-        return PROFILE_FORM_REDIRECT_URL;
-    }
+//    /**
+//     * Перехват запроса на изменение профиля пользователя
+//     */
+//    @PostMapping("/profile/edit")
+//    public String changeUserProfile(@Valid @ModelAttribute("userData") UserDto userData,
+//                                    BindingResult bindingResult,
+//                                    Model model,
+//                                    Principal principal) {
+//        User user = userService.getUserByUsername(principal.getName());
+//        model.addAttribute("user", user);
+//        if (bindingResult.hasErrors()) {
+//            return PROFILE_EDIT_FORM;
+//        }
+////        if (!userData.getPassword().equals(userData.getPasswordConfirm())) {
+////            bindingResult.rejectValue("password", "", PASSWORD_MISMATCH);
+////            return PROFILE_EDIT_FORM;
+////        }
+//        userService.updateUser(userData, user);
+//        return PROFILE_FORM_REDIRECT_URL;
+//    }
 
     /**
      * Перехват запроса на изменение ФИО пользователя
      */
     @PostMapping("/profile/edit/name")
-    public String editUserName(@Valid @ModelAttribute("user") User user,
+    public String editUserName(@Valid @ModelAttribute("user") UserDto userDto,
                                Principal principal) {
-        if (user.getLastName() != null || user.getFirstName() != null || user.getPatronymic() != null) {
-            userService.editUser(user, principal.getName());
+        if (userDto.getLastName() != null || userDto.getFirstName() != null || userDto.getPatronymic() != null) {
+            userService.updateUser(userDto, principal.getName());
         }
         return PROFILE_FORM_REDIRECT_URL;
     }
