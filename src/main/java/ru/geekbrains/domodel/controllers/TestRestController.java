@@ -1,5 +1,7 @@
 package ru.geekbrains.domodel.controllers;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.entities.Meter;
@@ -9,12 +11,15 @@ import ru.geekbrains.domodel.services.api.NewsService;
 
 import java.util.List;
 
+
+
 /**
  * Тестовый REST контроллер
  */
 @CrossOrigin
-@RequestMapping("/api/v1")
 @RestController
+@RequestMapping("/api/v1")
+@Api(value = "/api/v1")
 @RequiredArgsConstructor
 public class TestRestController {
 
@@ -28,6 +33,7 @@ public class TestRestController {
     /**
      * Перехват запроса списка новостей
      */
+    @ApiOperation(value = "Выводит данные на запрос списка новостей")
     @GetMapping(path = "/news", produces = PRODUCE_TYPE)
     public List<News> getAllNews() {
         return newsService.getAllNews();
