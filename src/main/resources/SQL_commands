@@ -37,13 +37,16 @@ INSERT INTO calculations (bill_id, previous_data, current_data, amount, price, c
 
 
 ## МОДУЛЬ СЧЕТЧИКОВ ##
+## ТАРИФЫ ##
+INSERT INTO tariffs (id, description, price) VALUES (1, 'бла-бла-бла-тариф', '150');
 ## ТИП СЧЕТЧИКОВ ##
-INSERT INTO meter_type (description, measure)VALUES ('Счётчик электроэнергии (однотарифный)', 'кВТ/час');
-INSERT INTO meter_type (description, measure)VALUES ('Счётчик электроэнергии (дневной)', 'кВТ/час');
-INSERT INTO meter_type (description, measure)VALUES ('Счётчик электроэнергии (ночной)', 'кВТ/час');
-INSERT INTO meter_type (description, measure)VALUES ('Счётчик газа', 'куб.метров');
-INSERT INTO meter_type (description, measure)VALUES ('Счётчик горячей воды', 'куб.метров');
-INSERT INTO meter_type (description, measure)VALUES ('Счётчик холодной воды', 'куб.метров');
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик электроэнергии (однотарифный)', 'кВТ/час', 1);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик электроэнергии (дневной)', 'кВТ/час', 1);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик электроэнергии (ночной)', 'кВТ/час', 1);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик газа', 'куб.метров', 1);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик горячей воды', 'куб.метров', 1);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик холодной воды', 'куб.метров', 1);
+
 
 ### РАБОТА С БД ###
 
