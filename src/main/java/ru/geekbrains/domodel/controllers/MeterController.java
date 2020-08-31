@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
 import ru.geekbrains.domodel.entities.User;
@@ -23,9 +20,11 @@ import java.security.Principal;
  * Контроллер счетчиков показаний
  */
 @Controller
-@RequiredArgsConstructor
-@RequestMapping("/meters")
+@CrossOrigin
+@RestController
+@RequestMapping("/api/v1/meters")
 @Secured({Roles.ROLE_ADMIN, Roles.ROLE_USER})
+@RequiredArgsConstructor
 public class MeterController {
 
     // Список сервисов
