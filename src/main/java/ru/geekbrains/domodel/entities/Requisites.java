@@ -32,15 +32,15 @@ public class Requisites {
 
     // ИНН организации
     @Column(name = "inn")
-    private Integer inn;
+    private Long inn;
 
     // КПП организации
     @Column(name = "kpp")
-    private Integer kpp;
+    private Long kpp;
 
     // ОГРН организации
     @Column(name = "ogrn")
-    private Integer ogrn;
+    private Long ogrn;
 
     // Номер расчетного счета
     @Column(name = "bank_account")
@@ -52,7 +52,7 @@ public class Requisites {
 
     // БИК организации
     @Column(name = "bik")
-    private Integer bik;
+    private Long bik;
 
     // Номер корреспондентского счета
     @Column(name = "correspondent_account")
