@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.services.api;
 
+import ru.geekbrains.domodel.dto.MeterDto;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
@@ -12,8 +13,9 @@ import java.util.Optional;
  */
 public interface MeterService {
 
-    Meter getMeter(Long id);
+    MeterDto getMeter(Long id);
 
+    void deleteMeter(Long id);
     /**
      * Получить список счетчиков данного аккаунта
      */
@@ -22,7 +24,7 @@ public interface MeterService {
     /**
      * Получить список всех счетчиков
      */
-    List<Meter> getAllMeters();
+    List<MeterDto> getAllMeters();
 
     /**
      * Получить счетчик по его серийному номеру
@@ -31,8 +33,9 @@ public interface MeterService {
 
     /**
      * Сохранить данные счетчика.
+     * @param meterDto
      */
-    void save(Meter meter);
+    MeterDto save(MeterDto meterDto);
 
     /**
      * Принять единичные данные о показаниях счетчика.

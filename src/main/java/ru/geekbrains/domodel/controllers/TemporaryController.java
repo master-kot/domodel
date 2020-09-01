@@ -97,15 +97,15 @@ public class TemporaryController {
         return "meters/meters_user";
     }
 
-    @GetMapping("/meters/{id}")
-    public String getMetersArchivePage(@PathVariable String id, Model model) {
-        Meter meter = meterService.getMeter(Long.valueOf(id));
-        model.addAttribute("meter", meter);
-        model.addAttribute("account", meter.getAccount());
-
-        model.addAttribute("meterDatas", meterService.getAllMeterDataByMeter(meter));
-        return "meters/meters_archive";
-    }
+//    @GetMapping("/meters/{id}")
+//    public String getMetersArchivePage(@PathVariable String id, Model model) {
+//        Meter meter = meterService.getMeter(Long.valueOf(id));
+//        model.addAttribute("meter", meter);
+//        model.addAttribute("account", meter.getAccount());
+//
+//        model.addAttribute("meterDatas", meterService.getAllMeterDataByMeter(meter));
+//        return "meters/meters_archive";
+//    }
 
     @PostMapping("/submit")
     public String submitData(MeterData meterData) {

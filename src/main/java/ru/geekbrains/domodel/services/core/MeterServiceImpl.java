@@ -2,11 +2,14 @@ package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.domodel.dto.MeterDto;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
 import ru.geekbrains.domodel.repositories.MeterDataRepository;
 import ru.geekbrains.domodel.repositories.MeterRepository;
+import ru.geekbrains.domodel.repositories.MeterTypeRepository;
+import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.MeterService;
 
 import javax.transaction.Transactional;
@@ -14,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса счетчиков показаний
@@ -24,10 +28,31 @@ public class MeterServiceImpl implements MeterService {
 
     private final MeterRepository meterRepository;
     private final MeterDataRepository meterDataRepository;
+    private final MeterTypeRepository meterTypeRepository;
+
+    private final AccountService accountService;
 
     @Override
-    public Meter getMeter(Long id) {
-        return meterRepository.findById(id).orElseThrow(() -> new RuntimeException("not found meter by id: " + id));
+    public MeterDto getMeter(Long id) {
+        Meter m = meterRepository.findById(id).orElseThrow(() -> new RuntimeException("not found meter by id: " + id));
+
+        return MeterDto.builder()
+                .id(m.getId())
+                .serialNumber(m.getSerialNumber())
+                .model(m.getModel())
+                .checkDate(m.getCheckDate())
+                .houseNumber(m.getAccount().getHouseNumber())
+                .accountId(m.getAccount().getId())
+                .typeDescription(m.getType().getDescription())
+                //TODO:убрать Option
+//                    .currentMeterData(getCurrentMeterDataByMeter(m).get().getValue())
+                .tariffDescription(m.getType().getTariff().getDescription())
+                .build();
+    }
+
+    @Override
+    public void deleteMeter(Long id) {
+        meterRepository.deleteById(id);
     }
 
     @Override
@@ -36,8 +61,19 @@ public class MeterServiceImpl implements MeterService {
     }
 
     @Override
-    public List<Meter> getAllMeters() {
-        return meterRepository.findAll();
+    public List<MeterDto> getAllMeters() {
+        return meterRepository.findAll().stream().map(m -> MeterDto.builder()
+                .id(m.getId())
+                .serialNumber(m.getSerialNumber())
+                .model(m.getModel())
+                .checkDate(m.getCheckDate())
+                .houseNumber(m.getAccount().getHouseNumber())
+                .accountId(m.getAccount().getId())
+                .typeDescription(m.getType().getDescription())
+                //TODO:убрать Option
+//                    .currentMeterData(getCurrentMeterDataByMeter(m).get().getValue())
+                .tariffDescription(m.getType().getTariff().getDescription())
+                .build()).collect(Collectors.toList());
     }
 
     @Override
@@ -63,16 +99,14 @@ public class MeterServiceImpl implements MeterService {
 
     @Transactional
     @Override
-    public void save(Meter meter) {
-//        //TODO сделать нормальные проверки
-//        if (meter.getAccount() != null &&
-//        meter.getSerialNumber() != null) {
-//            // TODO сделать проверку регулярными выражениями
-//            if (meter.getStringDate() != null) {
-//                meter.setCheckDate(LocalDate.parse(meter.getStringDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-//            }
-//            meterRepository.save(meter);
-//        }
+    public MeterDto save(MeterDto meterDto) {
+        Meter meter = new Meter();
+        meter.setAccount(accountService.getAccountById(meterDto.getAccountId()));
+        meter.setCheckDate(meterDto.getCheckDate());
+        meter.setModel(meterDto.getModel());
+        meter.setSerialNumber(meterDto.getSerialNumber());
+        meter.setType(meterTypeRepository.findByDescription(meterDto.getTypeDescription()));
+        return convertToDto(meterRepository.save(meter));
     }
 
     @Override
@@ -135,5 +169,21 @@ public class MeterServiceImpl implements MeterService {
         }
         result.sort((o1, o2) -> o2.getCreationDate().compareTo(o1.getCreationDate()));
         return result;
+    }
+
+    //TODO: перенести в Utils или подключить библиотеку конвертора
+    private MeterDto convertToDto(Meter m) {
+        return MeterDto.builder()
+                .id(m.getId())
+                .serialNumber(m.getSerialNumber())
+                .model(m.getModel())
+                .checkDate(m.getCheckDate())
+                .houseNumber(m.getAccount().getHouseNumber())
+                .accountId(m.getAccount().getId())
+                .typeDescription(m.getType().getDescription())
+                //TODO:убрать Option
+//                    .currentMeterData(getCurrentMeterDataByMeter(m).get().getValue())
+                .tariffDescription(m.getType().getTariff().getDescription())
+                .build();
     }
 }
