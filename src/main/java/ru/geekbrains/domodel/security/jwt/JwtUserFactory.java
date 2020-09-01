@@ -10,8 +10,8 @@ public final class JwtUserFactory {
     public JwtUserFactory() {
     }
 
-    public static ru.geekbrains.domodel.security.jwt.JwtUser create(User user) {
-        return new ru.geekbrains.domodel.security.jwt.JwtUser(
+    public static JwtUser create(User user) {
+        return new JwtUser(
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),

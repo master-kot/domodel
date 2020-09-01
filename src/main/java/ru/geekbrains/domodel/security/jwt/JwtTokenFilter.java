@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.security.jwt;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -14,13 +15,11 @@ import java.io.IOException;
 /**
  * JWT токен фильтр, перехватывающий все HTTP запросы.
  */
+@RequiredArgsConstructor
 public class JwtTokenFilter extends GenericFilterBean {
 
-    private ru.geekbrains.domodel.security.jwt.JwtTokenProvider jwtTokenProvider;
-
-    public JwtTokenFilter(ru.geekbrains.domodel.security.jwt.JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    // Провайдер JWT токенов
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)
