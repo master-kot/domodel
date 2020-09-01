@@ -14,9 +14,12 @@ import ru.geekbrains.domodel.services.api.NewsService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.geekbrains.domodel.services.api.UserService;
 
 /**
  * Контроллер новостей
@@ -41,20 +44,22 @@ public class NewsController {
      */
     //todo починить, сделать пагинацию, переписать на REST
     @GetMapping("/archive/{id}")
-    public String getNewsArchivePage(@PathVariable int id,
-                                     Model model,
-                                     Authentication authentication,
-                                     Pageable pageable) {
-        if (authentication != null) {
-            model.addAttribute("username", authentication.getName());
-        }
+    public List<NewsDto> getNewsArchivePage(@PathVariable int id,
+                                            Model model,
+                                            Authentication authentication,
+                                            Pageable pageable) {
+//        if (authentication != null) {
+//            model.addAttribute("username", authentication.getName());
+//        }
 //        if (id == 0) id =1;
 //        Pageable pageRequest = PageRequest.of(id, 2);
 //        model.addAttribute("all", newsService.findAll(pageRequest));
-        model.addAttribute("newsArchive", newsService.readNewsArchive(authentication));
+//        model.addAttribute("newsArchive", newsService.readNewsArchive(authentication));
 //        Page<News> page = newsService.findAll(pageRequest);
 //        model.addAttribute("page", page);
-        return "news/news_archive";
+
+        List <NewsDto> newsArchive = newsService.readNewsArchive();
+        return newsArchive;
     }
 
 
@@ -64,16 +69,13 @@ public class NewsController {
      */
     //todo отправить в главный контроллер? переписать на REST, изменить секьюрити на токены, изменить News на NewsDto?
     @PostMapping("")
-    public String addNews(@Valid @ModelAttribute("news") News news,
-                          Model model,
-                          Principal principal) {
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
-        }
-        //TODO здесь нужно изменить новость а не сохранить
-        //проверить что поля не пусты, убрать из шаблона все скрытые поля кроме id
-        model.addAttribute("news", newsService.saveNews(news));
-        return "redirect:/news/edit/" + news.getId();
+    public NewsDto createNews(@RequestBody NewsDto newsDto) {
+//        if (principal != null) {
+//            model.addAttribute("username", principal.getName());
+//        }
+//        model.addAttribute("news", newsService.saveNews(news));
+        //TODO проверить что поля не пусты, убрать из шаблона все скрытые поля кроме id
+        return newsService.saveNews(newsDto);
     }
 
     /**
@@ -81,21 +83,21 @@ public class NewsController {
      */
     //todo переделать на REST, переделать секьюрити на токены
     @GetMapping("/{id}")
-    public String getSingleNewsPage(@PathVariable Long id,
+    public NewsDto getSingleNewsPage(@PathVariable Long id,
                                     Model model,
                                     Principal principal) {
-        if (principal != null) {
-            model.addAttribute("username", principal.getName());
-        }
-        model.addAttribute("news", newsService.readNewsById(id));
-        return "news/news_details";
+//        if (principal != null) {
+//            model.addAttribute("username", principal.getName());
+//        }
+//        model.addAttribute("news", newsService.readNewsById(id));
+        return newsService.readNewsById(id);
     }
 
      /**
       * Перехват запроса изменения одной новости
       */
      //todo Написать метод на REST + секьюрити на токены
-     @PostMapping("/{id}")
+     @PostMapping("news/{id}")
      public String setSingleNewsPage(@PathVariable Long id,
                                      Model model,
                                      Principal principal) {
@@ -111,20 +113,19 @@ public class NewsController {
       * @param id номер новости
       */
      //todo добавить секьюрити. изменить News на NewsDto?
-    @PatchMapping ("/{id}")
-     public News updateVisibilityNewsById(@PathVariable Long id){
+    @PatchMapping ("news/{id}")
+     public NewsDto updateVisibilityNewsById(@PathVariable Long id){
         return newsService.updateVisibilityNewsById(id, false);
     }
-
 
      /**
       * Перехват запроса новости для изменения ее видимости (условное удаление)
       * @param id номер новости
       */
      //todo добавить секьюрити. изменить News на NewsDto?
-     @PatchMapping ("/{id}")
-     public News updatePinnedNewsById(@PathVariable Long id){
-         return newsService.updatePinningNewsById(id, true);
+     @PatchMapping ("news/{id}")
+     public NewsDto updatePinnedNewsById(@PathVariable Long id){
+         return newsService.updatePinningNewsById(id, false);
      }
 
 }

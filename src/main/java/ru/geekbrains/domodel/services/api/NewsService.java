@@ -22,19 +22,19 @@ public interface NewsService {
      * @param id идентификатор новости
      * @return новость
      */
-    News readNewsById(Long id);
+    NewsDto readNewsById(Long id);
 
     /**
      * Получить список архива новостей
      * @return список новостей
      */
-    List<News> readNewsArchive(Authentication authentication);
+    List<NewsDto> readNewsArchive();
 
     /**
      * Получить список актуальных новостей для главной страницы
      * @return список новостей
      */
-    List<News> readRelevantNews(Authentication authentication);
+    List<NewsDto> readRelevantNews();
 
 
 
@@ -44,28 +44,28 @@ public interface NewsService {
      * @param newsDto данные с фронта
      * @return новость, сохраненная в репозитории
      */
-    News createNews  (NewsDto newsDto);
+    NewsDto createNews  (NewsDto newsDto);
 
     /**
      * Изменить новость
      * @param id идентификатор новости
      * @return измененная новость
      */
-    News updateNewsById (Long id, NewsDto newsDto);
+    NewsDto updateNewsById (Long id, NewsDto newsDto);
 
     /**
      *Закрепляем выбранную новость
      *@param id идентификатор новости
      *@param pinned флажок закреплена ли новость true - закреплена
      */
-    News updatePinningNewsById(Long id, boolean pinned);
+    NewsDto updatePinningNewsById(Long id, boolean pinned);
 
     /**
      * изменение видимости новости
      * @param id идентификатор новости
      * @param visible флажок видимости новости
      */
-    News updateVisibilityNewsById(Long id , boolean visible);
+    NewsDto updateVisibilityNewsById(Long id , boolean visible);
 
 
     /**
@@ -74,7 +74,7 @@ public interface NewsService {
      * @return новость, сохраненная в репозитории
      */
     News saveNews(News news);
-
+    NewsDto saveNews(NewsDto news);
 
     // Page<News> findAll(Pageable pageable);
 

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.geekbrains.domodel.dto.NewsDto;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.services.api.NewsService;
 import ru.geekbrains.domodel.services.api.UserService;
@@ -45,8 +46,8 @@ public class MainController {
      * Перехват запроса списка новостей для главной страницы
      */
     @GetMapping(produces = PRODUCE_TYPE)
-    public List<News> getAllNews() {
-        return newsService.readAllNews();
+    public List<NewsDto> getAllNews() {
+        return newsService.readRelevantNews();
     }
 }
 

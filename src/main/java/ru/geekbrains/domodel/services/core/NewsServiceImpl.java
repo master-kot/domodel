@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.services.core;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
@@ -8,12 +9,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import ru.geekbrains.domodel.dto.NewsDto;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.repositories.NewsRepository;
 import ru.geekbrains.domodel.services.api.NewsService;
+import ru.geekbrains.domodel.services.api.UserService;
 
 import java.util.*;
 
@@ -36,86 +39,98 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     //получаем новость по id
-    public News readNewsById(Long id) {
+    public NewsDto readNewsById(Long id) {
         Optional<News> news = newsRepository.findById(id);
-        return news.orElse(null);
+        NewsDto newsDto = new NewsDto(news.get());
+        return newsDto;
     }
 
-    //todo сделать пагинацию
+    //todo сделать пагинацию, добавить секьюрити
     @Override
     //Архив новостей
-    public List<News> readNewsArchive(org.springframework.security.core.Authentication authentication) {
+    public List<NewsDto> readNewsArchive() {
 //        List<News> newsArchive = getAllVisibleNews();
 //        if (authentication.getName().equals("admin")) newsArchive.addAll(getDeletedNews());
 //        return newsArchive;
-        PageRequest pageable = new PageRequest(1, 2);
-        List<News> newsArchive = new ArrayList<>();
-        Page<News> page = newsRepository.findAll(pageable);
-        if (authentication.getName().equals("admin")) newsArchive.addAll(readDeletedNews());
-        for (int i = 0; i <= page.getTotalPages(); i++) {
-            List<News> listPage = newsRepository.findAll(pageable.next()).getContent();
-
-            newsArchive.addAll(listPage);
+//        PageRequest pageable = new PageRequest(1, 2);
+//        List<News> newsArchive = new ArrayList<>();
+//        Page<News> page = newsRepository.findAll(pageable);
+//        if (authentication.getName().equals("admin")) newsArchive.addAll(readDeletedNews());
+//        for (int i = 0; i <= page.getTotalPages(); i++) {
+//            List<News> listPage = newsRepository.findAll(pageable.next()).getContent();
+//            newsArchive.addAll(listPage);
+//        }
+        List<News> newsArchive = readAllVisibleNews();
+        List<NewsDto> newsDtoList = new ArrayList<>();
+        if(newsArchive.size()>10) {
+        for (int i = 0; i < newsArchive.size(); i++) {
+            newsDtoList.add(new NewsDto(newsArchive.get(i)));
         }
-        return newsArchive;
+        }
+        return newsDtoList;
     }
 
     @Override
     // Новости на главную страницу
-    public List<News> readRelevantNews(org.springframework.security.core.Authentication authentication) {
-        List<News> newsRelevant = new ArrayList<>();
-        if (authentication == null) newsRelevant = readPublicNews();
-        else newsRelevant = readAllVisibleNews();
-        if (newsRelevant.size() > 10) newsRelevant.subList(0, 9);
+    //todo добавить секьюрити
+    public List<NewsDto> readRelevantNews() {
+        List<NewsDto> newsRelevant = new ArrayList<>();
+        List<News> allNews = readAllNews();
+        //if (authentication == null) newsRelevant = readPublicNews();
+        //else newsRelevant = readAllVisibleNews();
+        //if (newsRelevant.size() > 10) newsRelevant.subList(0, 9);
+        for (int i = 0; i < 10; i++) {
+            newsRelevant.add(new NewsDto(allNews.get(i)));
+        }
         return newsRelevant;
     }
 
     // РЕДАКТИРОВАНИЕ
 
-    //todo сделать метод создание новости по параметрам с фронта
     @Override
-    public News createNews(NewsDto newsDto) {
-        // News newNews = new News(title, fullText, hidden, pinned, pictureLink, user);
-        //return newsRepository.save(newNews);
-        return null;
+    //метод создания новости
+    public NewsDto createNews(NewsDto newsDto) {
+        News newNews = new News(newsDto);
+        newsRepository.save(newNews);
+        return newsDto;
     }
 
 
     // РЕДАКТИРОВАНИЕ
 
     @Override
-    public News updateVisibilityNewsById(Long id, boolean visible) {
+    public NewsDto updateVisibilityNewsById(Long id, boolean visible) {
         //удаляем новость, меняя ее видимость и удаляя ее из закрепленных
         readNewsById(id).setVisible(false);
         readNewsById(id).setPinned(false);
-        return null;
+        NewsDto newsDto = new NewsDto(newsRepository.getOne(id));
+        return newsDto;
     }
 
-    // TODO через POST сделать метод изменения новости; учесть, что закрепленных может быть только 2
+    // TODO учесть, что закрепленных может быть только 2
     @Override
-    public News updateNewsById(Long id, NewsDto newsDto) {
+    public NewsDto updateNewsById(Long id, NewsDto newsDto) {
         News news = newsRepository.getOne(id);
-//        if (news != null) {
-//            news.setTitle(title);
-//            news.setFullText(fullText);
-//            news.setHidden(hidden);
-//            news.setPinned(pinned);
-//            news.setVisible(visible);
-//            news.setPictureLink(pictureLink);
-//            return newsRepository.save(news);
-//        }
-        return null;
+        news.setCreationDate(newsDto.getCreationDate());
+        news.setTitle(newsDto.getTitle());
+        news.setFullText(newsDto.getFullText());
+        news.setPictureLink(newsDto.getPictureLink());
+        news.setHidden(newsDto.isHidden());
+        news.setPinned(newsDto.isPinned());
+        news.setVisible(newsDto.isVisible());
+        NewsDto newNewsDto = readNewsById(id);
+        return newNewsDto;
     }
 
     @Override
-    public News updatePinningNewsById(Long id, boolean pinned) {
+    public NewsDto updatePinningNewsById(Long id, boolean pinned) {
         //Закрепляем выбранную новость,если закрепленных уже 2, то одну открепляем
         List<News> pinnedNews = readPinnedNews();
         if (pinnedNews.size() > 1) pinnedNews.get(1).setPinned(false);
         readNewsById(id).setPinned(pinned);
-        return null;
+        NewsDto newsDto = new NewsDto(newsRepository.getOne(id));
+        return newsDto;
     }
-
 
 
     //ДОПОЛНИТЕЛЬНЫЕ МЕТОДЫ
@@ -126,6 +141,11 @@ public class NewsServiceImpl implements NewsService {
         return newsRepository.save(newNews);
     }
 
+    public NewsDto saveNews(NewsDto newNews) {
+        News news = new News(newNews);
+        newsRepository.save(news);
+        return newNews;
+    }
 
     //получение поcледней новости
     public News readLastNews() {
@@ -149,6 +169,19 @@ public class NewsServiceImpl implements NewsService {
 
 
     //РЕДАКТИРОВАНИЕ
+
+//    public News(NewsDto newsDto) {
+//        this.creationDate = newsDto.getCreationDate();
+//        this.title = newsDto.getTitle();
+//        this.fullText = newsDto.getFullText();
+//        this.pictureLink = newsDto.getPictureLink();
+//        this.hidden = newsDto.isHidden();
+//        this.pinned = newsDto.isPinned();
+//        this.visible = newsDto.isVisible();
+//        User user = userService.getUserByUsername(newsDto.getUserName());
+//        this.authorId = user;
+//    }
+
     private List<News> readAllVisibleNews() {
         //список неудаленных новостей для зарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым
         List<News> allNewsList = readAllNews();
