@@ -1,23 +1,18 @@
 package ru.geekbrains.domodel.services.core;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import ru.geekbrains.domodel.dto.NewsDto;
-import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.News;
-import ru.geekbrains.domodel.entities.User;
+import ru.geekbrains.domodel.mappers.NewsMapper;
 import ru.geekbrains.domodel.repositories.NewsRepository;
 import ru.geekbrains.domodel.services.api.NewsService;
-import ru.geekbrains.domodel.services.api.UserService;
 
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -28,10 +23,12 @@ public class NewsServiceImpl implements NewsService {
 
     // Репозиторий новостей
     private final NewsRepository newsRepository;
+    private  NewsMapper newsMapper;
 
     @Autowired
-    public NewsServiceImpl(NewsRepository newsRepository) {
+    public NewsServiceImpl(NewsRepository newsRepository, NewsMapper newsMapper) {
         this.newsRepository = newsRepository;
+        this.newsMapper = newsMapper;
     }
 
 
@@ -39,16 +36,16 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     //получаем новость по id
-    public NewsDto readNewsById(Long id) {
+    public NewsDto getNewsById(Long id) {
         Optional<News> news = newsRepository.findById(id);
-        NewsDto newsDto = new NewsDto(news.get());
+        NewsDto newsDto = newsMapper.newsToNewsDto(news.get());
         return newsDto;
     }
 
     //todo сделать пагинацию, добавить секьюрити
     @Override
     //Архив новостей
-    public List<NewsDto> readNewsArchive() {
+    public List<NewsDto> getNewsArchive() {
 //        List<News> newsArchive = getAllVisibleNews();
 //        if (authentication.getName().equals("admin")) newsArchive.addAll(getDeletedNews());
 //        return newsArchive;
@@ -60,11 +57,11 @@ public class NewsServiceImpl implements NewsService {
 //            List<News> listPage = newsRepository.findAll(pageable.next()).getContent();
 //            newsArchive.addAll(listPage);
 //        }
-        List<News> newsArchive = readAllVisibleNews();
+        List<News> newsArchive = getAllVisibleNews();
         List<NewsDto> newsDtoList = new ArrayList<>();
         if(newsArchive.size()>10) {
         for (int i = 0; i < newsArchive.size(); i++) {
-            newsDtoList.add(new NewsDto(newsArchive.get(i)));
+            newsDtoList.add(newsMapper.newsToNewsDto(newsArchive.get(i)));
         }
         }
         return newsDtoList;
@@ -73,14 +70,14 @@ public class NewsServiceImpl implements NewsService {
     @Override
     // Новости на главную страницу
     //todo добавить секьюрити
-    public List<NewsDto> readRelevantNews() {
+    public List<NewsDto> getAllRelevantNews() {
         List<NewsDto> newsRelevant = new ArrayList<>();
-        List<News> allNews = readAllNews();
+        List<News> allNews = getAllNews();
         //if (authentication == null) newsRelevant = readPublicNews();
         //else newsRelevant = readAllVisibleNews();
         //if (newsRelevant.size() > 10) newsRelevant.subList(0, 9);
         for (int i = 0; i < 10; i++) {
-            newsRelevant.add(new NewsDto(allNews.get(i)));
+            newsRelevant.add(newsMapper.newsToNewsDto(allNews.get(i)));
         }
         return newsRelevant;
     }
@@ -90,7 +87,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     //метод создания новости
     public NewsDto createNews(NewsDto newsDto) {
-        News newNews = new News(newsDto);
+        News newNews =newsMapper.newsDtoToNews(newsDto);
         newsRepository.save(newNews);
         return newsDto;
     }
@@ -101,9 +98,9 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsDto updateVisibilityNewsById(Long id, boolean visible) {
         //удаляем новость, меняя ее видимость и удаляя ее из закрепленных
-        readNewsById(id).setVisible(false);
-        readNewsById(id).setPinned(false);
-        NewsDto newsDto = new NewsDto(newsRepository.getOne(id));
+        getNewsById(id).setVisible(false);
+        getNewsById(id).setPinned(false);
+        NewsDto newsDto = newsMapper.newsToNewsDto(newsRepository.getOne(id));
         return newsDto;
     }
 
@@ -111,24 +108,24 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsDto updateNewsById(Long id, NewsDto newsDto) {
         News news = newsRepository.getOne(id);
-        news.setCreationDate(newsDto.getCreationDate());
+        news.setCreationDate(LocalDate.now());
         news.setTitle(newsDto.getTitle());
         news.setFullText(newsDto.getFullText());
         news.setPictureLink(newsDto.getPictureLink());
         news.setHidden(newsDto.isHidden());
         news.setPinned(newsDto.isPinned());
         news.setVisible(newsDto.isVisible());
-        NewsDto newNewsDto = readNewsById(id);
+        NewsDto newNewsDto = getNewsById(id);
         return newNewsDto;
     }
 
     @Override
     public NewsDto updatePinningNewsById(Long id, boolean pinned) {
         //Закрепляем выбранную новость,если закрепленных уже 2, то одну открепляем
-        List<News> pinnedNews = readPinnedNews();
+        List<News> pinnedNews = getPinnedNews();
         if (pinnedNews.size() > 1) pinnedNews.get(1).setPinned(false);
-        readNewsById(id).setPinned(pinned);
-        NewsDto newsDto = new NewsDto(newsRepository.getOne(id));
+        getNewsById(id).setPinned(pinned);
+        NewsDto newsDto = newsMapper.newsToNewsDto(newsRepository.getOne(id));
         return newsDto;
     }
 
@@ -142,14 +139,14 @@ public class NewsServiceImpl implements NewsService {
     }
 
     public NewsDto saveNews(NewsDto newNews) {
-        News news = new News(newNews);
+        News news = newsMapper.newsDtoToNews(newNews);
         newsRepository.save(news);
         return newNews;
     }
 
     //получение поcледней новости
-    public News readLastNews() {
-        List<News> newsList = readAllNews();
+    public News getLastNews() {
+        List<News> newsList = getAllNews();
         if (!newsList.isEmpty()) {
             return newsList.get(0);
         }
@@ -157,13 +154,13 @@ public class NewsServiceImpl implements NewsService {
     }
 
     //получаем отсортированный по дате (от свежих к старым) список всех новостей
-    public List<News> readAllNews() {
+    public List<News> getAllNews() {
         List<News> list = newsRepository.findAll();
         Collections.reverse(list);
         return list;
     }
 
-    private Page<News> findAll(Pageable pageable) {
+    private Page<News> getAll(Pageable pageable) {
         return newsRepository.findAll(pageable);
     }
 
@@ -182,10 +179,10 @@ public class NewsServiceImpl implements NewsService {
 //        this.authorId = user;
 //    }
 
-    private List<News> readAllVisibleNews() {
+    private List<News> getAllVisibleNews() {
         //список неудаленных новостей для зарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым
-        List<News> allNewsList = readAllNews();
-        List<News> pinnedNewsList = readPinnedNews();
+        List<News> allNewsList = getAllNews();
+        List<News> pinnedNewsList = getPinnedNews();
         List<News> newsList = new ArrayList<News>();
         for (int i = 0; i < pinnedNewsList.size(); i++) { //добавляем закрпленные
             newsList.add(pinnedNewsList.get(i));
@@ -199,9 +196,9 @@ public class NewsServiceImpl implements NewsService {
         return newsList;
     }
 
-    private List<News> readDeletedNews() {
+    private List<News> getDeletedNews() {
         //список удаленных новостей
-        List<News> allNewsList = readAllNews();
+        List<News> allNewsList = getAllNews();
         List<News> newsList = new ArrayList<News>();
         for (int i = 0; i < allNewsList.size(); i++) {
             if (!allNewsList.get(i).isVisible()) {
@@ -211,9 +208,9 @@ public class NewsServiceImpl implements NewsService {
         return newsList;
     }
 
-    private List<News> readPinnedNews() {
+    private List<News> getPinnedNews() {
         //возвращает лист из 2 закрепленных новостей
-        List<News> allNewsList = readAllNews();
+        List<News> allNewsList = getAllNews();
         List<News> newsList = new ArrayList<>();
         byte counter = 0;
         for (int i = 0; i < allNewsList.size(); i++) {
@@ -226,10 +223,10 @@ public class NewsServiceImpl implements NewsService {
         return newsList;
     }
 
-    private List<News> readPublicNews() {
+    private List<News> getPublicNews() {
         //список новостей (10 штук) для незарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым
-        List<News> allNewsList = readAllNews();
-        List<News> pinnedNewsList = readPinnedNews();
+        List<News> allNewsList = getAllNews();
+        List<News> pinnedNewsList = getPinnedNews();
         List<News> newsList = new ArrayList<>();
         byte counter = 0;
         for (int i = 0; i < pinnedNewsList.size(); i++) { //добавляем закрепленные, если они публичные

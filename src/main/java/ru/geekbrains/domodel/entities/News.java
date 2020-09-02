@@ -22,7 +22,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@NoArgsConstructor
 @Table(name = "news")
 public class News {
 
@@ -47,16 +46,16 @@ public class News {
 //            this.shortText = fullText.substring(0,limit);
 //    }
 
-    public News(NewsDto newsDto) {
-        this.creationDate = newsDto.getCreationDate();
-        this.title = newsDto.getTitle();
-        this.fullText = newsDto.getFullText();
-        this.pictureLink = newsDto.getPictureLink();
-        this.hidden = newsDto.isHidden();
-        this.pinned = newsDto.isPinned();
-        this.visible = newsDto.isVisible();
-        this.authorId = new User();
-    }
+//    public News(NewsDto newsDto) {
+//        this.creationDate = newsDto.getCreationDate();
+//        this.title = newsDto.getTitle();
+//        this.fullText = newsDto.getFullText();
+//        this.pictureLink = newsDto.getPictureLink();
+//        this.hidden = newsDto.isHidden();
+//        this.pinned = newsDto.isPinned();
+//        this.visible = newsDto.isVisible();
+//        this.authorId = new User();
+//    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

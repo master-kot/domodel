@@ -22,19 +22,19 @@ public interface NewsService {
      * @param id идентификатор новости
      * @return новость
      */
-    NewsDto readNewsById(Long id);
+    NewsDto getNewsById(Long id);
 
     /**
      * Получить список архива новостей
      * @return список новостей
      */
-    List<NewsDto> readNewsArchive();
+    List<NewsDto> getNewsArchive();
 
     /**
      * Получить список актуальных новостей для главной страницы
      * @return список новостей
      */
-    List<NewsDto> readRelevantNews();
+    List<NewsDto> getAllRelevantNews();
 
 
 
@@ -82,13 +82,13 @@ public interface NewsService {
      * Получить список всех новостей
      * @return список новостей
      */
-    List<News> readAllNews();
+    List<News> getAllNews();
 
         /**
      * Получить последнюю по дате новость
      * @return новость
      */
-    News readLastNews();
+    News getLastNews();
 //
 //    /**
 //     * Получить список видимых новостей для зарегистрированных пользователей + вначале закрепленные новости + пагинация

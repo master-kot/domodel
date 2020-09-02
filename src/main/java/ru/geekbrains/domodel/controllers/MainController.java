@@ -46,7 +46,7 @@ public class MainController {
      */
     @GetMapping(produces = PRODUCE_TYPE)
     public List<NewsDto> getRelevantNews() {
-        return newsService.getRelevantNews();
+        return newsService.getAllRelevantNews();
     }
 
     @PostMapping(consumes = PRODUCE_TYPE)

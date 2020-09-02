@@ -1,25 +1,19 @@
 package ru.geekbrains.domodel.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.NewsDto;
-import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.services.api.NewsService;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.geekbrains.domodel.services.api.UserService;
 
 /**
  * Контроллер новостей
@@ -58,7 +52,7 @@ public class NewsController {
 //        Page<News> page = newsService.findAll(pageRequest);
 //        model.addAttribute("page", page);
 
-        List <NewsDto> newsArchive = newsService.readNewsArchive();
+        List <NewsDto> newsArchive = newsService.getNewsArchive();
         return newsArchive;
     }
 
@@ -90,21 +84,21 @@ public class NewsController {
 //            model.addAttribute("username", principal.getName());
 //        }
 //        model.addAttribute("news", newsService.readNewsById(id));
-        return newsService.readNewsById(id);
+        return newsService.getNewsById(id);
     }
 
      /**
       * Перехват запроса изменения одной новости
       */
      //todo Написать метод на REST + секьюрити на токены
-     @PostMapping("news/{id}")
+     @PostMapping("/{id}")
      public String setSingleNewsPage(@PathVariable Long id,
                                      Model model,
                                      Principal principal) {
          if (principal != null) {
              model.addAttribute("username", principal.getName());
          }
-         model.addAttribute("news", newsService.readNewsById(id));
+         model.addAttribute("news", newsService.getNewsById(id));
          return "news/news_details";
      }
 
@@ -113,7 +107,7 @@ public class NewsController {
       * @param id номер новости
       */
      //todo добавить секьюрити. изменить News на NewsDto?
-    @PatchMapping ("news/{id}")
+    @PatchMapping ("/visibility/{id}")
      public NewsDto updateVisibilityNewsById(@PathVariable Long id){
         return newsService.updateVisibilityNewsById(id, false);
     }
@@ -123,7 +117,7 @@ public class NewsController {
       * @param id номер новости
       */
      //todo добавить секьюрити. изменить News на NewsDto?
-     @PatchMapping ("news/{id}")
+     @PatchMapping ("/pinned/{id}")
      public NewsDto updatePinnedNewsById(@PathVariable Long id){
          return newsService.updatePinningNewsById(id, false);
      }
