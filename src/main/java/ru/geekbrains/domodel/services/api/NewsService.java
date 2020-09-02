@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.services.api;
 
+import ru.geekbrains.domodel.dto.NewsDto;
 import ru.geekbrains.domodel.entities.News;
 
 import java.util.Date;
@@ -10,12 +11,25 @@ import java.util.List;
  */
 public interface NewsService {
 
+    /*
+     * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ СЕРВИСОВ
+     * NewsDto getNewsById(Long id) найти объект по параметру
+     * List<NewsDto> getAllNews() найти все объекты
+     * List<NewsDto> getAllNewsByUser(UserDto user) найти все объекты по параметру
+     * News updateNews(NewsDto news) изменить объект
+     * News saveNews(NewsDto newsDto) сохранить объект
+     * List<NewsDto> saveAllNews(List<NewsDto> newsDtoList) сохранить список объектов
+     * void deleteNews(NewsDto newsDto) удалить конкретный объект
+     * Long deleteNewsById(Long id) удалить объект по параметру
+     * void deleteAllNews(List<NewsDto> newsDtoList) удалить список объектов
+     */
+
     /**
      * Получить список новостей
      *
      * @return список новостей
      */
-    List<News> getAllNews();
+    List<NewsDto> getAllNews();
 
     /**
      * Получить новость по ее идентификатору
@@ -23,7 +37,7 @@ public interface NewsService {
      * @param id идентификатор новости
      * @return новость
      */
-    News getNewsById(Long id);
+    NewsDto getNewsById(Long id);
 
     /**
      * Удалить новость по ее идентификатору
@@ -35,10 +49,10 @@ public interface NewsService {
     /**
      * Сохранить новость
      *
-     * @param news новость, отдаваемая в репозиторий для сохранения
+     * @param newsDto новость, отдаваемая для сохранения
      * @return новость, сохраненная в репозитории
      */
-    public News saveNews (News news);
+    public NewsDto saveNews (NewsDto newsDto);
 
     /**
      * Изменить новость
@@ -51,17 +65,24 @@ public interface NewsService {
      * @param pictureLink ссылка на картинку новости
      * @return измененная новость
      */
-    News changeNews (Long id,
-                     String title,
-                     String fullText,
-                     boolean hidden,
-                     boolean pinned,
-                     String pictureLink);
+    NewsDto updateNews(Long id,
+                    String title,
+                    String fullText,
+                    boolean hidden,
+                    boolean pinned,
+                    String pictureLink);
 
     /**
      * Получить последнюю по дате новость
      *
      * @return новость
      */
-    News getLastNews();
+    NewsDto getLastNews();
+
+    /**
+     * Получить список актуальных новостей
+     *
+     * @return список новостей
+     */
+    List<NewsDto> getRelevantNews();
 }

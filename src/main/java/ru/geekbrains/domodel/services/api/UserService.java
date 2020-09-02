@@ -1,6 +1,7 @@
 package ru.geekbrains.domodel.services.api;
 
 import org.springframework.stereotype.Service;
+import ru.geekbrains.domodel.dto.NewUserDataDto;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.dto.UserDto;
 
@@ -28,6 +29,9 @@ public interface UserService {
      */
     User getUserByUsername(String username);
 
+    // TODO полностью избавиться от метода getUserByUsername
+    UserDto getUserDtoByUsername(String username);
+
     /**
      * Найти всех пользователей
      *
@@ -46,10 +50,10 @@ public interface UserService {
     /**
      * Создать нового пользователя
      *
-     * @param userDto отображение данных пользователя
+     * @param newUserDataDto отображение данных пользователя
      * @return новый пользователь, сохраненный в репозитории
      */
-    User createUser(UserDto userDto);
+    UserDto createUser(NewUserDataDto newUserDataDto);
 
     /**
      * Изменить данные пользователя

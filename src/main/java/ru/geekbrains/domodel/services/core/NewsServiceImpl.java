@@ -2,12 +2,15 @@ package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.domodel.dto.NewsDto;
 import ru.geekbrains.domodel.entities.News;
+import ru.geekbrains.domodel.mappers.NewsMapper;
 import ru.geekbrains.domodel.repositories.NewsRepository;
 import ru.geekbrains.domodel.services.api.NewsService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса новостей
@@ -18,16 +21,19 @@ public class NewsServiceImpl implements NewsService {
 
     // Репозиторий новостей
     private final NewsRepository newsRepository;
+    private final NewsMapper newsMapper;
 
     @Override
-    public List<News> getAllNews() {
-        return newsRepository.findAll();
+    public List<NewsDto> getAllNews() {
+        return newsRepository.findAll().stream()
+                .map(newsMapper::newsToNewsDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public News getNewsById(Long id) {
-        Optional<News> news = newsRepository.findById(id);
-        return news.orElse(null);
+    public NewsDto getNewsById(Long id) {
+        Optional<News> optionalNews = newsRepository.findById(id);
+        return optionalNews.map(newsMapper::newsToNewsDto).orElse(null);
     }
 
     @Override
@@ -36,36 +42,42 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public News saveNews (News news) {
-        return newsRepository.save(news);
+    public NewsDto saveNews (NewsDto newsDto) {
+        News news = newsMapper.newsDtoToNews(newsDto);
+        return newsMapper.newsToNewsDto(newsRepository.save(news));
     }
 
     @Override
-    public News changeNews (Long id,
-                            String title,
-                            String fullText,
-                            boolean hidden,
-                            boolean pinned,
-                            String pictureLink) {
-        News news = newsRepository.getOne(id);
-        if (news != null) {
+    public NewsDto updateNews(Long id,
+                           String title,
+                           String fullText,
+                           boolean hidden,
+                           boolean pinned,
+                           String pictureLink) {
+        Optional<News> optionalNews = newsRepository.findById(id);
+        if (optionalNews.isPresent()) {
+            News news = optionalNews.get();
             news.setTitle(title);
             news.setFullText(fullText);
             news.setHidden(hidden);
             news.setPinned(pinned);
             news.setPictureLink(pictureLink);
-            return newsRepository.save(news);
+            return newsMapper.newsToNewsDto(newsRepository.save(news));
         }
         return null;
     }
 
     // TODO реализовать метод
     @Override
-    public News getLastNews() {
-        List<News> newsList = newsRepository.findAll();
-        if (!newsList.isEmpty()) {
-            return newsList.get(newsList.size() - 1);
-        }
+    public NewsDto getLastNews() {
         return null;
+    }
+
+    // TODO реализовать метод
+    @Override
+    public List<NewsDto> getRelevantNews() {
+        return newsRepository.findAll().stream()
+                .map(newsMapper::newsToNewsDto)
+                .collect(Collectors.toList());
     }
 }

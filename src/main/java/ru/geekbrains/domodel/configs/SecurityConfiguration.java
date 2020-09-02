@@ -24,7 +24,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     // Адреса доступа
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
-    private static final String MAIN_ENDPOINT = "/api/v1/";
+    private static final String MAIN_ENDPOINT = "/api/v1";
+    private static final String SWAGGER_ENDPOINT = "/**";
     private static final String INFORMATION_ENDPOINT = "/api/v1/information/**";
     private static final String METERS_ENDPOINT = "/api/v1/meters/**";
     private static final String BILLS_ENDPOINT = "/api/v1/bills/**";
@@ -55,6 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .antMatchers(MAIN_ENDPOINT).permitAll()
                 .antMatchers(INFORMATION_ENDPOINT).permitAll()
+                .antMatchers(SWAGGER_ENDPOINT).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().disable()
