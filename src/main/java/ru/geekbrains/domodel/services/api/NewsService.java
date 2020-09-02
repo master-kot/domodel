@@ -1,9 +1,7 @@
 package ru.geekbrains.domodel.services.api;
 
 import ru.geekbrains.domodel.dto.NewsDto;
-import ru.geekbrains.domodel.entities.News;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,7 +50,7 @@ public interface NewsService {
      * @param newsDto новость, отдаваемая для сохранения
      * @return новость, сохраненная в репозитории
      */
-    public NewsDto saveNews (NewsDto newsDto);
+    NewsDto saveNews (NewsDto newsDto);
 
     /**
      * Изменить новость
@@ -71,13 +69,6 @@ public interface NewsService {
                     boolean hidden,
                     boolean pinned,
                     String pictureLink);
-
-    /**
-     * Получить последнюю по дате новость
-     *
-     * @return новость
-     */
-    NewsDto getLastNews();
 
     /**
      * Получить список актуальных новостей

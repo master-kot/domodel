@@ -51,7 +51,7 @@ public class MainController {
 
     @PostMapping(consumes = PRODUCE_TYPE)
     public ResponseEntity<UserDto> createUser(@RequestBody NewUserDataDto userData) {
-        UserDto userDto = userService.createUser(userData);
+        UserDto userDto = userService.saveUser(userData);
         if(userDto == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

@@ -69,12 +69,6 @@ public class NewsServiceImpl implements NewsService {
 
     // TODO реализовать метод
     @Override
-    public NewsDto getLastNews() {
-        return null;
-    }
-
-    // TODO реализовать метод
-    @Override
     public List<NewsDto> getRelevantNews() {
         return newsRepository.findAll().stream()
                 .map(newsMapper::newsToNewsDto)

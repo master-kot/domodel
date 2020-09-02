@@ -7,9 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static javax.persistence.FetchType.EAGER;
 
@@ -79,7 +77,7 @@ public class User {
 
     // Список лицевых счетов
     @OneToMany(mappedBy = "user")
-    private Set<Account> accounts = new HashSet<>();
+    private List<Account> accounts = new ArrayList<>();
 
     public User(String username,
                 String password,

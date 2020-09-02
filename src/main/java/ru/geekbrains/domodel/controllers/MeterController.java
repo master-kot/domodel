@@ -5,9 +5,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
-import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.constants.Roles;
 import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.MeterService;
@@ -36,10 +36,9 @@ public class MeterController {
     @GetMapping("")
     public String getMetersPage(Model model, Principal principal) {
         if (principal != null) {
-            User user = userService.getUserByUsername(principal.getName());
-            model.addAttribute("username", user.getUsername());
+            UserDto user = userService.getUserByUsername(principal.getName());
+            model.addAttribute("username", user.getPhone());
             model.addAttribute("user", user);
-            model.addAttribute("accounts", user.getAccounts());
         }
         model.addAttribute("meterData", new MeterData());
         return "meters/meters_user";
@@ -65,7 +64,7 @@ public class MeterController {
 
     @GetMapping("/add")
     public String getAddPage(Model model, Principal principal) {
-        model.addAttribute("accounts", accountService.getAccountsByUserUserame(principal.getName()));
+        model.addAttribute("accounts", accountService.getAccountsByUserUsername(principal.getName()));
         model.addAttribute("tariffs", tariffService.getAllTariffs());
         return "meters/meters_add";
     }

@@ -1,6 +1,7 @@
 package ru.geekbrains.domodel.services.api;
 
-import ru.geekbrains.domodel.entities.Account;
+import ru.geekbrains.domodel.dto.AccountDto;
+import ru.geekbrains.domodel.dto.BillDto;
 import ru.geekbrains.domodel.entities.Bill;
 
 import java.util.List;
@@ -13,45 +14,35 @@ public interface BillService {
     /**
      * Получить список всех счетов
      */
-    List<Bill> getAllBills();
-
-    /**
-     * Сохранить счет
-     */
-    Bill save(Bill bill);
+    List<BillDto> getAllBills();
 
     /**
      * Найти счет по его номеру
      */
-    Bill findById(Long billId);
+    BillDto getBillById(Long id);
 
     /**
      * Найти все счета по имени пользователя
      */
-    List<Bill> findAllByUsername(String username);
+    List<BillDto> getAllBillsByUsername(String username);
 
     /**
      * Найти все счета для аккаунта
      */
-    List<Bill> getAllBillsByAccount(Account account);
+    List<BillDto> getAllBillsByAccount(AccountDto account);
 
     /**
-     * создать счет для аккаунта
+     * Создать счет для аккаунта
      */
-    Bill createBillByAccount(Account account);
+    BillDto saveBill(BillDto bill);
 
     /**
      * Создать счета для всех аккаунтов
      */
-    List<Bill> createAll();
-
-    /**
-     * Получить все счета данного аккаунта
-     */
-    List<Bill> getAllByAccount(Account account);
+    List<BillDto> saveAllBills();
 
     /**
      * Изменить счет по номеру
      */
-    Bill changeById(Long Id, Bill billData);
+    Bill updateBill(BillDto bill);
 }

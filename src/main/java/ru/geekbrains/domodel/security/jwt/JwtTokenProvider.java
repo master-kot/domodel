@@ -8,11 +8,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import ru.geekbrains.domodel.entities.Authority;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -37,10 +35,10 @@ public class JwtTokenProvider {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
     }
 
-    public String createToken(String username, List<Authority> roles) {
+    public String createToken(String username, List<String> roles) {
 
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put("roles", getRoleNames(roles));
+        claims.put("roles", roles);
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
@@ -77,15 +75,5 @@ public class JwtTokenProvider {
         } catch (JwtException | IllegalArgumentException e) {
             throw new JwtAuthenticationException("JWT token is expired or invalid");
         }
-    }
-
-    private List<String> getRoleNames(List<Authority> userAuthorities) {
-        List<String> result = new ArrayList<>();
-
-        userAuthorities.forEach(role -> {
-            result.add(role.getAuthority());
-        });
-
-        return result;
     }
 }

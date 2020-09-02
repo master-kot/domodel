@@ -2,8 +2,9 @@ package ru.geekbrains.domodel.services.api;
 
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.NewUserDataDto;
-import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.dto.UserDto;
+import ru.geekbrains.domodel.entities.common.JwtUser;
+import ru.geekbrains.domodel.entities.common.UserCommon;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface UserService {
      * @param userId идентификатор пользователя
      * @return пользователь
      */
-    User getUserById(Long userId);
+    UserDto getUserById(Long userId);
 
     /**
      * Найти пользователя по логину
@@ -27,17 +28,30 @@ public interface UserService {
      * @param username логин пользователя
      * @return пользователь
      */
-    User getUserByUsername(String username);
+    UserDto getUserByUsername(String username);
 
-    // TODO полностью избавиться от метода getUserByUsername
-    UserDto getUserDtoByUsername(String username);
+    /**
+     * Получить общего Пользователя для межсервисного взаимодействия
+     *
+     * @param username логин пользователя
+     * @return общая сущность Пользователя
+     */
+    UserCommon getUserCommonByUsername(String username);
+
+    /**
+     * Получить Jwt Пользователя для генерации токенов
+     *
+     * @param username логин пользователя
+     * @return общая сущность Пользователя
+     */
+    JwtUser getJwtUserByUsername(String username);
 
     /**
      * Найти всех пользователей
      *
      * @return список пользователей
      */
-    List<User> getAllUsers();
+    List<UserDto> getAllUsers();
 
     /**
      * Удалить пользователя по его идентификатору
@@ -53,15 +67,7 @@ public interface UserService {
      * @param newUserDataDto отображение данных пользователя
      * @return новый пользователь, сохраненный в репозитории
      */
-    UserDto createUser(NewUserDataDto newUserDataDto);
-
-    /**
-     * Изменить данные пользователя
-     *
-     * @param userDto отображение данных пользователя
-     * @param user изменяемый пользователь
-     */
-    User updateUser(UserDto userDto, User user);
+    UserDto saveUser(NewUserDataDto newUserDataDto);
 
     /**
      * Изменить данные пользователя

@@ -5,11 +5,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.domodel.dto.BillDto;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.Bill;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
-import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.services.api.*;
 
 import javax.validation.Valid;
@@ -49,7 +49,7 @@ public class TemporaryController {
     @GetMapping("")
     public String getHomePage(@RequestParam(required = false) String error, Model model, Principal principal) {
         addUsername(model, principal);
-        model.addAttribute("lastNews", newsService.getLastNews());
+        model.addAttribute("lastNews", newsService.getRelevantNews());
         return "index";
     }
 
@@ -85,10 +85,9 @@ public class TemporaryController {
     @GetMapping("/meters")
     public String getMetersPage(Model model, Principal principal) {
         if (principal != null) {
-            User user = userService.getUserByUsername(principal.getName());
-            model.addAttribute("username", user.getUsername());
+            UserDto user = userService.getUserByUsername(principal.getName());
+            model.addAttribute("username", user.getPhone());
             model.addAttribute("user", user);
-            model.addAttribute("accounts", user.getAccounts());
         }
         model.addAttribute("meterData", new MeterData());
         return "meters/meters_user";
@@ -114,7 +113,7 @@ public class TemporaryController {
 
     @GetMapping("/meters/add")
     public String getAddPage(Model model, Principal principal) {
-        model.addAttribute("accounts", accountService.getAccountsByUserUserame(principal.getName()));
+        model.addAttribute("accounts", accountService.getAccountsByUserUsername(principal.getName()));
         model.addAttribute("tariffs", tariffService.getAllTariffs());
         return "meters/meters_add";
     }
@@ -165,14 +164,14 @@ public class TemporaryController {
         if (authentication != null) {
             String username = authentication.getName();
             model.addAttribute("username", username);
-            model.addAttribute("accounts", accountService.getAccountsByUserUserame(username));
+            model.addAttribute("accounts", accountService.getAccountsByUserUsername(username));
         }
         return "bills/bills_user";
     }
 
     @GetMapping("/bills/{billId}")
     public String showBill(@PathVariable Long billId, Model model) {
-        model.addAttribute("bill", billService.findById(billId));
+        model.addAttribute("bill", billService.getBillById(billId));
         return "/bills/bills_details";
     }
 
@@ -183,22 +182,22 @@ public class TemporaryController {
     }
 
     @PostMapping("/bills/add")
-    public String processCreationForm(Bill bill) {
-        Bill savedBill = billService.save(bill);
-        return "redirect:/bills/" + savedBill.getId();
+    public String processCreationForm(BillDto bill) {
+        BillDto savedBill = billService.saveBill(bill);
+        return "redirect:/bills/"; // + savedBill.getId();
     }
 
     @GetMapping("/bills/edit/{billId}")
     public String showUpdateBillForm(@PathVariable Long billId, Model model) {
-        model.addAttribute(billService.findById(billId));
+        model.addAttribute(billService.getBillById(billId));
         return BILL_EDIT_FORM;
     }
 
     @PostMapping("/bills/edit/{billId}")
-    public String processUpdateBillForm(Bill bill, @PathVariable Long billId) {
-        bill.setId(billId);
-        Bill savedBill = billService.save(bill);
-        return "redirect:/bills/" + savedBill.getId();
+    public String processUpdateBillForm(BillDto bill, @PathVariable Long billId) {
+        /*bill.setId(billId);
+        Bill savedBill = billService.saveBill(bill);*/
+        return "redirect:/bills/"; //+ savedBill.getId();
     }
 
     // TODO Методы Контроллер информации
@@ -321,7 +320,7 @@ public class TemporaryController {
      */
     @GetMapping("/profile")
     public String getProfilePage(Model model, Principal principal) {
-        User user = null;
+        UserDto user = null;
         if (principal != null) {
             model.addAttribute("username", principal.getName());
             user = userService.getUserByUsername(principal.getName());

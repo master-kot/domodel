@@ -2,6 +2,7 @@ package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.domodel.dto.VoteDto;
 import ru.geekbrains.domodel.entities.Vote;
 import ru.geekbrains.domodel.repositories.VoteRepository;
 import ru.geekbrains.domodel.services.api.VoteService;
@@ -19,7 +20,7 @@ public class VoteServiceImpl implements VoteService {
     private final VoteRepository voteRepository;
 
     @Override
-    public Optional<Vote> getById(Long id) {
-        return voteRepository.findById(id);
+    public VoteDto getVoteById(Long id) {
+        return null;
     }
 }
