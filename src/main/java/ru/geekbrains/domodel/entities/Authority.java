@@ -19,17 +19,17 @@ import java.util.List;
 @Table(name = "authorities")
 public class Authority implements GrantedAuthority {
 
-    @Id
+    @Id // Вариант 2: убрать поле
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
-    // Роль пользователя, варианты: ROLE_ADMIN - администратор сайта, ROLE_DIRECTOR - председатель СНТО,
-    // ROLE_ACCOUNTANT - бухгалтер, ROLE_STAFF - персонал организации, ROLE_USER - пользователь сайта
+    // Роль пользователя, варианты: ROLE_ADMIN - администратор сайта, ROLE_DIRECTOR - председатель,
+    // ROLE_USER - пользователь сайта
     @Column(name = "authority", nullable = false)
     private String authority;
 
-    @ManyToMany
+    @ManyToMany // Вариант 2: (mappedBy = "authorities", fetch = FetchType.LAZY)
     @JoinTable(name = "users_authorities",
             // Внешний ключ для Authority
             joinColumns = @JoinColumn(name = "authority_id"),

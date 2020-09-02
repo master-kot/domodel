@@ -12,6 +12,19 @@ import java.util.Optional;
  */
 public interface MeterService {
 
+    /*
+     * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ СЕРВИСОВ
+     * NewsDto getNewsById(Long id) найти объект по параметру
+     * List<NewsDto> getAllNews() найти все объекты
+     * List<NewsDto> getAllNewsByUser(UserDto user) найти все объекты по параметру
+     * News updateNews(NewsDto news) изменить объект
+     * News saveNews(NewsDto newsDto) сохранить объект
+     * List<NewsDto> saveAllNews(List<NewsDto> newsDtoList) сохранить список объектов
+     * void deleteNews(NewsDto newsDto) удалить конкретный объект
+     * Long deleteNewsById(Long id) удалить объект по параметру
+     * void deleteAllNews(List<NewsDto> newsDtoList) удалить список объектов
+     */
+
     Meter getMeter(Long id);
 
     /**

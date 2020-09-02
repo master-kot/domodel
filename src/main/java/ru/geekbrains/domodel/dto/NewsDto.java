@@ -1,68 +1,39 @@
 package ru.geekbrains.domodel.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Transient;
-import ru.geekbrains.domodel.entities.News;
-import ru.geekbrains.domodel.entities.User;
-import ru.geekbrains.domodel.services.api.UserService;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.time.LocalDate;
+import lombok.Data;
 
 /**
- * Представление сущности новости для работы с фронтэндом
+ * DTO представление сущности Новость
  */
-@Getter
-@Setter
-@NoArgsConstructor
-@RequiredArgsConstructor
+@Data
 public class NewsDto {
 
-    @NotBlank
-    @CreatedDate
-    private LocalDate creationDate;
+    private Long id;
 
-    @NotBlank
+    // Дата создания
+    private String creationDate;
+
+    // Заголовок
     private String title;
 
-    @NotBlank
+    // Краткий текст новости
+    private String shortText;
+
+    // Полный текст новости
     private String fullText;
 
-    @NotBlank
-    @Transient
-    @Size (max = 255)
-    private String shortText = fullText.substring(0, 255);
-
-    @NotBlank
+    // Ссылка на адрес картинки
     private String pictureLink;
 
-    @NotBlank
+    // Указатель публичности новости. Новость отображается для всех посетителей если true
     private boolean hidden;
 
-    @NotBlank
+    // Указатель закрепления новости. Новость закреплена если true
     private boolean pinned;
 
-    @NotBlank
+    // Указатель видимости новости. Новость отображается если true
     private boolean visible;
 
-    //todo с автором надо покумекать, по идее Имя юзера + фамилия
-    @NotBlank
-    private String userName;
-
-    public NewsDto(News news) {
-        this.creationDate = news.getCreationDate();
-        this.title = news.getTitle();
-        this.fullText = news.getFullText();
-        this.pictureLink = news.getPictureLink();
-        this.hidden = news.isHidden();
-        this.pinned = news.isPinned();
-        this.visible = news.isVisible();
-        this.shortText = news.getFullText().substring(0, 255);
-        this.userName = news.getAuthorId().getUsername();
-    }
+    // Автор
+    private String authorName;
 }
