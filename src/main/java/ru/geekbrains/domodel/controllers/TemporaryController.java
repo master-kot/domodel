@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.Bill;
-import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.services.api.*;
@@ -122,11 +121,11 @@ public class TemporaryController {
         return "meters/meters_add";
     }
 
-    @PostMapping("/meters/add")
-    public String addMeter(Meter meter) {
-        meterService.save(meter);
-        return "redirect:/meters";
-    }
+//    @PostMapping("/meters/add")
+//    public String addMeter(Meter meter) {
+//        meterService.save(meter);
+//        return "redirect:/meters";
+//    }
 
     // TODO Методы Контроллер лицевых счетов
 

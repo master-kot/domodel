@@ -2,6 +2,7 @@ package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.domodel.dto.MeterDataDto;
 import ru.geekbrains.domodel.dto.MeterDto;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
@@ -35,19 +36,7 @@ public class MeterServiceImpl implements MeterService {
     @Override
     public MeterDto getMeter(Long id) {
         Meter m = meterRepository.findById(id).orElseThrow(() -> new RuntimeException("not found meter by id: " + id));
-
-        return MeterDto.builder()
-                .id(m.getId())
-                .serialNumber(m.getSerialNumber())
-                .model(m.getModel())
-                .checkDate(m.getCheckDate())
-                .houseNumber(m.getAccount().getHouseNumber())
-                .accountId(m.getAccount().getId())
-                .typeDescription(m.getType().getDescription())
-                //TODO:убрать Option
-//                    .currentMeterData(getCurrentMeterDataByMeter(m).get().getValue())
-                .tariffDescription(m.getType().getTariff().getDescription())
-                .build();
+        return convertToDto(m);
     }
 
     @Override
@@ -61,19 +50,15 @@ public class MeterServiceImpl implements MeterService {
     }
 
     @Override
+    public List<MeterDto> getAllMetersByUserName(String name) {
+//        Account account = accountService.get
+
+        return null;
+    }
+
+    @Override
     public List<MeterDto> getAllMeters() {
-        return meterRepository.findAll().stream().map(m -> MeterDto.builder()
-                .id(m.getId())
-                .serialNumber(m.getSerialNumber())
-                .model(m.getModel())
-                .checkDate(m.getCheckDate())
-                .houseNumber(m.getAccount().getHouseNumber())
-                .accountId(m.getAccount().getId())
-                .typeDescription(m.getType().getDescription())
-                //TODO:убрать Option
-//                    .currentMeterData(getCurrentMeterDataByMeter(m).get().getValue())
-                .tariffDescription(m.getType().getTariff().getDescription())
-                .build()).collect(Collectors.toList());
+        return meterRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     @Override
@@ -110,8 +95,14 @@ public class MeterServiceImpl implements MeterService {
     }
 
     @Override
-    public List<MeterData> getAllMeterDataByMeter(Meter meter) {
-        return meterDataRepository.findAllByMeterOrderByCreationDateDesc(meter);
+    public List<MeterDataDto> getAllMeterDataByMeterId(Long id) {
+        Meter m = meterRepository.findById(id).orElseThrow(() -> new RuntimeException("not found meter by id: " + id));
+        return meterDataRepository.findAllByMeterOrderByCreationDateDesc(m).stream().map(data -> MeterDataDto.builder()
+                .creationDate(data.getCreationDate())
+                .value(data.getValue())
+                .meterId(data.getMeter().getId())
+                .build())
+                .collect(Collectors.toList());
     }
 
     //TODO реализовать получение показаний для счетчика (поискать лучшее вариант: сделать за "одно" обращение к бд)

@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.services.api;
 
+import ru.geekbrains.domodel.dto.MeterDataDto;
 import ru.geekbrains.domodel.dto.MeterDto;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
@@ -20,7 +21,10 @@ public interface MeterService {
      * Получить список счетчиков данного аккаунта
      */
     List<Meter> getAllMetersByAccount(Account account);
-
+    /**
+     * Получить список счетчиков данного пользователя
+     */
+    List<MeterDto> getAllMetersByUserName(String name);
     /**
      * Получить список всех счетчиков
      */
@@ -47,7 +51,7 @@ public interface MeterService {
     /**
      * Получить список всех показаний данного счетчика
      */
-    List<MeterData> getAllMeterDataByMeter(Meter meter);
+    List<MeterDataDto> getAllMeterDataByMeterId(Long id);
 
     /**
      * Получить предыдущее (предпоследнее по дате в списке) показание счетчика
