@@ -41,7 +41,7 @@ public class News {
 //        this.authorId = author_id;
 //        this.visible = true;
 //
-//        int limit = 20;//TODO исправить на нужное значение
+//        int limit = 20;
 //        if (fullText.length()>limit)
 //            this.shortText = fullText.substring(0,limit);
 //    }

@@ -36,7 +36,7 @@ public class NewsController {
     /**
      * Перехват запроса определенной страницы архива новостей
      */
-    //todo починить, сделать пагинацию, переписать на REST
+    //todo  добавить секьюрити
     @GetMapping("/archive/{id}")
     public List<NewsDto> getNewsArchivePage(@PathVariable int id,
                                             Model model,
@@ -52,7 +52,7 @@ public class NewsController {
 //        Page<News> page = newsService.findAll(pageRequest);
 //        model.addAttribute("page", page);
 
-        List <NewsDto> newsArchive = newsService.getNewsArchive();
+        List <NewsDto> newsArchive = newsService.getNewsArchive(id);
         return newsArchive;
     }
 
@@ -61,8 +61,8 @@ public class NewsController {
     /**
      * Перехват запроса добавления новости
      */
-    //todo отправить в главный контроллер? переписать на REST, изменить секьюрити на токены, изменить News на NewsDto?
-    @PostMapping("")
+    //todo починить, отправить в главный контроллер? изменить секьюрити на токены
+    @PostMapping("/add")
     public NewsDto createNews(@RequestBody NewsDto newsDto) {
 //        if (principal != null) {
 //            model.addAttribute("username", principal.getName());
@@ -75,7 +75,7 @@ public class NewsController {
     /**
      * Перехват запроса страницы одной новости
      */
-    //todo переделать на REST, переделать секьюрити на токены
+    //todo  добавить секьюрити
     @GetMapping("/{id}")
     public NewsDto getSingleNewsPage(@PathVariable Long id,
                                     Model model,
@@ -90,36 +90,38 @@ public class NewsController {
      /**
       * Перехват запроса изменения одной новости
       */
-     //todo Написать метод на REST + секьюрити на токены
+     //todo секьюрити на токены
      @PostMapping("/{id}")
-     public String setSingleNewsPage(@PathVariable Long id,
+     public NewsDto setSingleNewsPage(@PathVariable Long id,
+                                     @RequestBody NewsDto newsDto,
                                      Model model,
                                      Principal principal) {
-         if (principal != null) {
-             model.addAttribute("username", principal.getName());
-         }
-         model.addAttribute("news", newsService.getNewsById(id));
-         return "news/news_details";
+//         if (principal != null) {
+//             model.addAttribute("username", principal.getName());
+//         }
+//         model.addAttribute("news", newsService.getNewsById(id));
+//         return "news/news_details";
+         return newsService.updateNewsById(id, newsDto);
      }
 
      /**
       * Перехват запроса новости для изменения ее видимости (условное удаление)
       * @param id номер новости
       */
-     //todo добавить секьюрити. изменить News на NewsDto?
-    @PatchMapping ("/visibility/{id}")
-     public NewsDto updateVisibilityNewsById(@PathVariable Long id){
-        return newsService.updateVisibilityNewsById(id, false);
+     //todo добавить секьюрити
+    @PostMapping ("/visibility/{id}")
+     public boolean updateVisibilityNewsById(@PathVariable Long id, @RequestBody boolean visible){
+        return newsService.updateVisibilityNewsById(id, visible);
     }
 
      /**
       * Перехват запроса новости для изменения ее видимости (условное удаление)
       * @param id номер новости
       */
-     //todo добавить секьюрити. изменить News на NewsDto?
+     //todo добавить секьюрити
      @PatchMapping ("/pinned/{id}")
-     public NewsDto updatePinnedNewsById(@PathVariable Long id){
-         return newsService.updatePinningNewsById(id, false);
+     public NewsDto updatePinnedNewsById(@PathVariable Long id, @RequestBody boolean pinned){
+         return newsService.updatePinningNewsById(id, pinned);
      }
 
 }

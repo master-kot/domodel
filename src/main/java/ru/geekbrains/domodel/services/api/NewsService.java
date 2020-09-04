@@ -28,7 +28,7 @@ public interface NewsService {
      * Получить список архива новостей
      * @return список новостей
      */
-    List<NewsDto> getNewsArchive();
+    List<NewsDto> getNewsArchive(int page);
 
     /**
      * Получить список актуальных новостей для главной страницы
@@ -65,7 +65,7 @@ public interface NewsService {
      * @param id идентификатор новости
      * @param visible флажок видимости новости
      */
-    NewsDto updateVisibilityNewsById(Long id , boolean visible);
+    boolean updateVisibilityNewsById(Long id , boolean visible);
 
 
     /**

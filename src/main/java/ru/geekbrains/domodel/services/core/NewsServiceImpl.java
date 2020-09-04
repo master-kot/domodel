@@ -14,6 +14,7 @@ import ru.geekbrains.domodel.services.api.NewsService;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса новостей
@@ -23,7 +24,7 @@ public class NewsServiceImpl implements NewsService {
 
     // Репозиторий новостей
     private final NewsRepository newsRepository;
-    private  NewsMapper newsMapper;
+    private NewsMapper newsMapper;
 
     @Autowired
     public NewsServiceImpl(NewsRepository newsRepository, NewsMapper newsMapper) {
@@ -42,10 +43,10 @@ public class NewsServiceImpl implements NewsService {
         return newsDto;
     }
 
-    //todo сделать пагинацию, добавить секьюрити
+    //todo добавить секьюрити
     @Override
     //Архив новостей
-    public List<NewsDto> getNewsArchive() {
+    public List<NewsDto> getNewsArchive(int page) {
 //        List<News> newsArchive = getAllVisibleNews();
 //        if (authentication.getName().equals("admin")) newsArchive.addAll(getDeletedNews());
 //        return newsArchive;
@@ -59,10 +60,12 @@ public class NewsServiceImpl implements NewsService {
 //        }
         List<News> newsArchive = getAllVisibleNews();
         List<NewsDto> newsDtoList = new ArrayList<>();
-        if(newsArchive.size()>10) {
-        for (int i = 0; i < newsArchive.size(); i++) {
+        int counter = 0;
+        int limit = 2; //количество новостей на странице
+        for (int i = 0 + (page - 1) * limit; i < newsArchive.size(); i++) {
             newsDtoList.add(newsMapper.newsToNewsDto(newsArchive.get(i)));
-        }
+            counter++;
+            if (counter == limit) break;
         }
         return newsDtoList;
     }
@@ -72,36 +75,49 @@ public class NewsServiceImpl implements NewsService {
     //todo добавить секьюрити
     public List<NewsDto> getAllRelevantNews() {
         List<NewsDto> newsRelevant = new ArrayList<>();
-        List<News> allNews = getAllNews();
-        //if (authentication == null) newsRelevant = readPublicNews();
-        //else newsRelevant = readAllVisibleNews();
-        //if (newsRelevant.size() > 10) newsRelevant.subList(0, 9);
-        for (int i = 0; i < 10; i++) {
+        List<News> allNews = getAllNews(); //todo в этот лист добавлять в зависимости от юзера
+//        //if (authentication == null) newsRelevant = readPublicNews();
+//        //else newsRelevant = readAllVisibleNews();
+//        //if (newsRelevant.size() > 10) newsRelevant.subList(0, 9);
+        int limit = 3;
+        if (allNews.size() < limit) limit = allNews.size();
+        for (int i = 0; i < limit; i++) {
             newsRelevant.add(newsMapper.newsToNewsDto(allNews.get(i)));
         }
         return newsRelevant;
+        //return allNews.stream().map(newsMapper::newsToNewsDto).collect(Collectors.toList());
     }
 
     // РЕДАКТИРОВАНИЕ
-
+//todo починить, добавить секьюрити
     @Override
     //метод создания новости
     public NewsDto createNews(NewsDto newsDto) {
-        News newNews =newsMapper.newsDtoToNews(newsDto);
+        News newNews = newsMapper.newsDtoToNews(newsDto);
+//        newNews.setTitle(newsDto.getTitle());
+//        newNews.setFullText(newsDto.getFullText());
+//        newNews.setVisible(newsDto.isVisible());
+//        newNews.setPinned(newsDto.isPinned());
+//        newNews.setHidden(newsDto.isHidden());
+        newNews.setCreationDate(LocalDate.now());
+//        newNews.setAuthorName(newsDto.getAuthorName());
+
         newsRepository.save(newNews);
         return newsDto;
     }
 
 
     // РЕДАКТИРОВАНИЕ
-
+//todo починить, добавить секьюрити
     @Override
-    public NewsDto updateVisibilityNewsById(Long id, boolean visible) {
+    public boolean updateVisibilityNewsById(Long id, boolean visible) {
         //удаляем новость, меняя ее видимость и удаляя ее из закрепленных
-        getNewsById(id).setVisible(false);
-        getNewsById(id).setPinned(false);
+        News news = newsMapper.newsDtoToNews(getNewsById(id));
+        news.setVisible(visible);
+        if (!visible) getNewsById(id).setPinned(false);
+        newsRepository.save(news);
         NewsDto newsDto = newsMapper.newsToNewsDto(newsRepository.getOne(id));
-        return newsDto;
+        return newsDto.isVisible();
     }
 
     // TODO учесть, что закрепленных может быть только 2
@@ -115,6 +131,7 @@ public class NewsServiceImpl implements NewsService {
         news.setHidden(newsDto.isHidden());
         news.setPinned(newsDto.isPinned());
         news.setVisible(newsDto.isVisible());
+        newsRepository.save(news);
         NewsDto newNewsDto = getNewsById(id);
         return newNewsDto;
     }
@@ -122,9 +139,16 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsDto updatePinningNewsById(Long id, boolean pinned) {
         //Закрепляем выбранную новость,если закрепленных уже 2, то одну открепляем
+        News news = newsMapper.newsDtoToNews(getNewsById(id));
+        if(news.isPinned() == pinned) return getNewsById(id);
+
         List<News> pinnedNews = getPinnedNews();
         if (pinnedNews.size() > 1) pinnedNews.get(1).setPinned(false);
-        getNewsById(id).setPinned(pinned);
+        newsRepository.save(pinnedNews.get(1));
+
+        news.setPinned(pinned);
+        newsRepository.save(news);
+
         NewsDto newsDto = newsMapper.newsToNewsDto(newsRepository.getOne(id));
         return newsDto;
     }
@@ -166,18 +190,6 @@ public class NewsServiceImpl implements NewsService {
 
 
     //РЕДАКТИРОВАНИЕ
-
-//    public News(NewsDto newsDto) {
-//        this.creationDate = newsDto.getCreationDate();
-//        this.title = newsDto.getTitle();
-//        this.fullText = newsDto.getFullText();
-//        this.pictureLink = newsDto.getPictureLink();
-//        this.hidden = newsDto.isHidden();
-//        this.pinned = newsDto.isPinned();
-//        this.visible = newsDto.isVisible();
-//        User user = userService.getUserByUsername(newsDto.getUserName());
-//        this.authorId = user;
-//    }
 
     private List<News> getAllVisibleNews() {
         //список неудаленных новостей для зарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым
