@@ -15,20 +15,20 @@ import ru.geekbrains.domodel.services.api.NewsService;
 @RequiredArgsConstructor
 public class NewsController {
 
-    // Сервис новостей
+    // Список необходимых сервисов
     private final NewsService newsService;
 
     /*
      * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ СЕРВИСОВ
-     * NewsDto getNewsById(Long id) найти объект по параметру
-     * List<NewsDto> getAllNews() найти все объекты
-     * List<NewsDto> getAllNewsByUser(UserDto user) найти все объекты по параметру
-     * News updateNews(NewsDto news) изменить объект
-     * News saveNews(NewsDto newsDto) сохранить объект
-     * List<NewsDto> saveAllNews(List<NewsDto> newsDtoList) сохранить список объектов
-     * void deleteNews(NewsDto newsDto) удалить конкретный объект
-     * Long deleteNewsById(Long id) удалить объект по параметру
-     * void deleteAllNews(List<NewsDto> newsDtoList) удалить список объектов
+     * NewsDto getById(Long id) найти объект по параметру
+     * Collection<NewsDto> getAll() найти все объекты
+     * Collection<NewsDto> getAllByUser(UserDto userDto) найти все объекты по параметру
+     * News update(NewsDto newsDto) изменить объект
+     * News save(NewsDto newsDto) сохранить объект
+     * Collection<NewsDto> saveAll(Collection<NewsDto> newsDtoCollection) сохранить список объектов
+     * void delete(NewsDto newsDto) удалить конкретный объект
+     * Long deleteById(Long id) удалить объект по параметру
+     * void deleteAll(Collection<NewsDto> newsDtoCollection) удалить список объектов
      */
 
     // TODO предлагаю в контроллере аналогичное именование

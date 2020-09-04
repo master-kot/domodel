@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -27,12 +28,13 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class MeterController {
 
-    // Список сервисов
+    // Список необходимых сервисов
     private final MeterService meterService;
     private final AccountService accountService;
     private final TariffService tariffService;
     private final UserService userService;
 
+    @ApiOperation(value = "Выводит список счетчиков данных пользователя")
     @GetMapping("")
     public String getMetersPage(Model model, Principal principal) {
         if (principal != null) {
@@ -44,6 +46,7 @@ public class MeterController {
         return "meters/meters_user";
     }
 
+    @ApiOperation(value = "Выводит информацию о счетчике по его индексу")
     @GetMapping("/{id}")
     public String getMetersArchivePage(@PathVariable String id, Model model) {
         Meter meter = meterService.getMeter(Long.valueOf(id));
@@ -54,6 +57,7 @@ public class MeterController {
         return "meters/meters_archive";
     }
 
+    @ApiOperation(value = "Принимает данные о показаниях счетчика")
     @PostMapping("/submit")
     public String submitData(MeterData meterData) {
         if (meterData.getValue() != null && meterData.getValue() != 0) {
@@ -62,6 +66,7 @@ public class MeterController {
         return "redirect:/meters/";
     }
 
+    @ApiOperation(value = "Отдает данные для создания нового счетчика")
     @GetMapping("/add")
     public String getAddPage(Model model, Principal principal) {
         model.addAttribute("accounts", accountService.getAccountsByUserUsername(principal.getName()));
@@ -69,6 +74,7 @@ public class MeterController {
         return "meters/meters_add";
     }
 
+    @ApiOperation(value = "Принимает данные для создания нового счетчика")
     @PostMapping("/add")
     public String addMeter(Meter meter) {
         meterService.save(meter);

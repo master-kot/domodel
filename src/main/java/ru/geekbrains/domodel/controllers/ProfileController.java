@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,9 @@ public class ProfileController {
     // Список необходимых сервисов
     private final UserService userService;
 
+    @ApiOperation(value = "Выводит профиль пользователя по его индексу")
     @GetMapping(value = "{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") Long id){
+    public ResponseEntity<UserDto> readUserById(@PathVariable(name = "id") Long id){
         UserDto user = userService.getUserById(id);
         if(user == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -29,13 +29,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
+    // Список необходимых зависимостей
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
 
-    @ApiOperation(value = "Осуществляет вход пользователя и выдачу токена авторизации")
+    @ApiOperation(value = "Осуществляет авторизацию пользователя и выдачу токена авторизации")
     @PostMapping("login")
-    public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {
+    public ResponseEntity<Map<Object, Object>> login(@RequestBody AuthenticationRequestDto requestDto) {
         try {
             String username = requestDto.getUsername();
             authenticationManager.authenticate(
