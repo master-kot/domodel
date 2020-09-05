@@ -34,7 +34,7 @@ public interface NewsService {
      * Получить список актуальных новостей для главной страницы
      * @return список новостей
      */
-    List<NewsDto> getAllRelevantNews();
+    List<NewsDto> getAllRelevantNews(Authentication authentication);
 
 
 
@@ -58,7 +58,7 @@ public interface NewsService {
      *@param id идентификатор новости
      *@param pinned флажок закреплена ли новость true - закреплена
      */
-    NewsDto updatePinningNewsById(Long id, boolean pinned);
+    boolean updatePinningNewsById(Long id, boolean pinned);
 
     /**
      * изменение видимости новости

@@ -1,11 +1,14 @@
 package ru.geekbrains.domodel.controllers;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.NewsDto;
+import ru.geekbrains.domodel.security.jwt.JwtTokenFilter;
+import ru.geekbrains.domodel.security.jwt.JwtTokenProvider;
 import ru.geekbrains.domodel.services.api.NewsService;
 
 import java.security.Principal;
@@ -18,12 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Контроллер новостей
  */
-//todo перейти на рест, поднять все методы
 
-
- /**
- * Контроллер новостей
- */
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/news")
@@ -32,6 +30,8 @@ public class NewsController {
 
     // Сервис новостей
     private final NewsService newsService;
+//    private final JwtTokenFilter jwtTokenFilter;
+
 
     /**
      * Перехват запроса определенной страницы архива новостей
@@ -41,7 +41,8 @@ public class NewsController {
     public List<NewsDto> getNewsArchivePage(@PathVariable int id,
                                             Model model,
                                             Authentication authentication,
-                                            Pageable pageable) {
+                                            Pageable pageable,
+                                            JwtTokenProvider jwtTokenProvider) {
 //        if (authentication != null) {
 //            model.addAttribute("username", authentication.getName());
 //        }
@@ -119,8 +120,8 @@ public class NewsController {
       * @param id номер новости
       */
      //todo добавить секьюрити
-     @PatchMapping ("/pinned/{id}")
-     public NewsDto updatePinnedNewsById(@PathVariable Long id, @RequestBody boolean pinned){
+     @PostMapping ("/pinned/{id}")
+     public boolean updatePinnedNewsById(@PathVariable Long id, @RequestBody boolean pinned){
          return newsService.updatePinningNewsById(id, pinned);
      }
 

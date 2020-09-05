@@ -5,11 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.NewsDto;
 import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.mappers.NewsMapper;
 import ru.geekbrains.domodel.repositories.NewsRepository;
+import ru.geekbrains.domodel.security.jwt.JwtTokenProvider;
 import ru.geekbrains.domodel.services.api.NewsService;
 
 import java.time.LocalDate;
@@ -25,6 +28,7 @@ public class NewsServiceImpl implements NewsService {
     // Репозиторий новостей
     private final NewsRepository newsRepository;
     private NewsMapper newsMapper;
+
 
     @Autowired
     public NewsServiceImpl(NewsRepository newsRepository, NewsMapper newsMapper) {
@@ -73,9 +77,12 @@ public class NewsServiceImpl implements NewsService {
     @Override
     // Новости на главную страницу
     //todo добавить секьюрити
-    public List<NewsDto> getAllRelevantNews() {
+    public List<NewsDto> getAllRelevantNews(Authentication authentication) {
         List<NewsDto> newsRelevant = new ArrayList<>();
         List<News> allNews = getAllNews(); //todo в этот лист добавлять в зависимости от юзера
+//        List<News> allNews = new ArrayList<News>()
+//        if (!authentication.isAuthenticated()) allNews = getPublicNews();
+//        else allNews = getAllVisibleNews();
 //        //if (authentication == null) newsRelevant = readPublicNews();
 //        //else newsRelevant = readAllVisibleNews();
 //        //if (newsRelevant.size() > 10) newsRelevant.subList(0, 9);
@@ -108,16 +115,15 @@ public class NewsServiceImpl implements NewsService {
 
 
     // РЕДАКТИРОВАНИЕ
-//todo починить, добавить секьюрити
+//todo добавить секьюрити
     @Override
     public boolean updateVisibilityNewsById(Long id, boolean visible) {
         //удаляем новость, меняя ее видимость и удаляя ее из закрепленных
-        News news = newsMapper.newsDtoToNews(getNewsById(id));
-        news.setVisible(visible);
+        News news = newsRepository.getOne(id);
         if (!visible) getNewsById(id).setPinned(false);
+        news.setVisible(visible);
         newsRepository.save(news);
-        NewsDto newsDto = newsMapper.newsToNewsDto(newsRepository.getOne(id));
-        return newsDto.isVisible();
+        return visible;
     }
 
     // TODO учесть, что закрепленных может быть только 2
@@ -137,20 +143,16 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public NewsDto updatePinningNewsById(Long id, boolean pinned) {
+    public boolean updatePinningNewsById(Long id, boolean pinned) {
         //Закрепляем выбранную новость,если закрепленных уже 2, то одну открепляем
-        News news = newsMapper.newsDtoToNews(getNewsById(id));
-        if(news.isPinned() == pinned) return getNewsById(id);
-
+        News news = newsRepository.getOne(id);
+        if (news.isPinned() == pinned) return pinned;
         List<News> pinnedNews = getPinnedNews();
-        if (pinnedNews.size() > 1) pinnedNews.get(1).setPinned(false);
+        if (pinnedNews.size() > 1 && pinned) pinnedNews.get(1).setPinned(false);
         newsRepository.save(pinnedNews.get(1));
-
         news.setPinned(pinned);
         newsRepository.save(news);
-
-        NewsDto newsDto = newsMapper.newsToNewsDto(newsRepository.getOne(id));
-        return newsDto;
+        return pinned;
     }
 
 

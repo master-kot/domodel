@@ -3,10 +3,14 @@ package ru.geekbrains.domodel.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.NewUserDataDto;
 import ru.geekbrains.domodel.dto.NewsDto;
 import ru.geekbrains.domodel.dto.UserDto;
+import ru.geekbrains.domodel.security.jwt.JwtTokenFilter;
+import ru.geekbrains.domodel.security.jwt.JwtTokenProvider;
 import ru.geekbrains.domodel.services.api.NewsService;
 import ru.geekbrains.domodel.services.api.UserService;
 
@@ -27,6 +31,7 @@ public class MainController {
     // Необходимые сервисы
     private final UserService userService;
     private final NewsService newsService;
+    private final AuthenticationManager authenticationManager;
 
     /*
      * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ СЕРВИСОВ
@@ -45,8 +50,8 @@ public class MainController {
      * Перехват запроса списка новостей для главной страницы
      */
     @GetMapping(produces = PRODUCE_TYPE)
-    public List<NewsDto> getRelevantNews() {
-        return newsService.getAllRelevantNews();
+    public List<NewsDto> getRelevantNews(Authentication authentication) {
+        return newsService.getAllRelevantNews(authentication);
     }
 
     @PostMapping(consumes = PRODUCE_TYPE)
