@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NewUserDataDto {
+public class NewUserRequest {
 
     private String username;
 

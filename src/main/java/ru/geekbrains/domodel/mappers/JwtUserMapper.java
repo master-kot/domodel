@@ -1,6 +1,7 @@
 package ru.geekbrains.domodel.mappers;
 
 import org.mapstruct.Mapper;
+import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.common.JwtRole;
 import ru.geekbrains.domodel.entities.common.JwtUser;
 
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public abstract class JwtUserMapper {
 
-    public static JwtUser userToJwtUser(ru.geekbrains.domodel.entities.User entity) {
+    public JwtUser userToJwtUser(User entity) {
         JwtUser user = new JwtUser();
         user.setId(entity.getId());
         user.setUsername(entity.getUsername());

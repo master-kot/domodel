@@ -23,5 +23,11 @@ public interface AccountService {
     /**
      * Получить список лицевых счетов пользователя по его логину
      */
+    List<AccountDto> getAllByUserUsername(String username);
+
+    /**
+     * Получить список лицевых счетов пользователя по его логину
+     * Используется только для межсервисного взаимодействия!!!
+     */
     List<Account> getAllAccountsByUserUsername(String username);
 }

@@ -1,7 +1,9 @@
 package ru.geekbrains.domodel.services.api;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.domodel.dto.NewUserDataDto;
+import ru.geekbrains.domodel.dto.NewUserRequest;
+import ru.geekbrains.domodel.dto.PasswordRequest;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.common.JwtUser;
 import ru.geekbrains.domodel.entities.User;
@@ -48,10 +50,10 @@ public interface UserService {
     /**
      * Создать нового пользователя
      *
-     * @param newUserDataDto отображение данных пользователя
+     * @param newUserRequest отображение данных пользователя
      * @return новый пользователь, сохраненный в репозитории
      */
-    UserDto save(NewUserDataDto newUserDataDto);
+    UserDto save(NewUserRequest newUserRequest);
 
     /**
      * Изменить данные пользователя
@@ -59,7 +61,7 @@ public interface UserService {
      * @param userDto пользователь с измененными данными
      * @param username логин пользователя
      */
-    void update(UserDto userDto, String username);
+    UserDto update(UserDto userDto, String username);
 
     /**
      * Получить общего Пользователя для межсервисного взаимодействия
@@ -76,4 +78,13 @@ public interface UserService {
      * @return общая сущность Пользователя
      */
     JwtUser getJwtUserByUsername(String username);
+
+    /**
+     * Изменить пароль пользователя
+     *
+     * @param passwordRequest данные для изменения пароля
+     * @param authentication авторизация
+     * @return измененен ли пользователь
+     */
+    boolean updatePassword(PasswordRequest passwordRequest, Authentication authentication);
 }

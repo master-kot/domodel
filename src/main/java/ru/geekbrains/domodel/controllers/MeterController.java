@@ -39,7 +39,7 @@ public class MeterController {
     public String getMetersPage(Model model, Principal principal) {
         if (principal != null) {
             UserDto user = userService.getByUsername(principal.getName());
-            model.addAttribute("username", user.getPhone());
+            model.addAttribute("username", user.getUsername());
             model.addAttribute("user", user);
         }
         model.addAttribute("meterData", new MeterData());

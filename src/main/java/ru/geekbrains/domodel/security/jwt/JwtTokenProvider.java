@@ -24,7 +24,8 @@ public class JwtTokenProvider {
     @Value("lknjdlkgnfdkjngjkrdnjkgdj")
     private String secret;
 
-    @Value("864000")
+    // Токен действителен 10 дней
+    @Value("864000000")
     private long validityInMilliseconds;
 
     @Autowired

@@ -35,6 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    // TODO вынести
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -62,7 +63,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .logout().disable()
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
     }
 }

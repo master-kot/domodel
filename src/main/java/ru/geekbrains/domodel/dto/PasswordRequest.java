@@ -3,12 +3,15 @@ package ru.geekbrains.domodel.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-/**
- * DTO сущность роли пользователя
- */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RoleDto {
+public class PasswordRequest {
 
-    private String role;
+    private String username;
+
+    private String oldPassword;
+
+    private String newPassword;
+
+    private String newPasswordConfirm;
 }

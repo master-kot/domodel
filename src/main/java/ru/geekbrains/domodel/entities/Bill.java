@@ -57,7 +57,7 @@ public class Bill {
     private Requisites requisites;
 
     // Список калькуляций (обоснование цены счета)
-    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Calculation> calculations = new ArrayList<>();
 
     // Не используется в MVP 0
