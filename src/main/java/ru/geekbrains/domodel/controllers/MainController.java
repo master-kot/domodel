@@ -4,12 +4,13 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import ru.geekbrains.domodel.dto.NewUserDataDto;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.geekbrains.domodel.dto.NewsDto;
-import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.services.api.NewsService;
-import ru.geekbrains.domodel.services.api.UserService;
 
 import java.util.List;
 
@@ -26,7 +27,6 @@ public class MainController {
     private final String PRODUCE_TYPE = "application/json";
 
     // Список необходимых сервисов
-    private final UserService userService;
     private final NewsService newsService;
 
     /*
@@ -47,20 +47,12 @@ public class MainController {
      */
     @ApiOperation(value = "Выводит список релевантных новостей")
     @GetMapping(produces = PRODUCE_TYPE)
-    public List<NewsDto> readRelevantNews() {
-        return newsService.getRelevantNews();
-    }
-
-    /**
-     * Создает нового пользователя
-     */
-    @ApiOperation(value = "Создает нового пользователя")
-    @PostMapping(consumes = PRODUCE_TYPE)
-    public ResponseEntity<UserDto> createUser(@RequestBody NewUserDataDto userData) {
-        UserDto userDto = userService.saveUser(userData);
-        if(userDto == null){
+    public ResponseEntity<List<NewsDto>> readRelevantNews(Authentication authentication) {
+        List<NewsDto> newsDtoList = newsService.getRelevantNews(authentication);
+        if (newsDtoList.size() != 0) {
+            return new ResponseEntity<>(newsDtoList, HttpStatus.OK);
+        } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 }

@@ -1,10 +1,10 @@
 package ru.geekbrains.domodel.entities.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.geekbrains.domodel.entities.Account;
-import ru.geekbrains.domodel.entities.Authority;
 
 import java.util.Collection;
 import java.util.List;
@@ -12,28 +12,15 @@ import java.util.List;
 /**
  * Spring Security обертка для класса Пользователя.
  */
+@Setter
+@NoArgsConstructor
 public class JwtUser implements UserDetails {
 
-    private final Long id;
-    private final String username;
-    private final String password;
-    private final boolean enabled;
-    private final List<JwtRole> authorities;
-    private final List<Long> accountIds;
-
-    public JwtUser(Long id,
-                   String username,
-                   String password,
-                   boolean enabled,
-                   List<JwtRole> authorities,
-                   List<Long> accountIds) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.enabled = enabled;
-        this.authorities = authorities;
-        this.accountIds = accountIds;
-    }
+    private Long id;
+    private String username;
+    private String password;
+    private boolean enabled;
+    private List<JwtRole> authorities;
 
     @JsonIgnore
     public Long getId() {
@@ -73,10 +60,6 @@ public class JwtUser implements UserDetails {
     @Override
     public String getPassword() {
         return password;
-    }
-
-    public List<Long> getAccountIds() {
-        return accountIds;
     }
 
     @Override

@@ -34,7 +34,6 @@ public interface NewsMapper {
             @Mapping(target="fullText", source="dto.fullText"),
             @Mapping(target="pictureLink", source="dto.pictureLink"),
             @Mapping(target="hidden", source="dto.hidden"),
-            @Mapping(target="pinned", source="dto.pinned"),
-            @Mapping(target="authorName", source="dto.authorName")})
+            @Mapping(target="pinned", source="dto.pinned")})
     News newsDtoToNews(NewsDto dto);
 }

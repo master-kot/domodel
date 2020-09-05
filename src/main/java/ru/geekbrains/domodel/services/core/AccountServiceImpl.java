@@ -3,6 +3,7 @@ package ru.geekbrains.domodel.services.core;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.AccountDto;
+import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.mappers.AccountMapper;
 import ru.geekbrains.domodel.repositories.AccountRepository;
 import ru.geekbrains.domodel.services.api.AccountService;
@@ -22,21 +23,20 @@ public class AccountServiceImpl implements AccountService {
     private final AccountMapper accountMapper;
 
     @Override
-    public AccountDto getAccountById(Long id) {
+    public AccountDto getById(Long id) {
         return accountRepository.findById(id)
                 .map(accountMapper::accountToAccountDto)
                 .orElseThrow(() -> new RuntimeException("account not exist"));
     }
 
     @Override
-    public List<AccountDto> getAllAccounts() {
+    public List<AccountDto> getAll() {
         return accountRepository.findAll().stream()
                 .map(accountMapper::accountToAccountDto).collect(Collectors.toList());
     }
 
     @Override
-    public List<AccountDto> getAccountsByUserUsername(String username) {
-        return accountRepository.findAllByUserUsername(username).stream()
-                .map(accountMapper::accountToAccountDto).collect(Collectors.toList());
+    public List<Account> getAllAccountsByUserUsername(String username) {
+        return accountRepository.findAllByUserUsername(username);
     }
 }

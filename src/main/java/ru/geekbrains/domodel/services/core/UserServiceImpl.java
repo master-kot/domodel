@@ -6,10 +6,9 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.NewUserDataDto;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.Authority;
-import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.common.JwtUser;
-import ru.geekbrains.domodel.entities.common.UserCommon;
-import ru.geekbrains.domodel.mappers.UserCommonMapper;
+import ru.geekbrains.domodel.entities.User;
+import ru.geekbrains.domodel.mappers.JwtUserMapper;
 import ru.geekbrains.domodel.mappers.UserMapper;
 import ru.geekbrains.domodel.repositories.AuthorityRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
@@ -29,54 +28,52 @@ import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    // Сервис шифрования паролей
+    // Необходимые сервисы
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
-    // Репозиторий пользователей
+    // Необходимые репозитории
     private final UserRepository userRepository;
-
-    // Репозиторий ролей пользователя
     private final AuthorityRepository authorityRepository;
 
     @Override
-    public UserDto getUserById(Long userId) {
+    public UserDto getById(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         return optionalUser.map(userMapper::userToUserDto).orElse(null);
     }
 
     @Override
-    public UserCommon getUserCommonByUsername(String username) {
+    public User getUserByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
-        return optionalUser.map(UserCommonMapper::userToUserCommon).orElse(null);
+        return optionalUser.orElse(null);
     }
 
     @Override
     public JwtUser getJwtUserByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
-        return optionalUser.map(UserCommonMapper::userToJwtUser).orElse(null);
+        return optionalUser.map(JwtUserMapper::userToJwtUser).orElse(null);
     }
 
     @Override
-    public UserDto getUserByUsername(String username) {
+    public UserDto getByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
         return optionalUser.map(userMapper::userToUserDto).orElse(null);
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
+    public List<UserDto> getAll() {
         return userRepository.findAll().stream()
                 .map(userMapper::userToUserDto).collect(Collectors.toList());
     }
 
     @Override
-    public boolean deleteUserById(Long userId) {
+    public boolean deleteById(Long userId) {
         userRepository.deleteById(userId);
         return userRepository.existsById(userId);
     }
 
     @Override
-    public UserDto saveUser(NewUserDataDto newData) {
+    public UserDto save(NewUserDataDto newData) {
         // TODO предусмотреть проверку полей
         Optional<User> optionalUser = userRepository.findByUsername(newData.getUsername());
         if (optionalUser.isPresent()) {
@@ -93,7 +90,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.userToUserDto(userRepository.save(newUser));
     }
 
-    public void updateUser(UserDto userDto, String username) {
+    public void update(UserDto userDto, String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
         User user;
         if (optionalUser.isPresent()) {

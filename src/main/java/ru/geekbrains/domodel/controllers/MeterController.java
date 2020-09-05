@@ -38,7 +38,7 @@ public class MeterController {
     @GetMapping("")
     public String getMetersPage(Model model, Principal principal) {
         if (principal != null) {
-            UserDto user = userService.getUserByUsername(principal.getName());
+            UserDto user = userService.getByUsername(principal.getName());
             model.addAttribute("username", user.getPhone());
             model.addAttribute("user", user);
         }
@@ -69,7 +69,7 @@ public class MeterController {
     @ApiOperation(value = "Отдает данные для создания нового счетчика")
     @GetMapping("/add")
     public String getAddPage(Model model, Principal principal) {
-        model.addAttribute("accounts", accountService.getAccountsByUserUsername(principal.getName()));
+        model.addAttribute("accounts", accountService.getAllAccountsByUserUsername(principal.getName()));
         model.addAttribute("tariffs", tariffService.getAllTariffs());
         return "meters/meters_add";
     }

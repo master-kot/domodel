@@ -75,9 +75,9 @@ public class User {
     @Column(name = "address")
     private String address;
 
-    // Список лицевых счетов
-    @OneToMany(mappedBy = "user")
-    private List<Account> accounts = new ArrayList<>();
+//    // Список лицевых счетов
+//    @OneToMany//(mappedBy = "user")
+//    private List<Account> accounts = new ArrayList<>();
 
     public User(String username,
                 String password,

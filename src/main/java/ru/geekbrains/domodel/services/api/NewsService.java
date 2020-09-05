@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.services.api;
 
+import org.springframework.security.core.Authentication;
 import ru.geekbrains.domodel.dto.NewsDto;
 
 import java.util.List;
@@ -50,7 +51,8 @@ public interface NewsService {
      * @param newsDto новость, отдаваемая для сохранения
      * @return новость, сохраненная в репозитории
      */
-    NewsDto saveNews (NewsDto newsDto);
+    @Deprecated
+    NewsDto save (NewsDto newsDto);
 
     /**
      * Изменить новость
@@ -75,5 +77,14 @@ public interface NewsService {
      *
      * @return список новостей
      */
-    List<NewsDto> getRelevantNews();
+    List<NewsDto> getRelevantNews(Authentication authentication);
+
+    /**
+     * Сохраняет новость с учетом имени автора
+     *
+     * @param newsDto
+     * @param authentication
+     * @return
+     */
+    NewsDto save(NewsDto newsDto, Authentication authentication);
 }

@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.AccountDto;
 import ru.geekbrains.domodel.dto.BillDto;
+import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Bill;
-import ru.geekbrains.domodel.entities.common.UserCommon;
 import ru.geekbrains.domodel.repositories.BillRepository;
 import ru.geekbrains.domodel.services.api.*;
 
@@ -39,7 +39,7 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public List<BillDto> getAllBillsByUsername(@NonNull String username) {
-        UserCommon user = userService.getUserCommonByUsername(username);
+        List<Account> user = accountService.getAllAccountsByUserUsername(username);
         if (user == null) {
             return null;
         } else {
