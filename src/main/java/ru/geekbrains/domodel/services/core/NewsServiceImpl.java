@@ -7,44 +7,51 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.NewsDto;
+import ru.geekbrains.domodel.dto.NewsRequestDto;
 import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.mappers.NewsMapper;
 import ru.geekbrains.domodel.repositories.NewsRepository;
 import ru.geekbrains.domodel.security.jwt.JwtTokenProvider;
 import ru.geekbrains.domodel.services.api.NewsService;
+import ru.geekbrains.domodel.services.api.UserService;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 
 /**
  * Реализация сервиса новостей
  */
 @Service
+@RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
+
+    private final UserService userService;
+    private final NewsMapper newsMapper;
 
     // Репозиторий новостей
     private final NewsRepository newsRepository;
-    private NewsMapper newsMapper;
-
-
-    @Autowired
-    public NewsServiceImpl(NewsRepository newsRepository, NewsMapper newsMapper) {
-        this.newsRepository = newsRepository;
-        this.newsMapper = newsMapper;
-    }
-
-
-    //ЧТЕНИЕ
 
     @Override
-    //получаем новость по id
+    public List<NewsDto> getAllNews() {
+        return newsRepository.findAll().stream()
+                .map(newsMapper::newsToNewsDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public NewsDto getNewsById(Long id) {
-        Optional<News> news = newsRepository.findById(id);
-        NewsDto newsDto = newsMapper.newsToNewsDto(news.get());
-        return newsDto;
+        Optional<News> optionalNews = newsRepository.findById(id);
+        return optionalNews.map(newsMapper::newsToNewsDto).orElse(null);
     }
 
     //todo добавить секьюрити
@@ -78,8 +85,18 @@ public class NewsServiceImpl implements NewsService {
     // Новости на главную страницу
     //todo добавить секьюрити
     public List<NewsDto> getAllRelevantNews(Authentication authentication) {
-        List<NewsDto> newsRelevant = new ArrayList<>();
-        List<News> allNews = getAllNews(); //todo в этот лист добавлять в зависимости от юзера
+        Stream<NewsDto> newsDtoStream = newsRepository.findAll().stream().map(newsMapper::newsToNewsDto);
+        // Если пользователь не авторизован
+        if (authentication == null) {
+            return newsDtoStream.filter(n -> !n.isHidden() && !n.isVisible()).collect(Collectors.toList());
+        }
+        // Если пользователь - админ
+        if (hasAuthenticationRoleAdmin(authentication)) {
+//            return newsDtoStream.limit(10).collect(Collectors.toList());
+        } else { // Просто пользователь
+//            return newsDtoStream.filter(n -> !n.isHidden()).collect(Collectors.toList());
+        }
+        // TODO продолжить метод
 //        List<News> allNews = new ArrayList<News>()
 //        if (!authentication.isAuthenticated()) allNews = getPublicNews();
 //        else allNews = getAllVisibleNews();
@@ -168,6 +185,25 @@ public class NewsServiceImpl implements NewsService {
         News news = newsMapper.newsDtoToNews(newNews);
         newsRepository.save(news);
         return newNews;
+    }
+
+    public NewsDto save (NewsDto newsDto) {
+        News news = newsMapper.newsDtoToNews(newsDto);
+        return newsMapper.newsToNewsDto(newsRepository.save(news));
+    }
+
+    @Override
+    public NewsDto save(NewsRequestDto newsRequestDto, Authentication authentication) {
+        // Если пользователь не авторизован или не админ
+        if (authentication == null || !hasAuthenticationRoleAdmin(authentication)) {
+            return null;
+        }
+        News news = newsMapper.newsRequestDtoToNews(newsRequestDto);
+        // Добавляем дату
+        news.setCreationDate(LocalDate.now());
+        // Добавляем автора новости
+        news.setAuthorId(userService.getUserByUsername(authentication.getName()));
+        return newsMapper.newsToNewsDto(newsRepository.save(news));
     }
 
     //получение поcледней новости
@@ -259,4 +295,11 @@ public class NewsServiceImpl implements NewsService {
         return newsList;
     }
 
+    /**
+     * Проверить, что пользователь имеет роль Админа
+     */
+    private boolean hasAuthenticationRoleAdmin(Authentication authentication) {
+        return (authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).anyMatch(a -> a.equals(ROLE_ADMIN)));
+    }
 }

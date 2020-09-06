@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import ru.geekbrains.domodel.dto.NewsDto;
+import ru.geekbrains.domodel.dto.NewsRequestDto;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.entities.User;
@@ -16,9 +17,29 @@ import java.util.List;
  */
 public interface NewsService {
 
-    //ЧТЕНИЕ
+    /*
+     * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ СЕРВИСОВ
+     * NewsDto getNewsById(Long id) найти объект по параметру
+     * List<NewsDto> getAllNews() найти все объекты
+     * List<NewsDto> getAllNewsByUser(UserDto user) найти все объекты по параметру
+     * News updateNews(NewsDto news) изменить объект
+     * News saveNews(NewsDto newsDto) сохранить объект
+     * List<NewsDto> saveAllNews(List<NewsDto> newsDtoList) сохранить список объектов
+     * void deleteNews(NewsDto newsDto) удалить конкретный объект
+     * Long deleteNewsById(Long id) удалить объект по параметру
+     * void deleteAllNews(List<NewsDto> newsDtoList) удалить список объектов
+     */
+
+    /**
+     * Получить список новостей
+     *
+     * @return список новостей
+     */
+    List<NewsDto> getAllNews();
+
     /**
      * Получить новость по ее идентификатору
+     *
      * @param id идентификатор новости
      * @return новость
      */
@@ -67,14 +88,26 @@ public interface NewsService {
      */
     boolean updateVisibilityNewsById(Long id , boolean visible);
 
-
+    // TODO удалить!
     /**
      * Сохранить новость
      * @param news данные с фронта
      * @return новость, сохраненная в репозитории
      */
+    // TODO удалить!
+    @Deprecated
     News saveNews(News news);
+    // TODO удалить!
+    @Deprecated
     NewsDto saveNews(NewsDto news);
+
+    /**
+     * Сохраняет новость с учетом имени автора
+     *
+     * @param newsRequestDto запрос на создание новости
+     * @return новость, сохраненная в репозитории
+     */
+    NewsDto save(NewsRequestDto newsRequestDto, Authentication authentication);
 
     // Page<News> findAll(Pageable pageable);
 
@@ -107,5 +140,5 @@ public interface NewsService {
 //     * @return список новостей
 //     */
 //    List<News> readPinnedNews();
-}
 
+}

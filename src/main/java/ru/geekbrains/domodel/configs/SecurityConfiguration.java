@@ -35,6 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    // TODO вынести
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -60,19 +61,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().disable()
-//                .loginPage("/").permitAll()
-//                .loginProcessingUrl("/login")
-//                .defaultSuccessUrl("/")
-//                .failureUrl("/?error")
-//                .and()
                 .logout().disable()
-//                .logoutSuccessUrl("/")
-//                .deleteCookies("JSESSIONID")
-//                .logoutSuccessUrl("/")
-//                .and()
-//                .rememberMe().key("uniqueAndSecret")
-//                .userDetailsService(userDetailsService)
-//                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .apply(new JwtConfigurer(jwtTokenProvider));
     }
 }

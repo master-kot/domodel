@@ -10,7 +10,7 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
 
-    private String phone;
+    private String username;
 
     private String firstName;
 

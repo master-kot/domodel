@@ -42,11 +42,11 @@ public class Vote {
     private LocalDate endDate;
 
     // Список ссылок на фото (2 шт.), загружается при необходимости
-    @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)
-    private List<PictureLink> pictureLinks = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<PhotoLink> photoLinks = new ArrayList<>();
 
     // Список ссылок на документы (2 шт.), загружается  при необходимости
-    @OneToMany(mappedBy = "vote", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Document> documents = new ArrayList<>();
 
     // Список голосов

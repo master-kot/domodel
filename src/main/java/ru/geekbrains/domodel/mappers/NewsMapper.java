@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.springframework.stereotype.Component;
 import ru.geekbrains.domodel.dto.NewsDto;
+import ru.geekbrains.domodel.dto.NewsRequestDto;
 import ru.geekbrains.domodel.entities.News;
 
 /**
@@ -37,6 +38,15 @@ public interface NewsMapper {
             @Mapping(target="pictureLink", source="dto.pictureLink"),
             @Mapping(target="hidden", source="dto.hidden"),
             @Mapping(target="pinned", source="dto.pinned"),
-            @Mapping(target="authorName", source="dto.authorName")})
+            @Mapping(target="visible", source="dto.visible")})
     News newsDtoToNews(NewsDto dto);
+
+    @Mappings({
+            @Mapping(target="title", source="dto.title"),
+            @Mapping(target="fullText", source="dto.fullText"),
+            @Mapping(target="pictureLink", source="dto.photoLink"),
+            @Mapping(target="hidden", source="dto.hidden"),
+            @Mapping(target="pinned", source="dto.pinned"),
+            @Mapping(target="visible", source="dto.visible")})
+    News newsRequestDtoToNews(NewsRequestDto dto);
 }

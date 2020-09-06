@@ -1,14 +1,12 @@
-package ru.geekbrains.domodel.security;
+package ru.geekbrains.domodel.services.core;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.domodel.entities.User;
-import ru.geekbrains.domodel.security.jwt.JwtUser;
-import ru.geekbrains.domodel.security.jwt.JwtUserFactory;
+import ru.geekbrains.domodel.entities.common.JwtUser;
 import ru.geekbrains.domodel.services.api.UserService;
 
 /**
@@ -16,25 +14,19 @@ import ru.geekbrains.domodel.services.api.UserService;
  */
 @Service
 @Log4j2
-public class JwtUserDetailsService implements UserDetailsService {
+@RequiredArgsConstructor
+public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
+    // Необходимые сервисы
     private final UserService userService;
-
-    @Autowired
-    public JwtUserDetailsService(UserService userService) {
-        this.userService = userService;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.getUserByUsername(username);
-
+        JwtUser user = userService.getJwtUserByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("Пользователь с именем: " + username + " не найден");
         }
-
-        JwtUser jwtUser = JwtUserFactory.create(user);
         log.info("Пользователь с именем: {} успешно загружен", username);
-        return jwtUser;
+        return user;
     }
 }
