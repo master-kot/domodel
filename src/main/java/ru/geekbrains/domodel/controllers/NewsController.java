@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.NewsDto;
+import ru.geekbrains.domodel.dto.NewsRequestDto;
 import ru.geekbrains.domodel.services.api.NewsService;
 
 /**
@@ -19,7 +20,7 @@ import ru.geekbrains.domodel.services.api.NewsService;
 public class NewsController {
 
     // Тип объекта
-    private final String PRODUCE_TYPE = "application/json";
+    private final String CONSUME_TYPE = "application/json";
 
     // Список необходимых сервисов
     private final NewsService newsService;
@@ -43,13 +44,13 @@ public class NewsController {
      * Создает новость
      */
     @ApiOperation(value = "Создает новость")
-    @PostMapping(consumes = PRODUCE_TYPE)
-    public ResponseEntity<NewsDto> createNews(@RequestBody NewsDto newsDto,
+    @PostMapping(consumes = CONSUME_TYPE)
+    public ResponseEntity<NewsDto> createNews(@RequestBody NewsRequestDto newsRequestDto,
                                               Authentication authentication) {
-        NewsDto news = newsService.save(newsDto, authentication);
+        NewsDto newsDto = newsService.save(newsRequestDto, authentication);
         if (newsDto == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(news, HttpStatus.OK);
+        return new ResponseEntity<>(newsDto, HttpStatus.OK);
     }
 }

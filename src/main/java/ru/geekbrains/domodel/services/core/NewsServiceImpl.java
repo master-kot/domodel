@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.NewsDto;
+import ru.geekbrains.domodel.dto.NewsRequestDto;
 import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.mappers.NewsMapper;
 import ru.geekbrains.domodel.repositories.NewsRepository;
@@ -92,12 +93,12 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public NewsDto save(NewsDto newsDto, Authentication authentication) {
+    public NewsDto save(NewsRequestDto newsRequestDto, Authentication authentication) {
         // Если пользователь не авторизован или не админ
         if (authentication == null || !hasAuthenticationRoleAdmin(authentication)) {
             return null;
         }
-        News news = newsMapper.newsDtoToNews(newsDto);
+        News news = newsMapper.newsRequestDtoToNews(newsRequestDto);
         // Добавляем дату
         news.setCreationDate(LocalDate.now());
         // Добавляем автора новости
