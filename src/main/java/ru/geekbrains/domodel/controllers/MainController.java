@@ -45,7 +45,7 @@ public class MainController {
     @ApiOperation(value = "Выводит список релевантных новостей")
     @GetMapping(produces = PRODUCE_TYPE)
     public ResponseEntity<List<NewsDto>> readRelevantNews(Authentication authentication) {
-        List<NewsDto> newsDtoList = newsService.getRelevantNews(authentication);
+        List<NewsDto> newsDtoList = newsService.getAllRelevant(authentication);
         if (newsDtoList.size() != 0) {
             return new ResponseEntity<>(newsDtoList, HttpStatus.OK);
         } else {

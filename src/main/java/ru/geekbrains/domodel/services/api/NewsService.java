@@ -35,7 +35,7 @@ public interface NewsService {
      *
      * @return список новостей
      */
-    List<NewsDto> getAllNews();
+    List<NewsDto> getAll();
 
     /**
      * Получить новость по ее идентификатору
@@ -43,29 +43,19 @@ public interface NewsService {
      * @param id идентификатор новости
      * @return новость
      */
-    NewsDto getNewsById(Long id);
+    NewsDto getById(Long id);
 
     /**
      * Получить список архива новостей
      * @return список новостей
      */
-    List<NewsDto> getNewsArchive(int page);
+    List<NewsDto> getArchive(int page);
 
     /**
      * Получить список актуальных новостей для главной страницы
      * @return список новостей
      */
-    List<NewsDto> getAllRelevantNews(Authentication authentication);
-
-
-
-    //РЕДАКТИРОВАНИЕ
-    /**
-     * Cоздать новость
-     * @param newsDto данные с фронта
-     * @return новость, сохраненная в репозитории
-     */
-    NewsDto createNews  (NewsDto newsDto);
+    List<NewsDto> getAllRelevant(Authentication authentication);
 
     /**
      * Изменить новость
@@ -88,19 +78,6 @@ public interface NewsService {
      */
     boolean updateVisibilityNewsById(Long id , boolean visible);
 
-    // TODO удалить!
-    /**
-     * Сохранить новость
-     * @param news данные с фронта
-     * @return новость, сохраненная в репозитории
-     */
-    // TODO удалить!
-    @Deprecated
-    News saveNews(News news);
-    // TODO удалить!
-    @Deprecated
-    NewsDto saveNews(NewsDto news);
-
     /**
      * Сохраняет новость с учетом имени автора
      *
@@ -111,17 +88,11 @@ public interface NewsService {
 
     // Page<News> findAll(Pageable pageable);
 
-    /**
-     * Получить список всех новостей
-     * @return список новостей
-     */
-    List<News> getAllNews();
-
         /**
      * Получить последнюю по дате новость
      * @return новость
      */
-    News getLastNews();
+    News getLast();
 //
 //    /**
 //     * Получить список видимых новостей для зарегистрированных пользователей + вначале закрепленные новости + пагинация

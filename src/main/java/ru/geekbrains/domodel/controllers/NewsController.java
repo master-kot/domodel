@@ -62,24 +62,22 @@ public class NewsController {
 //        Page<News> page = newsService.findAll(pageRequest);
 //        model.addAttribute("page", page);
 
-        List <NewsDto> newsArchive = newsService.getNewsArchive(id);
+        List <NewsDto> newsArchive = newsService.getArchive(id);
         return newsArchive;
     }
 
-
-
     /**
-     * Перехват запроса добавления новости
+     * Создает новость
      */
-    //todo починить, отправить в главный контроллер? изменить секьюрити на токены
-    @PostMapping("/add")
-    public NewsDto createNews(@RequestBody NewsDto newsDto) {
-//        if (principal != null) {
-//            model.addAttribute("username", principal.getName());
-//        }
-//        model.addAttribute("news", newsService.saveNews(news));
-        //TODO проверить что поля не пусты, убрать из шаблона все скрытые поля кроме id
-        return newsService.saveNews(newsDto);
+    @ApiOperation(value = "Создает новость")
+    @PostMapping(consumes = CONSUME_TYPE)
+    public ResponseEntity<NewsDto> createNews(@RequestBody NewsRequestDto newsRequestDto,
+                                              Authentication authentication) {
+        NewsDto newsDto = newsService.save(newsRequestDto, authentication);
+        if (newsDto == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(newsDto, HttpStatus.OK);
     }
 
     /**
@@ -94,7 +92,7 @@ public class NewsController {
 //            model.addAttribute("username", principal.getName());
 //        }
 //        model.addAttribute("news", newsService.readNewsById(id));
-        return newsService.getNewsById(id);
+        return newsService.getById(id);
     }
 
      /**
@@ -133,18 +131,4 @@ public class NewsController {
      public boolean updatePinnedNewsById(@PathVariable Long id, @RequestBody boolean pinned){
          return newsService.updatePinningNewsById(id, pinned);
      }
-
-    /**
-     * Создает новость
-     */
-    @ApiOperation(value = "Создает новость")
-    @PostMapping(consumes = CONSUME_TYPE)
-    public ResponseEntity<NewsDto> createNews(@RequestBody NewsRequestDto newsRequestDto,
-                                              Authentication authentication) {
-        NewsDto newsDto = newsService.save(newsRequestDto, authentication);
-        if (newsDto == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(newsDto, HttpStatus.OK);
-    }
 }
