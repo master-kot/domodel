@@ -22,7 +22,7 @@ public class PhotoLink {
     private Integer id;
 
     // Заголовок
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = true)
     private String title;
 
     // Ссылка на адрес фотографии

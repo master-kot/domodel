@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.AppealDto;
+import ru.geekbrains.domodel.dto.AppealRequest;
 import ru.geekbrains.domodel.entities.Appeal;
 import ru.geekbrains.domodel.entities.AppealStatus;
 import ru.geekbrains.domodel.mappers.AppealMapper;
@@ -55,15 +56,18 @@ public class AppealServiceImpl implements AppealService {
     }
 
     @Override
-    public AppealDto save(AppealDto appealDto, Authentication authentication) {
+    public AppealDto save(AppealRequest appealRequest, Authentication authentication) {
         // Если пользователь не авторизован
         if (authentication != null) {
-            Appeal appeal = appealMapper.appealDtoToAppeal(appealDto);
+            Appeal appeal = appealMapper.appealRequestToAppeal(appealRequest);
             // Добавляем дату
             appeal.setCreationDate(LocalDate.now());
+            // Добавляем статус
+            appeal.setStatus(AppealStatus.SENT);
             // Добавляем автора обращения
             appeal.setAuthorId(userService.getUserByUsername(authentication.getName()));
-            appeal.setPhotoLinks(photoService.saveAll(appealDto.getPhotoLinks()));
+            // Преобразуем список фотографий
+            appeal.setPhotoLinks(photoService.saveAll(appealRequest.getPhotoLinks()));
             return appealMapper.appealToAppealDto(appealRepository.save(appeal));
         }
         return null;

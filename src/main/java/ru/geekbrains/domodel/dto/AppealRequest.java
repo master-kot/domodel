@@ -2,22 +2,16 @@ package ru.geekbrains.domodel.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import ru.geekbrains.domodel.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DTO представление сущности Обращение
+ * Запрос на создание нового Обращения
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AppealDto {
-
-    private Long id;
-
-    // Дата создания
-    private String creationDate;
+public class AppealRequest {
 
     // Заголовок (тема)
     private String title;
@@ -27,9 +21,6 @@ public class AppealDto {
 
     // Телефон для связи
     private String phoneNumber;
-
-    // Статус выполнения обращения
-    private String status;
 
     // Список ссылок на фотографии
     private List<String> photoLinks = new ArrayList<>();

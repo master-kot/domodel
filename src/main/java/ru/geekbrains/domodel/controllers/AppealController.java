@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.AppealDto;
+import ru.geekbrains.domodel.dto.AppealRequest;
 import ru.geekbrains.domodel.services.api.AppealService;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class AppealController {
     private final AppealService appealsService;
 
     @ApiOperation(value = "Выводит список обращений пользователя")
-    @GetMapping(consumes = CONSUME_TYPE)
+    @GetMapping()
     public ResponseEntity<List<AppealDto>> readAll(Authentication authentication) {
         List<AppealDto> appealDtoList = appealsService.getAll(authentication);
         return createResponseByAppealList(appealDtoList);
@@ -52,11 +53,11 @@ public class AppealController {
     /**
      * Создает новость
      */
-    @ApiOperation(value = "Создает новость")
+    @ApiOperation(value = "Создает обращение")
     @PostMapping(consumes = CONSUME_TYPE)
-    public ResponseEntity<AppealDto> createAppeal(@RequestBody AppealDto appealDto,
+    public ResponseEntity<AppealDto> createAppeal(@RequestBody AppealRequest appealRequest,
                                                   Authentication authentication) {
-        AppealDto appeal = appealsService.save(appealDto, authentication);
+        AppealDto appeal = appealsService.save(appealRequest, authentication);
         return createResponseByAppeal(appeal);
     }
 

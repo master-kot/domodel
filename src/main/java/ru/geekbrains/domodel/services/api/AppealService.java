@@ -2,6 +2,7 @@ package ru.geekbrains.domodel.services.api;
 
 import org.springframework.security.core.Authentication;
 import ru.geekbrains.domodel.dto.AppealDto;
+import ru.geekbrains.domodel.dto.AppealRequest;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface AppealService {
     /**
      * Получить список всех обращений
      */
-    AppealDto save(AppealDto appealDto, Authentication authentication);
+    AppealDto save(AppealRequest appealRequest, Authentication authentication);
 
     /**
      * Получить список всех обращений
