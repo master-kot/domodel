@@ -42,9 +42,6 @@ public class MainController {
      * void deleteAll(Collection<NewsDto> newsDtoCollection) удалить список объектов
      */
 
-    /**
-     * Выводит список релевантных новостей
-     */
     @ApiOperation(value = "Выводит список релевантных новостей")
     @GetMapping(produces = PRODUCE_TYPE)
     public ResponseEntity<List<NewsDto>> readRelevantNews(Authentication authentication) {

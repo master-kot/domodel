@@ -51,6 +51,6 @@ public class Appeal {
     private User authorId;
 
     // Список ссылок на фотографии
-    @OneToMany(mappedBy = "appeal", cascade = CascadeType.ALL)
-    private List<PictureLink> pictureLinks = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<PhotoLink> photoLinks = new ArrayList<>();
 }

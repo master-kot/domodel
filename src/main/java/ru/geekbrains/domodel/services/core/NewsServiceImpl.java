@@ -79,15 +79,13 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public List<NewsDto> getRelevantNews(Authentication authentication) {
         Stream<NewsDto> newsDtoStream = newsRepository.findAll().stream().map(newsMapper::newsToNewsDto);
-        // Если пользователь не найден
+        // Если пользователь не авторизован
         if (authentication == null) {
             return newsDtoStream.filter(n -> !n.isHidden() && !n.isVisible()).collect(Collectors.toList());
         }
         // Если пользователь - админ
-        if (authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).anyMatch(a -> a.equals(ROLE_ADMIN))) {
-            return newsDtoStream.limit(10)
-                    .collect(Collectors.toList());
+        if (hasAuthenticationRoleAdmin(authentication)) {
+            return newsDtoStream.limit(10).collect(Collectors.toList());
         } else { // Просто пользователь
             return newsDtoStream.filter(n -> !n.isHidden()).collect(Collectors.toList());
         }
@@ -95,16 +93,23 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public NewsDto save(NewsDto newsDto, Authentication authentication) {
-        // Если пользователь не найден или не админ
-        if (authentication == null || authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).anyMatch(a -> !a.equals(ROLE_ADMIN))) {
+        // Если пользователь не авторизован или не админ
+        if (authentication == null || !hasAuthenticationRoleAdmin(authentication)) {
             return null;
         }
         News news = newsMapper.newsDtoToNews(newsDto);
-        // Вставляем дату
+        // Добавляем дату
         news.setCreationDate(LocalDate.now());
         // Добавляем автора новости
         news.setAuthorId(userService.getUserByUsername(authentication.getName()));
         return newsMapper.newsToNewsDto(newsRepository.save(news));
+    }
+
+    /**
+     * Проверить, что пользователь имеет роль Админа
+     */
+    private boolean hasAuthenticationRoleAdmin(Authentication authentication) {
+        return (authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).anyMatch(a -> a.equals(ROLE_ADMIN)));
     }
 }

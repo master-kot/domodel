@@ -4,17 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.geekbrains.domodel.services.api.AppealsService;
+import ru.geekbrains.domodel.services.api.PhotoService;
 
 /**
- * Контроллер обращений
+ * Контроллер фотогалереи
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/appeals")
+@RequestMapping("/api/v1/photos")
 @RequiredArgsConstructor
-public class AppealsController {
+public class PhotoController {
 
-    // Сервис обращений
-    private final AppealsService appealsService;
+    // Сервис фотогалереи
+    private final PhotoService photoService;
 }
