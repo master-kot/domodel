@@ -43,13 +43,13 @@ public interface NewsService {
      * @param id идентификатор новости
      * @return новость
      */
-    NewsDto getById(Long id);
+    NewsDto getById(Long id, Authentication authentication);
 
     /**
      * Получить список архива новостей
      * @return список новостей
      */
-    List<NewsDto> getArchive(int page);
+    List<NewsDto> getArchive(int page, Authentication authentication);
 
     /**
      * Получить список актуальных новостей для главной страницы
@@ -62,21 +62,21 @@ public interface NewsService {
      * @param id идентификатор новости
      * @return измененная новость
      */
-    NewsDto updateNewsById (Long id, NewsDto newsDto);
+    NewsDto updateNewsById (Long id, NewsDto newsDto, Authentication authentication);
 
     /**
      *Закрепляем выбранную новость
      *@param id идентификатор новости
      *@param pinned флажок закреплена ли новость true - закреплена
      */
-    boolean updatePinningNewsById(Long id, boolean pinned);
+    boolean updatePinningNewsById(Long id, boolean pinned, Authentication authentication);
 
     /**
      * изменение видимости новости
      * @param id идентификатор новости
      * @param visible флажок видимости новости
      */
-    boolean updateVisibilityNewsById(Long id , boolean visible);
+    boolean updateVisibilityNewsById(Long id , boolean visible, Authentication authentication);
 
     /**
      * Сохраняет новость с учетом имени автора

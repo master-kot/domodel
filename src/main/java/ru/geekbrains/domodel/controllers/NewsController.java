@@ -48,21 +48,8 @@ public class NewsController {
     //todo  добавить секьюрити
     @GetMapping("/archive/{id}")
     public List<NewsDto> getNewsArchivePage(@PathVariable int id,
-                                            Model model,
-                                            Authentication authentication,
-                                            Pageable pageable,
-                                            JwtTokenProvider jwtTokenProvider) {
-//        if (authentication != null) {
-//            model.addAttribute("username", authentication.getName());
-//        }
-//        if (id == 0) id =1;
-//        Pageable pageRequest = PageRequest.of(id, 2);
-//        model.addAttribute("all", newsService.findAll(pageRequest));
-//        model.addAttribute("newsArchive", newsService.readNewsArchive(authentication));
-//        Page<News> page = newsService.findAll(pageRequest);
-//        model.addAttribute("page", page);
-
-        List <NewsDto> newsArchive = newsService.getArchive(id);
+                                            Authentication authentication) {
+        List <NewsDto> newsArchive = newsService.getArchive(id, authentication);
         return newsArchive;
     }
 
@@ -86,13 +73,12 @@ public class NewsController {
     //todo  добавить секьюрити
     @GetMapping("/{id}")
     public NewsDto getSingleNewsPage(@PathVariable Long id,
-                                    Model model,
-                                    Principal principal) {
+                                     Authentication authentication) {
 //        if (principal != null) {
 //            model.addAttribute("username", principal.getName());
 //        }
 //        model.addAttribute("news", newsService.readNewsById(id));
-        return newsService.getById(id);
+        return newsService.getById(id, authentication);
     }
 
      /**
@@ -102,14 +88,13 @@ public class NewsController {
      @PostMapping("/{id}")
      public NewsDto setSingleNewsPage(@PathVariable Long id,
                                      @RequestBody NewsDto newsDto,
-                                     Model model,
-                                     Principal principal) {
+                                      Authentication authentication) {
 //         if (principal != null) {
 //             model.addAttribute("username", principal.getName());
 //         }
 //         model.addAttribute("news", newsService.getNewsById(id));
 //         return "news/news_details";
-         return newsService.updateNewsById(id, newsDto);
+         return newsService.updateNewsById(id, newsDto, authentication);
      }
 
      /**
@@ -118,8 +103,10 @@ public class NewsController {
       */
      //todo добавить секьюрити
     @PostMapping ("/visibility/{id}")
-     public boolean updateVisibilityNewsById(@PathVariable Long id, @RequestBody boolean visible){
-        return newsService.updateVisibilityNewsById(id, visible);
+     public boolean updateVisibilityNewsById(@PathVariable Long id,
+                                             @RequestBody boolean visible,
+                                             Authentication authentication){
+        return newsService.updateVisibilityNewsById(id, visible, authentication);
     }
 
      /**
@@ -128,7 +115,9 @@ public class NewsController {
       */
      //todo добавить секьюрити
      @PostMapping ("/pinned/{id}")
-     public boolean updatePinnedNewsById(@PathVariable Long id, @RequestBody boolean pinned){
-         return newsService.updatePinningNewsById(id, pinned);
+     public boolean updatePinnedNewsById(@PathVariable Long id,
+                                         @RequestBody boolean pinned,
+                                         Authentication authentication){
+         return newsService.updatePinningNewsById(id, pinned, authentication);
      }
 }
