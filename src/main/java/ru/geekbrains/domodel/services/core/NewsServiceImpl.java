@@ -41,7 +41,7 @@ public class NewsServiceImpl implements NewsService {
     //todo не пашет под юзером или гостем
     public NewsDto getById(Long id, Authentication authentication) {
         Optional<News> optionalNews = newsRepository.findById(id);
-        if (hasAuthenticationRoleAdmin(authentication) || optionalNews.get().isVisible())
+        if (hasAuthenticationRoleAdmin(authentication) || authentication!=null&&optionalNews.get().isVisible()||authentication==null&&optionalNews.get().isHidden()&&optionalNews.get().isVisible())
             return optionalNews.map(newsMapper::newsToNewsDto).orElse(null);
         else return null;
     }
@@ -50,11 +50,11 @@ public class NewsServiceImpl implements NewsService {
     //Архив новостей
     //todo не пашет под юзером
     public List<NewsDto> getArchive(int page, Authentication authentication) {
-        if (!authentication.isAuthenticated()) return null;
+        List<NewsDto> newsDtoList = new ArrayList<>();
+        if (!authentication.isAuthenticated()) return newsDtoList;
         List<News> newsArchive = getAllVisibleNews();
         if (hasAuthenticationRoleAdmin(authentication)) newsArchive.addAll(getDeletedNews());
-        List<NewsDto> newsDtoList = new ArrayList<>();
-        for (int i = 0; i < newsArchive.size(); i++) {
+        for (int i = (page-1)*10; i<page*10 && i < newsArchive.size(); i++) {
             newsDtoList.add(newsMapper.newsToNewsDto(newsArchive.get(i)));
         }
         return newsDtoList;
@@ -77,11 +77,10 @@ public class NewsServiceImpl implements NewsService {
         // TODO исправить метод на стрим
         List<News> allNews = new ArrayList<News>();
         List<NewsDto> newsRelevant = new ArrayList<>();
-        if (!authentication.isAuthenticated()) allNews = getPublicNews();
+        if (authentication == null) allNews = getPublicNews();
         else allNews = getAllVisibleNews();
-
-
-        for (int i = 0; i < allNews.size(); i++) {
+        int limit = (allNews.size() < 10) ? allNews.size() : 10;
+        for (int i = 0; i < limit; i++) {
             newsRelevant.add(newsMapper.newsToNewsDto(allNews.get(i)));
         }
         return newsRelevant;
