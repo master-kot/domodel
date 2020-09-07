@@ -18,11 +18,9 @@ public class MeterDto {
 
     private Long accountId;
     private String houseNumber;
+
     private String typeDescription;
-    private Double currentMeterData;
     private String tariffDescription;
 
-//    private Account account;
-//    private MeterType type;
-//    private Tariff tariff;
+    private Double currentMeterData;
 }

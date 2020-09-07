@@ -1,8 +1,10 @@
 package ru.geekbrains.domodel.controllers;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.MeterDataDto;
 import ru.geekbrains.domodel.dto.MeterDto;
@@ -24,10 +26,9 @@ public class MeterController {
 
     private final MeterService meterService;
 
-    @Secured(Roles.ROLE_ADMIN)
     @GetMapping("")
-    public List<MeterDto> readAllMeters() {
-        return meterService.getAllMeters();
+    public List<MeterDto> readAllMeters(Authentication authentication) {
+        return meterService.getAllMeters(authentication);
     }
 
     @Secured(Roles.ROLE_ADMIN)

@@ -1,5 +1,8 @@
 package ru.geekbrains.domodel.services.api;
 
+import org.springframework.security.core.Authentication;
+import ru.geekbrains.domodel.dto.MeterDataDto;
+import ru.geekbrains.domodel.dto.MeterDto;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
@@ -25,7 +28,6 @@ public interface MeterService {
      * void deleteAllNews(List<NewsDto> newsDtoList) удалить список объектов
      */
 
-    Meter getMeter(Long id);
     MeterDto getMeter(Long id);
 
     /**
@@ -39,7 +41,7 @@ public interface MeterService {
     /**
      * Получить список всех счетчиков
      */
-    List<MeterDto> getAllMeters();
+    List<MeterDto> getAllMeters(Authentication authentication);
 
     /**
      * Получить счетчик по его серийному номеру

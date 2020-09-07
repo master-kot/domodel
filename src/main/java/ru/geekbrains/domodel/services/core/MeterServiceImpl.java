@@ -1,12 +1,15 @@
 package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.MeterDataDto;
 import ru.geekbrains.domodel.dto.MeterDto;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
+import ru.geekbrains.domodel.mappers.MeterMapper;
 import ru.geekbrains.domodel.repositories.MeterDataRepository;
 import ru.geekbrains.domodel.repositories.MeterRepository;
 import ru.geekbrains.domodel.repositories.MeterTypeRepository;
@@ -20,6 +23,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
+import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
+
 /**
  * Реализация сервиса счетчиков показаний
  */
@@ -27,6 +33,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MeterServiceImpl implements MeterService {
 
+    private final MeterMapper meterMapper;
     private final MeterRepository meterRepository;
     private final MeterDataRepository meterDataRepository;
     private final MeterTypeRepository meterTypeRepository;
@@ -57,8 +64,35 @@ public class MeterServiceImpl implements MeterService {
     }
 
     @Override
-    public List<MeterDto> getAllMeters() {
-        return meterRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+    public List<MeterDto> getAllMeters(Authentication authentication) {
+        if (authentication != null) {
+            List<Meter> meters;
+            List<MeterDto> dtoList;
+            MeterDto dto;
+
+            if (hasAuthenticationRoleAdmin(authentication)) {
+                meters = meterRepository.findAll();
+            }
+            else if (hasAuthenticationRoleUser(authentication)) {
+                List<Account> accounts = accountService.getAllAccountsByUserUsername(authentication.getName());
+                meters = meterRepository.findAllByAccountIn(accounts).orElse(new ArrayList<>());
+            }
+            else {
+                throw new RuntimeException("Нет нужны прав для работы со счетчиками: " + authentication);
+            }
+
+            dtoList = new ArrayList<>();
+            for (Meter m : meters) {
+                dto = meterMapper.meterToMeterDto(m);
+                if (getCurrentMeterDataByMeter(m).isPresent()) {
+                    dto.setCurrentMeterData(getCurrentMeterDataByMeter(m).get().getValue());
+                }
+                dtoList.add(dto);
+            }
+
+            return dtoList;
+        }
+        throw new RuntimeException("Нет нужны прав для работы со счетчиками: authentication -> null");
     }
 
     @Override
@@ -176,5 +210,19 @@ public class MeterServiceImpl implements MeterService {
 //                    .currentMeterData(getCurrentMeterDataByMeter(m).get().getValue())
                 .tariffDescription(m.getType().getTariff().getDescription())
                 .build();
+    }
+
+    /**
+     * Проверить, что пользователь имеет роль Админа
+     */
+    //TODO: made Utils
+    private boolean hasAuthenticationRoleAdmin(Authentication authentication) {
+        return (authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).anyMatch(a -> a.equals(ROLE_ADMIN)));
+    }
+
+    private boolean hasAuthenticationRoleUser(Authentication authentication) {
+        return (authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).anyMatch(a -> a.equals(ROLE_USER)));
     }
 }
