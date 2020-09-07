@@ -58,4 +58,20 @@ public class News {
     // Имя автора новости
     @Transient
     private String authorName;
+
+    public int comparePinning(News other) {
+        if (this.pinned) {
+            if (other.pinned) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } else {
+            if (other.pinned) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
 }

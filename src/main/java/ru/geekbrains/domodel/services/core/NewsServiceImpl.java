@@ -79,15 +79,17 @@ public class NewsServiceImpl implements NewsService {
     // TODO реализовать метод основываясь на правильных запросах в репозиторий
     @Override
     public List<NewsDto> getRelevantNews(Authentication authentication) {
-        Stream<NewsDto> newsDtoStream = newsRepository.findAll().stream().map(newsMapper::newsToNewsDto);
-        // Если пользователь не авторизован
-        if (authentication == null) {
-            return newsDtoStream.filter(n -> !n.isHidden() && n.isVisible())
-                    .limit(10).collect(Collectors.toList());
-        } else {
-            // Одинаковая выдача для всех авторизованных пользователей
-            return newsDtoStream.filter(NewsDto::isVisible).limit(10).collect(Collectors.toList());
+        Stream<News> newsStream = newsRepository.findAll().stream()
+                .sorted((n1, n2) -> n2.getCreationDate().compareTo(n1.getCreationDate()))
+                .limit(10);
+        if (authentication == null) { // Если пользователь не авторизован
+            newsStream = newsStream.filter(n -> !n.isHidden() && n.isVisible());
+        } else { // Одинаково для всех авторизованных пользователей
+            newsStream = newsStream.filter(News::isVisible);
         }
+        return newsStream.sorted((n1, n2) -> n2.comparePinning(n1))
+                .map(newsMapper::newsToNewsDto)
+                .collect(Collectors.toList());
     }
 
     @Override
