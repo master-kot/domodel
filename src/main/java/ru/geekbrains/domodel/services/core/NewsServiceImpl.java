@@ -30,7 +30,7 @@ import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 @Service
 @RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
-
+    // TODO исправить методы на стримы
     private final UserService userService;
     private final NewsMapper newsMapper;
 
@@ -38,17 +38,15 @@ public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
 
     @Override
-    //todo не пашет под юзером или гостем
     public NewsDto getById(Long id, Authentication authentication) {
         Optional<News> optionalNews = newsRepository.findById(id);
-        if (hasAuthenticationRoleAdmin(authentication) || authentication!=null&&optionalNews.get().isVisible()||authentication==null&&optionalNews.get().isHidden()&&optionalNews.get().isVisible())
+        if (hasAuthenticationRoleAdmin(authentication) || authentication!=null&&optionalNews.get().isVisible()||authentication==null&&!optionalNews.get().isHidden()&&optionalNews.get().isVisible())
             return optionalNews.map(newsMapper::newsToNewsDto).orElse(null);
         else return null;
     }
 
     @Override
     //Архив новостей
-    //todo не пашет под юзером
     public List<NewsDto> getArchive(int page, Authentication authentication) {
         List<NewsDto> newsDtoList = new ArrayList<>();
         if (!authentication.isAuthenticated()) return newsDtoList;
@@ -62,7 +60,6 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<NewsDto> getAllRelevant(Authentication authentication) {
-        //todo не пашет под юзером
 //        Stream<NewsDto> newsDtoStream = newsRepository.findAll().stream().map(newsMapper::newsToNewsDto);
 //        // Если пользователь не авторизован
 //        if (authentication == null) {
@@ -74,7 +71,7 @@ public class NewsServiceImpl implements NewsService {
 //        } else { // Просто пользователь
 ////            return newsDtoStream.filter(n -> !n.isHidden()).collect(Collectors.toList());
 //        }
-        // TODO исправить метод на стрим
+
         List<News> allNews = new ArrayList<News>();
         List<NewsDto> newsRelevant = new ArrayList<>();
         if (authentication == null) allNews = getPublicNews();
@@ -101,7 +98,6 @@ public class NewsServiceImpl implements NewsService {
         return visible;
     }
 
-    // TODO учесть, что закрепленных может быть только 2
     @Override
     public NewsDto updateNewsById(Long id, NewsDto newsDto, Authentication authentication) {
         if (authentication == null || !hasAuthenticationRoleAdmin(authentication)) return null;
@@ -111,6 +107,13 @@ public class NewsServiceImpl implements NewsService {
         news.setFullText(newsDto.getFullText());
         news.setPictureLink(newsDto.getPictureLink());
         news.setHidden(newsDto.isHidden());
+        if (news.isPinned()!=newsDto.isPinned()&&newsDto.isPinned()) {
+            List<News> pinnedNews = getPinnedNews();
+            if (pinnedNews.size() > 1) {
+                pinnedNews.get(1).setPinned(false);
+                newsRepository.save(pinnedNews.get(1));
+            }
+        }
         news.setPinned(newsDto.isPinned());
         news.setVisible(newsDto.isVisible());
         newsRepository.save(news);
@@ -185,14 +188,9 @@ public class NewsServiceImpl implements NewsService {
     private List<News> getAllVisibleNews() {
         //список неудаленных новостей для зарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым
         List<News> allNewsList = getAllNews();
-        //TODO я уже начал
         List<News> pinnedNewsList = getPinnedNews();
         List<News> newsList = new ArrayList<News>();
         newsList.addAll(getPinnedNews());
-//        for (int i = 0; i < pinnedNewsList.size(); i++) { //добавляем закрпленные
-//            newsList.add(pinnedNewsList.get(i));
-//        }
-
         for (int i = 0; i < allNewsList.size(); i++) { //добавляем остальные неудаленные новости
             if (allNewsList.get(i).isVisible() && !allNewsList.get(i).isPinned()) {
                 newsList.add(allNewsList.get(i));
@@ -235,13 +233,13 @@ public class NewsServiceImpl implements NewsService {
         List<News> newsList = new ArrayList<>();
         byte counter = 0;
         for (int i = 0; i < pinnedNewsList.size(); i++) { //добавляем закрепленные, если они публичные
-            if (pinnedNewsList.get(i).isHidden()) {
+            if (!pinnedNewsList.get(i).isHidden()) {
                 newsList.add(pinnedNewsList.get(i));
                 counter++;
             }
         }
         for (int i = 0; i < allNewsList.size(); i++) { //добавляем обычные новости до 10, если они видимы, публичны и незакреплены
-            if (allNewsList.get(i).isHidden() && allNewsList.get(i).isVisible() && !allNewsList.get(i).isPinned()) {
+            if (!allNewsList.get(i).isHidden() && allNewsList.get(i).isVisible() && !allNewsList.get(i).isPinned()) {
                 newsList.add(allNewsList.get(i));
                 counter++;
             }
