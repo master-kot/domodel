@@ -1,11 +1,18 @@
 package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.domodel.dto.NewUserRequest;
+import ru.geekbrains.domodel.dto.PasswordRequest;
+import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.User;
-import ru.geekbrains.domodel.dto.UserDto;
+import ru.geekbrains.domodel.entities.common.JwtUser;
+import ru.geekbrains.domodel.mappers.JwtUserMapper;
+import ru.geekbrains.domodel.mappers.UserMapper;
 import ru.geekbrains.domodel.repositories.AuthorityRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
 import ru.geekbrains.domodel.services.api.UserService;
@@ -13,7 +20,9 @@ import ru.geekbrains.domodel.services.api.UserService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 
 /**
@@ -23,103 +32,135 @@ import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    // Репозиторий пользователей
-    private final UserRepository userRepository;
+    // Необходимые сервисы
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
+    private final JwtUserMapper jwtUserMapper;
 
-    // Репозиторий ролей пользователя
+    // Необходимые репозитории
+    private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
 
-    // Сервис шифрования паролей
-    private final BCryptPasswordEncoder passwordEncoder;
-
     @Override
-    public User getUserById(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        return user.orElse(null);
+    public UserDto getById(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        return optionalUser.map(userMapper::userToUserDto).orElse(null);
     }
 
     @Override
     public User getUserByUsername(String username) {
-        Optional<User> user = userRepository.findByUsername(username);
-        return user.orElse(null);
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        return optionalUser.orElse(null);
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public JwtUser getJwtUserByUsername(String username) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        return optionalUser.map(jwtUserMapper::userToJwtUser).orElse(null);
     }
 
     @Override
-    public boolean deleteUserById(Long userId) {
+    public UserDto getByUsername(String username) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        return optionalUser.map(userMapper::userToUserDto).orElse(null);
+    }
+
+    @Override
+    public List<UserDto> getAll() {
+        return userRepository.findAll().stream()
+                .map(userMapper::userToUserDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean deleteById(Long userId) {
         userRepository.deleteById(userId);
         return userRepository.existsById(userId);
     }
 
     @Override
-    public User createUser(UserDto userData) {
-        Optional<User> optionalUser = userRepository.findByUsername(userData.getUsername());
+    public UserDto save(NewUserRequest userRequest) {
+        Optional<User> optionalUser = userRepository.findByUsername(userRequest.getUsername());
         if (optionalUser.isPresent()) {
             return null;
         }
-
         User newUser = new User(
-                userData.getUsername(),
-                passwordEncoder.encode(userData.getPassword()),
+                userRequest.getUsername(),
+                passwordEncoder.encode(userRequest.getPassword()),
                 true,
                 LocalDate.now());
         Authority authority = authorityRepository.findByAuthority(ROLE_USER);
         newUser.getAuthorities().add(authority);
-        return userRepository.save(newUser);
+        return userMapper.userToUserDto(userRepository.save(newUser));
     }
 
-    @Override
-    public User updateUser(UserDto userData, User user) {
-            if (userData.getUsername() != null && !userData.getUsername().isEmpty()) {
-                user.setUsername(userData.getUsername());
-            }
-            if (userData.getPassword() != null && userData.getPassword().isEmpty() &&
-                    userData.getPassword().equals(userData.getPasswordConfirm())) {
-                user.setPassword(passwordEncoder.encode(userData.getPassword()));
-            }
-            if (userData.getFirstName() != null && !userData.getFirstName().isEmpty()) {
-                user.setFirstName(userData.getFirstName());
-            }
-            if (userData.getLastName() != null && !userData.getLastName().isEmpty()) {
-                user.setLastName(userData.getLastName());
-            }
-            if (userData.getPatronymic() != null && !userData.getPatronymic().isEmpty()) {
-                user.setPatronymic(userData.getPatronymic());
-            }
-            if (userData.getEmail() != null && !userData.getEmail().isEmpty()) {
-                user.setEmail(userData.getEmail());
-            }
-            return userRepository.save(user);
-    }
-
-    @Override
-    public void editUser(User userData, String username) {
+    public UserDto update(UserDto userDto,
+                          String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
         User user;
         if (optionalUser.isPresent()) {
             user = optionalUser.get();
         } else {
-            return;
+            return null;
         }
-        if (userData.getUsername() != null && !userData.getUsername().isEmpty()) {
-            user.setUsername(userData.getUsername());
+        if (userDto.getUsername() != null && !userDto.getUsername().isEmpty()) {
+            user.setUsername(userDto.getUsername());
         }
-        if (userData.getFirstName() != null && !userData.getFirstName().isEmpty()) {
-            user.setFirstName(userData.getFirstName());
+        if (userDto.getFirstName() != null && !userDto.getFirstName().isEmpty()) {
+            user.setFirstName(userDto.getFirstName());
         }
-        if (userData.getLastName() != null && !userData.getLastName().isEmpty()) {
-            user.setLastName(userData.getLastName());
+        if (userDto.getLastName() != null && !userDto.getLastName().isEmpty()) {
+            user.setLastName(userDto.getLastName());
         }
-        if (userData.getPatronymic() != null && !userData.getPatronymic().isEmpty()) {
-            user.setPatronymic(userData.getPatronymic());
+        if (userDto.getPatronymic() != null && !userDto.getPatronymic().isEmpty()) {
+            user.setPatronymic(userDto.getPatronymic());
         }
-        if (userData.getEmail() != null && !userData.getEmail().isEmpty()) {
-            user.setEmail(userData.getEmail());
+        if (userDto.getEmail() != null && !userDto.getEmail().isEmpty()) {
+            user.setEmail(userDto.getEmail());
         }
-        userRepository.save(user);
+        if (userDto.getPhotoLink() != null && !userDto.getPhotoLink().isEmpty()) {
+            user.setPhotoLink(userDto.getPhotoLink());
+        }
+        if (userDto.getAddress() != null && !userDto.getAddress().isEmpty()) {
+            user.setAddress(userDto.getAddress());
+        }
+        return userMapper.userToUserDto(userRepository.save(user));
+    }
+
+    @Override
+    public boolean updatePassword(PasswordRequest passwordRequest,
+                                  Authentication authentication) {
+        if (!authentication.getName().equals(passwordRequest.getUsername())) {
+            if (!hasAuthenticationRoleAdmin(authentication)) {
+                return false;
+            }
+        }
+
+        Optional<User> optionalUser = userRepository.findByUsername(authentication.getName());
+        User user;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+        } else {
+            return false;
+        }
+
+        String oldPassword = passwordRequest.getOldPassword();
+        String newPassword = passwordRequest.getNewPassword();
+
+        // TODO Проверить, что старый пароль введен верно
+        if (oldPassword != null && newPassword != null && !newPassword.isEmpty() &&
+                newPassword.equals(passwordRequest.getNewPasswordConfirm())) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Проверить, что пользователь имеет роль Админа
+     */
+    private boolean hasAuthenticationRoleAdmin(Authentication authentication) {
+        return (authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).anyMatch(a -> a.equals(ROLE_ADMIN)));
     }
 }

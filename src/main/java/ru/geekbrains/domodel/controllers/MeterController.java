@@ -49,6 +49,7 @@ public class MeterController {
         return meterService.save(meterDto);
     }
 
+    @ApiOperation(value = "Выводит информацию о счетчике по его индексу")
     @GetMapping("/{id}")
     public MeterDto readMeterById(@PathVariable Long id) {
         return meterService.getMeter(id);

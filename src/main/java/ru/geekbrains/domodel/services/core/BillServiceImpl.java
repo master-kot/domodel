@@ -3,12 +3,13 @@ package ru.geekbrains.domodel.services.core;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.domodel.entities.*;
-import ru.geekbrains.domodel.entities.BillType;
+import ru.geekbrains.domodel.dto.AccountDto;
+import ru.geekbrains.domodel.dto.BillDto;
+import ru.geekbrains.domodel.entities.Account;
+import ru.geekbrains.domodel.entities.Bill;
 import ru.geekbrains.domodel.repositories.BillRepository;
 import ru.geekbrains.domodel.services.api.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,34 +28,29 @@ public class BillServiceImpl implements BillService {
     private final RequisitesService requisitesService;
 
     @Override
-    public List<Bill> getAllBills() {
-        return billRepository.findAll();
+    public List<BillDto> getAllBills() {
+        return null; //billRepository.findAll();
     }
 
     @Override
-    public Bill save(@NonNull Bill bill) {
-        return billRepository.save(bill);
+    public BillDto getBillById(@NonNull Long billId) {
+        return null; //billRepository.findById(billId).orElse(null);
     }
 
     @Override
-    public Bill findById(@NonNull Long billId) {
-        return billRepository.findById(billId).orElse(null);
-    }
-
-    @Override
-    public List<Bill> findAllByUsername(@NonNull String username) {
-        User user = userService.getUserByUsername(username);
+    public List<BillDto> getAllBillsByUsername(@NonNull String username) {
+        List<Account> user = accountService.getAllAccountsByUserUsername(username);
         if (user == null) {
             return null;
         } else {
-            return billRepository.findAllByAccount((Account) user.getAccounts().toArray()[0]); // заглушка
+            return null; //billRepository.findAllByAccountId(user.getAccountIds()); // заглушка
         }
     }
 
     @Override
-    public Bill createBillByAccount(Account account) {
+    public BillDto saveBill(BillDto bill) {
         //  прикрепляем номер счета (либо делаем это при создании счета) - номер счета это id bill
-        Bill bill = new Bill();
+        /*Bill bill = new Bill();
         bill.setAccount(account);
         bill.setCreationDate(LocalDate.now());
         bill.setTarget("Заглушка target");
@@ -89,28 +85,24 @@ public class BillServiceImpl implements BillService {
                 calculation.setCost(calculation.getAmount() * meter.getType().getTariff().getPrice());
                 bill.getCalculations().add(calculation);
             }
-        }
-        return billRepository.save(bill);
+        }*/
+        return null; //billRepository.save(bill);
     }
 
     @Override
-    public List<Bill> createAll() {
-        List<Bill> bills = new ArrayList<>();
-        accountService.getAllAccounts().forEach(this::createBillByAccount);
+    public List<BillDto> saveAllBills() {
+        List<BillDto> bills = new ArrayList<>();
+//        accountService.getAllAccounts().forEach(this::createBillByAccount);
         return bills;
     }
 
     @Override
-    public List<Bill> getAllByAccount(Account account) {
-        return billRepository.findAllByAccount(account);
+    public List<BillDto> getAllBillsByAccount(AccountDto account) {
+        return null; //billRepository.findAllByAccount(account);
     }
 
     @Override
-    public Bill changeById(Long Id, Bill billData) {
+    public Bill updateBill(BillDto bill) {
         return null;
-    }
-
-    public List<Bill> getAllBillsByAccount(Account account) {
-        return billRepository.findAllByAccount(account);
     }
 }

@@ -1,8 +1,12 @@
 package ru.geekbrains.domodel.services.api;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.domodel.entities.User;
+import ru.geekbrains.domodel.dto.NewUserRequest;
+import ru.geekbrains.domodel.dto.PasswordRequest;
 import ru.geekbrains.domodel.dto.UserDto;
+import ru.geekbrains.domodel.entities.common.JwtUser;
+import ru.geekbrains.domodel.entities.User;
 
 import java.util.List;
 
@@ -18,7 +22,7 @@ public interface UserService {
      * @param userId идентификатор пользователя
      * @return пользователь
      */
-    User getUserById(Long userId);
+    UserDto getById(Long userId);
 
     /**
      * Найти пользователя по логину
@@ -26,14 +30,14 @@ public interface UserService {
      * @param username логин пользователя
      * @return пользователь
      */
-    User getUserByUsername(String username);
+    UserDto getByUsername(String username);
 
     /**
      * Найти всех пользователей
      *
      * @return список пользователей
      */
-    List<User> getAllUsers();
+    List<UserDto> getAll();
 
     /**
      * Удалить пользователя по его идентификатору
@@ -41,29 +45,46 @@ public interface UserService {
      * @param userId идентификатор пользователя
      * @return удален ли пользователь
      */
-    boolean deleteUserById(Long userId);
+    boolean deleteById(Long userId);
 
     /**
      * Создать нового пользователя
      *
-     * @param userData отображение данных пользователя
+     * @param newUserRequest отображение данных пользователя
      * @return новый пользователь, сохраненный в репозитории
      */
-    User createUser(UserDto userData);
+    UserDto save(NewUserRequest newUserRequest);
 
     /**
      * Изменить данные пользователя
      *
-     * @param userData отображение данных пользователя
-     * @param user изменяемый пользователь
-     */
-    User updateUser(UserDto userData, User user);
-
-    /**
-     * Изменить данные пользователя
-     *
-     * @param userData пользователь с измененными данными
+     * @param userDto пользователь с измененными данными
      * @param username логин пользователя
      */
-    void editUser(User userData, String username);
+    UserDto update(UserDto userDto, String username);
+
+    /**
+     * Получить общего Пользователя для межсервисного взаимодействия
+     *
+     * @param username логин пользователя
+     * @return общая сущность Пользователя
+     */
+    User getUserByUsername(String username);
+
+    /**
+     * Получить Jwt Пользователя для генерации токенов
+     *
+     * @param username логин пользователя
+     * @return общая сущность Пользователя
+     */
+    JwtUser getJwtUserByUsername(String username);
+
+    /**
+     * Изменить пароль пользователя
+     *
+     * @param passwordRequest данные для изменения пароля
+     * @param authentication авторизация
+     * @return измененен ли пользователь
+     */
+    boolean updatePassword(PasswordRequest passwordRequest, Authentication authentication);
 }

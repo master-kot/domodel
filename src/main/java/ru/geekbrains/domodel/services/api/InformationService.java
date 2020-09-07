@@ -1,8 +1,8 @@
 package ru.geekbrains.domodel.services.api;
 
-import ru.geekbrains.domodel.entities.Information;
+import ru.geekbrains.domodel.dto.InformationDto;
 
-import java.util.Optional;
+import java.util.List;
 
 /**
  * Интерфейс сервиса информации о компании
@@ -10,7 +10,12 @@ import java.util.Optional;
 public interface InformationService {
 
     /**
-     * Получить информацию по индексу
+     * Получить блок информацию по индексу
      */
-    Optional<Information> getById(Integer id);
+    InformationDto getById(Integer id);
+
+    /**
+     * Получить все блоки информации
+     */
+    List<InformationDto> getAll();
 }

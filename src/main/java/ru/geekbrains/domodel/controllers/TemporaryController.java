@@ -4,18 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.domodel.dto.BillDto;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.Bill;
 import ru.geekbrains.domodel.entities.MeterData;
-import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.services.api.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-
-import static ru.geekbrains.domodel.entities.constants.Messages.*;
 
 /**
  * Временный контроллер web-приложения для совместимости со старой версией фронта приложения
@@ -23,7 +20,7 @@ import static ru.geekbrains.domodel.entities.constants.Messages.*;
 @Controller
 @RequiredArgsConstructor
 public class TemporaryController {
-
+/*
     // Имена шаблонов страниц
     private static final String REGISTER_FORM = "temp/register";
     private static final String ACCOUNTS_ADMIN_FORM = "profile/accounts_admin";
@@ -45,19 +42,19 @@ public class TemporaryController {
 
     // TODO Методы главного контроллера
 
-    /**
+    *//**
      * Перехват запроса главной страницы
-     */
+     *//*
     @GetMapping("")
     public String getHomePage(@RequestParam(required = false) String error, Model model, Principal principal) {
         addUsername(model, principal);
-        model.addAttribute("lastNews", newsService.getLastNews());
+        model.addAttribute("lastNews", newsService.getRelevantNews());
         return "index";
     }
 
-    /**
+    *//**
      * Перехват запроса регистрации нового пользователя
-     */
+     *//*
     @GetMapping("/register")
     public String getRegisterPage(Model model, Principal principal) {
         addUsername(model, principal);
@@ -65,9 +62,9 @@ public class TemporaryController {
         return REGISTER_FORM;
     }
 
-    /**
+    *//**
      * Перехват запроса создания нового пользователя
-     */
+     *//*
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("userData") UserDto userData,
                                BindingResult bindingResult,
@@ -87,10 +84,9 @@ public class TemporaryController {
     @GetMapping("/meters")
     public String getMetersPage(Model model, Principal principal) {
         if (principal != null) {
-            User user = userService.getUserByUsername(principal.getName());
-            model.addAttribute("username", user.getUsername());
+            UserDto user = userService.getUserByUsername(principal.getName());
+            model.addAttribute("username", user.getPhone());
             model.addAttribute("user", user);
-            model.addAttribute("accounts", user.getAccounts());
         }
         model.addAttribute("meterData", new MeterData());
         return "meters/meters_user";
@@ -116,7 +112,7 @@ public class TemporaryController {
 
     @GetMapping("/meters/add")
     public String getAddPage(Model model, Principal principal) {
-        model.addAttribute("accounts", accountService.getAccountsByUserUserame(principal.getName()));
+        model.addAttribute("accounts", accountService.getAccountsByUserUsername(principal.getName()));
         model.addAttribute("tariffs", tariffService.getAllTariffs());
         return "meters/meters_add";
     }
@@ -129,9 +125,9 @@ public class TemporaryController {
 
     // TODO Методы Контроллер лицевых счетов
 
-    /**
+    *//**
      * Перехват запроса списка лицевых счетов
-     */
+     *//*
     @GetMapping("/accounts")
     public String getAccountsPage(Model model, Principal principal) {
         addUsername(model, principal);
@@ -139,9 +135,9 @@ public class TemporaryController {
         return ACCOUNTS_ADMIN_FORM;
     }
 
-    /**
+    *//**
      * Перехват запроса списка лицевых счетов
-     */
+     *//*
     @GetMapping("/accounts/edit")
     public String getAccountsEditPage(Model model, Principal principal) {
         addUsername(model, principal);
@@ -151,9 +147,9 @@ public class TemporaryController {
 
     // TODO Методы Контроллер обращений
 
-    /**
+    *//**
      * Перехват запроса главной страницы обращений
-     */
+     *//*
     @GetMapping("/appeals")
     public String getAppealsPage(Model model, Principal principal) {
         addUsername(model, principal);
@@ -167,14 +163,14 @@ public class TemporaryController {
         if (authentication != null) {
             String username = authentication.getName();
             model.addAttribute("username", username);
-            model.addAttribute("accounts", accountService.getAccountsByUserUserame(username));
+            model.addAttribute("accounts", accountService.getAccountsByUserUsername(username));
         }
         return "bills/bills_user";
     }
 
     @GetMapping("/bills/{billId}")
     public String showBill(@PathVariable Long billId, Model model) {
-        model.addAttribute("bill", billService.findById(billId));
+        model.addAttribute("bill", billService.getBillById(billId));
         return "/bills/bills_details";
     }
 
@@ -185,47 +181,47 @@ public class TemporaryController {
     }
 
     @PostMapping("/bills/add")
-    public String processCreationForm(Bill bill) {
-        Bill savedBill = billService.save(bill);
-        return "redirect:/bills/" + savedBill.getId();
+    public String processCreationForm(BillDto bill) {
+        BillDto savedBill = billService.saveBill(bill);
+        return "redirect:/bills/"; // + savedBill.getId();
     }
 
     @GetMapping("/bills/edit/{billId}")
     public String showUpdateBillForm(@PathVariable Long billId, Model model) {
-        model.addAttribute(billService.findById(billId));
+        model.addAttribute(billService.getBillById(billId));
         return BILL_EDIT_FORM;
     }
 
     @PostMapping("/bills/edit/{billId}")
-    public String processUpdateBillForm(Bill bill, @PathVariable Long billId) {
-        bill.setId(billId);
-        Bill savedBill = billService.save(bill);
-        return "redirect:/bills/" + savedBill.getId();
+    public String processUpdateBillForm(BillDto bill, @PathVariable Long billId) {
+        *//*bill.setId(billId);
+        Bill savedBill = billService.saveBill(bill);*//*
+        return "redirect:/bills/"; //+ savedBill.getId();
     }
 
     // TODO Методы Контроллер информации
 
-    /**
+    *//**
      * Перехват запроса страницы информации о компании
-     */
+     *//*
     @GetMapping("/information/about")
     public String getAboutPage(Model model, Principal principal) {
         addUsername(model, principal);
         return "information/about";
     }
 
-    /**
+    *//**
      * Перехват запроса страницы контакты
-     */
+     *//*
     @GetMapping("/information/contacts")
     public String getContactsPage(Model model, Principal principal) {
         addUsername(model, principal);
         return "information/contacts";
     }
 
-    /**
+    *//**
      * Перехват запроса страницы документы
-     */
+     *//*
     @GetMapping("/information/documents")
     public String getDocumentsPage(Model model, Principal principal) {
         if (principal != null) {
@@ -234,9 +230,9 @@ public class TemporaryController {
         return "information/documents";
     }
 
-    /**
+    *//**
      * Перехват запроса страницы реквизитов
-     */
+     *//*
     @GetMapping("/information/requisites")
     public String getRequisitesPage(Model model, Principal principal) {
         addUsername(model, principal);
@@ -245,18 +241,18 @@ public class TemporaryController {
 
     // TODO Методы Контроллер модуля управления сайтом
 
-    /**
+    *//**
      * Перехват запроса главной страницы управления сайтом
-     */
+     *//*
     @GetMapping("/management")
     public String getManagementPage(Model model, Principal principal) {
         addUsername(model, principal);
         return "management/management";
     }
 
-    /**
+    *//**
      * Перехват запроса списка всех пользователей
-     */
+     *//*
     @GetMapping("/management/users")
     public String getAllUsersPage(Model model, Principal principal) {
         addUsername(model, principal);
@@ -264,9 +260,9 @@ public class TemporaryController {
         return "management/users";
     }
 
-    /**
+    *//**
      * Перехват запроса удаления пользователя
-     */
+     *//*
     @DeleteMapping("/management/users/delete/{id}")
     public String deleteUser(@PathVariable("id") long id) {
         userService.deleteUserById(id);
@@ -275,9 +271,9 @@ public class TemporaryController {
 
     // TODO Методы Контроллер новостей
 
-    /**
+    *//**
      * Перехват запроса архива новостей
-     */
+     *//*
     @GetMapping("/news")
     public String getNewsArchivePage(Model model, Principal principal) {
         addUsername(model, principal);
@@ -285,9 +281,9 @@ public class TemporaryController {
         return "news/news_archive";
     }
 
-    /**
+    *//**
      * Перехват запроса страницы редактирования новостей
-     */
+     *//*
     @GetMapping("/news/edit")
     public String getNewsEditPage(Model model, Principal principal) {
         addUsername(model, principal);
@@ -295,9 +291,9 @@ public class TemporaryController {
         return "news/news_edit";
     }
 
-    /**
+    *//**
      * Перехват запроса страницы редактирования новостей
-     */
+     *//*
     @GetMapping("/news/single")
     public String getNewsSinglePage(Model model, Principal principal) {
         addUsername(model, principal);
@@ -307,9 +303,9 @@ public class TemporaryController {
 
     // TODO Методы Контроллер фотогалереи
 
-    /**
+    *//**
      * Перехват запроса списка всех фотографий
-     */
+     *//*
     @GetMapping("/photos")
     public String getPhotosPage(Model model, Principal principal) {
         addUsername(model, principal);
@@ -318,12 +314,12 @@ public class TemporaryController {
 
     // TODO Методы Контроллер модуля профиля пользователя
 
-    /**
+    *//**
      * Перехват запроса на чтение профиля пользователя
-     */
+     *//*
     @GetMapping("/profile")
     public String getProfilePage(Model model, Principal principal) {
-        User user = null;
+        UserDto user = null;
         if (principal != null) {
             model.addAttribute("username", principal.getName());
             user = userService.getUserByUsername(principal.getName());
@@ -332,9 +328,9 @@ public class TemporaryController {
         return PROFILE_USER_FORM;
     }
 
-    /**
+    *//**
      * Перехват запроса на изменение профиля пользователя
-     */
+     *//*
     @PostMapping("/profile/edit")
     public String changeUserProfile(@Valid @ModelAttribute("userData") UserDto userData,
                                     BindingResult bindingResult,
@@ -353,23 +349,23 @@ public class TemporaryController {
         return PROFILE_FORM_REDIRECT_URL;
     }
 
-    /**
+    *//**
      * Перехват запроса на изменение ФИО пользователя
-     */
+     *//*
     @PostMapping("/profile/edit/name")
-    public String editUserName(@Valid @ModelAttribute("user") User user,
+    public String editUserName(@Valid @ModelAttribute("user") UserDto userDto,
                                Principal principal) {
-        if (user.getLastName() != null || user.getFirstName() != null || user.getPatronymic() != null) {
-            userService.editUser(user, principal.getName());
+        if (userDto.getLastName() != null || userDto.getFirstName() != null || userDto.getPatronymic() != null) {
+            userService.updateUser(userDto, principal.getName());
         }
         return PROFILE_FORM_REDIRECT_URL;
     }
 
     // TODO Методы Контроллер голосований
 
-    /**
+    *//**
      * Перехват запроса главной страницы голосований
-     */
+     *//*
     @GetMapping("/votes")
     public String getVotesPage(Model model, Principal principal) {
         if (principal != null) {
@@ -378,12 +374,13 @@ public class TemporaryController {
         return "votes/votes_user";
     }
 
-    /**
+    *//**
      * Временный метод для совместимости
-     */
+     *//*
     private void addUsername(Model model, Principal principal) {
         if (principal != null) {
             model.addAttribute("username", principal.getName());
         }
     }
+    */
 }
