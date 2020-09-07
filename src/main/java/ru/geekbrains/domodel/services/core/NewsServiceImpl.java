@@ -82,13 +82,11 @@ public class NewsServiceImpl implements NewsService {
         Stream<NewsDto> newsDtoStream = newsRepository.findAll().stream().map(newsMapper::newsToNewsDto);
         // Если пользователь не авторизован
         if (authentication == null) {
-            return newsDtoStream.filter(n -> !n.isHidden() && !n.isVisible()).collect(Collectors.toList());
-        }
-        // Если пользователь - админ
-        if (hasAuthenticationRoleAdmin(authentication)) {
-            return newsDtoStream.limit(10).collect(Collectors.toList());
-        } else { // Просто пользователь
-            return newsDtoStream.filter(n -> !n.isHidden()).collect(Collectors.toList());
+            return newsDtoStream.filter(n -> !n.isHidden() && n.isVisible())
+                    .limit(10).collect(Collectors.toList());
+        } else {
+            // Одинаковая выдача для всех авторизованных пользователей
+            return newsDtoStream.filter(NewsDto::isVisible).limit(10).collect(Collectors.toList());
         }
     }
 
