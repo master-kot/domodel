@@ -31,29 +31,35 @@ public class MeterController {
         return meterService.getAllMeters(authentication);
     }
 
+    @ApiOperation(value = "Выводит информацию о счетчике по его индексу")
+    @GetMapping("/{id}")
+    public MeterDto readMeterById(@PathVariable Long id) {
+        return meterService.getMeter(id);
+    }
+
+    @ApiOperation(value = "Создание счетчика")
+    @Secured({Roles.ROLE_ADMIN})
+    @PostMapping("")
+    public ResponseEntity<MeterDto> createMeter(@RequestBody MeterDto meterDto) {
+        MeterDto m = meterService.saveOrUpdate(meterDto);
+        if (m == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(m);
+    }
+
+    @ApiOperation(value = "Удаление счетчика по его индексу")
     @Secured(Roles.ROLE_ADMIN)
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMeter(@PathVariable Long id) {
-        meterService.deleteMeter(id);
+        meterService.deleteMeterById(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @Secured({Roles.ROLE_ADMIN})
-    @PostMapping("")
-    public MeterDto createMeter(@RequestBody MeterDto meterDto) {
-        return meterService.save(meterDto);
     }
 
     @Secured({Roles.ROLE_ADMIN})
     @PutMapping("")
     public MeterDto updateMeter(@RequestBody MeterDto meterDto) {
-        return meterService.save(meterDto);
-    }
-
-    @ApiOperation(value = "Выводит информацию о счетчике по его индексу")
-    @GetMapping("/{id}")
-    public MeterDto readMeterById(@PathVariable Long id) {
-        return meterService.getMeter(id);
+        return meterService.saveOrUpdate(meterDto);
     }
 
     @GetMapping("/{id}/data")

@@ -23,7 +23,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountMapper accountMapper;
 
     @Override
-    public AccountDto getById(Long id) {
+    public AccountDto getAccountDtoById(Long id) {
         return accountRepository.findById(id)
                 .map(accountMapper::accountToAccountDto)
                 .orElseThrow(() -> new RuntimeException("account not exist"));
@@ -44,5 +44,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<Account> getAllAccountsByUserUsername(String username) {
         return accountRepository.findAllByUserUsername(username);
+    }
+
+    @Override
+    public Account getAccountById(Long id) {
+        return accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found account by id: " + id));
     }
 }

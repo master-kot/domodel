@@ -1,6 +1,7 @@
 package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -29,6 +31,7 @@ import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 /**
  * Реализация сервиса счетчиков показаний
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MeterServiceImpl implements MeterService {
@@ -43,11 +46,11 @@ public class MeterServiceImpl implements MeterService {
     @Override
     public MeterDto getMeter(Long id) {
         Meter m = meterRepository.findById(id).orElseThrow(() -> new RuntimeException("not found meter by id: " + id));
-        return convertToDto(m);
+        return meterMapper.meterToMeterDto(m);
     }
 
     @Override
-    public void deleteMeter(Long id) {
+    public void deleteMeterById(Long id) {
         meterRepository.deleteById(id);
     }
 
@@ -118,14 +121,19 @@ public class MeterServiceImpl implements MeterService {
 
     @Transactional
     @Override
-    public MeterDto save(MeterDto meterDto) {
-        Meter meter = new Meter();
-        meter.setAccount(accountService.getAccountById(meterDto.getAccountId()));
-        meter.setCheckDate(meterDto.getCheckDate());
-        meter.setModel(meterDto.getModel());
-        meter.setSerialNumber(meterDto.getSerialNumber());
-        meter.setType(meterTypeRepository.findByDescription(meterDto.getTypeDescription()));
-        return convertToDto(meterRepository.save(meter));
+    public MeterDto saveOrUpdate(MeterDto meterDto) {
+        Objects.requireNonNull(meterDto, "Данные счетчика не коректны!");
+
+        if (meterDto.getSerialNumber() != null) {
+            Meter m = meterMapper.meterDtoToMeter(meterDto);
+            m.setAccount(accountService.getAccountById(meterDto.getAccountId()));
+            m.setType(meterTypeRepository.findByDescription(meterDto.getTypeDescription()));
+            return meterMapper.meterToMeterDto(meterRepository.save(m));
+        } else {
+//            throw new RuntimeException("Данные счетчика не коректны: ID или Серийный номер");
+            log.error("Данные счетчика не коректны: Серийный номер");
+            return null;
+        }
     }
 
     @Override

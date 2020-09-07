@@ -27,7 +27,9 @@ public interface MeterService {
      * Long deleteNewsById(Long id) удалить объект по параметру
      * void deleteAllNews(List<NewsDto> newsDtoList) удалить список объектов
      */
-
+    /**
+     * Получить счетчик по id
+     */
     MeterDto getMeter(Long id);
 
     /**
@@ -52,7 +54,12 @@ public interface MeterService {
      * Сохранить данные счетчика.
      * @param meterDto
      */
-    MeterDto save(MeterDto meterDto);
+    MeterDto saveOrUpdate(MeterDto meterDto);
+
+    /**
+     * Удаление данных счетчика.
+     */
+    void deleteMeterById(Long id);
 
     /**
      * Принять единичные данные о показаниях счетчика.

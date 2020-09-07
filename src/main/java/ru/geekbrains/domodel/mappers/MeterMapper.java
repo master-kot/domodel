@@ -27,5 +27,5 @@ public interface MeterMapper {
             @Mapping(target = "model", source = "dto.model"),
             @Mapping(target = "checkDate", source = "dto.checkDate", dateFormat = "dd-MM-yyyy"),
     })
-    MeterDto meterDtoToMeter(MeterDto dto);
+    Meter meterDtoToMeter(MeterDto dto);
 }
