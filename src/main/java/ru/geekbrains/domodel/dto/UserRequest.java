@@ -8,13 +8,11 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class NewUserRequest {
+public class UserRequest {
 
     private String username;
 
     private String password;
 
     private String passwordConfirm;
-
-    private String email;
 }

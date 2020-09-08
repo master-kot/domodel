@@ -6,7 +6,7 @@ import lombok.Data;
  * DTO класс запроса авторизации
  */
 @Data
-public class AuthenticationRequestDto {
+public class AuthenticationRequest {
 
     private String username;
 
