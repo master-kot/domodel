@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="stylesheet" href="../css/linearicons.css">
-	<link rel="stylesheet" href="../css/styles.css" />
-	<link href="../fontawesome/css/all.css" rel="stylesheet"> <!--load fontawesome all styles -->
+	<link rel="stylesheet" href="../../css/linearicons.css">
+	<link rel="stylesheet" href="../../css/styles.css" />
+	<link href="../../fontawesome/css/all.css" rel="stylesheet"> <!--load fontawesome all styles -->
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <title>Domodel</title>
@@ -81,7 +81,7 @@
 					</nav>
 				</div>
 				<div class="header_right">
-					<img src="./img/home_page/avatar.png" alt="avatar">
+					<img src="../../img/home_page/avatar.png" alt="avatar">
 					<div class="notlogged" th:if="${username == null}">
 						<a href="#" id="login">
 							войти
@@ -108,16 +108,22 @@
 					<h4>
 						Image preview
 					</h4>
-					<img alt="image preview" src="../img/news/1/1.png"/>
-					<form name="add_news" method="post" action="#" class="r-flex" sec:authorize="hasRole('ADMIN')">
-						<input type="text" placeholder="Введите название новости" name="news title" class="inputshadow">
-						<textarea placeholder="Введите описание новости" class="inputshadow"></textarea>
+					<img alt="image preview" src="../../img/news/1/1.png"/>
+					<form name="add_news" action="#" th:action="@{/news/edit}" method="POST"  class="r-flex" th:object="${news}" sec:authorize="hasRole('ADMIN')">
+						<input type="text" th:field="*{title}" placeholder="Введите название новости"  name="news title" class="inputshadow">
+						<textarea th:field="*{fullText}" placeholder="Введите описание новости" class="ic"></textarea>
 						<div class="add_news_controls r-flex">
 							<div class="add_news_controls_left">
-								<input type="checkbox" name="fixed" class="inputshadow"/>
-								<label for="fixed">Закрепить новость</label>
-								<input type="checkbox" name="public" class="inputshadow">
-								<label for="public">Публичная новость</label>
+								<input type="hidden" id="id" th:field="*{id}"/>
+								<input type="hidden" id="creationDate" th:field="*{creationDate}"/>
+								<input type="hidden" id="pictureLink" th:field="*{pictureLink}"/>
+								<input type="hidden" id="authorId" th:field="*{authorId}"/>
+								<input type="checkbox" id="pinned" th:field="*{pinned}" class="inputshadow"/>
+								<label for="pinned">Закрепить новость</label>
+								<input type="checkbox" id="hidden" th:field="*{hidden}" class="inputshadow">
+								<label for="hidden">Публичная новость</label>
+								<input type="checkbox" id="visible" th:field="*{visible}" class="inputshadow">
+								<label for="visible">Отображаемая новость</label>
 							</div>
 							<div class="add_news_controls_right">
 								<input type="button" name="put image" value="Вставить/Изменить картинку" class=""/>
@@ -159,6 +165,6 @@
 	  src="https://code.jquery.com/jquery-3.5.1.js"
 	  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 	  crossorigin="anonymous"></script>
-	<script src="./js/main.js"></script>
+	<script src="../../js/main.js"></script>
 </body>
 </html>

@@ -2,10 +2,18 @@ package ru.geekbrains.domodel.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import ru.geekbrains.domodel.dto.NewsDto;
+import ru.geekbrains.domodel.repositories.UserRepository;
+import ru.geekbrains.domodel.services.api.UserService;
+import ru.geekbrains.domodel.services.core.UserServiceImpl;
+import ru.geekbrains.domodel.services.api.UserService;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDate;
+
 
 /**
  * Сущность новости для связи ее с БД
@@ -14,6 +22,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "news")
 public class News {
 
@@ -46,7 +55,7 @@ public class News {
     @Column(name = "pinned", nullable = false)
     private boolean pinned;
 
-    // Указатель видимости новости. Новость отображается если true
+    // Указатель актуальности и видимости новости. Новость видна юзерам если true
     @Column(name = "visible", nullable = false)
     private boolean visible;
 
