@@ -30,32 +30,18 @@ public class NewsController {
 
     // Список необходимых сервисов
     private final NewsService newsService;
-//    private final JwtTokenFilter jwtTokenFilter;
 
-
-    /*
-     * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ СЕРВИСОВ
-     * NewsDto getById(Long id) найти объект по параметру
-     * Collection<NewsDto> getAll() найти все объекты
-     * Collection<NewsDto> getAllByUser(UserDto userDto) найти все объекты по параметру
-     * News update(NewsDto newsDto) изменить объект
-     * News save(NewsDto newsDto) сохранить объект
-     * Collection<NewsDto> saveAll(Collection<NewsDto> newsDtoCollection) сохранить список объектов
-     * void delete(NewsDto newsDto) удалить конкретный объект
-     * Long deleteById(Long id) удалить объект по параметру
-     * void deleteAll(Collection<NewsDto> newsDtoCollection) удалить список объектов
-     */
-    //todo  добавить секьюрити
+    @ApiOperation(value = "Выдает список новостей определенной страницы архива")
     @GetMapping("/archive/{id}")
-    public List<NewsDto> getNewsArchivePage(@PathVariable int id,
+    public ResponseEntity<List<NewsDto>> readNewsArchiveByPageId(@PathVariable int id,
                                             Authentication authentication) {
-        List <NewsDto> newsArchive = newsService.getArchive(id, authentication);
-        return newsArchive;
+        List <NewsDto> newsDtoList = newsService.getArchive(id, authentication);
+        if (newsDto.size() == 0) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(newsDtoList, HttpStatus.OK);
     }
 
-    /**
-     * Создает новость
-     */
     @ApiOperation(value = "Создает новость")
     @PostMapping(consumes = CONSUME_TYPE)
     public ResponseEntity<NewsDto> createNews(@RequestBody NewsRequestDto newsRequestDto,
@@ -67,57 +53,42 @@ public class NewsController {
         return new ResponseEntity<>(newsDto, HttpStatus.OK);
     }
 
-    /**
-     * Перехват запроса страницы одной новости
-     */
-    //todo  добавить секьюрити
+    @ApiOperation(value = "Выдает новость по ее номеру")
     @GetMapping("/{id}")
-    public NewsDto getSingleNewsPage(@PathVariable Long id,
+    public ResponseEntity<NewsDto> readNewsById(@PathVariable Long id,
                                      Authentication authentication) {
-//        if (principal != null) {
-//            model.addAttribute("username", principal.getName());
-//        }
-//        model.addAttribute("news", newsService.readNewsById(id));
-        return newsService.getById(id, authentication);
+        NewsDto newsDto = newsService.getById(id, authentication);
+        if (newsDto == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(newsDto, HttpStatus.OK);
     }
-
-     /**
-      * Перехват запроса изменения одной новости
-      */
-     //todo секьюрити на токены
-     @PostMapping("/{id}")
-     public NewsDto setSingleNewsPage(@PathVariable Long id,
+    
+    @ApiOperation(value = "Изменяет новость по ее номеру")
+    @PostMapping("/{id}")
+    public ResponseEntity<NewsDto> updateNewsById(@PathVariable Long id,
                                      @RequestBody NewsDto newsDto,
                                       Authentication authentication) {
-//         if (principal != null) {
-//             model.addAttribute("username", principal.getName());
-//         }
-//         model.addAttribute("news", newsService.getNewsById(id));
-//         return "news/news_details";
-         return newsService.updateNewsById(id, newsDto, authentication);
-     }
-
-     /**
-      * Перехват запроса новости для изменения ее видимости (условное удаление)
-      * @param id номер новости
-      */
-     //todo добавить секьюрити
-    @PostMapping ("/visibility/{id}")
-     public boolean updateVisibilityNewsById(@PathVariable Long id,
-                                             @RequestBody boolean visible,
-                                             Authentication authentication){
-        return newsService.updateVisibilityNewsById(id, visible, authentication);
+        NewsDto newsDto = newsService.updateNewsById(id, newsDto, authentication)
+        if (newsDto == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(newsDto, HttpStatus.OK);
     }
 
-     /**
-      * Перехват запроса новости для изменения ее видимости (условное удаление)
-      * @param id номер новости
-      */
-     //todo добавить секьюрити
-     @PostMapping ("/pinned/{id}")
-     public boolean updatePinnedNewsById(@PathVariable Long id,
+    @ApiOperation(value = "Изменяет видимость новости (условное удаление) по ее номеру")
+    @PostMapping ("/{id}/visible")
+     public ResponseEntity<Boolean> updateVisibilityNewsById(@PathVariable Long id,
+                                             @RequestBody boolean visible,
+                                             Authentication authentication){
+        return new ResponseEntity<>(newsService.updateVisibilityNewsById(id, visible, authentication), HttpStatus.OK);
+    }
+
+     @ApiOperation(value = "Изменяет параметр закрепления новости по ее номеру")
+     @PostMapping ("/{id}/pinned")
+     public ResponseEntity<Boolean> updatePinningNewsById(@PathVariable Long id,
                                          @RequestBody boolean pinned,
                                          Authentication authentication){
-         return newsService.updatePinningNewsById(id, pinned, authentication);
+         return new ResponseEntity<>(newsService.updatePinningNewsById(id, pinned, authentication), HttpStatus.OK);
      }
 }
