@@ -1,15 +1,9 @@
 package ru.geekbrains.domodel.services.api;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import ru.geekbrains.domodel.dto.NewsDto;
-import ru.geekbrains.domodel.dto.NewsRequestDto;
-import ru.geekbrains.domodel.entities.Authority;
-import ru.geekbrains.domodel.entities.News;
-import ru.geekbrains.domodel.entities.User;
+import ru.geekbrains.domodel.dto.NewsRequest;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,7 +46,7 @@ public interface NewsService {
      * @param id идентификатор новости
      * @return измененная новость
      */
-    NewsDto updateNewsById (Long id, NewsDto newsDto, Authentication authentication);
+    NewsDto updateById(Long id, NewsDto newsDto, Authentication authentication);
 
     /**
      *Изменяет параметр закрепления новости
@@ -60,7 +54,7 @@ public interface NewsService {
      *@param id идентификатор новости
      *@param pinned закреплена ли новость
      */
-    boolean updatePinningNewsById(Long id, boolean pinned, Authentication authentication);
+    boolean updatePinningById(Long id, boolean pinned, Authentication authentication);
 
     /**
      * Изменяет параметр видимости новости
@@ -68,13 +62,13 @@ public interface NewsService {
      * @param id идентификатор новости
      * @param visible флажок видимости новости
      */
-    boolean updateVisibilityNewsById(Long id , boolean visible, Authentication authentication);
+    boolean updateVisibilityById(Long id , boolean visible, Authentication authentication);
 
     /**
      * Сохраняет новость
      *
-     * @param newsRequestDto запрос на создание новости
+     * @param newsRequest запрос на создание новости
      * @return новость, сохраненная в репозитории
      */
-    NewsDto save(NewsRequestDto newsRequestDto, Authentication authentication);
+    NewsDto save(NewsRequest newsRequest, Authentication authentication);
 }

@@ -1,13 +1,11 @@
 package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.NewsDto;
-import ru.geekbrains.domodel.dto.NewsRequestDto;
+import ru.geekbrains.domodel.dto.NewsRequest;
 import ru.geekbrains.domodel.entities.News;
 import ru.geekbrains.domodel.mappers.NewsMapper;
 import ru.geekbrains.domodel.repositories.NewsRepository;
@@ -15,14 +13,14 @@ import ru.geekbrains.domodel.services.api.NewsService;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
-import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 
 /**
  * Реализация сервиса новостей
@@ -30,6 +28,7 @@ import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 @Service
 @RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
+
     // TODO исправить методы на стримы
     private final UserService userService;
     private final NewsMapper newsMapper;
@@ -46,7 +45,6 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    //Архив новостей
     public List<NewsDto> getArchive(int page, Authentication authentication) {
         List<NewsDto> newsDtoList = new ArrayList<>();
         if (!authentication.isAuthenticated()) return newsDtoList;
@@ -67,11 +65,10 @@ public class NewsServiceImpl implements NewsService {
 //        }
 //        // Если пользователь - админ
 //        if (hasAuthenticationRoleAdmin(authentication)) {
-////            return newsDtoStream.limit(10).collect(Collectors.toList());
+//            return newsDtoStream.limit(10).collect(Collectors.toList());
 //        } else { // Просто пользователь
-////            return newsDtoStream.filter(n -> !n.isHidden()).collect(Collectors.toList());
+//            return newsDtoStream.filter(n -> !n.isHidden()).collect(Collectors.toList());
 //        }
-
         List<News> allNews = new ArrayList<News>();
         List<NewsDto> newsRelevant = new ArrayList<>();
         if (authentication == null) allNews = getPublicNews();
@@ -81,12 +78,10 @@ public class NewsServiceImpl implements NewsService {
             newsRelevant.add(newsMapper.newsToNewsDto(allNews.get(i)));
         }
         return newsRelevant;
-//        return allNews.stream().map(newsMapper::newsToNewsDto).collect(Collectors.toList());
     }
 
-    // РЕДАКТИРОВАНИЕ
     @Override
-    public boolean updateVisibilityNewsById(Long id, boolean visible, Authentication authentication) {
+    public boolean updateVisibilityById(Long id, boolean visible, Authentication authentication) {
         //удаляем новость, меняя ее видимость и удаляя ее из закрепленных
         News news = newsRepository.getOne(id);
         if (news.isVisible() == visible || authentication == null || !hasAuthenticationRoleAdmin(authentication))
@@ -99,7 +94,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public NewsDto updateNewsById(Long id, NewsDto newsDto, Authentication authentication) {
+    public NewsDto updateById(Long id, NewsDto newsDto, Authentication authentication) {
         if (authentication == null || !hasAuthenticationRoleAdmin(authentication)) return null;
         News news = newsRepository.getOne(id);
         news.setCreationDate(LocalDate.now());
@@ -122,7 +117,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public boolean updatePinningNewsById(Long id, boolean pinned, Authentication authentication) {
+    public boolean updatePinningById(Long id, boolean pinned, Authentication authentication) {
         //Закрепляем выбранную новость,если закрепленных уже 2, то одну открепляем
         News news = newsRepository.getOne(id);
         if (news.isPinned() == pinned || authentication == null || !hasAuthenticationRoleAdmin(authentication))
@@ -139,32 +134,18 @@ public class NewsServiceImpl implements NewsService {
         return pinned;
     }
 
-
-    //ДОПОЛНИТЕЛЬНЫЕ МЕТОДЫ
-    //ЧТЕНИЕ
-
     @Override
-    public NewsDto save(NewsRequestDto newsRequestDto, Authentication authentication) {
+    public NewsDto save(NewsRequest newsRequest, Authentication authentication) {
         // Если пользователь не авторизован или не админ
         if (authentication == null || !hasAuthenticationRoleAdmin(authentication)) {
             return null;
         }
-        News news = newsMapper.newsRequestDtoToNews(newsRequestDto);
+        News news = newsMapper.newsRequestToNews(newsRequest);
         // Добавляем дату
         news.setCreationDate(LocalDate.now());
         // Добавляем автора новости
-        news.setAuthorId(userService.getUserByUsername(authentication.getName()));
+        news.setAuthor(userService.getUserByUsername(authentication.getName()));
         return newsMapper.newsToNewsDto(newsRepository.save(news));
-    }
-
-    //получение поcледней новости
-    @Override
-    public News getLast() {
-        List<News> newsList = getAllNews();
-        if (!newsList.isEmpty()) {
-            return newsList.get(0);
-        }
-        return null;
     }
 
     @Override
@@ -176,14 +157,19 @@ public class NewsServiceImpl implements NewsService {
                 .collect(Collectors.toList());
     }
 
-    public List<News> getAllNews() {
+    private News getLast() {
+        List<News> newsList = getAllNews();
+        if (!newsList.isEmpty()) {
+            return newsList.get(0);
+        }
+        return null;
+    }
+
+    private List<News> getAllNews() {
         List<News> newsList = newsRepository.findAll();
         Collections.reverse(newsList);
         return newsList;
     }
-
-
-    //РЕДАКТИРОВАНИЕ
 
     private List<News> getAllVisibleNews() {
         //список неудаленных новостей для зарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым

@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import ru.geekbrains.domodel.dto.NewsDto;
-import ru.geekbrains.domodel.dto.NewsRequestDto;
+import ru.geekbrains.domodel.dto.NewsRequest;
 import ru.geekbrains.domodel.entities.News;
 
 /**
@@ -24,7 +24,7 @@ public interface NewsMapper {
             @Mapping(target="hidden", source = "entity.hidden"),
             @Mapping(target="pinned", source = "entity.pinned"),
             @Mapping(target="visible", source = "entity.visible"),
-            @Mapping(target="authorName", source = "entity.authorId.firstName")})
+            @Mapping(target="authorName", source = "entity.author.firstName")})
     NewsDto newsToNewsDto(News entity);
 
     @Mappings({
@@ -46,5 +46,5 @@ public interface NewsMapper {
             @Mapping(target="hidden", source="dto.hidden"),
             @Mapping(target="pinned", source="dto.pinned"),
             @Mapping(target="visible", source="dto.visible")})
-    News newsRequestDtoToNews(NewsRequestDto dto);
+    News newsRequestToNews(NewsRequest dto);
 }

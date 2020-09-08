@@ -48,7 +48,7 @@ public class Appeal {
     // Пользователь - автор обращения
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
-    private User authorId;
+    private User author;
 
     // Список ссылок на фотографии
     @OneToMany(cascade = CascadeType.ALL)

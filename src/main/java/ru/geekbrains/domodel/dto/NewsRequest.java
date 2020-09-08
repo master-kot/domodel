@@ -6,7 +6,7 @@ import lombok.Data;
  * DTO запрос для создания Новости
  */
 @Data
-public class NewsRequestDto {
+public class NewsRequest {
 
     // Заголовок
     private String title;

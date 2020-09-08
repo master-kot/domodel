@@ -21,7 +21,6 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "news")
 public class News {
@@ -62,11 +61,7 @@ public class News {
     // Автор
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
-    private User authorId;
-
-    // Имя автора новости
-    @Transient
-    private String authorName;
+    private User author;
 
     public int comparePinning(News other) {
         if (this.pinned) {

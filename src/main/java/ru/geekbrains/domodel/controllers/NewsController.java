@@ -1,20 +1,16 @@
 package ru.geekbrains.domodel.controllers;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.NewsDto;
-import ru.geekbrains.domodel.dto.NewsRequestDto;
-import ru.geekbrains.domodel.security.jwt.JwtTokenProvider;
+import ru.geekbrains.domodel.dto.NewsRequest;
 import ru.geekbrains.domodel.services.api.NewsService;
 
-import java.security.Principal;
 import java.util.List;
-import io.swagger.annotations.ApiOperation;
 
 /**
  * Контроллер новостей
@@ -34,61 +30,64 @@ public class NewsController {
     @ApiOperation(value = "Выдает список новостей определенной страницы архива")
     @GetMapping("/archive/{id}")
     public ResponseEntity<List<NewsDto>> readNewsArchiveByPageId(@PathVariable int id,
-                                            Authentication authentication) {
-        List <NewsDto> newsDtoList = newsService.getArchive(id, authentication);
-        if (newsDto.size() == 0) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(newsDtoList, HttpStatus.OK);
+                                                                 Authentication authentication) {
+        return getListResponseEntity(newsService.getArchive(id, authentication));
     }
 
     @ApiOperation(value = "Создает новость")
     @PostMapping(consumes = CONSUME_TYPE)
-    public ResponseEntity<NewsDto> createNews(@RequestBody NewsRequestDto newsRequestDto,
+    public ResponseEntity<NewsDto> createNews(@RequestBody NewsRequest newsRequest,
                                               Authentication authentication) {
-        NewsDto newsDto = newsService.save(newsRequestDto, authentication);
-        if (newsDto == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(newsDto, HttpStatus.OK);
+        return getNewsDtoResponseEntity(newsService.save(newsRequest, authentication));
     }
 
     @ApiOperation(value = "Выдает новость по ее номеру")
     @GetMapping("/{id}")
     public ResponseEntity<NewsDto> readNewsById(@PathVariable Long id,
-                                     Authentication authentication) {
-        NewsDto newsDto = newsService.getById(id, authentication);
-        if (newsDto == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(newsDto, HttpStatus.OK);
+                                                Authentication authentication) {
+        return getNewsDtoResponseEntity(newsService.getById(id, authentication));
     }
     
     @ApiOperation(value = "Изменяет новость по ее номеру")
     @PostMapping("/{id}")
     public ResponseEntity<NewsDto> updateNewsById(@PathVariable Long id,
-                                     @RequestBody NewsDto newsDto,
-                                      Authentication authentication) {
-        NewsDto newsDto = newsService.updateNewsById(id, newsDto, authentication)
-        if (newsDto == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(newsDto, HttpStatus.OK);
+                                                  @RequestBody NewsDto newsDto,
+                                                  Authentication authentication) {
+
+        return getNewsDtoResponseEntity(newsService.updateById(id, newsDto, authentication));
     }
 
     @ApiOperation(value = "Изменяет видимость новости (условное удаление) по ее номеру")
     @PostMapping ("/{id}/visible")
      public ResponseEntity<Boolean> updateVisibilityNewsById(@PathVariable Long id,
-                                             @RequestBody boolean visible,
-                                             Authentication authentication){
-        return new ResponseEntity<>(newsService.updateVisibilityNewsById(id, visible, authentication), HttpStatus.OK);
+                                                             @RequestBody boolean visible,
+                                                             Authentication authentication){
+        return new ResponseEntity<>(newsService.updateVisibilityById(id, visible, authentication), HttpStatus.OK);
     }
 
      @ApiOperation(value = "Изменяет параметр закрепления новости по ее номеру")
      @PostMapping ("/{id}/pinned")
      public ResponseEntity<Boolean> updatePinningNewsById(@PathVariable Long id,
-                                         @RequestBody boolean pinned,
-                                         Authentication authentication){
-         return new ResponseEntity<>(newsService.updatePinningNewsById(id, pinned, authentication), HttpStatus.OK);
+                                                          @RequestBody boolean pinned,
+                                                          Authentication authentication){
+         return new ResponseEntity<>(newsService.updatePinningById(id, pinned, authentication), HttpStatus.OK);
      }
+
+    /**
+     * Формирует необходимый ответ в зависимости от содержания списка newsDtoList
+     */
+    private ResponseEntity<List<NewsDto>> getListResponseEntity(List<NewsDto> newsDtoList) {
+        return newsDtoList.size() == 0 ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) :
+                new ResponseEntity<>(newsDtoList, HttpStatus.OK);
+    }
+
+    /**
+     * Формирует необходимый ответ в зависимости от содержания newsDto
+     */
+    private ResponseEntity<NewsDto> getNewsDtoResponseEntity(NewsDto newsDto) {
+        return newsDto == null ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) :
+                new ResponseEntity<>(newsDto, HttpStatus.OK);
+    }
 }
