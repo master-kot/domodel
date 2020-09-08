@@ -2,7 +2,7 @@ package ru.geekbrains.domodel.services.api;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.domodel.dto.NewUserRequest;
+import ru.geekbrains.domodel.dto.UserRequest;
 import ru.geekbrains.domodel.dto.PasswordRequest;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.common.JwtUser;
@@ -50,10 +50,10 @@ public interface UserService {
     /**
      * Создать нового пользователя
      *
-     * @param newUserRequest отображение данных пользователя
+     * @param userRequest отображение данных пользователя
      * @return новый пользователь, сохраненный в репозитории
      */
-    UserDto save(NewUserRequest newUserRequest);
+    UserDto save(UserRequest userRequest);
 
     /**
      * Изменить данные пользователя

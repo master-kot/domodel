@@ -23,4 +23,6 @@ public class UserDto {
     private String photoLink;
 
     private String address;
+
+    private String phoneNumber;
 }

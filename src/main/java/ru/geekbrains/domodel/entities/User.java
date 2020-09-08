@@ -26,7 +26,7 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    // Логин или телефон
+    // Логин
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -74,6 +74,10 @@ public class User {
     // Почтовый адрес
     @Column(name = "address")
     private String address;
+
+    // Телефон для связи
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
 //    // Список лицевых счетов
 //    @OneToMany//(mappedBy = "user")

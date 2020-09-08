@@ -247,6 +247,20 @@ public class NewsServiceImpl implements NewsService {
         }
         return newsList;
     }
+  
+      private List<NewsDto> getRelevantNews(Authentication authentication) {
+        Stream<News> newsStream = newsRepository.findAll().stream()
+                .sorted((n1, n2) -> n2.getCreationDate().compareTo(n1.getCreationDate()))
+                .limit(10);
+        if (authentication == null) { // Если пользователь не авторизован
+            newsStream = newsStream.filter(n -> !n.isHidden() && n.isVisible());
+        } else { // Одинаково для всех авторизованных пользователей
+            newsStream = newsStream.filter(News::isVisible);
+        }
+        return newsStream.sorted((n1, n2) -> n2.comparePinning(n1))
+                .map(newsMapper::newsToNewsDto)
+                .collect(Collectors.toList());
+      }
 
     /**
      * Проверить, что пользователь имеет роль Админа
