@@ -4,17 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 /**
- * Dto представление сущности Документ
+ * Dto представление сущности Ссылка на фотографию
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DocumentDto {
+public class PhotoLinkDto {
 
     private Integer id;
 
-    // Заголовок (наименование)
     private String title;
 
-    // Ссылка на адрес документа
     private String linkAddress;
 }

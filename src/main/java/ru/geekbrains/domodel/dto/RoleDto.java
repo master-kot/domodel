@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 /**
- * DTO сущность роли пользователя
+ * DTO представление сущности Роль пользователя
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

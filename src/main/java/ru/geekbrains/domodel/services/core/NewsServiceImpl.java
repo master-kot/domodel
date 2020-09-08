@@ -37,7 +37,7 @@ public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
 
     @Override
-    public NewsDto getById(Long id, Authentication authentication) {
+    public NewsDto getDtoById(Long id, Authentication authentication) {
         Optional<News> optionalNews = newsRepository.findById(id);
         if (hasAuthenticationRoleAdmin(authentication) || authentication!=null&&optionalNews.get().isVisible()||authentication==null&&!optionalNews.get().isHidden()&&optionalNews.get().isVisible())
             return optionalNews.map(newsMapper::newsToNewsDto).orElse(null);
@@ -45,7 +45,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<NewsDto> getArchive(int page, Authentication authentication) {
+    public List<NewsDto> getArchiveDtoByPageId(int page, Authentication authentication) {
         List<NewsDto> newsDtoList = new ArrayList<>();
         if (!authentication.isAuthenticated()) return newsDtoList;
         List<News> newsArchive = getAllVisibleNews();
@@ -57,7 +57,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<NewsDto> getAllRelevant(Authentication authentication) {
+    public List<NewsDto> getRelevantDto(Authentication authentication) {
 //        Stream<NewsDto> newsDtoStream = newsRepository.findAll().stream().map(newsMapper::newsToNewsDto);
 //        // Если пользователь не авторизован
 //        if (authentication == null) {
@@ -112,7 +112,7 @@ public class NewsServiceImpl implements NewsService {
         news.setPinned(newsDto.isPinned());
         news.setVisible(newsDto.isVisible());
         newsRepository.save(news);
-        NewsDto newNewsDto = getById(id, authentication);
+        NewsDto newNewsDto = getDtoById(id, authentication);
         return newNewsDto;
     }
 
@@ -149,7 +149,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<NewsDto> getAll() {
+    public List<NewsDto> getAllDto() {
         List<News> newsList = newsRepository.findAll();
         Collections.reverse(newsList);
         return newsList.stream()

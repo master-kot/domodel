@@ -3,7 +3,7 @@ package ru.geekbrains.domodel.dto;
 import lombok.Data;
 
 /**
- * DTO класс запроса авторизации
+ * Запрос авторизации
  */
 @Data
 public class AuthenticationRequest {

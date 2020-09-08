@@ -31,7 +31,7 @@ public class NewsController {
     @GetMapping("/archive/{id}")
     public ResponseEntity<List<NewsDto>> readNewsArchiveByPageId(@PathVariable int id,
                                                                  Authentication authentication) {
-        return getListResponseEntity(newsService.getArchive(id, authentication));
+        return getListResponseEntity(newsService.getArchiveDtoByPageId(id, authentication));
     }
 
     @ApiOperation(value = "Создает новость")
@@ -45,7 +45,7 @@ public class NewsController {
     @GetMapping("/{id}")
     public ResponseEntity<NewsDto> readNewsById(@PathVariable Long id,
                                                 Authentication authentication) {
-        return getNewsDtoResponseEntity(newsService.getById(id, authentication));
+        return getNewsDtoResponseEntity(newsService.getDtoById(id, authentication));
     }
     
     @ApiOperation(value = "Изменяет новость по ее номеру")

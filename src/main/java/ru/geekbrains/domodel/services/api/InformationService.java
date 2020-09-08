@@ -12,10 +12,10 @@ public interface InformationService {
     /**
      * Получить блок информацию по индексу
      */
-    InformationDto getById(Integer id);
+    InformationDto getDtoById(Integer id);
 
     /**
      * Получить все блоки информации
      */
-    List<InformationDto> getAll();
+    List<InformationDto> getAllDto();
 }

@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     private final AuthorityRepository authorityRepository;
 
     @Override
-    public UserDto getById(Long userId) {
+    public UserDto getDtoById(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         return optionalUser.map(userMapper::userToUserDto).orElse(null);
     }

@@ -12,5 +12,5 @@ public interface DocumentService {
     /**
      * Вернуть список документов
      */
-    List<DocumentDto> getAll();
+    List<DocumentDto> getAllDto();
 }

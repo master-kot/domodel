@@ -39,8 +39,8 @@ public class AppealServiceImpl implements AppealService {
     private final AppealRepository appealRepository;
 
     @Override
-    public AppealDto getById(Long id,
-                             Authentication authentication) {
+    public AppealDto getDtoById(Long id,
+                                Authentication authentication) {
         if (authentication != null) {
             Appeal appeal;
             Optional<Appeal> optionalAppeal = appealRepository.findById(id);
@@ -95,7 +95,7 @@ public class AppealServiceImpl implements AppealService {
     }
 
     @Override
-    public List<AppealDto> getAll(Authentication authentication) {
+    public List<AppealDto> getAllDtoByUser(Authentication authentication) {
         // Если пользователь не авторизован
         if (authentication == null) {
             return new ArrayList<AppealDto>();

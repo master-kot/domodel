@@ -1,11 +1,13 @@
 package ru.geekbrains.domodel.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 /**
- * DTO запрос для создания Новости
+ * Запрос для создания Новости
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class NewsRequest {
 
     // Заголовок

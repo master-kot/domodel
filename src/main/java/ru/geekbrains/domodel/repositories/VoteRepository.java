@@ -16,7 +16,7 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
      * List<Object> findAll() найти все объекты
      * List<Object> findAllByUser(User user) найти все объекты по параметру
      * void delete(Object object) удалить конкретный объект
-     * Long deleteById(Long id) удалить объект по параметру
+     * void deleteById(Long id) удалить объект по параметру
      * void deleteAll(List<Object> objects) удалить список объектов
      * Object save(Object object) сохранить объект
      * List<Object> saveAll(List<Object> objects) сохранить список объектов

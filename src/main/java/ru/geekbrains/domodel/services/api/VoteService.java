@@ -10,19 +10,21 @@ public interface VoteService {
 
     /*
      * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ СЕРВИСОВ
-     * NewsDto getById(Long id) найти объект по параметру
-     * Collection<NewsDto> getAll() найти все объекты
-     * Collection<NewsDto> getAllByUser(UserDto userDto) найти все объекты по параметру
-     * News update(NewsDto newsDto) изменить объект
-     * News save(NewsDto newsDto) сохранить объект
-     * Collection<NewsDto> saveAll(Collection<NewsDto> newsDtoCollection) сохранить список объектов
+     * News getById(Long id) найти объект по параметру
+     * NewsDto getDtoById(Long id) найти Dto объект по параметру
+     * Collection<News> getAll() найти все объекты
+     * Collection<NewsDto> getAllDto() найти все Dto объекты
+     * Collection<NewsDto> getAllDtoByUser(UserDto userDto) найти все Dto объекты по параметру
+     * NewsDto update(NewsDto newsDto) изменить объект
+     * NewsDto save(NewsDto newsDto) сохранить объект
+     * Collection<NewsDto> saveAllDto(Collection<NewsDto> newsDtoCollection) сохранить список объектов
      * void delete(NewsDto newsDto) удалить конкретный объект
-     * Long deleteById(Long id) удалить объект по параметру
+     * void deleteById(Long id) удалить объект по параметру
      * void deleteAll(Collection<NewsDto> newsDtoCollection) удалить список объектов
      */
 
     /**
      * Получить голосование по индексу
      */
-    VoteDto getById(Long id, Authentication authentication);
+    VoteDto getDtoById(Long id, Authentication authentication);
 }

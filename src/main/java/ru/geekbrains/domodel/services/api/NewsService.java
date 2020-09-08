@@ -17,28 +17,28 @@ public interface NewsService {
      * @param id идентификатор новости
      * @return новость
      */
-    NewsDto getById(Long id, Authentication authentication);
+    NewsDto getDtoById(Long id, Authentication authentication);
     
     /**
      * Выдает список всех новостей
      *
      * @return список новостей
      */
-    List<NewsDto> getAll();
+    List<NewsDto> getAllDto();
 
     /**
      * Выдает список новостей по определенной странице архива
      *
      * @return список новостей
      */
-    List<NewsDto> getArchive(int page, Authentication authentication);
+    List<NewsDto> getArchiveDtoByPageId(int page, Authentication authentication);
 
     /**
      * Отдает список актуальных новостей для главной страницы
      *
      * @return список новостей
      */
-    List<NewsDto> getAllRelevant(Authentication authentication);
+    List<NewsDto> getRelevantDto(Authentication authentication);
 
     /**
      * Изменяет новость

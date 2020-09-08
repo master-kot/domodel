@@ -42,7 +42,7 @@ public class ProfileController {
             if (userDto != null) {
                 Map<Object, Object> response = new HashMap<>();
                 response.put("user", userDto);
-                response.put("accounts", accountService.getAllByUserUsername(authentication.getName()));
+                response.put("accounts", accountService.getAllDtoByUserUsername(authentication.getName()));
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
         }
@@ -78,7 +78,7 @@ public class ProfileController {
     public ResponseEntity<UserDto> readUserById(@PathVariable(name = "id") Long id,
                                                 Authentication authentication){
         if (hasAuthenticationRoleAdmin(authentication)) {
-            UserDto userDto = userService.getById(id);
+            UserDto userDto = userService.getDtoById(id);
             if (userDto != null) {
                 return new ResponseEntity<>(userDto, HttpStatus.OK);
             }

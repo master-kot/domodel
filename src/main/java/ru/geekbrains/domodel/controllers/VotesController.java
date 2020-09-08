@@ -25,14 +25,16 @@ public class VotesController {
 
     /*
      * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ СЕРВИСОВ
-     * NewsDto getById(Long id) найти объект по параметру
-     * Collection<NewsDto> getAll() найти все объекты
-     * Collection<NewsDto> getAllByUser(UserDto userDto) найти все объекты по параметру
-     * News update(NewsDto newsDto) изменить объект
-     * News save(NewsDto newsDto) сохранить объект
-     * Collection<NewsDto> saveAll(Collection<NewsDto> newsDtoCollection) сохранить список объектов
+     * News getById(Long id) найти объект по параметру
+     * NewsDto getDtoById(Long id) найти Dto объект по параметру
+     * Collection<News> getAll() найти все объекты
+     * Collection<NewsDto> getAllDto() найти все Dto объекты
+     * Collection<NewsDto> getAllDtoByUser(UserDto userDto) найти все Dto объекты по параметру
+     * NewsDto update(NewsDto newsDto) изменить объект
+     * NewsDto save(NewsDto newsDto) сохранить объект
+     * Collection<NewsDto> saveAllDto(Collection<NewsDto> newsDtoCollection) сохранить список объектов
      * void delete(NewsDto newsDto) удалить конкретный объект
-     * Long deleteById(Long id) удалить объект по параметру
+     * void deleteById(Long id) удалить объект по параметру
      * void deleteAll(Collection<NewsDto> newsDtoCollection) удалить список объектов
      */
 
@@ -40,13 +42,13 @@ public class VotesController {
     @GetMapping("/{id}")
     public ResponseEntity<VoteDto> readNewsById(@PathVariable Long id,
                                                 Authentication authentication) {
-        return getNewsDtoResponseEntity(voteService.getById(id, authentication));
+        return getNewsDtoResponseEntity(voteService.getDtoById(id, authentication));
     }
 
     @ApiOperation(value = "Выдает список голосований")
     @GetMapping("/archive/{id}")
     public ResponseEntity<List<VoteDto>> readAllVotes(Authentication authentication) {
-        return null; //getListResponseEntity(voteService.getAll(authentication));
+        return null; //getListResponseEntity(voteService.getAllDto(authentication));
     }
 
     /**

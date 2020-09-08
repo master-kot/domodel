@@ -18,7 +18,7 @@ public class VoteServiceImpl implements VoteService {
     private final VoteRepository voteRepository;
 
     @Override
-    public VoteDto getById(Long id, Authentication authentication) {
+    public VoteDto getDtoById(Long id, Authentication authentication) {
         return null;
     }
 }

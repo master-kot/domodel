@@ -69,7 +69,7 @@ public class MeterController {
     @ApiOperation(value = "Отдает данные для создания нового счетчика")
     @GetMapping("/add")
     public String getAddPage(Model model, Principal principal) {
-        model.addAttribute("accounts", accountService.getAllAccountsByUserUsername(principal.getName()));
+        model.addAttribute("accounts", accountService.getAllByUserUsername(principal.getName()));
         model.addAttribute("tariffs", tariffService.getAllTariffs());
         return "meters/meters_add";
     }

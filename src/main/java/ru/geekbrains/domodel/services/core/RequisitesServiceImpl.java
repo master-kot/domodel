@@ -17,7 +17,7 @@ public class RequisitesServiceImpl implements RequisitesService {
     private final RequisitesRepository requisitesRepository;
 
     @Override
-    public RequisitesDto getRelevant() {
+    public RequisitesDto getRelevantDto() {
         return null; // мапим результат requisitesRepository.findAll();
     }
 }

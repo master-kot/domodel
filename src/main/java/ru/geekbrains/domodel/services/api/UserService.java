@@ -22,7 +22,7 @@ public interface UserService {
      * @param userId идентификатор пользователя
      * @return пользователь
      */
-    UserDto getById(Long userId);
+    UserDto getDtoById(Long userId);
 
     /**
      * Найти пользователя по логину

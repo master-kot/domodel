@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 /**
- * DTO представление сущности запроса на регистрацию нового Пользователя
+ * Запрос для регистрации нового Пользователя
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

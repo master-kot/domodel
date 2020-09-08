@@ -14,7 +14,7 @@ public interface AppealService {
     /**
      * Получить обращение по индексу
      */
-    AppealDto getById(Long id, Authentication authentication);
+    AppealDto getDtoById(Long id, Authentication authentication);
 
     /**
      * Изменить обращение
@@ -29,5 +29,5 @@ public interface AppealService {
     /**
      * Получить список всех обращений
      */
-    List<AppealDto> getAll(Authentication authentication);
+    List<AppealDto> getAllDtoByUser(Authentication authentication);
 }
