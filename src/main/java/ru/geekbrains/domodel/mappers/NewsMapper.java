@@ -3,7 +3,6 @@ package ru.geekbrains.domodel.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import org.springframework.stereotype.Component;
 import ru.geekbrains.domodel.dto.NewsDto;
 import ru.geekbrains.domodel.dto.NewsRequestDto;
 import ru.geekbrains.domodel.entities.News;
@@ -12,7 +11,6 @@ import ru.geekbrains.domodel.entities.News;
  * Маппер, преобразовывающий классы News и NewsDto друг в друга
  */
 @Mapper(componentModel = "spring")
-@Component
 public interface NewsMapper {
 
     @Mappings({
