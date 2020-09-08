@@ -21,41 +21,10 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "news")
 public class News {
-
-
-//    public News(String title,
-//                String fullText,
-//                boolean hidden,
-//                boolean pinned,
-//                String pictureLink,
-//                User author_id) {
-//        this.creationDate = LocalDate.now();
-//        this.title = title;
-//        this.fullText = fullText;
-//        this.hidden = hidden;
-//        this.pinned = pinned;
-//        this.pictureLink = pictureLink;
-//        this.authorId = author_id;
-//        this.visible = true;
-//
-//        int limit = 20;
-//        if (fullText.length()>limit)
-//            this.shortText = fullText.substring(0,limit);
-//    }
-
-//    public News(NewsDto newsDto) {
-//        this.creationDate = newsDto.getCreationDate();
-//        this.title = newsDto.getTitle();
-//        this.fullText = newsDto.getFullText();
-//        this.pictureLink = newsDto.getPictureLink();
-//        this.hidden = newsDto.isHidden();
-//        this.pinned = newsDto.isPinned();
-//        this.visible = newsDto.isVisible();
-//        this.authorId = new User();
-//    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
