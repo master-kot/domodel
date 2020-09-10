@@ -52,8 +52,8 @@ public class MeterController {
     @Secured(Roles.ROLE_ADMIN)
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMeter(@PathVariable Long id) {
-        meterService.deleteMeterById(id);
-        return ResponseEntity.noContent().build();
+        boolean wasDeleted = meterService.deleteMeterById(id);
+        return wasDeleted ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
     @Secured({Roles.ROLE_ADMIN})

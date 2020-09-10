@@ -42,4 +42,6 @@ public interface MeterRepository extends JpaRepository<Meter, Long> {
     Optional<Meter> findById(Long id);
 
     Optional<List<Meter>> findAllByAccountIn(List<Account> accounts);
+
+    boolean deleteMeterById(Long id);
 }

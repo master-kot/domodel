@@ -49,9 +49,10 @@ public class MeterServiceImpl implements MeterService {
         return meterMapper.meterToMeterDto(m);
     }
 
+    @Transactional
     @Override
-    public void deleteMeterById(Long id) {
-        meterRepository.deleteById(id);
+    public boolean deleteMeterById(Long id) {
+        return meterRepository.deleteMeterById(id);
     }
 
     @Override

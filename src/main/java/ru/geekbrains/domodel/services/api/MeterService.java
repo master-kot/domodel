@@ -59,7 +59,7 @@ public interface MeterService {
     /**
      * Удаление данных счетчика.
      */
-    void deleteMeterById(Long id);
+    boolean deleteMeterById(Long id);
 
     /**
      * Принять единичные данные о показаниях счетчика.
