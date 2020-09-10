@@ -13,7 +13,7 @@ public class OperationResultImpl<T> extends OperationResult implements Serializa
         this._result = result;
     }
 
-    public Boolean Ok() {
+    public Boolean getOk() {
         if (this.getMetadata() == null)
             return this.getException() == null && this.getResult() != null;
         if (this.getException() != null || this.getResult() == null)

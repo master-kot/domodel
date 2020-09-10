@@ -25,7 +25,7 @@ public abstract class OperationResult implements Serializable {
         _exception = exception;
     }
 
-    public List<String> Logs() {
+    public List<String> getLogs() {
         return _logs;
     }
 
