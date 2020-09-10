@@ -59,14 +59,14 @@ public interface MeterService {
     /**
      * Удаление данных счетчика.
      */
-    boolean deleteMeterById(Long id);
+    Integer deleteMeterById(Long id);
 
     /**
      * Принять единичные данные о показаниях счетчика.
      * Предусмотреть, что показания могут быть поданы только раз в месяц,
      * при попытке повторного сохранения показания в текущем месяце - изменять его
      */
-    void submitMeterData(MeterData meterData);
+    MeterDataDto submitMeterData(MeterDataDto meterDataDto, Long meterId);
 
     /**
      * Получить список всех показаний данного счетчика
@@ -102,4 +102,6 @@ public interface MeterService {
     void generateDefaultMeterData();
 
     List<MeterData> getAllDataByMeters(List<Meter> meters);
+
+    Integer deleteMeterDataById(Long dataId);
 }

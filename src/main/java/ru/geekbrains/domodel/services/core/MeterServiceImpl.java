@@ -10,6 +10,7 @@ import ru.geekbrains.domodel.dto.MeterDto;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
+import ru.geekbrains.domodel.mappers.MeterDataMapper;
 import ru.geekbrains.domodel.mappers.MeterMapper;
 import ru.geekbrains.domodel.repositories.MeterDataRepository;
 import ru.geekbrains.domodel.repositories.MeterRepository;
@@ -37,6 +38,8 @@ import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 public class MeterServiceImpl implements MeterService {
 
     private final MeterMapper meterMapper;
+    private final MeterDataMapper dataMapper;
+
     private final MeterRepository meterRepository;
     private final MeterDataRepository meterDataRepository;
     private final MeterTypeRepository meterTypeRepository;
@@ -51,7 +54,7 @@ public class MeterServiceImpl implements MeterService {
 
     @Transactional
     @Override
-    public boolean deleteMeterById(Long id) {
+    public Integer deleteMeterById(Long id) {
         return meterRepository.deleteMeterById(id);
     }
 
@@ -106,18 +109,29 @@ public class MeterServiceImpl implements MeterService {
         );
     }
 
-    //TODO реализовать сохранение показаний для счетчика согласно описанию в интерфейсе
     @Transactional
     @Override
-    public void submitMeterData(MeterData meterData) {
-        meterData.setCreationDate(LocalDate.now());
-        Optional<MeterData> current = getCurrentMeterDataByMeter(meterData.getMeter());
-        if (current.isPresent()) {
-            if (current.get().getCreationDate().getMonth().equals(meterData.getCreationDate().getMonth())) {
-                meterData.setId(current.get().getId());
+    public MeterDataDto submitMeterData(MeterDataDto meterDataDto, Long meterId) {
+        if (meterId.equals(meterDataDto.getMeterId())) {
+            if (meterDataDto.getCreationDate() == null) {
+                meterDataDto.setCreationDate(LocalDate.now());
             }
+            Meter meter = meterRepository.findById(meterDataDto.getMeterId())
+                    .orElseThrow(() -> new RuntimeException("Meter not found by id: " + meterDataDto.getMeterId()));
+
+            Optional<MeterData> previous = getCurrentMeterDataByMeter(meter);
+            if (previous.isPresent()) {
+                if (previous.get().getCreationDate().getMonth().equals(meterDataDto.getCreationDate().getMonth())) {
+                    meterDataDto.setId(previous.get().getId());
+                }
+            }
+            MeterData current = dataMapper.meterDataDtoToMeterData(meterDataDto);
+            current.setMeter(meter);
+
+            return dataMapper.meterDataToMeterDataDto(meterDataRepository.save(current));
+        } else {
+            return null;
         }
-        meterDataRepository.save(meterData);
     }
 
     @Transactional
@@ -203,6 +217,12 @@ public class MeterServiceImpl implements MeterService {
         }
         result.sort((o1, o2) -> o2.getCreationDate().compareTo(o1.getCreationDate()));
         return result;
+    }
+
+    @Transactional
+    @Override
+    public Integer deleteMeterDataById(Long dataId) {
+        return meterDataRepository.deleteMeterDataById(dataId);
     }
 
     //TODO: перенести в Utils или подключить библиотеку конвертора

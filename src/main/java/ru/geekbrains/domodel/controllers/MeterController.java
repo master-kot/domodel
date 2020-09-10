@@ -52,8 +52,8 @@ public class MeterController {
     @Secured(Roles.ROLE_ADMIN)
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMeter(@PathVariable Long id) {
-        boolean wasDeleted = meterService.deleteMeterById(id);
-        return wasDeleted ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+        Integer result = meterService.deleteMeterById(id);
+        return result > 0 ? ResponseEntity.ok(result) : ResponseEntity.badRequest().build();
     }
 
     @Secured({Roles.ROLE_ADMIN})
@@ -65,5 +65,18 @@ public class MeterController {
     @GetMapping("/{id}/data")
     public List<MeterDataDto> readAllMeterDataByMeterId(@PathVariable Long id) {
         return meterService.getAllMeterDataByMeterId(id);
+    }
+
+    @PostMapping("/{id}/data")
+    public ResponseEntity<?> createMeterDataByMeterId(@PathVariable Long id, @RequestBody MeterDataDto meterDataDto) {
+        MeterDataDto result = meterService.submitMeterData(meterDataDto, id);
+        return  result != null ? ResponseEntity.ok(result) : ResponseEntity.badRequest().build();
+    }
+
+    @Secured({Roles.ROLE_ADMIN})
+    @DeleteMapping("/data/{dataId}")
+    public ResponseEntity<?> deleteMeterDataById(@PathVariable Long dataId) {
+        Integer result = meterService.deleteMeterDataById(dataId);
+        return result > 0 ? ResponseEntity.ok(result) : ResponseEntity.badRequest().build();
     }
 }

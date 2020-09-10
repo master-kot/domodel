@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @Builder
 public class MeterDataDto {
 
+    private Long id;
     private LocalDate creationDate;
     private Double value;
     private Long meterId;
