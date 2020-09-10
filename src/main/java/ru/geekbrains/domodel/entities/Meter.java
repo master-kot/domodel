@@ -47,6 +47,6 @@ public class Meter {
     private MeterType type;
 
     // Список показаний данного счетчика
-    @OneToMany(mappedBy = "meter")
+    @OneToMany(mappedBy = "meter", cascade = CascadeType.REMOVE)
     private List<MeterData> meterDatas = new ArrayList<>();
 }

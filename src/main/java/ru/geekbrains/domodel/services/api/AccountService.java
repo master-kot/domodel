@@ -13,7 +13,7 @@ public interface AccountService {
     /**
      * Получить лицевой счет по ID
      */
-    AccountDto getDtoById(Long id);
+    AccountDto getAccountDtoById(Long id);
 
     /**
      * Получить список всех лицевых счетов
@@ -29,5 +29,10 @@ public interface AccountService {
      * Получить список лицевых счетов пользователя по его логину
      * Используется только для межсервисного взаимодействия!!!
      */
-    List<Account> getAllByUserUsername(String username);
+    List<Account> getAllAccountsByUserUsername(String username);
+
+    /**
+     * Получить лицевой счет по ID
+     */
+    Account getAccountById(Long id);
 }

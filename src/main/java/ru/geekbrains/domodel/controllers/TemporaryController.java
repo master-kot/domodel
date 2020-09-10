@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.BillDto;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.Bill;
-import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
 import ru.geekbrains.domodel.services.api.*;
 
@@ -93,15 +92,15 @@ public class TemporaryController {
         return "meters/meters_user";
     }
 
-    @GetMapping("/meters/{id}")
-    public String getMetersArchivePage(@PathVariable String id, Model model) {
-        Meter meter = meterService.getMeter(Long.valueOf(id));
-        model.addAttribute("meter", meter);
-        model.addAttribute("account", meter.getAccount());
-
-        model.addAttribute("meterDatas", meterService.getAllMeterDataByMeter(meter));
-        return "meters/meters_archive";
-    }
+//    @GetMapping("/meters/{id}")
+//    public String getMetersArchivePage(@PathVariable String id, Model model) {
+//        Meter meter = meterService.getMeter(Long.valueOf(id));
+//        model.addAttribute("meter", meter);
+//        model.addAttribute("account", meter.getAccount());
+//
+//        model.addAttribute("meterDatas", meterService.getAllMeterDataByMeter(meter));
+//        return "meters/meters_archive";
+//    }
 
     @PostMapping("/submit")
     public String submitData(MeterData meterData) {
@@ -118,11 +117,11 @@ public class TemporaryController {
         return "meters/meters_add";
     }
 
-    @PostMapping("/meters/add")
-    public String addMeter(Meter meter) {
-        meterService.save(meter);
-        return "redirect:/meters";
-    }
+//    @PostMapping("/meters/add")
+//    public String addMeter(Meter meter) {
+//        meterService.save(meter);
+//        return "redirect:/meters";
+//    }
 
     // TODO Методы Контроллер лицевых счетов
 
