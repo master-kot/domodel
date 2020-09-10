@@ -37,7 +37,7 @@ public class MeterController {
         return meterService.getMeter(id);
     }
 
-    @ApiOperation(value = "Создание счетчика")
+    @ApiOperation(value = "Создает новый счетчик")
     @Secured({Roles.ROLE_ADMIN})
     @PostMapping("")
     public ResponseEntity<MeterDto> createMeter(@RequestBody MeterDto meterDto) {
@@ -48,7 +48,7 @@ public class MeterController {
         return ResponseEntity.ok(m);
     }
 
-    @ApiOperation(value = "Удаление счетчика по его индексу")
+    @ApiOperation(value = "Удаляет счетчик по его индексу")
     @Secured(Roles.ROLE_ADMIN)
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMeter(@PathVariable Long id) {
@@ -56,32 +56,27 @@ public class MeterController {
         return result > 0 ? ResponseEntity.ok(result) : ResponseEntity.badRequest().build();
     }
 
+    @ApiOperation(value = "Обновляет информацию о счетчике")
     @Secured({Roles.ROLE_ADMIN})
     @PutMapping("")
     public MeterDto updateMeter(@RequestBody MeterDto meterDto) {
         return meterService.saveOrUpdate(meterDto);
     }
 
+    @ApiOperation(value = "Выводит информацию о всех показаниях счетчика по индексу счетчика")
     @GetMapping("/{id}/data")
     public List<MeterDataDto> readAllMeterDataByMeterId(@PathVariable Long id) {
         return meterService.getAllMeterDataByMeterId(id);
     }
 
-
+    @ApiOperation(value = "Создает новые показания счетчика по индексу счетчика")
     @PostMapping("/{id}/data")
     public ResponseEntity<?> createMeterDataByMeterId(@PathVariable Long id, @RequestBody MeterDataDto meterDataDto) {
         MeterDataDto result = meterService.submitMeterData(meterDataDto, id);
         return  result != null ? ResponseEntity.ok(result) : ResponseEntity.badRequest().build();
     }
 
-    @ApiOperation(value = "Отдает данные для создания нового счетчика")
-    @GetMapping("/add")
-    public String getAddPage(Model model, Principal principal) {
-        model.addAttribute("accounts", accountService.getAllByUserUsername(principal.getName()));
-        model.addAttribute("tariffs", tariffService.getAllTariffs());
-        return "meters/meters_add";
-    }
-
+    @ApiOperation(value = "Удаляет показания счетчика по индексу показаний")
     @Secured({Roles.ROLE_ADMIN})
     @DeleteMapping("/data/{dataId}")
     public ResponseEntity<?> deleteMeterDataById(@PathVariable Long dataId) {

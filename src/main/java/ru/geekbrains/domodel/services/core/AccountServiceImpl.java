@@ -42,7 +42,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> getAllByUserUsername(String username) {
+    public List<Account> getAllAccountsByUserUsername(String username) {
         return accountRepository.findAllByUserUsername(username);
     }
 

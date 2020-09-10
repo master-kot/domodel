@@ -39,7 +39,7 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public List<BillDto> getAllDtoByUserUsername(@NonNull String username) {
-        List<Account> user = accountService.getAllByUserUsername(username);
+        List<Account> user = accountService.getAllAccountsByUserUsername(username);
         if (user == null) {
             return null;
         } else {
