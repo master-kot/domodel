@@ -28,18 +28,18 @@ public class BillServiceImpl implements BillService {
     private final RequisitesService requisitesService;
 
     @Override
-    public List<BillDto> getAllBills() {
+    public List<BillDto> getAllDto() {
         return null; //billRepository.findAll();
     }
 
     @Override
-    public BillDto getBillById(@NonNull Long billId) {
+    public BillDto getDtoById(@NonNull Long billId) {
         return null; //billRepository.findById(billId).orElse(null);
     }
 
     @Override
-    public List<BillDto> getAllBillsByUsername(@NonNull String username) {
-        List<Account> user = accountService.getAllAccountsByUserUsername(username);
+    public List<BillDto> getAllDtoByUserUsername(@NonNull String username) {
+        List<Account> user = accountService.getAllByUserUsername(username);
         if (user == null) {
             return null;
         } else {
@@ -48,7 +48,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public BillDto saveBill(BillDto bill) {
+    public BillDto save(BillDto bill) {
         //  прикрепляем номер счета (либо делаем это при создании счета) - номер счета это id bill
         /*Bill bill = new Bill();
         bill.setAccount(account);
@@ -90,19 +90,19 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public List<BillDto> saveAllBills() {
+    public List<BillDto> saveAll() {
         List<BillDto> bills = new ArrayList<>();
 //        accountService.getAllAccounts().forEach(this::createBillByAccount);
         return bills;
     }
 
     @Override
-    public List<BillDto> getAllBillsByAccount(AccountDto account) {
+    public List<BillDto> getAllDtoByAccount(AccountDto account) {
         return null; //billRepository.findAllByAccount(account);
     }
 
     @Override
-    public Bill updateBill(BillDto bill) {
+    public Bill update(BillDto bill) {
         return null;
     }
 }

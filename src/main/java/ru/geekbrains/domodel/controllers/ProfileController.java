@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
-import ru.geekbrains.domodel.dto.NewUserRequest;
+import ru.geekbrains.domodel.dto.UserRequest;
 import ru.geekbrains.domodel.dto.PasswordRequest;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.services.api.AccountService;
@@ -42,7 +42,7 @@ public class ProfileController {
             if (userDto != null) {
                 Map<Object, Object> response = new HashMap<>();
                 response.put("user", userDto);
-                response.put("accounts", accountService.getAllByUserUsername(authentication.getName()));
+                response.put("accounts", accountService.getAllDtoByUserUsername(authentication.getName()));
                 return new ResponseEntity<>(response, HttpStatus.OK);
             }
         }
@@ -78,7 +78,7 @@ public class ProfileController {
     public ResponseEntity<UserDto> readUserById(@PathVariable(name = "id") Long id,
                                                 Authentication authentication){
         if (hasAuthenticationRoleAdmin(authentication)) {
-            UserDto userDto = userService.getById(id);
+            UserDto userDto = userService.getDtoById(id);
             if (userDto != null) {
                 return new ResponseEntity<>(userDto, HttpStatus.OK);
             }
@@ -88,7 +88,7 @@ public class ProfileController {
 
     @ApiOperation(value = "Создает нового пользователя. Только для роли Админа")
     @PostMapping(value = "/create", consumes = PRODUCE_TYPE)
-    public ResponseEntity<UserDto> createUser(@RequestBody NewUserRequest userRequest,
+    public ResponseEntity<UserDto> createUser(@RequestBody UserRequest userRequest,
                                               Authentication authentication) {
         if (hasAuthenticationRoleAdmin(authentication)) {
             UserDto userDto = userService.save(userRequest);

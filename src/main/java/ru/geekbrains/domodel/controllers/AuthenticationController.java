@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.geekbrains.domodel.dto.AuthenticationRequestDto;
+import ru.geekbrains.domodel.dto.AuthenticationRequest;
 import ru.geekbrains.domodel.entities.common.JwtUser;
 import ru.geekbrains.domodel.security.jwt.JwtTokenProvider;
 import ru.geekbrains.domodel.services.api.UserService;
@@ -38,7 +38,7 @@ public class AuthenticationController {
 
     @ApiOperation(value = "Осуществляет авторизацию пользователя и выдачу токена авторизации")
     @PostMapping("login")
-    public ResponseEntity<Map<Object, Object>> login(@RequestBody AuthenticationRequestDto requestDto) {
+    public ResponseEntity<Map<Object, Object>> login(@RequestBody AuthenticationRequest requestDto) {
         try {
             String username = requestDto.getUsername();
             authenticationManager.authenticate(

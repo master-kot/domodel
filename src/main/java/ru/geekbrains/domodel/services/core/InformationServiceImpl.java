@@ -26,13 +26,13 @@ public class InformationServiceImpl implements InformationService {
     private final InformationRepository informationRepository;
 
     @Override
-    public InformationDto getById(Integer id) {
+    public InformationDto getDtoById(Integer id) {
         Optional<Information> optionalInformation = informationRepository.findById(id);
         return optionalInformation.map(informationMapper::informationToInformationDto).orElse(null);
     }
 
     @Override
-    public List<InformationDto> getAll() {
+    public List<InformationDto> getAllDto() {
         return informationRepository.findAll().stream()
                 .map(informationMapper::informationToInformationDto).collect(Collectors.toList());
     }

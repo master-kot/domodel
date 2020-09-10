@@ -24,24 +24,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InformationController {
 
-    // Сервис информации
+    // Необходимые сервисы
     private final InformationService informationService;
     private final DocumentService documentService;
 
     @ApiOperation(value = "Выводит список контактов")
     @GetMapping("/information")
     public List<InformationDto> readContacts() {
-        return informationService.getAll();
+        return informationService.getAllDto();
     }
 
     @ApiOperation(value = "Выводит список документов")
     @GetMapping("/documents")
     public ResponseEntity<List<DocumentDto>> readDocuments() {
-        List<DocumentDto> documentDtoList = documentService.getAll();
-        if (documentDtoList.size() != 0) {
-            return new ResponseEntity<>(documentDtoList, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        List<DocumentDto> documentDtoList = documentService.getAllDto();
+        return documentDtoList.size() != 0 ?
+                new ResponseEntity<>(documentDtoList, HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

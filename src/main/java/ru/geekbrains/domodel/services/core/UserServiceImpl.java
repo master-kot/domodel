@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.domodel.dto.NewUserRequest;
+import ru.geekbrains.domodel.dto.UserRequest;
 import ru.geekbrains.domodel.dto.PasswordRequest;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.Authority;
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     private final AuthorityRepository authorityRepository;
 
     @Override
-    public UserDto getById(Long userId) {
+    public UserDto getDtoById(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         return optionalUser.map(userMapper::userToUserDto).orElse(null);
     }
@@ -78,9 +78,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto save(NewUserRequest userRequest) {
-        Optional<User> optionalUser = userRepository.findByUsername(userRequest.getUsername());
-        if (optionalUser.isPresent()) {
+    public UserDto save(UserRequest userRequest) {
+        if (userRequest.getPassword() == null || userRequest.getPassword().isEmpty()
+                || !userRequest.getPassword().equals(userRequest.getPasswordConfirm())
+                || userRequest.getUsername() == null || userRequest.getUsername().isEmpty()
+                || userRepository.findByUsername(userRequest.getUsername()).isPresent()) {
             return null;
         }
         User newUser = new User(
@@ -102,9 +104,6 @@ public class UserServiceImpl implements UserService {
         } else {
             return null;
         }
-        if (userDto.getUsername() != null && !userDto.getUsername().isEmpty()) {
-            user.setUsername(userDto.getUsername());
-        }
         if (userDto.getFirstName() != null && !userDto.getFirstName().isEmpty()) {
             user.setFirstName(userDto.getFirstName());
         }
@@ -122,6 +121,9 @@ public class UserServiceImpl implements UserService {
         }
         if (userDto.getAddress() != null && !userDto.getAddress().isEmpty()) {
             user.setAddress(userDto.getAddress());
+        }
+        if (userDto.getPhoneNumber() != null && !userDto.getPhoneNumber().isEmpty()) {
+            user.setPhoneNumber(userDto.getPhoneNumber());
         }
         return userMapper.userToUserDto(userRepository.save(user));
     }

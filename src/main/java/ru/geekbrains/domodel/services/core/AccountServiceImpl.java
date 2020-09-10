@@ -30,19 +30,19 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<AccountDto> getAll() {
+    public List<AccountDto> getAllDto() {
         return accountRepository.findAll().stream()
                 .map(accountMapper::accountToAccountDto).collect(Collectors.toList());
     }
 
     @Override
-    public List<AccountDto> getAllByUserUsername(String username) {
+    public List<AccountDto> getAllDtoByUserUsername(String username) {
         return accountRepository.findAllByUserUsername(username).stream()
                 .map(accountMapper::accountToAccountDto).collect(Collectors.toList());
     }
 
     @Override
-    public List<Account> getAllAccountsByUserUsername(String username) {
+    public List<Account> getAllByUserUsername(String username) {
         return accountRepository.findAllByUserUsername(username);
     }
 

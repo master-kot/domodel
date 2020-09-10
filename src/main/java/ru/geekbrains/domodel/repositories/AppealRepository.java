@@ -12,5 +12,5 @@ import java.util.Collection;
 @Repository
 public interface AppealRepository  extends JpaRepository<Appeal, Long> {
 
-    Collection<Appeal> findAllByAuthorIdUsername(String name);
+    Collection<Appeal> findAllByAuthorUsername(String name);
 }

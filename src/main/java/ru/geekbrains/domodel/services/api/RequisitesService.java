@@ -10,5 +10,5 @@ public interface RequisitesService {
     /**
      * Получить текущие реквизиты
      */
-    RequisitesDto getRelevant();
+    RequisitesDto getRelevantDto();
 }

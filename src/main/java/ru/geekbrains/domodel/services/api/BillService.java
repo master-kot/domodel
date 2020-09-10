@@ -14,35 +14,35 @@ public interface BillService {
     /**
      * Получить список всех счетов
      */
-    List<BillDto> getAllBills();
+    List<BillDto> getAllDto();
 
     /**
      * Найти счет по его номеру
      */
-    BillDto getBillById(Long id);
+    BillDto getDtoById(Long id);
 
     /**
      * Найти все счета по имени пользователя
      */
-    List<BillDto> getAllBillsByUsername(String username);
+    List<BillDto> getAllDtoByUserUsername(String username);
 
     /**
      * Найти все счета для аккаунта
      */
-    List<BillDto> getAllBillsByAccount(AccountDto account);
+    List<BillDto> getAllDtoByAccount(AccountDto account);
 
     /**
      * Создать счет для аккаунта
      */
-    BillDto saveBill(BillDto bill);
+    BillDto save(BillDto bill);
 
     /**
      * Создать счета для всех аккаунтов
      */
-    List<BillDto> saveAllBills();
+    List<BillDto> saveAll();
 
     /**
      * Изменить счет по номеру
      */
-    Bill updateBill(BillDto bill);
+    Bill update(BillDto bill);
 }

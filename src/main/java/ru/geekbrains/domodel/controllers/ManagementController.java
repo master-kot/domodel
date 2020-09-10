@@ -19,16 +19,13 @@ import ru.geekbrains.domodel.services.api.UserService;
 @RequiredArgsConstructor
 public class ManagementController {
 
-    // Сервис пользователей
+    // Необходимые сервисы
     private final UserService userService;
     private final RequisitesService requisitesService;
 
-    /**
-     * Перехват запроса страницы реквизитов
-     */
-    @ApiOperation(value = "")
+    @ApiOperation(value = "Выводит текущие реквизиты")
     @GetMapping("/requisites")
     public RequisitesDto readRequisitesPage() {
-        return requisitesService.getRelevant();
+        return requisitesService.getRelevantDto();
     }
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 /**
- * DTO сущность единичного блока информации о компании
+ * DTO представление сущности Блок информации
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)

@@ -29,27 +29,12 @@ public class MainController {
     // Список необходимых сервисов
     private final NewsService newsService;
 
-    /*
-     * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ СЕРВИСОВ
-     * NewsDto getById(Long id) найти объект по параметру
-     * Collection<NewsDto> getAll() найти все объекты
-     * Collection<NewsDto> getAllByUser(UserDto userDto) найти все объекты по параметру
-     * News update(NewsDto newsDto) изменить объект
-     * News save(NewsDto newsDto) сохранить объект
-     * Collection<NewsDto> saveAll(Collection<NewsDto> newsDtoCollection) сохранить список объектов
-     * void delete(NewsDto newsDto) удалить конкретный объект
-     * Long deleteById(Long id) удалить объект по параметру
-     * void deleteAll(Collection<NewsDto> newsDtoCollection) удалить список объектов
-     */
-
     @ApiOperation(value = "Выводит список релевантных новостей")
     @GetMapping(produces = PRODUCE_TYPE)
     public ResponseEntity<List<NewsDto>> readRelevantNews(Authentication authentication) {
-        List<NewsDto> newsDtoList = newsService.getRelevantNews(authentication);
-        if (newsDtoList.size() != 0) {
-            return new ResponseEntity<>(newsDtoList, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        List<NewsDto> newsDtoList = newsService.getRelevantDto(authentication);
+        return newsDtoList.size() == 0 ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) :
+                new ResponseEntity<>(newsDtoList, HttpStatus.OK);
     }
 }

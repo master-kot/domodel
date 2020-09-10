@@ -30,55 +30,50 @@ public class AppealController {
     @ApiOperation(value = "Выводит список обращений пользователя")
     @GetMapping()
     public ResponseEntity<List<AppealDto>> readAll(Authentication authentication) {
-        List<AppealDto> appealDtoList = appealsService.getAll(authentication);
-        return createResponseByAppealList(appealDtoList);
+        List<AppealDto> appealDtoList = appealsService.getAllDtoByUser(authentication);
+        return getResponseByAppealDtoList(appealDtoList);
     }
 
     @ApiOperation(value = "Выводит обращение по его индексу")
     @GetMapping(value = "/{id}")
     public ResponseEntity<AppealDto> readAppealById(@PathVariable(name = "id") Long id,
                                                     Authentication authentication) {
-        AppealDto appeal = appealsService.getById(id, authentication);
-        return createResponseByAppeal(appeal);
+        AppealDto appeal = appealsService.getDtoById(id, authentication);
+        return getResponseByAppealDto(appeal);
     }
 
     @ApiOperation(value = "Изменяет обращение по его индексу")
-    @PostMapping(value = "/{id}")
+    @PostMapping(value = "/{id}", consumes = CONSUME_TYPE)
     public ResponseEntity<AppealDto> updateAppealById(@RequestBody AppealDto appealDto,
                                                       Authentication authentication) {
-        AppealDto appeal = appealsService.update(appealDto, authentication);
-        return createResponseByAppeal(appeal);
+        AppealDto updatedAppeal = appealsService.update(appealDto, authentication);
+        return getResponseByAppealDto(updatedAppeal);
     }
 
-    /**
-     * Создает новость
-     */
+
     @ApiOperation(value = "Создает обращение")
     @PostMapping(consumes = CONSUME_TYPE)
     public ResponseEntity<AppealDto> createAppeal(@RequestBody AppealRequest appealRequest,
                                                   Authentication authentication) {
         AppealDto appeal = appealsService.save(appealRequest, authentication);
-        return createResponseByAppeal(appeal);
+        return getResponseByAppealDto(appeal);
     }
 
     /**
      * Создает ответ по полученному Dto объекту
      */
-    private ResponseEntity<AppealDto> createResponseByAppeal(AppealDto appealDto) {
-        if (appealDto == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(appealDto, HttpStatus.OK);
+    private ResponseEntity<AppealDto> getResponseByAppealDto(AppealDto appealDto) {
+        return appealDto == null ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) :
+                new ResponseEntity<>(appealDto, HttpStatus.OK);
     }
 
     /**
      * Создает ответ по полученному списку Dto объектов
      */
-    private ResponseEntity<List<AppealDto>> createResponseByAppealList(List<AppealDto> appealDtoList) {
-        if (appealDtoList.size() != 0) {
-            return new ResponseEntity<>(appealDtoList, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+    private ResponseEntity<List<AppealDto>> getResponseByAppealDtoList(List<AppealDto> appealDtoList) {
+        return appealDtoList.size() != 0 ?
+             new ResponseEntity<>(appealDtoList, HttpStatus.OK) :
+             new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

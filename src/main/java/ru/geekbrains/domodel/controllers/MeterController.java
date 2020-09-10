@@ -67,10 +67,19 @@ public class MeterController {
         return meterService.getAllMeterDataByMeterId(id);
     }
 
+
     @PostMapping("/{id}/data")
     public ResponseEntity<?> createMeterDataByMeterId(@PathVariable Long id, @RequestBody MeterDataDto meterDataDto) {
         MeterDataDto result = meterService.submitMeterData(meterDataDto, id);
         return  result != null ? ResponseEntity.ok(result) : ResponseEntity.badRequest().build();
+    }
+
+    @ApiOperation(value = "Отдает данные для создания нового счетчика")
+    @GetMapping("/add")
+    public String getAddPage(Model model, Principal principal) {
+        model.addAttribute("accounts", accountService.getAllByUserUsername(principal.getName()));
+        model.addAttribute("tariffs", tariffService.getAllTariffs());
+        return "meters/meters_add";
     }
 
     @Secured({Roles.ROLE_ADMIN})

@@ -39,14 +39,14 @@ public class AppealServiceImpl implements AppealService {
     private final AppealRepository appealRepository;
 
     @Override
-    public AppealDto getById(Long id,
-                             Authentication authentication) {
+    public AppealDto getDtoById(Long id,
+                                Authentication authentication) {
         if (authentication != null) {
             Appeal appeal;
             Optional<Appeal> optionalAppeal = appealRepository.findById(id);
             if (optionalAppeal.isPresent()) {
                 appeal = optionalAppeal.get();
-                if (authentication.getName().equals(appeal.getAuthorId().getUsername()) |
+                if (authentication.getName().equals(appeal.getAuthor().getUsername()) |
                         hasAuthenticationRoleAdmin(authentication)) {
                     return appealMapper.appealToAppealDto(appeal);
                 }
@@ -65,7 +65,7 @@ public class AppealServiceImpl implements AppealService {
             // Добавляем статус
             appeal.setStatus(AppealStatus.SENT);
             // Добавляем автора обращения
-            appeal.setAuthorId(userService.getUserByUsername(authentication.getName()));
+            appeal.setAuthor(userService.getUserByUsername(authentication.getName()));
             // Преобразуем список фотографий
             appeal.setPhotoLinks(photoService.saveAll(appealRequest.getPhotoLinks()));
             return appealMapper.appealToAppealDto(appealRepository.save(appeal));
@@ -80,7 +80,7 @@ public class AppealServiceImpl implements AppealService {
             Optional<Appeal> optionalAppeal = appealRepository.findById(appealDto.getId());
             if (optionalAppeal.isPresent()) {
                 Appeal appeal = optionalAppeal.get();
-                if ((authentication.getName().equals(appeal.getAuthorId().getUsername()) |
+                if ((authentication.getName().equals(appeal.getAuthor().getUsername()) |
                         hasAuthenticationRoleAdmin(authentication))) {
                     appeal.setTitle(appealDto.getTitle());
                     appeal.setText(appealDto.getText());
@@ -95,7 +95,7 @@ public class AppealServiceImpl implements AppealService {
     }
 
     @Override
-    public List<AppealDto> getAll(Authentication authentication) {
+    public List<AppealDto> getAllDtoByUser(Authentication authentication) {
         // Если пользователь не авторизован
         if (authentication == null) {
             return new ArrayList<AppealDto>();
@@ -104,7 +104,7 @@ public class AppealServiceImpl implements AppealService {
         if (hasAuthenticationRoleAdmin(authentication)) {
             return mapEntityListToDtoList(appealRepository.findAll());
         } else { // Просто пользователь
-            return mapEntityListToDtoList(appealRepository.findAllByAuthorIdUsername(authentication.getName()));
+            return mapEntityListToDtoList(appealRepository.findAllByAuthorUsername(authentication.getName()));
         }
     }
 

@@ -3,6 +3,9 @@ package ru.geekbrains.domodel.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+/**
+ * Запрос на изменение пароля
+ */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PasswordRequest {

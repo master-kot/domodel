@@ -18,12 +18,12 @@ public interface AccountService {
     /**
      * Получить список всех лицевых счетов
      */
-    List<AccountDto> getAll();
+    List<AccountDto> getAllDto();
 
     /**
      * Получить список лицевых счетов пользователя по его логину
      */
-    List<AccountDto> getAllByUserUsername(String username);
+    List<AccountDto> getAllDtoByUserUsername(String username);
 
     /**
      * Получить список лицевых счетов пользователя по его логину

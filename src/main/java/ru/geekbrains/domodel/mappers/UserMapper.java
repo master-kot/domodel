@@ -7,7 +7,7 @@ import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.User;
 
 /**
- * Маппер, преобразовывающий классы User и UserDto друг в друга
+ * Маппер, преобразующий классы User и UserDto друг в друга
  */
 @Mapper(componentModel = "spring")
 public interface UserMapper {
@@ -19,7 +19,8 @@ public interface UserMapper {
             @Mapping(target="patronymic", source = "entity.patronymic"),
             @Mapping(target="email", source = "entity.email"),
             @Mapping(target="photoLink", source = "entity.photoLink"),
-            @Mapping(target="address", source = "entity.address")})
+            @Mapping(target="address", source = "entity.address"),
+            @Mapping(target="phoneNumber", source = "entity.phoneNumber")})
     UserDto userToUserDto(User entity);
 
     @Mappings({
@@ -29,6 +30,7 @@ public interface UserMapper {
             @Mapping(target="patronymic", source="dto.patronymic"),
             @Mapping(target="email", source="dto.email"),
             @Mapping(target="photoLink", source="dto.photoLink"),
-            @Mapping(target="address", source="dto.address")})
+            @Mapping(target="address", source="dto.address"),
+            @Mapping(target="phoneNumber", source="dto.phoneNumber")})
     User userDtoToUser(UserDto dto);
 }

@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  xmlns="http://www.w3.org/1999/html">
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -111,64 +114,42 @@
 						</span>
 					</article>
 				</div>
-				<article class="card_news r-flex pinned">
-					<img src="../img/news/1/1.png" alt="news foto">
-					<div class="card_news__body">
-						<div class="card_header card_header__impotant">
-							<h3>
-								ВАЖНО!
-							</h3>
+				<!--/*@thymesVar id="allVisibleNews" type="ru.geekbrains.domodel.entities.News"*/-->
+				<!--/*@thymesVar id="newsArchive" type="ru.geekbrains.domodel.entities.News"*/-->
+				<span ></span>
+				<tr th:each="news : ${all}">
+					<article class="card_news r-flex pinned">
+						<img src="../img/news/1/1.png" alt="news foto"/>
+						<div class="card_news__body">
+							<div class="card_header card_header__impotant">
+
+								<h3>
+									<td th:text="${news.title}"/>
+								</h3>
+								<p>
+								<td th:text="${news.fullText}"/>
+								</p>
+							</div>
+							<div class="card_news__controls r-flex">
+								<a th:href="@{'/news/news_details/' + ${news.id}}"> подробнее > </a>
+
+							</div>
+						</div>
+						<div class="card_news__date r-flex">
 							<p>
-								Очередное собрание состоиться 24 августа в 14:00
+							<td th:text="${news.creationDate}"/>
 							</p>
-						</div>
-						<div class="card_news__controls r-flex">
-							<a href="#">
-								подробнее >
-							</a>
-						</div>
-					</div>
-					<div class="card_news__date r-flex">
-						<p>
-							17.08.2020
-						</p>
-						<p>
-							<a href="#">
-								Удалить
-							</a>
-						</a>
-					</div>
-				</article>
-				<article class="card_news r-flex">
-					<img src="../img/news/1/1.png" alt="news foto">
-					<div class="card_news__body">
-						<div class="card_header">
-							<h3>
-								Новость какая-то
-							</h3>
 							<p>
-								Очередное собрание состоиться 24 августа в 14:00
-							</p>
+								<a href="#" sec:authorize="hasRole('ADMIN')">
+									Редактировать
+								</a>
+								</a>
 						</div>
-						<div class="card_news__controls r-flex">
-							<a href="#">
-								подробнее >
-							</a>
-						</div>
-					</div>
-					<div class="card_news__date r-flex">
-						<p>
-							17.08.2020
-						</p>
-						<p>
-							<a href="#">
-								Удалить
-							</a>
-						</a>
-					</div>
-				</article>
-				
+					</article>
+				</tr>
+
 			</div><!--container-->
+
 		</main> <!--main-->
 		<div id="loginForm" class="modal">
 			<div class="r-flex">
