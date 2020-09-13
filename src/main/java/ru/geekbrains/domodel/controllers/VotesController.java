@@ -6,10 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.domodel.dto.NewsDto;
+import ru.geekbrains.domodel.dto.NewsRequest;
 import ru.geekbrains.domodel.dto.VoteDto;
+import ru.geekbrains.domodel.dto.VoteRequest;
 import ru.geekbrains.domodel.services.api.VoteService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Контроллер голосований
@@ -40,15 +44,47 @@ public class VotesController {
 
     @ApiOperation(value = "Выдает голосование по его номеру")
     @GetMapping("/{id}")
-    public ResponseEntity<VoteDto> readNewsById(@PathVariable Long id,
+    public ResponseEntity<VoteDto> getVotesById(@PathVariable Long id,
                                                 Authentication authentication) {
-        return getNewsDtoResponseEntity(voteService.getDtoById(id, authentication));
+        return getVotesDtoResponseEntity(voteService.getVotesDtoById(id, authentication));
+    }
+
+    @ApiOperation(value = "Выдает список проголосовавших для админа")
+    @GetMapping("/{id}/detail")
+    public ResponseEntity<Map<String,String>> getVotesDetailById(@PathVariable Long id,
+                                                 Authentication authentication) {
+        return getMapResponseEntity(voteService.getVotesDtoDetailById(id, authentication));
     }
 
     @ApiOperation(value = "Выдает список голосований")
-    @GetMapping("/archive/{id}")
-    public ResponseEntity<List<VoteDto>> readAllVotes(Authentication authentication) {
-        return null; //getListResponseEntity(voteService.getAllDto(authentication));
+    @GetMapping("")
+    public ResponseEntity<List<VoteDto>> getAllVotes(Authentication authentication) {
+        return getListResponseEntity(voteService.getAllVotesDto(authentication));
+    }
+
+    @ApiOperation(value = "Создает голосование")
+    @PostMapping
+    public ResponseEntity<VoteDto> createVotes(@RequestBody VoteRequest voteRequest,
+                                              Authentication authentication) {
+        return getVotesDtoResponseEntity(voteService.save(voteRequest, authentication));
+    }
+
+    @ApiOperation(value = "Проголосовать")
+    @PostMapping("/{id}/{choice}")
+    public ResponseEntity<VoteDto> updateVotesById(@PathVariable Long id,
+                                                   @PathVariable String choice,
+                                                       Authentication authentication) {
+        return getVotesDtoResponseEntity(voteService.updateVoteDtoById(id, authentication, choice));
+    }
+
+
+    /**
+     * Формирует необходимый ответ в зависимости от содержания списка voteDtoList
+     */
+    private ResponseEntity<Map<String,String>> getMapResponseEntity(Map<String,String> map) {
+        return map.size() == 0 ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) :
+                new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     /**
@@ -63,7 +99,7 @@ public class VotesController {
     /**
      * Формирует необходимый ответ в зависимости от содержания voteDto
      */
-    private ResponseEntity<VoteDto> getNewsDtoResponseEntity(VoteDto voteDto) {
+    private ResponseEntity<VoteDto> getVotesDtoResponseEntity(VoteDto voteDto) {
         return voteDto == null ?
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) :
                 new ResponseEntity<>(voteDto, HttpStatus.OK);
