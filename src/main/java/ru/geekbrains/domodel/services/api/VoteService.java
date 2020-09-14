@@ -7,6 +7,7 @@ import ru.geekbrains.domodel.dto.VoteRequest;
 
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Интерфейс сервиса голосований
@@ -36,7 +37,7 @@ public interface VoteService {
     /**
      * Получить деталировку голосов (для админа)
      */
-    Map<String,String> getVotesDtoDetailById(Long id, Authentication authentication);
+    TreeMap<String,String> getVotesDtoDetailById(Long id, Authentication authentication);
 
     /**
      * Получить список голосований

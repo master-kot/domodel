@@ -13,16 +13,14 @@ import ru.geekbrains.domodel.repositories.VoteRepository;
 import ru.geekbrains.domodel.services.api.VoteService;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static ru.geekbrains.domodel.entities.ChoiceOption.*;
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
+import static ru.geekbrains.domodel.entities.constants.VoteStatus.*;
 
 /**
  * Реализация сервиса голосований
@@ -34,6 +32,7 @@ public class VoteServiceImpl implements VoteService {
     // Репозиторий голосований
     private final VoteRepository voteRepository;
     private final VoteMapper voteMapper;
+    private final UserServiceImpl userService;
 
     @Override
     public VoteDto getVotesDtoById(Long id, Authentication authentication) {
@@ -46,25 +45,29 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public Map<String, String> getVotesDtoDetailById(Long id, Authentication authentication) {
+    public TreeMap<String, String> getVotesDtoDetailById(Long id, Authentication authentication) {
         if (hasAuthenticationRoleAdmin(authentication)) {
             Optional<Vote> optionalVote = voteRepository.findById(id);
-            Map<String, String> mapVotes = new HashMap<>();
+            TreeMap<String, String> mapVotes = new TreeMap<>();
             for (VoteData voteData :
                     optionalVote.get().getVoteDatas()) {
                 mapVotes.put(voteData.getAuthor().getAddress(), voteData.getOption().getOption());
             }
             return mapVotes;
         }
-        return null;
+        return new TreeMap<String, String>();
     }
 
-    @Override //todo добавить статусы голосований
+    @Override
     public List<VoteDto> getAllVotesDto(Authentication authentication) {
         if (authentication != null) {
             Stream<VoteDto> voteDtoStream = voteRepository.findAll().stream().map(voteMapper::votesToVoteDto);
+
+            //todo в моем воображении эта строка добавляет каждому голосованию текущий статус
+            voteDtoStream.forEach((VoteDto) -> VoteDto.setStatusVotes(getStatusVotesById(VoteDto.getId(), authentication)));
+
             return voteDtoStream.sorted((o1, o2) -> o2.getEndDate().compareTo(o1.getEndDate())).collect(Collectors.toList());
-        } else return null;
+        } else return new ArrayList<VoteDto>();
     }
 
     @Override
@@ -78,9 +81,9 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public VoteDto updateVoteDtoById(Long id, Authentication authentication, String choice) {
         Optional<Vote> vote = voteRepository.findById(id);
-        Stream<VoteData> voteStream = vote.get().getVoteDatas().stream();
+   //     Stream<VoteData> voteStream = vote.get().getVoteDatas().stream();
 
-        if (!hasAuthenticationRoleUser(authentication) || !getStatusVotesById(id, authentication).equals("Проголосовать")) { //todo сделать не так топорно
+        if (!hasAuthenticationRoleUser(authentication) || !getStatusVotesById(id, authentication).equals(STATUS_LET_VOTE)) {
             return null;
         } else {
             VoteData voteData = new VoteData();
@@ -89,7 +92,7 @@ public class VoteServiceImpl implements VoteService {
             if (choice.equals(DISAGREED)) voteData.setOption(DISAGREED);
             if (choice.equals(ABSTAINED)) voteData.setOption(ABSTAINED);
             else return null;
-            voteData.setAuthor(юзер); //todo сюда пихнуть юзера
+            voteData.setAuthor(userService.getUserByUsername(authentication.getName())); //todo это мы точно текущего юзера получаем?
             vote.get().getVoteDatas().add(voteData);
             voteRepository.save(vote.get());
             return voteMapper.votesToVoteDto(vote.get());
@@ -113,21 +116,19 @@ public class VoteServiceImpl implements VoteService {
     }
 
     /**
-     * Проверить, что пользователь имеет роль Юзера
+     * Проверить статус голосования
      */
-    //todo сделать проверку статуса "вы проголосовали".
-    // возможно добавить сущность voteStatusOption
+    //todo проверить получение статуса "вы проголосовали".
     private String getStatusVotesById(Long id, Authentication authentication) {
         if (authentication == null) return null;
 
         Optional<Vote> vote = voteRepository.findById(id);
-        if (vote.get().getEndDate().isBefore(LocalDate.now())) return "Результаты";
+        if (vote.get().getEndDate().isBefore(LocalDate.now())) return STATUS_RESULT;
 
-        if (hasAuthenticationRoleAdmin(authentication)) return "Сбор голосов";
+        if (hasAuthenticationRoleAdmin(authentication)) return STATUS_VOTING_CONTINUES;
 
-        if (здеесь проверить голосовал ли юзер)return "Вы проголосовали";//todo проверить голосовал ли юзер
+        if (getVotesDtoById(id, authentication).getVoteDatas().contains(userService.getByUsername(authentication.getName())))return STATUS_ALREADY_VOTED;//todo проверить голосовал ли юзер
 
-        return "Проголосовать";
-
+        return STATUS_LET_VOTE;
     }
 }

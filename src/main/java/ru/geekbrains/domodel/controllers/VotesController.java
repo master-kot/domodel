@@ -14,6 +14,7 @@ import ru.geekbrains.domodel.services.api.VoteService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Контроллер голосований
@@ -51,7 +52,7 @@ public class VotesController {
 
     @ApiOperation(value = "Выдает список проголосовавших для админа")
     @GetMapping("/{id}/detail")
-    public ResponseEntity<Map<String,String>> getVotesDetailById(@PathVariable Long id,
+    public ResponseEntity<TreeMap<String,String>> getVotesDetailById(@PathVariable Long id,
                                                  Authentication authentication) {
         return getMapResponseEntity(voteService.getVotesDtoDetailById(id, authentication));
     }
@@ -81,7 +82,7 @@ public class VotesController {
     /**
      * Формирует необходимый ответ в зависимости от содержания списка voteDtoList
      */
-    private ResponseEntity<Map<String,String>> getMapResponseEntity(Map<String,String> map) {
+    private ResponseEntity<TreeMap<String,String>> getMapResponseEntity(TreeMap<String,String> map) {
         return map.size() == 0 ?
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) :
                 new ResponseEntity<>(map, HttpStatus.OK);

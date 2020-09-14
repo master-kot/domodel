@@ -25,7 +25,7 @@ public interface VoteMapper {
             @Mapping(target="voteDatas", source = "entity.voteDatas"),
 
            // @Mapping(target="authorName", source = "entity.author.firstName")
-    }) //todo добавить результаты
+    })
     VoteDto votesToVoteDto(Vote entity);
 
     @Mappings({
