@@ -23,4 +23,6 @@ public interface MeterDataRepository extends JpaRepository<MeterData, Long> {
     Optional<MeterData> findTopByMeterOrderByCreationDateDesc(Meter meter);
 
     Optional<MeterData> findFirstByMeterAndCreationDateBefore(Meter meter, LocalDate creationDate);
+
+    Integer deleteMeterDataById(Long id);
 }

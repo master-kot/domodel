@@ -12,6 +12,7 @@ import ru.geekbrains.domodel.dto.DocumentDto;
 import ru.geekbrains.domodel.dto.InformationDto;
 import ru.geekbrains.domodel.services.api.DocumentService;
 import ru.geekbrains.domodel.services.api.InformationService;
+import ru.geekbrains.domodel.services.api.RequisitesService;
 
 import java.util.List;
 
@@ -28,18 +29,39 @@ public class InformationController {
     private final InformationService informationService;
     private final DocumentService documentService;
 
-    @ApiOperation(value = "Выводит список контактов")
-    @GetMapping("/information")
-    public List<InformationDto> readContacts() {
-        return informationService.getAllDto();
+    @ApiOperation(value = "Выводит список информационных блоков раздела контакты")
+    @GetMapping("/contacts")
+    public ResponseEntity<List<InformationDto>> readContacts() {
+        return getListInformationDtoResponseEntity(informationService.getAllDto());
     }
 
     @ApiOperation(value = "Выводит список документов")
     @GetMapping("/documents")
     public ResponseEntity<List<DocumentDto>> readDocuments() {
-        List<DocumentDto> documentDtoList = documentService.getAllDto();
-        return documentDtoList.size() != 0 ?
-                new ResponseEntity<>(documentDtoList, HttpStatus.OK) :
-                new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return getListDocumentDtoResponseEntity(documentService.getAllDto());
+    }
+
+    /**
+     * Формирует необходимый ответ в зависимости от содержания списка documentDtoList
+     */
+    private ResponseEntity<List<DocumentDto>> getListDocumentDtoResponseEntity(List<DocumentDto> documentDtoList) {
+        return documentDtoList.size() == 0 ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(documentDtoList, HttpStatus.OK);
+    }
+
+    /**
+     * Формирует необходимый ответ в зависимости от содержания списка informationDtoList
+     */
+    private ResponseEntity<List<InformationDto>> getListInformationDtoResponseEntity(List<InformationDto> informationDtoList) {
+        return informationDtoList.size() == 0 ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(informationDtoList, HttpStatus.OK);
+    }
+
+    /**
+     * Формирует необходимый ответ в зависимости от содержания objectDto
+     */
+    private ResponseEntity<DocumentDto> getDtoResponseEntity(DocumentDto objectDto) {
+        return objectDto == null ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
     }
 }

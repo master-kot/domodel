@@ -1,5 +1,8 @@
 package ru.geekbrains.domodel.services.api;
 
+import org.springframework.security.core.Authentication;
+import ru.geekbrains.domodel.dto.MeterDataDto;
+import ru.geekbrains.domodel.dto.MeterDto;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
@@ -24,18 +27,23 @@ public interface MeterService {
      * Long deleteNewsById(Long id) удалить объект по параметру
      * void deleteAllNews(List<NewsDto> newsDtoList) удалить список объектов
      */
-
-    Meter getMeter(Long id);
+    /**
+     * Получить счетчик по id
+     */
+    MeterDto getMeter(Long id);
 
     /**
      * Получить список счетчиков данного аккаунта
      */
     List<Meter> getAllMetersByAccount(Account account);
-
+    /**
+     * Получить список счетчиков данного пользователя
+     */
+    List<MeterDto> getAllMetersByUserName(String name);
     /**
      * Получить список всех счетчиков
      */
-    List<Meter> getAllMeters();
+    List<MeterDto> getAllMeters(Authentication authentication);
 
     /**
      * Получить счетчик по его серийному номеру
@@ -44,20 +52,26 @@ public interface MeterService {
 
     /**
      * Сохранить данные счетчика.
+     * @param meterDto
      */
-    void save(Meter meter);
+    MeterDto saveOrUpdate(MeterDto meterDto);
+
+    /**
+     * Удаление данных счетчика.
+     */
+    Integer deleteMeterById(Long id);
 
     /**
      * Принять единичные данные о показаниях счетчика.
      * Предусмотреть, что показания могут быть поданы только раз в месяц,
      * при попытке повторного сохранения показания в текущем месяце - изменять его
      */
-    void submitMeterData(MeterData meterData);
+    MeterDataDto submitMeterData(MeterDataDto meterDataDto, Long meterId);
 
     /**
      * Получить список всех показаний данного счетчика
      */
-    List<MeterData> getAllMeterDataByMeter(Meter meter);
+    List<MeterDataDto> getAllMeterDataByMeterId(Long id);
 
     /**
      * Получить предыдущее (предпоследнее по дате в списке) показание счетчика
@@ -88,4 +102,6 @@ public interface MeterService {
     void generateDefaultMeterData();
 
     List<MeterData> getAllDataByMeters(List<Meter> meters);
+
+    Integer deleteMeterDataById(Long dataId);
 }
