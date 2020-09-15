@@ -86,7 +86,7 @@ public interface MeterService {
     /**
      * Получить текущее (последнее по дате в списке) показание счетчика
      */
-    Optional<MeterData> getCurrentMeterDataByMeter(Meter meter);
+    MeterData getCurrentMeterDataByMeter(Meter meter);
 
     /**
      * Получить текущие (последние по датам в списке) показания для списка счетчиков

@@ -165,8 +165,8 @@ public class MeterServiceImpl implements MeterService {
     //TODO реализовать получение показаний для счетчика (поискать лучшее вариант: сделать за "одно" обращение к бд)
     @Override
     public Optional<MeterData> getPreviousMeterDataByMeter(Meter meter) {
-        if (meterDataRepository.findTopByMeterOrderByCreationDateDesc(meter).isPresent()) {
-          MeterData md = meterDataRepository.findTopByMeterOrderByCreationDateDesc(meter).get();
+        if (meterDataRepository.findCurrentMeterData(meter).isPresent()) {
+          MeterData md = meterDataRepository.findCurrentMeterData(meter).get();
           return meterDataRepository.findFirstByMeterAndCreationDateBefore(meter, md.getCreationDate());
         }
         return Optional.empty();
@@ -179,14 +179,13 @@ public class MeterServiceImpl implements MeterService {
     }
 
     @Override
-    public Optional<MeterData> getCurrentMeterDataByMeter(Meter meter) {
-        return meterDataRepository.findTopByMeterOrderByCreationDateDesc(meter);
+    public MeterData getCurrentMeterDataByMeter(Meter meter) {
+        return meterDataRepository.findCurrentMeterData(meter).orElse(null);
     }
 
-    //TODO реализовать получение показаний для списка счетчиков
     @Override
-    public List<MeterData> getCurrentMeterDatasByMeters(List<Meter> meter) {
-        return new ArrayList<>();
+    public List<MeterData> getCurrentMeterDataByMeters(List<Meter> meter) {
+        return meterDataRepository.findCurrentMeterData(meter).orElse(new ArrayList<>());
     }
 
     @Override
