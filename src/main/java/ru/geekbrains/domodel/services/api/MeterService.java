@@ -91,7 +91,7 @@ public interface MeterService {
     /**
      * Получить текущие (последние по датам в списке) показания для списка счетчиков
      */
-    List<MeterData> getCurrentMeterDatasByMeters(List<Meter> meter);
+    List<MeterData> getCurrentMeterDataByMeters(List<Meter> meter);
 
     /**
      * Сгенерировать показания для всех счетчиков, по которым не подавались показания в текущем месяце
