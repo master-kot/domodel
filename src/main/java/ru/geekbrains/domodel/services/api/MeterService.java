@@ -72,7 +72,7 @@ public interface MeterService {
      * Предусмотреть, что показания могут быть поданы только раз в месяц,
      * при попытке повторного сохранения показания в текущем месяце - изменять его
      */
-    MeterDataDto submitMeterData(MeterDataDto meterDataDto, Long meterId);
+    MeterDataDto submitMeterData(Long meterId, Double meterDataDto, Authentication authentication);
 
     /**
      * Получить список всех показаний данного счетчика

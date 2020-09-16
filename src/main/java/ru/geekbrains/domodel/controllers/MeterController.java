@@ -81,8 +81,8 @@ public class MeterController {
 
     @ApiOperation(value = "Создает новые показания счетчика по индексу счетчика")
     @PostMapping("/{id}/data")
-    public ResponseEntity<?> createMeterDataByMeterId(@PathVariable Long id, @RequestBody MeterDataDto meterDataDto) {
-        MeterDataDto result = meterService.submitMeterData(meterDataDto, id);
+    public ResponseEntity<?> createMeterDataByMeterId(@PathVariable Long id, @RequestParam Double submitData, Authentication authentication) {
+        MeterDataDto result = meterService.submitMeterData(id, submitData, authentication);
         return  result != null ? ResponseEntity.ok(result) : ResponseEntity.badRequest().build();
     }
 

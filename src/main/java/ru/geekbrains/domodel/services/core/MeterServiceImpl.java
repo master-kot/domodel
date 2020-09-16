@@ -145,25 +145,30 @@ public class MeterServiceImpl implements MeterService {
 
     @Transactional
     @Override
-    public MeterDataDto submitMeterData(MeterDataDto meterDataDto, Long meterId) {
-        if (meterId.equals(meterDataDto.getMeterId())) {
-            if (meterDataDto.getCreationDate() == null) {
-                meterDataDto.setCreationDate(LocalDate.now());
-            }
-            Meter meter = meterRepository.findById(meterDataDto.getMeterId())
-                    .orElseThrow(() -> new RuntimeException("Meter not found by id: " + meterDataDto.getMeterId()));
+    public MeterDataDto submitMeterData(Long meterId, Double submitData, Authentication authentication) {
+        if (submitData != null && !submitData.isNaN()) {
+            LocalDate nowDate = LocalDate.now();
+            MeterData current;
 
-            Optional<MeterData> previous = getCurrentMeterDataByMeter(meter);
-            if (previous.isPresent()) {
-                if (previous.get().getCreationDate().getMonth().equals(meterDataDto.getCreationDate().getMonth())) {
-                    meterDataDto.setId(previous.get().getId());
-                }
-            }
-            MeterData current = dataMapper.meterDataDtoToMeterData(meterDataDto);
-            current.setMeter(meter);
+          Meter meter = meterRepository.findById(meterId)
+                  .orElseThrow(() -> new RuntimeException("Submit data - meter not found by id: " + meterId));
 
-            return dataMapper.meterDataToMeterDataDto(meterDataRepository.save(current));
+          if (!meter.getAccount().getUser().getUsername().equals(authentication.getName())) {
+              log.error("Нет нужны прав для работы со счетчиками: счетчик не пренадлежит пользователю");
+              return null;
+          }
+
+          MeterData previous = getCurrentMeterDataByMeter(meter);
+
+          if (previous != null && previous.getCreationDate().getMonth().equals(nowDate.getMonth())) {
+              previous.setValue(submitData);
+              return dataMapper.meterDataToMeterDataDto(meterDataRepository.save(previous));
+          } else {
+              current = MeterData.builder().creationDate(nowDate).meter(meter).value(submitData).build();
+              return dataMapper.meterDataToMeterDataDto(meterDataRepository.save(current));
+          }
         } else {
+            log.warn("Показания не корректны");
             return null;
         }
     }
@@ -188,12 +193,7 @@ public class MeterServiceImpl implements MeterService {
     @Override
     public List<MeterDataDto> getAllMeterDataByMeterId(Long id) {
         Meter m = meterRepository.findById(id).orElseThrow(() -> new RuntimeException("not found meter by id: " + id));
-        return meterDataRepository.findAllByMeterOrderByCreationDateDesc(m).stream().map(data -> MeterDataDto.builder()
-                .creationDate(data.getCreationDate())
-                .value(data.getValue())
-                .meterId(data.getMeter().getId())
-                .build())
-                .collect(Collectors.toList());
+        return meterDataRepository.findAllByMeterOrderByCreationDateDesc(m).stream().map(dataMapper::meterDataToMeterDataDto).collect(Collectors.toList());
     }
 
     //TODO реализовать получение показаний для счетчика (поискать лучшее вариант: сделать за "одно" обращение к бд)
