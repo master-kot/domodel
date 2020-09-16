@@ -5,13 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.AccountDto;
 import ru.geekbrains.domodel.dto.BillDto;
-import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Bill;
+import ru.geekbrains.domodel.mappers.BillMapper;
 import ru.geekbrains.domodel.repositories.BillRepository;
-import ru.geekbrains.domodel.services.api.*;
+import ru.geekbrains.domodel.services.api.BillService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса счетов (платежных документов)
@@ -21,35 +22,36 @@ import java.util.List;
 public class BillServiceImpl implements BillService {
 
     private final BillRepository billRepository;
-    private final UserService userService;
-    private final AccountService accountService;
-    private final TariffService tariffService;
-    private final MeterService meterService;
-    private final RequisitesService requisitesService;
+    private final BillMapper billMapper;
+
 
     @Override
     public List<BillDto> getAllDto() {
-        return null; //billRepository.findAll();
+        return billRepository.findAll().stream()
+                .map(billMapper::billToBillDto).collect(Collectors.toList());
     }
 
     @Override
-    public BillDto getDtoById(@NonNull Long billId) {
-        return null; //billRepository.findById(billId).orElse(null);
+    public List<BillDto> getAllUnpaidDtoByAccounts(List<AccountDto> accountDtos) {
+        List<Long> longList = accountDtos.stream().map(AccountDto::getId).collect(Collectors.toList());
+        return billRepository.findAllByAccountId(longList).stream()
+                .filter(b -> !b.isPaymentStatus()).map(billMapper::billToBillDto).collect(Collectors.toList());
     }
 
     @Override
-    public List<BillDto> getAllDtoByUserUsername(@NonNull String username) {
-        List<Account> user = accountService.getAllAccountsByUserUsername(username);
-        if (user == null) {
-            return null;
-        } else {
-            return null; //billRepository.findAllByAccountId(user.getAccountIds()); // заглушка
-        }
+    public List<BillDto> getAllDtoByAccounts(List<AccountDto> accountDtos) {
+        List<Long> longList = accountDtos.stream().map(AccountDto::getId).collect(Collectors.toList());
+        return billRepository.findAllByAccountId(longList).stream()
+                .map(billMapper::billToBillDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public BillDto getDtoById(@NonNull Long id) {
+        return billRepository.findById(id).map(billMapper::billToBillDto).orElse(null);
     }
 
     @Override
     public BillDto save(BillDto bill) {
-        //  прикрепляем номер счета (либо делаем это при создании счета) - номер счета это id bill
         /*Bill bill = new Bill();
         bill.setAccount(account);
         bill.setCreationDate(LocalDate.now());
@@ -72,11 +74,11 @@ public class BillServiceImpl implements BillService {
                 if (LocalDate.now().getMonth().compareTo(meterDataCurrent.getCreationDate().getMonth()) < 1) {
                     meterDataCurrent = new MeterData();
                     meterDataCurrent.setCreationDate(LocalDate.now());
-//                    meterDataCurrent.setValue(meter.getTariff().getDefaultIncreaseValue());
+                    meterDataCurrent.setValue(meter.getTariff().getDefaultIncreaseValue());
                     meterDataCurrent.setMeter(meter);
-//                    calculation.setCalculated(false);
+                    calculation.setCalculated(false);
                 }
-//                else calculation.setCalculated(true);
+                else calculation.setCalculated(true);
                 calculation.setPreviousData(meterDataPrev);
                 calculation.setCurrentData(meterDataCurrent);
                 calculation.setAmount(meterDataCurrent.getValue() - meterDataPrev.getValue());
@@ -98,11 +100,14 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public List<BillDto> getAllDtoByAccount(AccountDto account) {
-        return null; //billRepository.findAllByAccount(account);
+        return billRepository.findAllByAccountId(account.getId())
+                .stream().map(billMapper::billToBillDto).collect(Collectors.toList());
     }
 
     @Override
     public Bill update(BillDto bill) {
         return null;
     }
+
+
 }

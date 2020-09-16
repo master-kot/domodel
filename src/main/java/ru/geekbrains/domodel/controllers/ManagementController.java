@@ -31,7 +31,7 @@ public class ManagementController {
     @ApiOperation(value = "Выводит текущие реквизиты компании")
     @GetMapping("/requisites")
     public ResponseEntity<RequisitesDto> getRequisitesPage() {
-        return getDtoResponseEntity(requisitesService.getRelevantDto());
+        return getDtoResponseEntity(requisitesService.getCurrentDto());
     }
 
     @ApiOperation(value = "Выводит список всех пользователей")

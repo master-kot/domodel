@@ -12,14 +12,19 @@ import java.time.LocalDate;
 public class MeterDto {
 
     private Long id;
+
     private String serialNumber;
+
     private String model;
+
     private LocalDate checkDate;
 
     private Long accountId;
+
     private String houseNumber;
 
     private String typeDescription;
+
     private String tariffDescription;
 
     private Double currentMeterData;
