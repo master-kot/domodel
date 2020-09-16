@@ -6,12 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.domodel.dto.AccountDto;
 import ru.geekbrains.domodel.dto.MeterDataDto;
 import ru.geekbrains.domodel.dto.MeterDto;
 import ru.geekbrains.domodel.entities.constants.Roles;
 import ru.geekbrains.domodel.services.api.MeterService;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -26,7 +28,15 @@ public class MeterController {
 
     private final MeterService meterService;
 
+    @ApiOperation(value = "Выводит счетчики отсортированные по лицевому счету")
     @GetMapping("")
+    public Map<AccountDto, List<MeterDto>> readMetersUser(Authentication authentication) {
+        return meterService.getMetersUser(authentication);
+    }
+
+    @ApiOperation(value = "Выводит список всех счетчиков")
+    @Secured(Roles.ROLE_ADMIN)
+    @GetMapping("/all")
     public List<MeterDto> readAllMeters(Authentication authentication) {
         return meterService.getAllMeters(authentication);
     }

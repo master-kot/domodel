@@ -5,11 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.domodel.dto.AccountDto;
 import ru.geekbrains.domodel.dto.MeterDataDto;
 import ru.geekbrains.domodel.dto.MeterDto;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
+import ru.geekbrains.domodel.mappers.AccountMapper;
 import ru.geekbrains.domodel.mappers.MeterDataMapper;
 import ru.geekbrains.domodel.mappers.MeterMapper;
 import ru.geekbrains.domodel.repositories.MeterDataRepository;
@@ -19,11 +21,9 @@ import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.MeterService;
 
 import javax.transaction.Transactional;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
@@ -39,6 +39,7 @@ public class MeterServiceImpl implements MeterService {
 
     private final MeterMapper meterMapper;
     private final MeterDataMapper dataMapper;
+    private final AccountMapper accountMapper;
 
     private final MeterRepository meterRepository;
     private final MeterDataRepository meterDataRepository;
@@ -73,31 +74,64 @@ public class MeterServiceImpl implements MeterService {
     @Override
     public List<MeterDto> getAllMeters(Authentication authentication) {
         if (authentication != null) {
-            List<Meter> meters;
-            List<MeterDto> dtoList;
-            MeterDto dto;
-
             if (hasAuthenticationRoleAdmin(authentication)) {
+                List<Meter> meters;
+                MeterDto meterDto;
+                List<MeterDto> meterDtoList = new ArrayList<>();
+                List<MeterData> currentData;
+
                 meters = meterRepository.findAll();
-            }
-            else if (hasAuthenticationRoleUser(authentication)) {
-                List<Account> accounts = accountService.getAllAccountsByUserUsername(authentication.getName());
-                meters = meterRepository.findAllByAccountIn(accounts).orElse(new ArrayList<>());
+                currentData = getCurrentMeterDataByMeters(meters);
+
+                for(Meter m : meters) {
+                    meterDto = meterMapper.meterToMeterDto(m);
+                    for(MeterData md : currentData) {
+                        if (m.getId().equals(md.getMeter().getId())) {
+                            meterDto.setCurrentMeterData(md.getValue());
+                            break;
+                        }
+                    }
+                    meterDtoList.add(meterDto);
+                }
+
+                return meterDtoList;
             }
             else {
                 throw new RuntimeException("Нет нужны прав для работы со счетчиками: " + authentication);
             }
+        }
+        throw new RuntimeException("Нет нужны прав для работы со счетчиками: authentication -> null");
+    }
 
-            dtoList = new ArrayList<>();
-            for (Meter m : meters) {
-                dto = meterMapper.meterToMeterDto(m);
-                if (getCurrentMeterDataByMeter(m).isPresent()) {
-                    dto.setCurrentMeterData(getCurrentMeterDataByMeter(m).get().getValue());
+    @Override
+    public Map<AccountDto, List<MeterDto>> getMetersUser(Authentication authentication) {
+        if (authentication != null) {
+            List<Meter> meters;
+            List<MeterData> currentData;
+            MeterDto meterDto;
+            List<MeterDto> meterDtoList;
+            Map<AccountDto, List<MeterDto>> map = new HashMap<>();
+            List<Account> accounts = accountService.getAllAccountsByUserUsername(authentication.getName());
+
+
+            for (Account account : accounts) {
+                meterDtoList = new ArrayList<>();
+                meters = meterRepository.findByAccount(account);
+                currentData = getCurrentMeterDataByMeters(meters);
+
+                for(Meter m : meters) {
+                    meterDto = meterMapper.meterToMeterDto(m);
+                    for(MeterData md : currentData) {
+                        if (m.getId().equals(md.getMeter().getId())) {
+                            meterDto.setCurrentMeterData(md.getValue());
+                            break;
+                        }
+                    }
+                    meterDtoList.add(meterDto);
                 }
-                dtoList.add(dto);
+                map.put(accountMapper.accountToAccountDto(account), meterDtoList);
             }
-
-            return dtoList;
+            return map;
         }
         throw new RuntimeException("Нет нужны прав для работы со счетчиками: authentication -> null");
     }
@@ -185,7 +219,7 @@ public class MeterServiceImpl implements MeterService {
 
     @Override
     public List<MeterData> getCurrentMeterDataByMeters(@NotEmpty List<Meter> meter) {
-        return meterDataRepository.findCurrentMeterData(meter).orElse(new ArrayList<>());
+        return meter.isEmpty() ? new ArrayList<>() : meterDataRepository.findCurrentMeterData(meter).orElse(new ArrayList<>());
     }
 
     @Override

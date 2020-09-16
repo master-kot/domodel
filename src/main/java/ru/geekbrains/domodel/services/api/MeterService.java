@@ -1,6 +1,7 @@
 package ru.geekbrains.domodel.services.api;
 
 import org.springframework.security.core.Authentication;
+import ru.geekbrains.domodel.dto.AccountDto;
 import ru.geekbrains.domodel.dto.MeterDataDto;
 import ru.geekbrains.domodel.dto.MeterDto;
 import ru.geekbrains.domodel.entities.Account;
@@ -8,6 +9,7 @@ import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -44,6 +46,10 @@ public interface MeterService {
      * Получить список всех счетчиков
      */
     List<MeterDto> getAllMeters(Authentication authentication);
+    /**
+     * Получить список всех счетчиков для пользователя
+     */
+    Map<AccountDto, List<MeterDto>> getMetersUser(Authentication authentication);
 
     /**
      * Получить счетчик по его серийному номеру
