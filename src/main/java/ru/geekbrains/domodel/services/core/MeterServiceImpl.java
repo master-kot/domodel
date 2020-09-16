@@ -184,7 +184,7 @@ public class MeterServiceImpl implements MeterService {
     }
 
     @Override
-    public List<MeterData> getCurrentMeterDataByMeters(List<Meter> meter) {
+    public List<MeterData> getCurrentMeterDataByMeters(@NotEmpty List<Meter> meter) {
         return meterDataRepository.findCurrentMeterData(meter).orElse(new ArrayList<>());
     }
 
