@@ -12,7 +12,6 @@ public interface MeterDataMapper {
     @Mappings({
             @Mapping(target = "id", source = "entity.id"),
             @Mapping(target = "value", source = "entity.value"),
-            @Mapping(target = "meterId", source = "entity.meter.id"),
             @Mapping(target = "creationDate", source = "entity.creationDate", dateFormat = "dd-MM-yyyy")
 
     })
