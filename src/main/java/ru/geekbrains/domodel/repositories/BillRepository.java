@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface BillRepository extends JpaRepository<Bill, Long> {
 
+    List<Bill> findAllByAccountId(Long id);
     List<Bill> findAllByAccountId(List<Long> id);
-    List<Bill> findAllByAccount(Account account);
 }

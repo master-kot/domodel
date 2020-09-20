@@ -22,7 +22,7 @@ public interface AppealService {
     AppealDto update(AppealDto appealDto, Authentication authentication);
 
     /**
-     * Получить список всех обращений
+     * Сохранить обращение
      */
     AppealDto save(AppealRequest appealRequest, Authentication authentication);
 

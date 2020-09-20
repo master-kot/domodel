@@ -1,6 +1,7 @@
 package ru.geekbrains.domodel.services.api;
 
 import org.springframework.security.core.Authentication;
+import ru.geekbrains.domodel.dto.AccountDto;
 import ru.geekbrains.domodel.dto.MeterDataDto;
 import ru.geekbrains.domodel.dto.MeterDto;
 import ru.geekbrains.domodel.entities.Account;
@@ -8,6 +9,7 @@ import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -44,6 +46,10 @@ public interface MeterService {
      * Получить список всех счетчиков
      */
     List<MeterDto> getAllMeters(Authentication authentication);
+    /**
+     * Получить список всех счетчиков для пользователя
+     */
+    Map<AccountDto, List<MeterDto>> getMetersUser(Authentication authentication);
 
     /**
      * Получить счетчик по его серийному номеру
@@ -66,7 +72,7 @@ public interface MeterService {
      * Предусмотреть, что показания могут быть поданы только раз в месяц,
      * при попытке повторного сохранения показания в текущем месяце - изменять его
      */
-    MeterDataDto submitMeterData(MeterDataDto meterDataDto, Long meterId);
+    MeterDataDto submitMeterData(Long meterId, Double meterDataDto, Authentication authentication);
 
     /**
      * Получить список всех показаний данного счетчика
@@ -86,12 +92,12 @@ public interface MeterService {
     /**
      * Получить текущее (последнее по дате в списке) показание счетчика
      */
-    Optional<MeterData> getCurrentMeterDataByMeter(Meter meter);
+    MeterData getCurrentMeterDataByMeter(Meter meter);
 
     /**
      * Получить текущие (последние по датам в списке) показания для списка счетчиков
      */
-    List<MeterData> getCurrentMeterDatasByMeters(List<Meter> meter);
+    List<MeterData> getCurrentMeterDataByMeters(List<Meter> meter);
 
     /**
      * Сгенерировать показания для всех счетчиков, по которым не подавались показания в текущем месяце

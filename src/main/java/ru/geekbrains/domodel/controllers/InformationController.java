@@ -4,15 +4,13 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.DocumentDto;
 import ru.geekbrains.domodel.dto.InformationDto;
+import ru.geekbrains.domodel.dto.InformationRequest;
 import ru.geekbrains.domodel.services.api.DocumentService;
 import ru.geekbrains.domodel.services.api.InformationService;
-import ru.geekbrains.domodel.services.api.RequisitesService;
 
 import java.util.List;
 
@@ -33,6 +31,14 @@ public class InformationController {
     @GetMapping("/contacts")
     public ResponseEntity<List<InformationDto>> readContacts() {
         return getListInformationDtoResponseEntity(informationService.getAllDto());
+    }
+
+    @ApiOperation(value = "Создает информационный блок раздела контакты")
+    @PostMapping("/contacts")
+    public ResponseEntity<InformationDto> createInformation(@RequestBody InformationRequest informationRequest,
+                                                            Authentication authentication) {
+        InformationDto informationDto = informationService.save(informationRequest, authentication);
+        return getInformationDtoResponseEntity(informationDto);
     }
 
     @ApiOperation(value = "Выводит список документов")
@@ -60,7 +66,15 @@ public class InformationController {
     /**
      * Формирует необходимый ответ в зависимости от содержания objectDto
      */
-    private ResponseEntity<DocumentDto> getDtoResponseEntity(DocumentDto objectDto) {
+    private ResponseEntity<DocumentDto> getDocumentDtoResponseEntity(DocumentDto objectDto) {
+        return objectDto == null ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
+    }
+
+    /**
+     * Формирует необходимый ответ в зависимости от содержания objectDto
+     */
+    private ResponseEntity<InformationDto> getInformationDtoResponseEntity(InformationDto objectDto) {
         return objectDto == null ?
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
     }

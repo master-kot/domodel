@@ -45,10 +45,10 @@ public class Calculation {
     @JoinColumn(name = "current_data")
     private MeterData currentData;
 
-//    // Ссылка на номер счета
-//    @ManyToOne
-//    @JoinColumn(name = "bill_id")
-//    private Bill bill;
+    // Ссылка на номер счета
+    @ManyToOne
+    @JoinColumn(name = "bill_id")
+    private Bill bill;
 
     // НЕ ИСПОЛЬЗУЕТСЯ В MVP 0
     // true если калькуляция рассчитана по показаниям, false - если по нормативному значению
