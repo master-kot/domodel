@@ -27,6 +27,15 @@ public class NewsController {
     // Список необходимых сервисов
     private final NewsService newsService;
 
+    @ApiOperation(value = "Выводит список релевантных новостей")
+    @GetMapping("/relevant")
+    public ResponseEntity<List<NewsDto>> readRelevantNews(Authentication authentication) {
+        List<NewsDto> newsDtoList = newsService.getRelevantDto(authentication);
+        return newsDtoList.size() == 0 ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) :
+                new ResponseEntity<>(newsDtoList, HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Выдает список новостей определенной страницы архива")
     @GetMapping("/archive/{id}")
     public ResponseEntity<List<NewsDto>> readNewsArchiveByPageId(@PathVariable int id,

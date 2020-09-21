@@ -1,6 +1,8 @@
 package ru.geekbrains.domodel.services.api;
 
+import org.springframework.security.core.Authentication;
 import ru.geekbrains.domodel.dto.InformationDto;
+import ru.geekbrains.domodel.dto.InformationRequest;
 
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
 public interface InformationService {
 
     /**
-     * Получить блок информацию по индексу
+     * Получить блок информации по индексу
      */
     InformationDto getDtoById(Integer id);
 
@@ -18,4 +20,9 @@ public interface InformationService {
      * Получить все блоки информации
      */
     List<InformationDto> getAllDto();
+
+    /**
+     * Сохранить блок информации
+     */
+    InformationDto save(InformationRequest appealRequest, Authentication authentication);
 }

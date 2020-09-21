@@ -7,7 +7,7 @@ import ru.geekbrains.domodel.entities.Bill;
 import java.util.List;
 
 /**
- * Интерфейс сервиса счетов (платежных документов)
+ * Интерфейс сервиса счетов (платежей)
  */
 public interface BillService {
 
@@ -22,14 +22,19 @@ public interface BillService {
     BillDto getDtoById(Long id);
 
     /**
-     * Найти все счета по имени пользователя
+     * Найти все счета для аккаунта
      */
-    List<BillDto> getAllDtoByUserUsername(String username);
+    List<BillDto> getAllDtoByAccount(AccountDto account);
+
+    /**
+     * Найти все неоплаченные счета для аккаунта
+     */
+    List<BillDto> getAllUnpaidDtoByAccounts(List<AccountDto> accounts);
 
     /**
      * Найти все счета для аккаунта
      */
-    List<BillDto> getAllDtoByAccount(AccountDto account);
+    List<BillDto> getAllDtoByAccounts(List<AccountDto> accountDtos);
 
     /**
      * Создать счет для аккаунта

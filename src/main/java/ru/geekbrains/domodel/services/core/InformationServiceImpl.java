@@ -1,8 +1,10 @@
 package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.InformationDto;
+import ru.geekbrains.domodel.dto.InformationRequest;
 import ru.geekbrains.domodel.entities.Information;
 import ru.geekbrains.domodel.mappers.InformationMapper;
 import ru.geekbrains.domodel.repositories.InformationRepository;
@@ -35,5 +37,15 @@ public class InformationServiceImpl implements InformationService {
     public List<InformationDto> getAllDto() {
         return informationRepository.findAll().stream()
                 .map(informationMapper::informationToInformationDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public InformationDto save(InformationRequest informationRequest, Authentication authentication) {
+        // Если пользователь не авторизован
+        if (authentication != null) {
+            Information information = informationMapper.informationRequestToInformation(informationRequest);
+            return informationMapper.informationToInformationDto(informationRepository.save(information));
+        }
+        return null;
     }
 }

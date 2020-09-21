@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import ru.geekbrains.domodel.dto.InformationDto;
+import ru.geekbrains.domodel.dto.InformationRequest;
 import ru.geekbrains.domodel.entities.Information;
 
 /**
@@ -25,4 +26,10 @@ public interface InformationMapper {
             @Mapping(target="text", source="dto.text"),
             @Mapping(target="hidden", source="dto.hidden")})
     Information informationDtoToInformation(InformationDto dto);
+
+    @Mappings({
+            @Mapping(target="title", source="dto.title"),
+            @Mapping(target="text", source="dto.text"),
+            @Mapping(target="hidden", source="dto.hidden")})
+    Information informationRequestToInformation(InformationRequest dto);
 }
