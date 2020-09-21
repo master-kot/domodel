@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import ru.geekbrains.domodel.dto.AccountDto;
+import ru.geekbrains.domodel.dto.AccountMetersDto;
 import ru.geekbrains.domodel.entities.Account;
 
 /**
@@ -25,4 +26,11 @@ public interface AccountMapper {
             @Mapping(target="houseNumber", source="dto.houseNumber"),
             @Mapping(target="acresAmount", source="dto.acresAmount")})
     Account accountDtoToAccount(AccountDto dto);
+
+    @Mappings({
+            @Mapping(target="id", source = "entity.id"),
+            @Mapping(target="address", source = "entity.address"),
+            @Mapping(target="houseNumber", source = "entity.houseNumber"),
+            @Mapping(target="acresAmount", source = "entity.acresAmount")})
+    AccountMetersDto accountToAccountMetersDto(Account entity);
 }
