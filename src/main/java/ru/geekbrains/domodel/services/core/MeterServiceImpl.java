@@ -87,7 +87,7 @@ public class MeterServiceImpl implements MeterService {
                     meterDto = meterMapper.meterToMeterDto(m);
                     for(MeterData md : currentData) {
                         if (m.getId().equals(md.getMeter().getId())) {
-                            meterDto.setCurrentMeterData(md.getValue());
+                            meterDto.setCurrentMeterData(dataMapper.meterDataToMeterDataDto(md));
                             break;
                         }
                     }
@@ -126,7 +126,7 @@ public class MeterServiceImpl implements MeterService {
                         meterDto = meterMapper.meterToMeterDto(m);
                         for(MeterData md : currentData) {
                             if (m.getId().equals(md.getMeter().getId())) {
-                                meterDto.setCurrentMeterData(md.getValue());
+                                meterDto.setCurrentMeterData(dataMapper.meterDataToMeterDataDto(md));
                                 break;
                             }
                         }
