@@ -27,5 +27,5 @@ public class MeterDto {
 
     private String tariffDescription;
 
-    private Double currentMeterData;
+    private MeterDataDto currentMeterData;
 }
