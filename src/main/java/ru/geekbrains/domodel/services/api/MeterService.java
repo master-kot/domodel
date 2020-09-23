@@ -57,7 +57,6 @@ public interface MeterService {
 
     /**
      * Сохранить данные счетчика.
-     * @param meterDto
      */
     MeterDto saveOrUpdate(MeterDto meterDto);
 
@@ -86,7 +85,7 @@ public interface MeterService {
     /**
      * Получить предыдущие (предпоследние в списке по датам) показания для списка счетчиков
      */
-    List<MeterData> getPreviousMeterDatasByMeters(List<Meter> meter);
+    List<MeterData> getPreviousMeterDataByMeters(List<Meter> meter);
 
     /**
      * Получить текущее (последнее по дате в списке) показание счетчика
@@ -97,14 +96,6 @@ public interface MeterService {
      * Получить текущие (последние по датам в списке) показания для списка счетчиков
      */
     List<MeterData> getCurrentMeterDataByMeters(List<Meter> meter);
-
-    /**
-     * Сгенерировать показания для всех счетчиков, по которым не подавались показания в текущем месяце
-     * на основании заданного в сущности Тариф значения по умолчанию для этого типа счетчика.
-     * Предусмотреть защиту от повторного запуска метода в одном расчетном месяце (периоде)
-     */
-    @Deprecated
-    void generateDefaultMeterData();
 
     List<MeterData> getAllDataByMeters(List<Meter> meters);
 
