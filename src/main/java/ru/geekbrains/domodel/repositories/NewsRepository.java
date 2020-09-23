@@ -9,5 +9,4 @@ import ru.geekbrains.domodel.entities.News;
  */
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
-
 }

@@ -1,67 +1,74 @@
 package ru.geekbrains.domodel.services.api;
 
-import ru.geekbrains.domodel.entities.News;
+import org.springframework.security.core.Authentication;
+import ru.geekbrains.domodel.dto.NewsDto;
+import ru.geekbrains.domodel.dto.NewsRequest;
 
-import java.util.Date;
 import java.util.List;
 
 /**
  * Интерфейс сервиса новостей
  */
 public interface NewsService {
-
+    
     /**
-     * Получить список новостей
+     * Выдает новость по ее идентификатору
+     *
+     * @param id идентификатор новости
+     * @return новость
+     */
+    NewsDto getDtoById(Long id, Authentication authentication);
+    
+    /**
+     * Выдает список всех новостей
      *
      * @return список новостей
      */
-    List<News> getAllNews();
+    List<NewsDto> getAllDto();
 
     /**
-     * Получить новость по ее идентификатору
+     * Выдает список новостей по определенной странице архива
+     *
+     * @return список новостей
+     */
+    List<NewsDto> getArchiveDtoByPageId(int page, Authentication authentication);
+
+    /**
+     * Отдает список актуальных новостей для главной страницы
+     *
+     * @return список новостей
+     */
+    List<NewsDto> getRelevantDto(Authentication authentication);
+
+    /**
+     * Изменяет новость
      *
      * @param id идентификатор новости
-     * @return новость
-     */
-    News getNewsById(Long id);
-
-    /**
-     * Удалить новость по ее идентификатору
-     *
-     * @param id идентификатор новости
-     */
-    void deleteNewsById(Long id);
-
-    /**
-     * Сохранить новость
-     *
-     * @param news новость, отдаваемая в репозиторий для сохранения
-     * @return новость, сохраненная в репозитории
-     */
-    public News saveNews (News news);
-
-    /**
-     * Изменить новость
-     *
-     * @param id идентификатор новости
-     * @param title заголовок новости
-     * @param fullText полный текст новости
-     * @param hidden видима ли новость
-     * @param pinned закреплена ли новость
-     * @param pictureLink ссылка на картинку новости
      * @return измененная новость
      */
-    News changeNews (Long id,
-                     String title,
-                     String fullText,
-                     boolean hidden,
-                     boolean pinned,
-                     String pictureLink);
+    NewsDto updateById(Long id, NewsDto newsDto, Authentication authentication);
 
     /**
-     * Получить последнюю по дате новость
+     *Изменяет параметр закрепления новости
      *
-     * @return новость
+     *@param id идентификатор новости
+     *@param pinned закреплена ли новость
      */
-    News getLastNews();
+    boolean updatePinningById(Long id, boolean pinned, Authentication authentication);
+
+    /**
+     * Изменяет параметр видимости новости
+     *
+     * @param id идентификатор новости
+     * @param visible флажок видимости новости
+     */
+    boolean updateVisibilityById(Long id , boolean visible, Authentication authentication);
+
+    /**
+     * Сохраняет новость
+     *
+     * @param newsRequest запрос на создание новости
+     * @return новость, сохраненная в репозитории
+     */
+    NewsDto save(NewsRequest newsRequest, Authentication authentication);
 }

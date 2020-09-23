@@ -1,8 +1,10 @@
 package ru.geekbrains.domodel.services.api;
 
-import ru.geekbrains.domodel.entities.Information;
+import org.springframework.security.core.Authentication;
+import ru.geekbrains.domodel.dto.InformationDto;
+import ru.geekbrains.domodel.dto.InformationRequest;
 
-import java.util.Optional;
+import java.util.List;
 
 /**
  * Интерфейс сервиса информации о компании
@@ -10,7 +12,17 @@ import java.util.Optional;
 public interface InformationService {
 
     /**
-     * Получить информацию по индексу
+     * Получить блок информации по индексу
      */
-    Optional<Information> getById(Integer id);
+    InformationDto getDtoById(Integer id);
+
+    /**
+     * Получить все блоки информации
+     */
+    List<InformationDto> getAllDto();
+
+    /**
+     * Сохранить блок информации
+     */
+    InformationDto save(InformationRequest appealRequest, Authentication authentication);
 }

@@ -12,9 +12,7 @@ import java.util.List;
  */
 @Repository
 public interface BillRepository extends JpaRepository<Bill, Long> {
-    List<Bill> findAllByAccount(Account user);
 
-//    List<Bill> findAllBySendStatus(SendStatus status);
-//    List<Bill> findAllBySendStatusAndAccount(SendStatus status, Account account);
-//    List<Bill> findAllByAccount(Account account);
+    List<Bill> findAllByAccountId(Long id);
+    List<Bill> findAllByAccountId(List<Long> id);
 }

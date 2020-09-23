@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Сущность лицевого счета, заведенного для каждого дома
@@ -40,11 +38,11 @@ public class Account {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // Список счетчиков данного аккаунта
-    @OneToMany(mappedBy = "account")
-    private List<Meter> meters = new ArrayList<>();
+//    // Список счетчиков данного аккаунта
+//    @OneToMany(mappedBy = "account")
+//    private List<Meter> meters = new ArrayList<>();
 
-    // Список платежных документов (счетов), выставленных для данного аккаунта
-    @OneToMany(mappedBy = "account")
-    private List<Bill> bills = new ArrayList<>();
+//    // Список платежных документов (счетов), выставленных для данного аккаунта
+//    @OneToMany(mappedBy = "account")
+//    private List<Bill> bills = new ArrayList<>();
 }

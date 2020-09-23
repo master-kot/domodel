@@ -35,11 +35,6 @@ public class Calculation {
     @Column(name = "cost")
     private Double cost;
 
-    // Ссылка на номер счета
-    @ManyToOne
-    @JoinColumn(name = "bill_id")
-    private Bill bill;
-
     // Ссылка на предыдущие показания счетчика
     @OneToOne
     @JoinColumn(name="previous_data")
@@ -49,6 +44,11 @@ public class Calculation {
     @OneToOne
     @JoinColumn(name = "current_data")
     private MeterData currentData;
+
+    // Ссылка на номер счета
+    @ManyToOne
+    @JoinColumn(name = "bill_id")
+    private Bill bill;
 
     // НЕ ИСПОЛЬЗУЕТСЯ В MVP 0
     // true если калькуляция рассчитана по показаниям, false - если по нормативному значению

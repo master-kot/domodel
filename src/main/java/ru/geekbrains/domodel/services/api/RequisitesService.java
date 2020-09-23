@@ -1,9 +1,6 @@
 package ru.geekbrains.domodel.services.api;
 
-import ru.geekbrains.domodel.entities.Requisites;
-import ru.geekbrains.domodel.entities.BillType;
-
-import java.util.List;
+import ru.geekbrains.domodel.dto.RequisitesDto;
 
 /**
  * Интерфейс сервиса реквизитов компании
@@ -11,12 +8,7 @@ import java.util.List;
 public interface RequisitesService {
 
     /**
-     * Получить список реквизитов всех компаний
+     * Получить текущие реквизиты
      */
-    List<Requisites> getAllRequisites();
-
-    /**
-     * Получить реквизиты компании по типу платежа
-     */
-    Requisites getRequisitesByBillType(BillType billType);
+    RequisitesDto getCurrentDto();
 }

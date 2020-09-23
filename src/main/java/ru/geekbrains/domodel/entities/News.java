@@ -2,10 +2,18 @@ package ru.geekbrains.domodel.entities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import ru.geekbrains.domodel.dto.NewsDto;
+import ru.geekbrains.domodel.repositories.UserRepository;
+import ru.geekbrains.domodel.services.api.UserService;
+import ru.geekbrains.domodel.services.core.UserServiceImpl;
+import ru.geekbrains.domodel.services.api.UserService;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDate;
+
 
 /**
  * Сущность новости для связи ее с БД
@@ -13,7 +21,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "news")
 public class News {
 
@@ -26,24 +34,19 @@ public class News {
     @Column(name = "creation_date", nullable = false)
     private LocalDate creationDate;
 
-    // Заголовок новости
+    // Заголовок
     @Column(name = "title", nullable = false)
     private String title;
 
-    // Краткий текст новости, ограниченный до 255 символов
-    @Transient
-    private String shortText;
-
-    // Полный текст новости (содержание)
+    // Полный текст (содержание)
     @Column(name = "full_text", nullable = false)
     private String fullText;
 
-    // Ссылка на адрес картинки новости
+    // Адрес ссылки на картинку
     @Column(name = "picture_link")
     private String pictureLink;
 
-    // Указатель публичности новости. Если false, новость отображается для всех посетителей,
-    // Если true, новость отображается только для зарегистрированных посетителей
+    // Указатель публичности новости. Новость отображается для всех посетителей если false
     @Column(name = "hidden", nullable = false)
     private boolean hidden;
 
@@ -51,12 +54,28 @@ public class News {
     @Column(name = "pinned", nullable = false)
     private boolean pinned;
 
-    // Указатель видимости новости. Новость отображается если true
+    // Указатель актуальности и видимости новости. Новость видна юзерам если true
     @Column(name = "visible", nullable = false)
     private boolean visible;
 
-    // Ссылка на пользователя - автора данной новости
+    // Автор
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
-    private User authorId;
+    private User author;
+
+    public int comparePinning(News other) {
+        if (this.pinned) {
+            if (other.pinned) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } else {
+            if (other.pinned) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
 }

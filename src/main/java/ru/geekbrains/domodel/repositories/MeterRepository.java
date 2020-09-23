@@ -14,6 +14,18 @@ import java.util.Optional;
 @Repository
 public interface MeterRepository extends JpaRepository<Meter, Long> {
 
+    /*
+     * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ РЕПОЗИТОРИЕВ
+     * Optional<Object> findById(Long id) найти объект по параметру
+     * List<Object> findAll() найти все объекты
+     * List<Object> findAllByUser(User user) найти все объекты по параметру
+     * void delete(Object object) удалить конкретный объект
+     * Long deleteById(Long id) удалить объект по параметру
+     * void deleteAll(List<Object> objects) удалить список объектов
+     * Object save(Object object) сохранить объект
+     * List<Object> saveAll(List<Object> objects) сохранить список объектов
+     */
+
     /**
      * СОГЛАШЕНИЕ О НАИМЕНОВАНИИ МЕТОДОВ РЕПОЗИТОРИЕВ
      * Optional<Object> findById(Long id) найти объект по параметру
@@ -40,4 +52,8 @@ public interface MeterRepository extends JpaRepository<Meter, Long> {
      *
      */
     Optional<Meter> findById(Long id);
+
+    Optional<List<Meter>> findAllByAccountIn(List<Account> accounts);
+
+    Integer deleteMeterById(Long id);
 }

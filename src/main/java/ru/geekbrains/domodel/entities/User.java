@@ -7,9 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static javax.persistence.FetchType.EAGER;
 
@@ -28,7 +26,7 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    // Логин (телефон пользователя)
+    // Логин
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -36,15 +34,11 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    // Подтверждение пароля
-    @Transient
-    private String passwordConfirm;
-
     // Пользователь активен (true) или заблокирован (false)
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    // Список ролей пользователя
+    // Список ролей
     @ManyToMany(fetch = EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "users_authorities",
             // Внешний ключ для User в в таблице users_authorities
@@ -81,9 +75,13 @@ public class User {
     @Column(name = "address")
     private String address;
 
-    // Список лицевых счетов пользователя
-    @OneToMany(mappedBy = "user")
-    private Set<Account> accounts = new HashSet<>();
+    // Телефон для связи
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+//    // Список лицевых счетов
+//    @OneToMany//(mappedBy = "user")
+//    private List<Account> accounts = new ArrayList<>();
 
     public User(String username,
                 String password,

@@ -1,57 +1,53 @@
 package ru.geekbrains.domodel.services.api;
 
-import ru.geekbrains.domodel.entities.Account;
+import ru.geekbrains.domodel.dto.AccountDto;
+import ru.geekbrains.domodel.dto.BillDto;
 import ru.geekbrains.domodel.entities.Bill;
 
 import java.util.List;
 
 /**
- * Интерфейс сервиса счетов (платежных документов)
+ * Интерфейс сервиса счетов (платежей)
  */
 public interface BillService {
 
     /**
      * Получить список всех счетов
      */
-    List<Bill> getAllBills();
-
-    /**
-     * Сохранить счет
-     */
-    Bill save(Bill bill);
+    List<BillDto> getAllDto();
 
     /**
      * Найти счет по его номеру
      */
-    Bill findById(Long billId);
-
-    /**
-     * Найти все счета по имени пользователя
-     */
-    List<Bill> findAllByUsername(String username);
+    BillDto getDtoById(Long id);
 
     /**
      * Найти все счета для аккаунта
      */
-    List<Bill> getAllBillsByAccount(Account account);
+    List<BillDto> getAllDtoByAccount(AccountDto account);
 
     /**
-     * создать счет для аккаунта
+     * Найти все неоплаченные счета для аккаунта
      */
-    Bill createBillByAccount(Account account);
+    List<BillDto> getAllUnpaidDtoByAccounts(List<AccountDto> accounts);
+
+    /**
+     * Найти все счета для аккаунта
+     */
+    List<BillDto> getAllDtoByAccounts(List<AccountDto> accountDtos);
+
+    /**
+     * Создать счет для аккаунта
+     */
+    BillDto save(BillDto bill);
 
     /**
      * Создать счета для всех аккаунтов
      */
-    List<Bill> createAll();
-
-    /**
-     * Получить все счета данного аккаунта
-     */
-    List<Bill> getAllByAccount(Account account);
+    List<BillDto> saveAll();
 
     /**
      * Изменить счет по номеру
      */
-    Bill changeById(Long Id, Bill billData);
+    Bill update(BillDto bill);
 }

@@ -1,7 +1,7 @@
 package ru.geekbrains.domodel.services.api;
 
+import ru.geekbrains.domodel.dto.AccountDto;
 import ru.geekbrains.domodel.entities.Account;
-import ru.geekbrains.domodel.entities.User;
 
 import java.util.List;
 
@@ -13,20 +13,26 @@ public interface AccountService {
     /**
      * Получить лицевой счет по ID
      */
-    Account getAccountById(Long id);
+    AccountDto getAccountDtoById(Long id);
 
     /**
      * Получить список всех лицевых счетов
      */
-    List<Account> getAllAccounts();
+    List<AccountDto> getAllDto();
 
     /**
      * Получить список лицевых счетов пользователя по его логину
      */
-    List<Account> getAccountsByUserUserame(String username);
+    List<AccountDto> getAllDtoByUserUsername(String username);
 
     /**
-     * Получить список лицевых счетов пользователя
+     * Получить список лицевых счетов пользователя по его логину
+     * Используется только для межсервисного взаимодействия!!!
      */
-    List<Account> getAccountsByUser(User user);
+    List<Account> getAllAccountsByUserUsername(String username);
+
+    /**
+     * Получить лицевой счет по ID
+     */
+    Account getAccountById(Long id);
 }
