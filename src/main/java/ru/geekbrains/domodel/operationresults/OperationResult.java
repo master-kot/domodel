@@ -1,4 +1,4 @@
-package ru.geekbrains.domodel.domain.core.operationresults;
+package ru.geekbrains.domodel.operationresults;
 
 import java.io.Serializable;
 import java.util.*;
