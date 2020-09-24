@@ -13,6 +13,7 @@ import ru.geekbrains.domodel.entities.User;
 public interface UserMapper {
 
     @Mappings({
+            @Mapping(target="id", source = "entity.id"),
             @Mapping(target="username", source = "entity.username"),
             @Mapping(target="firstName", source = "entity.firstName"),
             @Mapping(target="lastName", source = "entity.lastName"),
@@ -24,6 +25,7 @@ public interface UserMapper {
     UserDto userToUserDto(User entity);
 
     @Mappings({
+            @Mapping(target="id", source="dto.id"),
             @Mapping(target="username", source="dto.username"),
             @Mapping(target="firstName", source="dto.firstName"),
             @Mapping(target="lastName", source="dto.lastName"),

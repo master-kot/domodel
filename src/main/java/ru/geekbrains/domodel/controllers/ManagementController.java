@@ -34,11 +34,11 @@ public class ManagementController {
         return getDtoResponseEntity(requisitesService.getCurrentDto());
     }
 
-    @ApiOperation(value = "Выводит список всех пользователей")
-    @GetMapping("/management/users")
-    public List<UserDto> readAllUsers() {
-        return userService.getAll();
-    }
+//    @ApiOperation(value = "Выводит список всех пользователей")
+//    @GetMapping("/users")
+//    public List<UserDto> readAllUsers() {
+//        return userService.getAll();
+//    }
 
     @ApiOperation(value = "Выводит результат удаления пользователя")
     @DeleteMapping("/management/users/delete/{id}")
