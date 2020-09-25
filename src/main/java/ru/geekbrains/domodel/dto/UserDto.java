@@ -3,18 +3,20 @@ package ru.geekbrains.domodel.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
-import java.util.List;
+import java.time.LocalDate;
 
 /**
  * DTO представление сущности Пользователь
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDto {
+public class UserDto implements Dto {
 
     private Long id;
 
     private String username;
+
+    private LocalDate creationDate;
 
     private String firstName;
 
@@ -29,6 +31,4 @@ public class UserDto {
     private String address;
 
     private String phoneNumber;
-
-    private List<AccountDto> accounts;
 }

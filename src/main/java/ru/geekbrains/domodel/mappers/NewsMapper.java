@@ -15,8 +15,7 @@ public interface NewsMapper {
 
     @Mappings({
             @Mapping(target="id", source = "entity.id"),
-            @Mapping(target="creationDate", source = "entity.creationDate",
-                    dateFormat = "dd-MM-yyyy"),
+            @Mapping(target="creationDate", source = "entity.creationDate", dateFormat = "dd-MM-yyyy"),
             @Mapping(target="title", source = "entity.title"),
             @Mapping(target="shortText", source = "entity.fullText"),
             @Mapping(target="fullText", source = "entity.fullText"),
@@ -29,8 +28,7 @@ public interface NewsMapper {
 
     @Mappings({
             @Mapping(target="id", source="dto.id"),
-            @Mapping(target="creationDate", source="dto.creationDate",
-                    dateFormat="dd-MM-yyyy"),
+            @Mapping(target="creationDate", source="dto.creationDate", dateFormat="dd-MM-yyyy"),
             @Mapping(target="title", source="dto.title"),
             @Mapping(target="fullText", source="dto.fullText"),
             @Mapping(target="pictureLink", source="dto.pictureLink"),

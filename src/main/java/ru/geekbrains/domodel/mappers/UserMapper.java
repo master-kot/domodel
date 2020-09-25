@@ -6,6 +6,8 @@ import org.mapstruct.Mappings;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.User;
 
+import java.util.List;
+
 /**
  * Маппер, преобразующий классы User и UserDto друг в друга
  */
@@ -15,6 +17,7 @@ public interface UserMapper {
     @Mappings({
             @Mapping(target="id", source = "entity.id"),
             @Mapping(target="username", source = "entity.username"),
+            @Mapping(target="creationDate", source = "entity.creationDate", dateFormat = "dd-MM-yyyy"),
             @Mapping(target="firstName", source = "entity.firstName"),
             @Mapping(target="lastName", source = "entity.lastName"),
             @Mapping(target="patronymic", source = "entity.patronymic"),
@@ -23,6 +26,8 @@ public interface UserMapper {
             @Mapping(target="address", source = "entity.address"),
             @Mapping(target="phoneNumber", source = "entity.phoneNumber")})
     UserDto userToUserDto(User entity);
+
+    List<UserDto> userToUserDto(List<User> entities);
 
     @Mappings({
             @Mapping(target="id", source="dto.id"),

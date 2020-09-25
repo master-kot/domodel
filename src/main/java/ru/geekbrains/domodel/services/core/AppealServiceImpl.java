@@ -96,15 +96,19 @@ public class AppealServiceImpl implements AppealService {
 
     @Override
     public List<AppealDto> getAllDtoByUser(Authentication authentication) {
-        // Если пользователь не авторизован
-        if (authentication == null) {
+        if (authentication == null) { // Если пользователь не авторизован
             return new ArrayList<AppealDto>();
+        } else { // Пльзователь авторизован
+            return mapEntityListToDtoList(appealRepository.findAllByAuthorUsername(authentication.getName()));
         }
-        // Если пользователь - админ
+    }
+
+    @Override
+    public List<AppealDto> getAllDto(Authentication authentication) {
         if (hasAuthenticationRoleAdmin(authentication)) {
             return mapEntityListToDtoList(appealRepository.findAll());
-        } else { // Просто пользователь
-            return mapEntityListToDtoList(appealRepository.findAllByAuthorUsername(authentication.getName()));
+        } else {
+            return new ArrayList<AppealDto>();
         }
     }
 

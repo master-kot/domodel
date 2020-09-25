@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RequisitesDto {
+public class RequisitesDto implements Dto {
 
     private Integer id;
 

@@ -4,10 +4,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
-import ru.geekbrains.domodel.dto.UserRequest;
 import ru.geekbrains.domodel.dto.PasswordRequest;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.services.api.AccountService;
@@ -17,6 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
+import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
+import static ru.geekbrains.domodel.mappers.ResponseMapper.getBooleanResponse;
+import static ru.geekbrains.domodel.mappers.ResponseMapper.getDtoResponse;
 
 /**
  * Контроллер профиля пользователя
@@ -27,14 +29,11 @@ import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 @RequiredArgsConstructor
 public class ProfileController {
 
-    // Тип объекта
-    private final String PRODUCE_TYPE = "application/json";
-
     // Список необходимых сервисов
     private final UserService userService;
     private final AccountService accountService;
 
-    @ApiOperation(value = "Выводит профиль данного пользователя и список его лицевых счетов")
+    @ApiOperation(value = "Выводит профиль текущего пользователя и список его лицевых счетов")
     @GetMapping(value = "")
     public ResponseEntity<Map<Object, Object>> readUser(Authentication authentication){
         if (authentication != null) {
@@ -49,61 +48,19 @@ public class ProfileController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @ApiOperation(value = "Изменяет профиль пользователя")
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @ApiOperation(value = "Изменяет профиль текущего пользователя")
     @PostMapping(value = "/update")
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto,
                                               Authentication authentication) {
-        if (authentication != null) {
-            UserDto updatedUser = userService.update(userDto, authentication.getName());
-            if (userDto != null) {
-                return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return getDtoResponse(userService.update(userDto, authentication.getName()));
     }
 
-    @ApiOperation(value = "Изменяет пароль пользователя")
+    @Secured(value = {ROLE_USER, ROLE_ADMIN})
+    @ApiOperation(value = "Изменяет пароль текущего пользователя")
     @PostMapping(value = "/update/password")
     public ResponseEntity<Boolean> updateUserPassword(@RequestBody PasswordRequest passwordRequest,
-                                              Authentication authentication) {
-        if (authentication != null) {
-            boolean isPasswordUpdated = userService.updatePassword(passwordRequest, authentication);
-            return new ResponseEntity<>(isPasswordUpdated, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @ApiOperation(value = "Выводит профиль пользователя по его индексу. Только для роли Админа")
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDto> readUserById(@PathVariable(name = "id") Long id,
-                                                Authentication authentication){
-        if (hasAuthenticationRoleAdmin(authentication)) {
-            UserDto userDto = userService.getDtoById(id);
-            if (userDto != null) {
-                return new ResponseEntity<>(userDto, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @ApiOperation(value = "Создает нового пользователя. Только для роли Админа")
-    @PostMapping(value = "/create", consumes = PRODUCE_TYPE)
-    public ResponseEntity<UserDto> createUser(@RequestBody UserRequest userRequest,
-                                              Authentication authentication) {
-        if (hasAuthenticationRoleAdmin(authentication)) {
-            UserDto userDto = userService.save(userRequest);
-            if (userDto != null) {
-                return new ResponseEntity<>(userDto, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    /**
-     * Проверяет, что сделавший запрос пользователь имеет роль Админа
-     */
-    private boolean hasAuthenticationRoleAdmin(Authentication authentication) {
-        return (authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).anyMatch(a -> a.equals(ROLE_ADMIN)));
+                                                      Authentication authentication) {
+        return getBooleanResponse(userService.updatePassword(passwordRequest, authentication));
     }
 }

@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 import ru.geekbrains.domodel.dto.CalculationDto;
 import ru.geekbrains.domodel.entities.Calculation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class CalculationMapper {
 
@@ -15,6 +18,18 @@ public class CalculationMapper {
         dto.setPreviousData(entity.getPreviousData());
         dto.setCurrentData(entity.getCurrentData());
         return dto;
+    }
+
+    public static List<CalculationDto> calculationToCalculationDto(List<Calculation> entities) {
+        if (entities == null) {
+            return null;
+        }
+
+        List<CalculationDto> list = new ArrayList<CalculationDto>(entities.size());
+        for (Calculation calculation : entities) {
+            list.add(calculationToCalculationDto(calculation));
+        }
+        return list;
     }
 
     public static Calculation calculationDtoToCalculation(CalculationDto dto) {

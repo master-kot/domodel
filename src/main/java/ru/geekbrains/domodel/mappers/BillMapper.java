@@ -5,7 +5,8 @@ import ru.geekbrains.domodel.dto.BillDto;
 import ru.geekbrains.domodel.entities.Bill;
 
 import java.time.format.DateTimeFormatter;
-import java.util.stream.Collectors;
+
+import static ru.geekbrains.domodel.mappers.CalculationMapper.calculationToCalculationDto;
 
 /**
  * Маппер, преобразовывающий классы Bill и BillDto друг в друга
@@ -23,8 +24,7 @@ public abstract class BillMapper {
         dto.setPaymentStatus(entity.isPaymentStatus());
         dto.setAccount(entity.getAccount().getId());
         dto.setRequisites(entity.getRequisites().getId());
-        dto.setCalculations(entity.getCalculations().stream()
-                .map(CalculationMapper::calculationToCalculationDto).collect(Collectors.toList()));
+        dto.setCalculations(calculationToCalculationDto(entity.getCalculations()));
         return dto;
     }
 }

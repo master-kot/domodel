@@ -5,9 +5,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.domodel.dto.UserRequest;
 import ru.geekbrains.domodel.dto.PasswordRequest;
 import ru.geekbrains.domodel.dto.UserDto;
+import ru.geekbrains.domodel.dto.UserRequest;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.common.JwtUser;
@@ -20,7 +20,6 @@ import ru.geekbrains.domodel.services.api.UserService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
@@ -67,8 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        return userRepository.findAll().stream()
-                .map(userMapper::userToUserDto).collect(Collectors.toList());
+        return userMapper.userToUserDto(userRepository.findAll());
     }
 
     @Override

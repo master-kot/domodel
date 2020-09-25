@@ -2,23 +2,29 @@ package ru.geekbrains.domodel.controllers;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.AccountDto;
 import ru.geekbrains.domodel.dto.RequisitesDto;
 import ru.geekbrains.domodel.dto.UserDto;
+import ru.geekbrains.domodel.dto.UserRequest;
 import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.RequisitesService;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import java.util.List;
 
+import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
+import static ru.geekbrains.domodel.mappers.ResponseMapper.*;
+
 /**
  * Контроллер модуля управления сайтом
  */
 @CrossOrigin
 @RestController
+@Secured(value = {ROLE_ADMIN})
 @RequestMapping("/api/v1/management")
 @RequiredArgsConstructor
 public class ManagementController {
@@ -31,41 +37,44 @@ public class ManagementController {
     @ApiOperation(value = "Выводит текущие реквизиты компании")
     @GetMapping("/requisites")
     public ResponseEntity<RequisitesDto> getRequisitesPage() {
-        return getDtoResponseEntity(requisitesService.getCurrentDto());
+        return getDtoResponse(requisitesService.getCurrentDto());
     }
 
-//    @ApiOperation(value = "Выводит список всех пользователей")
-//    @GetMapping("/users")
-//    public List<UserDto> readAllUsers() {
-//        return userService.getAll();
-//    }
+    @ApiOperation(value = "Выводит список всех пользователей")
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDto>> readAllUsers() {
+        return getListUserDtoResponse(userService.getAll());
+    }
+
+    @ApiOperation(value = "Выводит профиль пользователя по его индексу")
+    @GetMapping(value = "/users/{id}")
+    public ResponseEntity<UserDto> readUserById(@PathVariable(name = "id") Long id){
+        return getDtoResponse(userService.getDtoById(id));
+    }
+
+    @ApiOperation(value = "Изменяет профиль пользователя")
+    @PostMapping(value = "/users/{id}")
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto,
+                                              Authentication authentication) {
+        return getDtoResponse(userService.update(userDto, authentication.getName()));
+    }
 
     @ApiOperation(value = "Выводит результат удаления пользователя")
-    @DeleteMapping("/management/users/delete/{id}")
-    public ResponseEntity deleteUserById(@PathVariable("id") long id) {
-        return !userService.deleteById(id) ?
-                new ResponseEntity<>(HttpStatus.BAD_REQUEST) : new ResponseEntity<>(HttpStatus.OK);
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Boolean> deleteUserById(@PathVariable("id") long id) {
+        return getBooleanResponse(userService.deleteById(id));
     }
 
-    @ApiOperation(value = "Выводитсписок лицевых счетов ")
+    @ApiOperation(value = "Создает нового пользователя")
+    @PostMapping(value = "/users/create")
+    public ResponseEntity<UserDto> createUser(@RequestBody UserRequest userRequest,
+                                              Authentication authentication) {
+        return getDtoResponse(userService.save(userRequest));
+    }
+
+    @ApiOperation(value = "Выводит список всех лицевых счетов")
     @GetMapping("/accounts")
-    public List<AccountDto> getAccounts() {
-        return accountService.getAllDto();
-    }
-
-    /**
-     * Формирует необходимый ответ в зависимости от содержания списка objectDtoList
-     */
-    private ResponseEntity<List<RequisitesDto>> getListDtoResponseEntity(List<RequisitesDto> objectDtoList) {
-        return objectDtoList.size() == 0 ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDtoList, HttpStatus.OK);
-    }
-
-    /**
-     * Формирует необходимый ответ в зависимости от содержания objectDto
-     */
-    private ResponseEntity<RequisitesDto> getDtoResponseEntity(RequisitesDto objectDto) {
-        return objectDto == null ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
+    public ResponseEntity<List<AccountDto>> getAccounts() {
+        return getListAccountDtoResponse(accountService.getAllDto());
     }
 }

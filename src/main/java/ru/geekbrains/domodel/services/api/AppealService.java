@@ -30,4 +30,9 @@ public interface AppealService {
      * Получить список всех обращений
      */
     List<AppealDto> getAllDtoByUser(Authentication authentication);
+
+    /**
+     * Получить список всех обращений
+     */
+    List<AppealDto> getAllDto(Authentication authentication);
 }
