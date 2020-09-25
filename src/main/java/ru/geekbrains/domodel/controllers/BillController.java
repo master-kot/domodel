@@ -19,6 +19,7 @@ import java.util.Map;
 /**
  * Контроллер платежей
  */
+@ApiOperation(value = "Контроллер платежей (счетов)")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/bills")

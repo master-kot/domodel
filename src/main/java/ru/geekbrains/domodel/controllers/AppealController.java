@@ -19,6 +19,7 @@ import static ru.geekbrains.domodel.mappers.ResponseMapper.getListAppealDtoRespo
 /**
  * Контроллер обращений
  */
+@ApiOperation(value = "Контроллер обращений")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/appeals")
@@ -38,7 +39,7 @@ public class AppealController {
     }
 
     @Secured(value = {ROLE_ADMIN})
-    @ApiOperation(value = "Выводит список всех обращений")
+    @ApiOperation(value = "Выводит список всех обращений. Только для Администратора")
     @GetMapping("/all")
     public ResponseEntity<List<AppealDto>> readAll(Authentication authentication) {
         return getListAppealDtoResponse(appealsService.getAllDto(authentication));
@@ -52,7 +53,7 @@ public class AppealController {
     }
 
     @Secured(value = {ROLE_ADMIN})
-    @ApiOperation(value = "Изменяет обращение по его индексу")
+    @ApiOperation(value = "Изменяет обращение по его индексу. Только для Администратора")
     @PostMapping(value = "/{id}", consumes = CONSUME_TYPE)
     public ResponseEntity<AppealDto> updateAppealById(@RequestBody AppealDto appealDto,
                                                       Authentication authentication) {

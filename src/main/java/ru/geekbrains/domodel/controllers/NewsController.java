@@ -17,6 +17,7 @@ import java.util.List;
 /**
  * Контроллер новостей
  */
+@ApiOperation(value = "Контроллер новостей")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/news")

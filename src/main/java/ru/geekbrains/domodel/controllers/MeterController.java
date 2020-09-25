@@ -14,14 +14,14 @@ import ru.geekbrains.domodel.services.api.MeterService;
 
 import java.util.List;
 
-
 /**
  * Контроллер счетчиков показаний
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/meters")
 @Secured({Roles.ROLE_ADMIN, Roles.ROLE_USER})
+@ApiOperation("Доступ к разделу только для зарегистрированных пользователей и Администратора")
+@RequestMapping("/api/v1/meters")
 @RequiredArgsConstructor
 public class MeterController {
 

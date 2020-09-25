@@ -20,6 +20,7 @@ import static ru.geekbrains.domodel.mappers.ResponseMapper.*;
 /**
  * Контроллер информации
  */
+@ApiOperation(value = "Контроллер информации")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/information")
@@ -37,7 +38,7 @@ public class InformationController {
     }
 
     @Secured(value = {ROLE_ADMIN})
-    @ApiOperation(value = "Создает информационный блок раздела контакты")
+    @ApiOperation(value = "Создает информационный блок раздела контакты. Только для Администратора")
     @PostMapping("/contacts")
     public ResponseEntity<InformationDto> createInformation(@RequestBody InformationRequest informationRequest,
                                                             Authentication authentication) {

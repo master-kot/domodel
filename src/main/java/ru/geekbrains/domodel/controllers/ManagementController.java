@@ -20,8 +20,9 @@ import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 import static ru.geekbrains.domodel.mappers.ResponseMapper.*;
 
 /**
- * Контроллер модуля управления сайтом
+ * Контроллер управления сайтом
  */
+@ApiOperation("Контроллер управления сайтом. Доступ только для Администратора")
 @CrossOrigin
 @RestController
 @Secured(value = {ROLE_ADMIN})
