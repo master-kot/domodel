@@ -2,7 +2,6 @@ package ru.geekbrains.domodel.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import ru.geekbrains.domodel.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +29,8 @@ public class AppealDto {
 
     // Статус выполнения обращения
     private String status;
+
+    private Long authorId;
 
     // Список ссылок на фотографии
     private List<String> photoLinks = new ArrayList<>();

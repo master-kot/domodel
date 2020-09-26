@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Dto представление Голосования
@@ -22,7 +24,7 @@ public class VoteDto {
 
     private LocalDate endDate;
 
-//    private List<PhotoLink> photoLinks = new ArrayList<>();
+    private List<String> photoLinks = new ArrayList<>();
 
 //    private List<Document> documents = new ArrayList<>();
 

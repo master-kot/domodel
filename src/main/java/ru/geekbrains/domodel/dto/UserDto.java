@@ -10,7 +10,7 @@ import java.time.LocalDate;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDto implements Dto {
+public class UserDto {
 
     private Long id;
 

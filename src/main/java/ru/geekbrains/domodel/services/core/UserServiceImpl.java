@@ -11,7 +11,6 @@ import ru.geekbrains.domodel.dto.UserRequest;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.common.JwtUser;
-import ru.geekbrains.domodel.mappers.JwtUserMapper;
 import ru.geekbrains.domodel.mappers.UserMapper;
 import ru.geekbrains.domodel.repositories.AuthorityRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
@@ -34,7 +33,6 @@ public class UserServiceImpl implements UserService {
     // Необходимые сервисы
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
-    private final JwtUserMapper jwtUserMapper;
 
     // Необходимые репозитории
     private final UserRepository userRepository;
@@ -55,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public JwtUser getJwtUserByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
-        return optionalUser.map(jwtUserMapper::userToJwtUser).orElse(null);
+        return optionalUser.map(userMapper::userToJwtUser).orElse(null);
     }
 
     @Override

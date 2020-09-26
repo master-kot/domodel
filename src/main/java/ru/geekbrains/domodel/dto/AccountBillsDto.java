@@ -8,11 +8,11 @@ import java.util.List;
 
 /**
  * Расширенное Dto представление сущности Лицевого счета.
- * Добавлен список счетчиков.
+ * Добавлен список платежей (счетов).
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AccountMetersDto {
+public class AccountBillsDto {
 
     private Long id;
 
@@ -22,5 +22,5 @@ public class AccountMetersDto {
 
     private Double acresAmount;
 
-    private List<MeterDto> meters;
+    private List<BillDto> bills;
 }

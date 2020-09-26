@@ -19,7 +19,8 @@ public interface InformationMapper {
             @Mapping(target="id", source = "entity.id"),
             @Mapping(target="title", source = "entity.title"),
             @Mapping(target="text", source = "entity.text"),
-            @Mapping(target="hidden", source="entity.hidden")})
+            @Mapping(target="hidden", source="entity.hidden")
+    })
     InformationDto informationToInformationDto(Information entity);
 
     List<InformationDto> informationToInformationDto(List<Information> entities);
@@ -28,12 +29,14 @@ public interface InformationMapper {
             @Mapping(target="id", source="dto.id"),
             @Mapping(target="title", source="dto.title"),
             @Mapping(target="text", source="dto.text"),
-            @Mapping(target="hidden", source="dto.hidden")})
+            @Mapping(target="hidden", source="dto.hidden")
+    })
     Information informationDtoToInformation(InformationDto dto);
 
     @Mappings({
             @Mapping(target="title", source="dto.title"),
             @Mapping(target="text", source="dto.text"),
-            @Mapping(target="hidden", source="dto.hidden")})
+            @Mapping(target="hidden", source="dto.hidden")
+    })
     Information informationRequestToInformation(InformationRequest dto);
 }

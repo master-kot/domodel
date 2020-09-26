@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RequisitesDto implements Dto {
+public class RequisitesDto {
 
     // Название юридического лица
     private String companyName;

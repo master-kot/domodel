@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Маппер, преобразовывающий классы Vote и VoteDto друг в друга
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {PhotoLinkMapper.class})
 public interface VoteMapper {
 
     @Mappings({
@@ -19,7 +19,9 @@ public interface VoteMapper {
             @Mapping(target="title", source = "entity.title"),
             @Mapping(target="text", source = "entity.text"),
             @Mapping(target="startDate", source = "entity.startDate"),
-            @Mapping(target="endDate", source = "entity.endDate")})
+            @Mapping(target="endDate", source = "entity.endDate"),
+            @Mapping(target="photoLinks", source = "entity.photoLinks")
+    })
     VoteDto voteToVoteDto(Vote entity);
 
     List<VoteDto> voteToVoteDto(List<Vote> entities);
@@ -29,6 +31,8 @@ public interface VoteMapper {
             @Mapping(target="title", source="dto.title"),
             @Mapping(target="text", source="dto.text"),
             @Mapping(target="startDate", source="dto.startDate"),
-            @Mapping(target="endDate", source="dto.endDate")})
+            @Mapping(target="endDate", source="dto.endDate"),
+            @Mapping(target="photoLinks", ignore = true)
+    })
     Vote voteDtoToVote(VoteDto dto);
 }

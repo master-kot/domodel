@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.geekbrains.domodel.dto.MeterDto;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,9 +19,13 @@ import java.util.List;
 public class JwtUser implements UserDetails {
 
     private Long id;
+
     private String username;
+
     private String password;
+
     private boolean enabled;
+
     private List<JwtRole> authorities;
 
     @JsonIgnore
@@ -65,5 +71,12 @@ public class JwtUser implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
+    }
+
+    public void addJwtRole(JwtRole jwtRole) {
+        if (authorities == null) {
+            authorities = new ArrayList<>();
+        }
+        authorities.add(jwtRole);
     }
 }
