@@ -30,6 +30,8 @@ import static ru.geekbrains.domodel.mappers.ResponseMapper.*;
 @RequiredArgsConstructor
 public class ManagementController {
 
+    private final String CONSUME_TYPE = "application/json";
+
     // Необходимые сервисы
     private final UserService userService;
     private final RequisitesService requisitesService;
@@ -37,8 +39,14 @@ public class ManagementController {
 
     @ApiOperation(value = "Выводит текущие реквизиты компании")
     @GetMapping("/requisites")
-    public ResponseEntity<RequisitesDto> getRequisitesPage() {
+    public ResponseEntity<RequisitesDto> readCurrentRequisites() {
         return getDtoResponse(requisitesService.getCurrentDto());
+    }
+
+    @ApiOperation(value = "Создает текущие реквизиты компании, если не были созданы, либо изменяет текущие")
+    @PostMapping(value = "/requisites", consumes = CONSUME_TYPE)
+    public ResponseEntity<RequisitesDto> updateRequisites(@RequestBody RequisitesDto requisitesDto) {
+        return getDtoResponse(requisitesService.update(requisitesDto));
     }
 
     @ApiOperation(value = "Выводит список всех пользователей")
@@ -68,8 +76,7 @@ public class ManagementController {
 
     @ApiOperation(value = "Создает нового пользователя")
     @PostMapping(value = "/users/create")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserRequest userRequest,
-                                              Authentication authentication) {
+    public ResponseEntity<UserDto> createUser(@RequestBody UserRequest userRequest) {
         return getDtoResponse(userService.save(userRequest));
     }
 

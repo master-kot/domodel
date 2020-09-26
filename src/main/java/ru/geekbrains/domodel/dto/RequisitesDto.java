@@ -10,8 +10,6 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RequisitesDto implements Dto {
 
-    private Integer id;
-
     // Название юридического лица
     private String companyName;
 

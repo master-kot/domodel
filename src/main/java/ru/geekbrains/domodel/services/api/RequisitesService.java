@@ -8,7 +8,12 @@ import ru.geekbrains.domodel.dto.RequisitesDto;
 public interface RequisitesService {
 
     /**
-     * Получить текущие реквизиты
+     * Получает текущие реквизиты
      */
     RequisitesDto getCurrentDto();
+
+    /**
+     * Создает текущие реквизиты компании, если не были созданы, либо изменяет текущие
+     */
+    RequisitesDto update(RequisitesDto requisitesDto);
 }

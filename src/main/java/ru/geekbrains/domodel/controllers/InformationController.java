@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.DocumentDto;
 import ru.geekbrains.domodel.dto.InformationDto;
@@ -38,11 +37,24 @@ public class InformationController {
     }
 
     @Secured(value = {ROLE_ADMIN})
+    @ApiOperation(value = "Выводит информационный блок раздела контакты по его номеру")
+    @GetMapping("/contacts/{id}")
+    public ResponseEntity<InformationDto> readContactsById(@PathVariable(name = "id") Integer id) {
+        return getDtoResponse(informationService.getDtoById(id));
+    }
+
+    @Secured(value = {ROLE_ADMIN})
     @ApiOperation(value = "Создает информационный блок раздела контакты. Только для Администратора")
     @PostMapping("/contacts")
-    public ResponseEntity<InformationDto> createInformation(@RequestBody InformationRequest informationRequest,
-                                                            Authentication authentication) {
-        return getDtoResponse(informationService.save(informationRequest, authentication));
+    public ResponseEntity<InformationDto> createInformation(@RequestBody InformationRequest informationRequest) {
+        return getDtoResponse(informationService.save(informationRequest));
+    }
+
+    @Secured(value = {ROLE_ADMIN})
+    @ApiOperation(value = "Изменяет информационный блок раздела контакты. Только для Администратора")
+    @PostMapping("/contacts/{id}")
+    public ResponseEntity<InformationDto> updateInformation(@RequestBody InformationDto informationRequest) {
+        return getDtoResponse(informationService.update(informationRequest));
     }
 
     @ApiOperation(value = "Выводит список документов")

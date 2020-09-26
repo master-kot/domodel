@@ -9,7 +9,6 @@ public class RequisitesMapper {
 
     public static RequisitesDto requisitesToRequisitesDto(Requisites entity) {
         RequisitesDto dto = new RequisitesDto();
-        dto.setId(entity.getId());
         dto.setCompanyName(entity.getCompanyName());
         dto.setCompanyAddress(entity.getCompanyAddress());
         dto.setInn(entity.getInn());
@@ -24,7 +23,6 @@ public class RequisitesMapper {
 
     public static Requisites requisitesDtoToRequisites(RequisitesDto dto) {
         Requisites entity = new Requisites();
-        entity.setId(dto.getId());
         entity.setCompanyName(dto.getCompanyName());
         entity.setCompanyAddress(dto.getCompanyAddress());
         entity.setInn(dto.getInn());
