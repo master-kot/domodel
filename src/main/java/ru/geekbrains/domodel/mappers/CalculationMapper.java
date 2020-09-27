@@ -15,10 +15,6 @@ import java.util.List;
 public interface CalculationMapper {
 
     @Mappings({
-            @Mapping(target="id", source = "entity.id"),
-            @Mapping(target="amount", source = "entity.amount"),
-            @Mapping(target="price", source = "entity.price"),
-            @Mapping(target="cost", source = "entity.cost"),
             @Mapping(target="previousDataValue", source = "entity.previousData.value"),
             @Mapping(target="currentDataValue", source = "entity.currentData.value")
     })

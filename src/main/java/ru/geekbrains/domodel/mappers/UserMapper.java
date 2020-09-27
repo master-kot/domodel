@@ -32,13 +32,6 @@ public interface UserMapper {
 
     List<UserDto> userToUserDto(List<User> entities);
 
-    @Mappings({
-            @Mapping(target="id", source = "entity.id"),
-            @Mapping(target="username", source = "entity.username"),
-            @Mapping(target="password", source = "entity.password"),
-            @Mapping(target="enabled", source = "entity.enabled"),
-            @Mapping(target="authorities", source = "entity.authorities")
-    })
     JwtUser userToJwtUser(User entity);
 
     @Mappings({
