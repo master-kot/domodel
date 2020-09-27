@@ -7,8 +7,7 @@ import ru.geekbrains.domodel.dto.*;
 import java.util.List;
 
 /**
- * Класс для маппинга Dto объектов в Response
- * Формирует необходимый ответ в зависимости от содержания objectDto
+ * Класс для маппинга Dto объектов в Response. Формирует необходимый ответ в зависимости от содержания objectDto.
  */
 public final class ResponseMapper {
 
@@ -67,7 +66,8 @@ public final class ResponseMapper {
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(documentDtoList, HttpStatus.OK);
     }
 
-    public static ResponseEntity<List<InformationDto>> getListInformationDtoResponse(List<InformationDto> informationDtoList) {
+    public static ResponseEntity<List<InformationDto>> getListInformationDtoResponse(
+            List<InformationDto> informationDtoList) {
         return informationDtoList.size() == 0 ?
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(informationDtoList, HttpStatus.OK);
     }

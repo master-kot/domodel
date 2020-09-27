@@ -6,6 +6,8 @@ import org.mapstruct.Mappings;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.common.JwtRole;
 
+import java.util.List;
+
 /**
  * Маппер, преобразовывающий классы Authority в JwtRole
  */
@@ -16,4 +18,6 @@ public interface AuthorityMapper {
             @Mapping(target="authority", source = "entity.authority")
     })
     JwtRole authorityToJwtRole(Authority entity);
+
+    List<JwtRole> authorityToJwtRole(List<Authority> entities);
 }

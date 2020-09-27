@@ -2,6 +2,7 @@ package ru.geekbrains.domodel.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.entities.User;
@@ -52,4 +53,9 @@ public interface UserMapper {
             @Mapping(target="phoneNumber", source="dto.phoneNumber")
     })
     User userDtoToUser(UserDto dto);
+
+    @Mappings({
+            @Mapping(target="id", ignore = true),
+    })
+    User updateUser(@MappingTarget User entity, UserDto dto);
 }

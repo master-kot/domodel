@@ -46,10 +46,7 @@ public class InformationServiceImpl implements InformationService {
     public InformationDto update(InformationDto informationDto) {
         Optional<Information> optional = informationRepository.findById(informationDto.getId());
         if (optional.isPresent()) {
-            Information information = optional.get();
-            information.setTitle(informationDto.getTitle());
-            information.setText(informationDto.getText());
-            information.setHidden(informationDto.isHidden());
+            Information information = informationMapper.updateInformation(optional.get(), informationDto);
             return informationMapper.informationToInformationDto(informationRepository.save(information));
         } else {
             return null;

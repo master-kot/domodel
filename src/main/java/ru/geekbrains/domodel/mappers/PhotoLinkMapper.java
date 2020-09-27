@@ -28,4 +28,11 @@ public interface PhotoLinkMapper {
     }
 
     List<String> photoLinkToString(List<PhotoLink> entities);
+
+    @Mappings({
+            @Mapping(target="linkAddress", source = "dto")
+    })
+    PhotoLink stringToPhotoLink(String dto);
+
+    List<PhotoLink> stringToPhotoLink(List<String> dto);
 }

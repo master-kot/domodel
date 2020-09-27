@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.domodel.dto.AppealDto;
 import ru.geekbrains.domodel.dto.AppealRequest;
 import ru.geekbrains.domodel.entities.Appeal;
@@ -16,10 +17,8 @@ import ru.geekbrains.domodel.services.api.UserService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 
@@ -55,6 +54,7 @@ public class AppealServiceImpl implements AppealService {
         return null;
     }
 
+    @Transactional
     @Override
     public AppealDto save(AppealRequest appealRequest, Authentication authentication) {
         // Если пользователь не авторизован
@@ -82,11 +82,7 @@ public class AppealServiceImpl implements AppealService {
                 Appeal appeal = optionalAppeal.get();
                 if ((authentication.getName().equals(appeal.getAuthor().getUsername()) |
                         hasAuthenticationRoleAdmin(authentication))) {
-                    appeal.setTitle(appealDto.getTitle());
-                    appeal.setText(appealDto.getText());
-                    appeal.setPhoneNumber(appealDto.getPhoneNumber());
-                    appeal.setStatus(AppealStatus.valueOf(appealDto.getStatus()));
-                    // TODO реализовать изменение фотографий
+                    appealMapper.updateAppeal(appeal, appealDto);
                     return appealMapper.appealToAppealDto(appealRepository.save(appeal));
                 }
             }
@@ -98,17 +94,17 @@ public class AppealServiceImpl implements AppealService {
     public List<AppealDto> getAllDtoByUser(Authentication authentication) {
         if (authentication == null) { // Если пользователь не авторизован
             return new ArrayList<AppealDto>();
-        } else { // Пльзователь авторизован
-            return mapEntityListToDtoList(appealRepository.findAllByAuthorUsername(authentication.getName()));
+        } else { // Пользователь авторизован
+            return appealMapper.appealToAppealDto(appealRepository.findAllByAuthorUsername(authentication.getName()));
         }
     }
 
     @Override
     public List<AppealDto> getAllDto(Authentication authentication) {
         if (hasAuthenticationRoleAdmin(authentication)) {
-            return mapEntityListToDtoList(appealRepository.findAll());
+            return appealMapper.appealToAppealDto(appealRepository.findAll());
         } else {
-            return new ArrayList<AppealDto>();
+            return new ArrayList<>();
         }
     }
 
@@ -118,12 +114,5 @@ public class AppealServiceImpl implements AppealService {
     private boolean hasAuthenticationRoleAdmin(Authentication authentication) {
         return (authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).anyMatch(a -> a.equals(ROLE_ADMIN)));
-    }
-
-    /**
-     * Преобразовать список сущностей к их DTO представлениям
-     */
-    private List<AppealDto> mapEntityListToDtoList(Collection<Appeal> appealList) {
-        return appealList.stream().map(appealMapper::appealToAppealDto).collect(Collectors.toList());
     }
 }

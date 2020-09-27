@@ -2,9 +2,12 @@ package ru.geekbrains.domodel.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
+import ru.geekbrains.domodel.dto.AppealDto;
 import ru.geekbrains.domodel.dto.InformationDto;
 import ru.geekbrains.domodel.dto.InformationRequest;
+import ru.geekbrains.domodel.entities.Appeal;
 import ru.geekbrains.domodel.entities.Information;
 
 import java.util.List;
@@ -39,4 +42,9 @@ public interface InformationMapper {
             @Mapping(target="hidden", source="dto.hidden")
     })
     Information informationRequestToInformation(InformationRequest dto);
+
+    @Mappings({
+            @Mapping(target="id", ignore = true)
+    })
+    Information updateInformation(@MappingTarget Information entity, InformationDto dto);
 }

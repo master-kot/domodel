@@ -72,11 +72,4 @@ public class JwtUser implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
-
-    public void addJwtRole(JwtRole jwtRole) {
-        if (authorities == null) {
-            authorities = new ArrayList<>();
-        }
-        authorities.add(jwtRole);
-    }
 }

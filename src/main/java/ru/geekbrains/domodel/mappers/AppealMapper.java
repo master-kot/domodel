@@ -2,6 +2,7 @@ package ru.geekbrains.domodel.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import ru.geekbrains.domodel.dto.AppealDto;
 import ru.geekbrains.domodel.dto.AppealRequest;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Маппер, преобразовывающий классы Appeal и AppealDto друг в друга
  */
-@Mapper(componentModel = "spring", uses = {PhotoLinkMapper.class})
+@Mapper(componentModel = "spring", uses = {PhotoLinkMapper.class, AppealStatusMapper.class})
 public interface AppealMapper {
 
     @Mappings({
@@ -21,7 +22,7 @@ public interface AppealMapper {
             @Mapping(target="title", source = "entity.title"),
             @Mapping(target="text", source = "entity.text"),
             @Mapping(target="phoneNumber", source = "entity.phoneNumber"),
-            @Mapping(target="status", ignore = true), //source = "entity.status.name"),
+            @Mapping(target="status", source = "entity.status"),
             @Mapping(target="authorId", source = "entity.author.id"),
             @Mapping(target="photoLinks", source = "entity.photoLinks")
     })
@@ -33,7 +34,15 @@ public interface AppealMapper {
             @Mapping(target="title", source = "dto.title"),
             @Mapping(target="text", source = "dto.text"),
             @Mapping(target="phoneNumber", source = "dto.phoneNumber"),
-            @Mapping(target="photoLinks", ignore = true) //source = "dto.photoLinks")
+            @Mapping(target="photoLinks", source = "dto.photoLinks")
     })
     Appeal appealRequestToAppeal(AppealRequest dto);
+
+    @Mappings({
+            @Mapping(target="id", ignore = true),
+            @Mapping(target="creationDate", ignore = true),
+            @Mapping(target="author", ignore = true),
+            @Mapping(target="photoLinks", ignore = true)
+    })
+    Appeal updateAppeal(@MappingTarget Appeal entity, AppealDto dto);
 }

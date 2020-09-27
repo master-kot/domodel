@@ -21,11 +21,13 @@ public class RequisitesServiceImpl implements RequisitesService {
 
     // Репозиторий реквизитов
     private final RequisitesRepository requisitesRepository;
+    // Маппер
+    RequisitesMapper requisitesMapper;
 
     @Override
     public RequisitesDto getCurrentDto() {
         return requisitesRepository.findById(CURRENT_ID_NUMBER)
-                .map(RequisitesMapper::requisitesToRequisitesDto).orElse(null);
+                .map(requisitesMapper::requisitesToRequisitesDto).orElse(null);
     }
 
     @Override
@@ -33,18 +35,10 @@ public class RequisitesServiceImpl implements RequisitesService {
         Optional<Requisites> optional = requisitesRepository.findById(CURRENT_ID_NUMBER);
         Requisites requisites;
         if (optional.isPresent()) {
-            requisites = optional.get();
-            requisites.setCompanyName(requisitesDto.getCompanyName());
-            requisites.setInn(requisitesDto.getInn());
-            requisites.setKpp(requisitesDto.getKpp());
-            requisites.setOgrn(requisitesDto.getOgrn());
-            requisites.setBankAccount(requisitesDto.getBankAccount());
-            requisites.setBankName(requisitesDto.getBankName());
-            requisites.setBik(requisitesDto.getBik());
-            requisites.setCorrespondentAccount(requisitesDto.getCorrespondentAccount());
+            requisites = requisitesMapper.updateRequisites(optional.get(), requisitesDto);
         } else {
-            requisites = RequisitesMapper.requisitesDtoToRequisites(requisitesDto);
+            requisites = requisitesMapper.requisitesDtoToRequisites(requisitesDto);
         }
-        return RequisitesMapper.requisitesToRequisitesDto(requisitesRepository.save(requisites));
+        return requisitesMapper.requisitesToRequisitesDto(requisitesRepository.save(requisites));
     }
 }

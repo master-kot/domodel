@@ -91,37 +91,16 @@ public class UserServiceImpl implements UserService {
         return userMapper.userToUserDto(userRepository.save(newUser));
     }
 
+    @Override
     public UserDto update(UserDto userDto,
                           String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
-        User user;
         if (optionalUser.isPresent()) {
-            user = optionalUser.get();
+            User user = userMapper.updateUser(optionalUser.get(), userDto);
+            return userMapper.userToUserDto(userRepository.save(user));
         } else {
             return null;
         }
-        if (userDto.getFirstName() != null && !userDto.getFirstName().isEmpty()) {
-            user.setFirstName(userDto.getFirstName());
-        }
-        if (userDto.getLastName() != null && !userDto.getLastName().isEmpty()) {
-            user.setLastName(userDto.getLastName());
-        }
-        if (userDto.getPatronymic() != null && !userDto.getPatronymic().isEmpty()) {
-            user.setPatronymic(userDto.getPatronymic());
-        }
-        if (userDto.getEmail() != null && !userDto.getEmail().isEmpty()) {
-            user.setEmail(userDto.getEmail());
-        }
-        if (userDto.getPhotoLink() != null && !userDto.getPhotoLink().isEmpty()) {
-            user.setPhotoLink(userDto.getPhotoLink());
-        }
-        if (userDto.getAddress() != null && !userDto.getAddress().isEmpty()) {
-            user.setAddress(userDto.getAddress());
-        }
-        if (userDto.getPhoneNumber() != null && !userDto.getPhoneNumber().isEmpty()) {
-            user.setPhoneNumber(userDto.getPhoneNumber());
-        }
-        return userMapper.userToUserDto(userRepository.save(user));
     }
 
     @Override
@@ -144,7 +123,6 @@ public class UserServiceImpl implements UserService {
         String oldPassword = passwordRequest.getOldPassword();
         String newPassword = passwordRequest.getNewPassword();
 
-        // TODO Проверить, что старый пароль введен верно
         if (oldPassword != null && newPassword != null && !newPassword.isEmpty() &&
                 newPassword.equals(passwordRequest.getNewPasswordConfirm())) {
             user.setPassword(passwordEncoder.encode(newPassword));

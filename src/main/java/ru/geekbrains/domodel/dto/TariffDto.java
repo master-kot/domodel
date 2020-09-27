@@ -10,4 +10,11 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TariffDto {
 
+    private Integer id;
+
+    private String description;
+
+    private Double price;
+
+    private String meterTypeDescription;
 }
