@@ -11,19 +11,19 @@ import ru.geekbrains.domodel.services.api.MeterService;
 @RequiredArgsConstructor
 public class SchedulerServiceImpl {
 
-    // Репозиторий счетчиков
+    // Сервис счетчиков
     private final MeterService meterService;
 
-    /**
-     * Метод для вызова генерации стандартных значений счетчиков (срабатывает каждый месяц с момента запуска системы).
-     * Не используется в MVP0
-     */
+//    /**
+//     * Метод для вызова генерации стандартных значений счетчиков (срабатывает каждый месяц с момента запуска системы).
+//     * Не используется в MVP0
+//     */
 //    @Scheduled(cron = "0 0 0 0 * *")
-    public void submitSchedulerMeterData() {
-        try {
-            meterService.generateDefaultMeterData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public void submitSchedulerMeterData() {
+//        try {
+//            meterService.generateDefaultMeterData();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

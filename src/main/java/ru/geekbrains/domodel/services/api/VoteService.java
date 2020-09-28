@@ -3,6 +3,8 @@ package ru.geekbrains.domodel.services.api;
 import org.springframework.security.core.Authentication;
 import ru.geekbrains.domodel.dto.VoteDto;
 
+import java.util.List;
+
 /**
  * Интерфейс сервиса голосований
  */
@@ -24,7 +26,12 @@ public interface VoteService {
      */
 
     /**
-     * Получить голосование по индексу
+     * Получает голосование по индексу
      */
     VoteDto getDtoById(Long id, Authentication authentication);
+
+    /**
+     * Получает все голосования
+     */
+    List<VoteDto> getAllDto(Authentication authentication);
 }

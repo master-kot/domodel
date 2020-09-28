@@ -1,29 +1,28 @@
 package ru.geekbrains.domodel.mappers;
 
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import ru.geekbrains.domodel.dto.CalculationDto;
 import ru.geekbrains.domodel.entities.Calculation;
 
-@Component
-public class CalculationMapper {
+import java.util.List;
 
-    public static CalculationDto calculationToCalculationDto(Calculation entity) {
-        CalculationDto dto = new CalculationDto();
-        dto.setAmount(entity.getAmount());
-        dto.setPrice(entity.getPrice());
-        dto.setCost(entity.getCost());
-        dto.setPreviousData(entity.getPreviousData());
-        dto.setCurrentData(entity.getCurrentData());
-        return dto;
-    }
+/**
+ * Маппер, преобразовывающий классы Calculation и CalculationDto друг в друга
+ */
+@Mapper(componentModel = "spring")
+public interface CalculationMapper {
 
-    public static Calculation calculationDtoToCalculation(CalculationDto dto) {
-        Calculation entity = new Calculation();
-        entity.setAmount(dto.getAmount());
-        entity.setPrice(dto.getPrice());
-        entity.setCost(dto.getCost());
-        entity.setPreviousData(dto.getPreviousData());
-        entity.setCurrentData(dto.getCurrentData());
-        return entity;
-    }
+    @Mappings({
+            @Mapping(target="id", source = "entity.id"),
+            @Mapping(target="amount", source = "entity.amount"),
+            @Mapping(target="price", source = "entity.price"),
+            @Mapping(target="cost", source = "entity.cost"),
+            @Mapping(target="previousDataValue", source = "entity.previousData.value"),
+            @Mapping(target="currentDataValue", source = "entity.currentData.value")
+    })
+    CalculationDto calculationToCalculationDto(Calculation entity);
+
+    List<CalculationDto> calculationToCalculationDto(List<Calculation> entities);
 }

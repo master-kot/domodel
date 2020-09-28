@@ -34,15 +34,13 @@ public class BillServiceImpl implements BillService {
     @Override
     public List<BillDto> getAllUnpaidDtoByAccounts(List<AccountDto> accountDtos) {
         List<Long> longList = accountDtos.stream().map(AccountDto::getId).collect(Collectors.toList());
-        return billRepository.findAllByAccountId(longList).stream()
-                .filter(b -> !b.isPaymentStatus()).map(billMapper::billToBillDto).collect(Collectors.toList());
+        return billMapper.billToBillDto(billRepository.findAllByAccountId(longList));
     }
 
     @Override
     public List<BillDto> getAllDtoByAccounts(List<AccountDto> accountDtos) {
         List<Long> longList = accountDtos.stream().map(AccountDto::getId).collect(Collectors.toList());
-        return billRepository.findAllByAccountId(longList).stream()
-                .map(billMapper::billToBillDto).collect(Collectors.toList());
+        return billMapper.billToBillDto(billRepository.findAllByAccountId(longList));
     }
 
     @Override

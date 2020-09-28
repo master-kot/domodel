@@ -6,6 +6,8 @@ import org.mapstruct.Mappings;
 import ru.geekbrains.domodel.dto.MeterDto;
 import ru.geekbrains.domodel.entities.Meter;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface MeterMapper {
 
@@ -20,6 +22,8 @@ public interface MeterMapper {
             @Mapping(target = "tariffDescription", source = "entity.type.tariff.description")
     })
     MeterDto meterToMeterDto(Meter entity);
+
+    List<MeterDto> meterToMeterDto(List<Meter> entities);
 
     @Mappings({
             @Mapping(target = "id", source = "dto.id"),

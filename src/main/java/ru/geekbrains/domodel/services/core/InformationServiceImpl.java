@@ -1,7 +1,6 @@
 package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.InformationDto;
 import ru.geekbrains.domodel.dto.InformationRequest;
@@ -12,7 +11,6 @@ import ru.geekbrains.domodel.services.api.InformationService;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса информации о компании
@@ -35,17 +33,23 @@ public class InformationServiceImpl implements InformationService {
 
     @Override
     public List<InformationDto> getAllDto() {
-        return informationRepository.findAll().stream()
-                .map(informationMapper::informationToInformationDto).collect(Collectors.toList());
+        return informationMapper.informationToInformationDto(informationRepository.findAll());
     }
 
     @Override
-    public InformationDto save(InformationRequest informationRequest, Authentication authentication) {
-        // Если пользователь не авторизован
-        if (authentication != null) {
-            Information information = informationMapper.informationRequestToInformation(informationRequest);
+    public InformationDto save(InformationRequest informationRequest) {
+        Information information = informationMapper.informationRequestToInformation(informationRequest);
+        return informationMapper.informationToInformationDto(informationRepository.save(information));
+    }
+
+    @Override
+    public InformationDto update(InformationDto informationDto) {
+        Optional<Information> optional = informationRepository.findById(informationDto.getId());
+        if (optional.isPresent()) {
+            Information information = informationMapper.updateInformation(optional.get(), informationDto);
             return informationMapper.informationToInformationDto(informationRepository.save(information));
+        } else {
+            return null;
         }
-        return null;
     }
 }

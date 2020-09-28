@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.domodel.operationresults.OperationResult;
+import ru.geekbrains.domodel.operationresults.OperationResultImpl;
 import ru.geekbrains.domodel.dto.NewsDto;
 import ru.geekbrains.domodel.dto.NewsRequest;
 import ru.geekbrains.domodel.services.api.NewsService;
@@ -15,6 +17,7 @@ import java.util.List;
 /**
  * Контроллер новостей
  */
+@ApiOperation(value = "Контроллер новостей")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/news")
@@ -81,6 +84,17 @@ public class NewsController {
                                                           Authentication authentication){
          return new ResponseEntity<>(newsService.updatePinningById(id, pinned, authentication), HttpStatus.OK);
      }
+
+    /**
+     * Перехват запроса тестового списка новостей
+     */
+    @GetMapping("/test")
+    public ResponseEntity<List<NewsDto>> getAllNews() {
+        OperationResultImpl<List<NewsDto>> operation = OperationResult.createResult();
+
+        operation.setResult(newsService.getAllDto());
+        return new ResponseEntity(operation, HttpStatus.OK);
+    }
 
     /**
      * Формирует необходимый ответ в зависимости от содержания списка newsDtoList

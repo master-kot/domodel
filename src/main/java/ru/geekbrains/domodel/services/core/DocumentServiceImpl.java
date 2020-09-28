@@ -8,7 +8,6 @@ import ru.geekbrains.domodel.repositories.DocumentRepository;
 import ru.geekbrains.domodel.services.api.DocumentService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Имплиментация сервиса документов
@@ -18,11 +17,11 @@ import java.util.stream.Collectors;
 public class DocumentServiceImpl implements DocumentService {
 
     private final DocumentRepository documentRepository;
-    private DocumentMapper documentMapper;
+
+    private final DocumentMapper documentMapper;
 
     @Override
     public List<DocumentDto> getAllDto() {
-        return documentRepository.findAll().stream()
-                .map(documentMapper::documentToDocumentDto).collect(Collectors.toList());
+        return documentMapper.documentToDocumentDto(documentRepository.findAll());
     }
 }

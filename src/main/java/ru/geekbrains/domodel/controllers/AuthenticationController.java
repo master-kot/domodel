@@ -24,8 +24,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * REST контроллер для запросов аутентификации.
+ * Контроллер аутентификации.
  */
+@ApiOperation(value = "Контроллер аутентификации")
 @RestController
 @RequestMapping(value = "/api/v1/auth/")
 @RequiredArgsConstructor

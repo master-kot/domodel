@@ -5,13 +5,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.domodel.dto.UserRequest;
 import ru.geekbrains.domodel.dto.PasswordRequest;
 import ru.geekbrains.domodel.dto.UserDto;
+import ru.geekbrains.domodel.dto.UserRequest;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.common.JwtUser;
-import ru.geekbrains.domodel.mappers.JwtUserMapper;
 import ru.geekbrains.domodel.mappers.UserMapper;
 import ru.geekbrains.domodel.repositories.AuthorityRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
@@ -20,7 +19,6 @@ import ru.geekbrains.domodel.services.api.UserService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
@@ -35,7 +33,6 @@ public class UserServiceImpl implements UserService {
     // Необходимые сервисы
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
-    private final JwtUserMapper jwtUserMapper;
 
     // Необходимые репозитории
     private final UserRepository userRepository;
@@ -56,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public JwtUser getJwtUserByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
-        return optionalUser.map(jwtUserMapper::userToJwtUser).orElse(null);
+        return optionalUser.map(userMapper::userToJwtUser).orElse(null);
     }
 
     @Override
@@ -67,8 +64,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        return userRepository.findAll().stream()
-                .map(userMapper::userToUserDto).collect(Collectors.toList());
+        return userMapper.userToUserDto(userRepository.findAll());
     }
 
     @Override
@@ -95,37 +91,16 @@ public class UserServiceImpl implements UserService {
         return userMapper.userToUserDto(userRepository.save(newUser));
     }
 
+    @Override
     public UserDto update(UserDto userDto,
                           String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
-        User user;
         if (optionalUser.isPresent()) {
-            user = optionalUser.get();
+            User user = userMapper.updateUser(optionalUser.get(), userDto);
+            return userMapper.userToUserDto(userRepository.save(user));
         } else {
             return null;
         }
-        if (userDto.getFirstName() != null && !userDto.getFirstName().isEmpty()) {
-            user.setFirstName(userDto.getFirstName());
-        }
-        if (userDto.getLastName() != null && !userDto.getLastName().isEmpty()) {
-            user.setLastName(userDto.getLastName());
-        }
-        if (userDto.getPatronymic() != null && !userDto.getPatronymic().isEmpty()) {
-            user.setPatronymic(userDto.getPatronymic());
-        }
-        if (userDto.getEmail() != null && !userDto.getEmail().isEmpty()) {
-            user.setEmail(userDto.getEmail());
-        }
-        if (userDto.getPhotoLink() != null && !userDto.getPhotoLink().isEmpty()) {
-            user.setPhotoLink(userDto.getPhotoLink());
-        }
-        if (userDto.getAddress() != null && !userDto.getAddress().isEmpty()) {
-            user.setAddress(userDto.getAddress());
-        }
-        if (userDto.getPhoneNumber() != null && !userDto.getPhoneNumber().isEmpty()) {
-            user.setPhoneNumber(userDto.getPhoneNumber());
-        }
-        return userMapper.userToUserDto(userRepository.save(user));
     }
 
     @Override
@@ -148,7 +123,6 @@ public class UserServiceImpl implements UserService {
         String oldPassword = passwordRequest.getOldPassword();
         String newPassword = passwordRequest.getNewPassword();
 
-        // TODO Проверить, что старый пароль введен верно
         if (oldPassword != null && newPassword != null && !newPassword.isEmpty() &&
                 newPassword.equals(passwordRequest.getNewPasswordConfirm())) {
             user.setPassword(passwordEncoder.encode(newPassword));

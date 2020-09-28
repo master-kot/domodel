@@ -3,9 +3,12 @@ package ru.geekbrains.domodel.services.core;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.RequisitesDto;
+import ru.geekbrains.domodel.entities.Requisites;
 import ru.geekbrains.domodel.mappers.RequisitesMapper;
 import ru.geekbrains.domodel.repositories.RequisitesRepository;
 import ru.geekbrains.domodel.services.api.RequisitesService;
+
+import java.util.Optional;
 
 /**
  * Реализация сервиса реквизитов компании
@@ -18,10 +21,24 @@ public class RequisitesServiceImpl implements RequisitesService {
 
     // Репозиторий реквизитов
     private final RequisitesRepository requisitesRepository;
+    // Маппер
+    RequisitesMapper requisitesMapper;
 
     @Override
     public RequisitesDto getCurrentDto() {
         return requisitesRepository.findById(CURRENT_ID_NUMBER)
-                .map(RequisitesMapper::requisitesToRequisitesDto).orElse(null);
+                .map(requisitesMapper::requisitesToRequisitesDto).orElse(null);
+    }
+
+    @Override
+    public RequisitesDto update(RequisitesDto requisitesDto) {
+        Optional<Requisites> optional = requisitesRepository.findById(CURRENT_ID_NUMBER);
+        Requisites requisites;
+        if (optional.isPresent()) {
+            requisites = requisitesMapper.updateRequisites(optional.get(), requisitesDto);
+        } else {
+            requisites = requisitesMapper.requisitesDtoToRequisites(requisitesDto);
+        }
+        return requisitesMapper.requisitesToRequisitesDto(requisitesRepository.save(requisites));
     }
 }

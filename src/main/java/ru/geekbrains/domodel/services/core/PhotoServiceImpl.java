@@ -3,6 +3,7 @@ package ru.geekbrains.domodel.services.core;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.PhotoLink;
+import ru.geekbrains.domodel.mappers.PhotoLinkMapper;
 import ru.geekbrains.domodel.repositories.PhotoRepository;
 import ru.geekbrains.domodel.services.api.PhotoService;
 
@@ -19,9 +20,10 @@ public class PhotoServiceImpl implements PhotoService {
     // Репозиторий фотографий
     private final PhotoRepository photoRepository;
 
+    private final PhotoLinkMapper photoLinkMapper;
+
     @Override
     public List<PhotoLink> saveAll(List<String> photoLinks) {
-        List<PhotoLink> photoLinkList = photoLinks.stream().map(PhotoLink::new).collect(Collectors.toList());
-        return photoRepository.saveAll(photoLinkList);
+        return photoRepository.saveAll(photoLinkMapper.stringToPhotoLink(photoLinks));
     }
 }

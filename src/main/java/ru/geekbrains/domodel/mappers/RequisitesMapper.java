@@ -1,39 +1,27 @@
 package ru.geekbrains.domodel.mappers;
 
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
 import ru.geekbrains.domodel.dto.RequisitesDto;
 import ru.geekbrains.domodel.entities.Requisites;
 
-@Component
-public class RequisitesMapper {
+/**
+ * Маппер, преобразовывающий классы Requisites и RequisitesDto друг в друга
+ */
+@Mapper(componentModel = "spring")
+public interface RequisitesMapper {
 
-    public static RequisitesDto requisitesToRequisitesDto(Requisites entity) {
-        RequisitesDto dto = new RequisitesDto();
-        dto.setId(entity.getId());
-        dto.setCompanyName(entity.getCompanyName());
-        dto.setCompanyAddress(entity.getCompanyAddress());
-        dto.setInn(entity.getInn());
-        dto.setKpp(entity.getKpp());
-        dto.setOgrn(entity.getOgrn());
-        dto.setBankAccount(entity.getBankAccount());
-        dto.setBankName(entity.getBankName());
-        dto.setBik(entity.getBik());
-        dto.setCorrespondentAccount(entity.getCorrespondentAccount());
-        return dto;
-    }
+    RequisitesDto requisitesToRequisitesDto(Requisites entity);
 
-    public static Requisites requisitesDtoToRequisites(RequisitesDto dto) {
-        Requisites entity = new Requisites();
-        entity.setId(dto.getId());
-        entity.setCompanyName(dto.getCompanyName());
-        entity.setCompanyAddress(dto.getCompanyAddress());
-        entity.setInn(dto.getInn());
-        entity.setKpp(dto.getKpp());
-        entity.setOgrn(dto.getOgrn());
-        entity.setBankAccount(dto.getBankAccount());
-        entity.setBankName(dto.getBankName());
-        entity.setBik(dto.getBik());
-        entity.setCorrespondentAccount(dto.getCorrespondentAccount());
-        return entity;
-    }
+    @Mappings({
+            @Mapping(target="id", ignore = true)
+    })
+    Requisites requisitesDtoToRequisites(RequisitesDto dto);
+
+    @Mappings({
+            @Mapping(target="id", ignore = true)
+    })
+    Requisites updateRequisites(@MappingTarget Requisites entity, RequisitesDto dto);
 }

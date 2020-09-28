@@ -1,15 +1,17 @@
 package ru.geekbrains.domodel.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MeterDataDto {
 
     private Long id;
+
     private LocalDate creationDate;
+
     private Double value;
 }
