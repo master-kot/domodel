@@ -157,8 +157,9 @@ public class MeterServiceImpl implements MeterService {
 
           MeterData previous = getCurrentMeterDataByMeter(meter);
 
-          if (previous != null && previous.getCreationDate().getMonth().equals(nowDate.getMonth())) {
+          if (previous.getCreationDate().getMonth().equals(nowDate.getMonth())) {
               previous.setValue(submitData);
+              previous.setCreationDate(nowDate);
               return dataMapper.meterDataToMeterDataDto(meterDataRepository.save(previous));
           } else {
               current = MeterData.builder().creationDate(nowDate).meter(meter).value(submitData).build();
@@ -181,9 +182,9 @@ public class MeterServiceImpl implements MeterService {
             m.setType(meterTypeRepository.findByDescription(meterDto.getTypeDescription()));
             return meterMapper.meterToMeterDto(meterRepository.save(m));
         } else {
-//            throw new RuntimeException("Данные счетчика не коректны: ID или Серийный номер");
             log.error("Данные счетчика не коректны: Серийный номер");
-            return null;
+            throw new RuntimeException("Данные счетчика не коректны: ID или Серийный номер");
+//            return null;
         }
     }
 
@@ -211,7 +212,8 @@ public class MeterServiceImpl implements MeterService {
 
     @Override
     public MeterData getCurrentMeterDataByMeter(Meter meter) {
-        return meterDataRepository.findCurrentMeterData(meter).orElse(null);
+        //todo: что вернуть если ничего нет ?
+        return meterDataRepository.findCurrentMeterData(meter).orElse(new MeterData());
     }
 
     @Override
