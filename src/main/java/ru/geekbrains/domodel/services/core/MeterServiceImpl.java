@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.AccountMetersDto;
 import ru.geekbrains.domodel.dto.MeterDataDto;
 import ru.geekbrains.domodel.dto.MeterDto;
+import ru.geekbrains.domodel.dto.SubmitDataDto;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
@@ -168,6 +169,53 @@ public class MeterServiceImpl implements MeterService {
         } else {
             log.warn("Показания не корректны");
             return null;
+        }
+    }
+
+    @Transactional
+    @Override
+    public List<MeterDataDto> submitAllMeterData(List<SubmitDataDto> submitData, Authentication authentication) {
+        if (!submitData.isEmpty()) {
+            if (!Roles.hasAuthenticationRoleAdmin(authentication)) {
+                throw new RuntimeException("Ошибка доступа");
+            }
+
+            MeterData current;
+            MeterData previous;
+            Optional<Meter> meter;
+            LocalDate nowDate = LocalDate.now();
+            List<MeterData> meterDatas = new ArrayList<>();
+
+            for (SubmitDataDto sd : submitData) {
+
+                if (sd.getValue().isNaN() || sd.getValue() == null) {
+                    log.warn("Показания не корректны");
+                    continue;
+                }
+
+                meter = meterRepository.findById(sd.getMeterId());
+
+                if (!meter.isPresent()) {
+                    log.warn("Показания не корректны: Submit data - meter not found by id: " + sd.getMeterId());
+                    continue;
+                }
+
+                previous = getCurrentMeterDataByMeter(meter.get());
+
+                if (previous.getCreationDate().getMonth().equals(nowDate.getMonth())) {
+                    previous.setValue(sd.getValue());
+                    previous.setCreationDate(nowDate);
+                    meterDatas.add(previous);
+                } else {
+                    current = MeterData.builder().creationDate(nowDate).meter(meter.get()).value(sd.getValue()).build();
+                    meterDatas.add(current);
+                }
+            }
+
+            return dataMapper.meterDataToMeterDataDto(meterDataRepository.saveAll(meterDatas));
+
+        } else {
+            throw new  RuntimeException("Показания не корректны");
         }
     }
 
