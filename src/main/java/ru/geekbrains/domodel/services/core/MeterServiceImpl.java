@@ -66,32 +66,26 @@ public class MeterServiceImpl implements MeterService {
 
     @Override
     public List<MeterDto> getAllMetersByUserName(String name) {
-//        Account account = accountService.get
-
-        return null;
+        List<Account> accounts = accountService.getAllAccountsByUserUsername(name);
+        List<Meter> meters = meterRepository.findAllByAccountIn(accounts).orElse(new ArrayList<>());
+        return meterMapper.meterToMeterDto(meters);
     }
 
     @Override
     public List<MeterDto> getAllMeters(Authentication authentication) {
         if (authentication != null) {
             if (Roles.hasAuthenticationRoleAdmin(authentication)) {
-                List<Meter> meters;
-                MeterDto meterDto;
-                List<MeterDto> meterDtoList = new ArrayList<>();
-                List<MeterData> currentData;
+                List<Meter> meters = meterRepository.findAll();
+                List<MeterDto> meterDtoList = meterMapper.meterToMeterDto(meters);
+                List<MeterData> currentData = getCurrentMeterDataByMeters(meters);
 
-                meters = meterRepository.findAll();
-                currentData = getCurrentMeterDataByMeters(meters);
-
-                for(Meter m : meters) {
-                    meterDto = meterMapper.meterToMeterDto(m);
-                    for(MeterData md : currentData) {
+                for (MeterDto m : meterDtoList) {
+                    for (MeterData md : currentData) {
                         if (m.getId().equals(md.getMeter().getId())) {
-                            meterDto.setCurrentMeterData(dataMapper.meterDataToMeterDataDto(md));
+                            m.setCurrentMeterData(dataMapper.meterDataToMeterDataDto(md));
                             break;
                         }
                     }
-                    meterDtoList.add(meterDto);
                 }
 
                 return meterDtoList;
@@ -106,7 +100,6 @@ public class MeterServiceImpl implements MeterService {
     @Override
     public  List<AccountMetersDto> getMetersUser(Authentication authentication) {
         if (authentication != null) {
-            MeterDto meterDto;
             List<Meter> meters;
             List<MeterData> currentData;
             List<MeterDto> meterDtoList;
@@ -119,23 +112,21 @@ public class MeterServiceImpl implements MeterService {
                 accountMetersDto = accountMapper.accountToAccountMetersDto(account);
 
                 if (!meters.isEmpty()) {
-                    meterDtoList = new ArrayList<>();
+                    meterDtoList = meterMapper.meterToMeterDto(meters);
                     currentData = getCurrentMeterDataByMeters(meters);
 
-                    for(Meter m : meters) {
-                        meterDto = meterMapper.meterToMeterDto(m);
+                    for (MeterDto m : meterDtoList) {
                         for(MeterData md : currentData) {
                             if (m.getId().equals(md.getMeter().getId())) {
-                                meterDto.setCurrentMeterData(dataMapper.meterDataToMeterDataDto(md));
+                                m.setCurrentMeterData(dataMapper.meterDataToMeterDataDto(md));
                                 break;
                             }
                         }
-                        meterDtoList.add(meterDto);
-
-                        accountMetersDto.setMeters(meterDtoList);
                     }
-                    result.add(accountMetersDto);
+                    accountMetersDto.setMeters(meterDtoList);
                 }
+
+                result.add(accountMetersDto);
             }
             return result;
         }
