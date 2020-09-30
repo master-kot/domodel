@@ -4,6 +4,7 @@ import org.springframework.security.core.Authentication;
 import ru.geekbrains.domodel.dto.AccountMetersDto;
 import ru.geekbrains.domodel.dto.MeterDataDto;
 import ru.geekbrains.domodel.dto.MeterDto;
+import ru.geekbrains.domodel.dto.SubmitDataDto;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
@@ -71,6 +72,13 @@ public interface MeterService {
      * при попытке повторного сохранения показания в текущем месяце - изменять его
      */
     MeterDataDto submitMeterData(Long meterId, Double meterDataDto, Authentication authentication);
+
+    /**
+     * Принять данные о показаниях счетчиков.
+     * Предусмотреть, что показания могут быть поданы только раз в месяц,
+     * при попытке повторного сохранения показания в текущем месяце - изменять его
+     */
+    List<MeterDataDto> submitAllMeterData(List<SubmitDataDto> submitData, Authentication authentication);
 
     /**
      * Получить список всех показаний данного счетчика

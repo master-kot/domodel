@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.AccountMetersDto;
 import ru.geekbrains.domodel.dto.MeterDataDto;
 import ru.geekbrains.domodel.dto.MeterDto;
+import ru.geekbrains.domodel.dto.SubmitDataDto;
 import ru.geekbrains.domodel.entities.constants.Roles;
 import ru.geekbrains.domodel.services.api.MeterService;
 
@@ -83,6 +84,12 @@ public class MeterController {
     public ResponseEntity<?> createMeterDataByMeterId(@PathVariable Long id, @RequestParam Double submitData, Authentication authentication) {
         MeterDataDto result = meterService.submitMeterData(id, submitData, authentication);
         return  result != null ? ResponseEntity.ok(result) : ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/all/data")
+    public ResponseEntity<?> createMeterDatas(@RequestBody List<SubmitDataDto> submitData, Authentication authentication) {
+        List<MeterDataDto> result = meterService.submitAllMeterData(submitData, authentication);
+        return  !result.isEmpty() ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
     @ApiOperation(value = "Удаляет показания счетчика по индексу показаний")
