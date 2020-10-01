@@ -15,34 +15,13 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {UserMapper.class, MeterMapper.class})
 public interface AccountMapper {
 
-    @Mappings({
-            @Mapping(target="id", source = "entity.id"),
-            @Mapping(target="address", source = "entity.address"),
-            @Mapping(target="houseNumber", source = "entity.houseNumber"),
-            @Mapping(target="acresAmount", source = "entity.acresAmount"),
-            @Mapping(target="user", source = "entity.user")
-    })
     AccountDto accountToAccountDto(Account entity);
 
     List<AccountDto> accountToAccountDto(List<Account> entities);
 
-    @Mappings({
-            @Mapping(target="id", source = "entity.id"),
-            @Mapping(target="address", source = "entity.address"),
-            @Mapping(target="houseNumber", source = "entity.houseNumber"),
-            @Mapping(target="acresAmount", source = "entity.acresAmount"),
-            @Mapping(target="meters", source = "entity.meters")
-    })
     AccountMetersDto accountToAccountMetersDto(Account entity);
 
     List<AccountMetersDto> accountToAccountMetersDto(List<Account> entities);
 
-    @Mappings({
-            @Mapping(target="id", source="dto.id"),
-            @Mapping(target="address", source="dto.address"),
-            @Mapping(target="houseNumber", source="dto.houseNumber"),
-            @Mapping(target="acresAmount", source="dto.acresAmount"),
-            @Mapping(target="user", source="dto.user")
-    })
     Account accountDtoToAccount(AccountDto dto);
 }

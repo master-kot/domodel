@@ -16,26 +16,10 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {PhotoLinkMapper.class, AppealStatusMapper.class})
 public interface AppealMapper {
 
-    @Mappings({
-            @Mapping(target="id", source = "entity.id"),
-            @Mapping(target="creationDate", source = "entity.creationDate", dateFormat = "dd-MM-yyyy"),
-            @Mapping(target="title", source = "entity.title"),
-            @Mapping(target="text", source = "entity.text"),
-            @Mapping(target="phoneNumber", source = "entity.phoneNumber"),
-            @Mapping(target="status", source = "entity.status"),
-            @Mapping(target="authorId", source = "entity.author.id"),
-            @Mapping(target="photoLinks", source = "entity.photoLinks")
-    })
     AppealDto appealToAppealDto(Appeal entity);
 
     List<AppealDto> appealToAppealDto(List<Appeal> entities);
 
-    @Mappings({
-            @Mapping(target="title", source = "dto.title"),
-            @Mapping(target="text", source = "dto.text"),
-            @Mapping(target="phoneNumber", source = "dto.phoneNumber"),
-            @Mapping(target="photoLinks", source = "dto.photoLinks")
-    })
     Appeal appealRequestToAppeal(AppealRequest dto);
 
     @Mappings({

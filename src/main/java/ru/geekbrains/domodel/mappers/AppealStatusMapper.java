@@ -13,7 +13,7 @@ public interface AppealStatusMapper {
         return entity.getDescription();
     }
 
-    default AppealStatus appealStatusToString(String string) {
+    default AppealStatus stringToAppealStatus(String string) {
         AppealStatus entity;
         switch (string) {
             case "SENT" :

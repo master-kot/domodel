@@ -14,11 +14,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface PhotoLinkMapper {
 
-    @Mappings({
-            @Mapping(target="id", source = "entity.id"),
-            @Mapping(target="title", source = "entity.title"),
-            @Mapping(target="linkAddress", source = "entity.linkAddress")
-    })
     PhotoLinkDto photoLinkToPhotoLinkDto(PhotoLink entity);
 
     List<PhotoLinkDto> photoLinkToPhotoLinkDto(List<PhotoLink> entities);
