@@ -90,25 +90,38 @@ public class ManagementController {
         return getDtoResponse(accountService.save(accountRequest));
     }
 
-    @ApiOperation(value = "Создает несколько лицевых счетов")
-    @PostMapping("/accounts/create/{number}")
-    public ResponseEntity<List<AccountDto>> createAccounts(@PathVariable(name = "number") Integer number) {
-        Random random = new Random(10000);
+    @ApiOperation(value = "Создает несколько пользователей")
+    @PostMapping("/users/create/{number}")
+    public ResponseEntity<List<UserDto>> createUsers(@PathVariable(name = "number") Integer number) {
+        Random random = new Random(1000);
         for (int i = 0; i < number; i++) {
-            AccountRequest accountRequest = new AccountRequest();
-            accountRequest.setHouseNumber(String.valueOf(100_000 + i));
-            AccountDto accountDto = accountService.save(accountRequest);
-
             String password = "pswd" + random.nextInt();
             UserRequest userRequest = new UserRequest();
             userRequest.setPassword(password);
             userRequest.setPasswordConfirm(password);
             userRequest.setUsername(String.valueOf(100_001 + i));
             UserDto userDto = userService.save(userRequest);
+            if (userDto != null) {
+                userDto.setFirstName(password);
+                userService.update(userDto);
+            }
+        }
+        return getListUserDtoResponse(userService.getAll());
+    }
 
-            userDto.setFirstName(password);
-            accountDto.setUser(userDto);
-            accountService.update(accountDto);
+    @ApiOperation(value = "Создает несколько лицевых счетов")
+    @PostMapping("/accounts/create/{number}")
+    public ResponseEntity<List<AccountDto>> createAccounts(@PathVariable(name = "number") Integer number) {
+        for (int i = 0; i < number; i++) {
+            AccountRequest accountRequest = new AccountRequest();
+            accountRequest.setHouseNumber(String.valueOf(100_001 + i));
+            AccountDto accountDto = accountService.save(accountRequest);
+
+            UserDto userDto = userService.getByUsername(String.valueOf(100_001 + i));
+            if (userDto != null) {
+                accountDto.setUser(userDto);
+                accountService.update(accountDto);
+            }
         }
         return getListAccountDtoResponse(accountService.getAllDto());
     }
