@@ -21,7 +21,6 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
-//                .apis(RequestHandlerSelectors.basePackage("ru.geekbrains.domodel.controllers.api"))
                 .build();
     }
 }

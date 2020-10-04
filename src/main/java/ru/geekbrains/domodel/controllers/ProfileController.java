@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ import static ru.geekbrains.domodel.mappers.ResponseMapper.getDtoResponse;
 /**
  * Контроллер профиля пользователя
  */
-@ApiOperation("Контроллер профиля пользователя. Доступ только для зарегистрированных пользователей и Администратора")
+@Api("Контроллер профиля пользователя. Доступ только для зарегистрированных пользователей и Администратора")
 @CrossOrigin
 @RestController
 @Secured(value = {ROLE_USER, ROLE_ADMIN})

@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import static ru.geekbrains.domodel.mappers.ResponseMapper.*;
 /**
  * Контроллер информации
  */
-@ApiOperation(value = "Контроллер информации")
+@Api(value = "Контроллер информации")
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/information")
@@ -44,22 +45,29 @@ public class InformationController {
     }
 
     @Secured(value = {ROLE_ADMIN})
-    @ApiOperation(value = "Создает информационный блок раздела контакты. Только для Администратора")
-    @PostMapping("/contacts")
-    public ResponseEntity<InformationDto> createInformation(@RequestBody InformationRequest informationRequest) {
-        return getDtoResponse(informationService.save(informationRequest));
-    }
-
-    @Secured(value = {ROLE_ADMIN})
     @ApiOperation(value = "Изменяет информационный блок раздела контакты. Только для Администратора")
     @PostMapping("/contacts/{id}")
     public ResponseEntity<InformationDto> updateInformation(@RequestBody InformationDto informationRequest) {
         return getDtoResponse(informationService.update(informationRequest));
     }
 
-    @ApiOperation(value = "Выводит список документов")
+    @Secured(value = {ROLE_ADMIN})
+    @ApiOperation(value = "Создает информационный блок раздела контакты. Только для Администратора")
+    @PostMapping("/contacts")
+    public ResponseEntity<InformationDto> createInformation(@RequestBody InformationRequest informationRequest) {
+        return getDtoResponse(informationService.save(informationRequest));
+    }
+
+    @ApiOperation(value = "Выводит список всех документов")
     @GetMapping("/documents")
     public ResponseEntity<List<DocumentDto>> readDocuments() {
         return getListDocumentDtoResponse(documentService.getAllDto());
+    }
+
+    @Secured(value = {ROLE_ADMIN})
+    @ApiOperation(value = "Создает документ")
+    @PostMapping("/documents")
+    public ResponseEntity<DocumentDto> createDocuments(@RequestBody DocumentDto documentRequest) {
+        return getDtoResponse(documentService.save(documentRequest));
     }
 }

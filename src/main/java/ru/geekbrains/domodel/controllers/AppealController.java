@@ -27,26 +27,33 @@ import static ru.geekbrains.domodel.mappers.ResponseMapper.getListAppealDtoRespo
 public class AppealController {
 
     // Тип объекта
-    private final String CONSUME_TYPE = "application/json";
+    private final String DATA_TYPE = "application/json";
 
     // Сервис обращений
     private final AppealService appealsService;
 
     @ApiOperation(value = "Выводит список обращений текущего пользователя")
-    @GetMapping()
+    @GetMapping(value = "", produces = DATA_TYPE)
     public ResponseEntity<List<AppealDto>> readAllByUser(Authentication authentication) {
         return getListAppealDtoResponse(appealsService.getAllDtoByUser(authentication));
     }
 
+    @ApiOperation(value = "Создает обращение")
+    @PostMapping(value = "", produces = DATA_TYPE)
+    public ResponseEntity<AppealDto> createAppeal(@RequestBody AppealRequest appealRequest,
+                                                  Authentication authentication) {
+        return getDtoResponse(appealsService.save(appealRequest, authentication));
+    }
+
     @Secured(value = {ROLE_ADMIN})
     @ApiOperation(value = "Выводит список всех обращений. Только для Администратора")
-    @GetMapping("/all")
+    @GetMapping(value = "/all", produces = DATA_TYPE)
     public ResponseEntity<List<AppealDto>> readAll(Authentication authentication) {
         return getListAppealDtoResponse(appealsService.getAllDto(authentication));
     }
 
     @ApiOperation(value = "Выводит обращение по его индексу")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = DATA_TYPE)
     public ResponseEntity<AppealDto> readAppealById(@PathVariable(name = "id") Long id,
                                                     Authentication authentication) {
         return getDtoResponse(appealsService.getDtoById(id, authentication));
@@ -54,16 +61,9 @@ public class AppealController {
 
     @Secured(value = {ROLE_ADMIN})
     @ApiOperation(value = "Изменяет обращение по его индексу. Только для Администратора")
-    @PostMapping(value = "/{id}", consumes = CONSUME_TYPE)
+    @PostMapping(value = "/{id}", produces = DATA_TYPE)
     public ResponseEntity<AppealDto> updateAppealById(@RequestBody AppealDto appealDto,
                                                       Authentication authentication) {
         return getDtoResponse(appealsService.update(appealDto, authentication));
-    }
-
-    @ApiOperation(value = "Создает обращение")
-    @PostMapping(consumes = CONSUME_TYPE)
-    public ResponseEntity<AppealDto> createAppeal(@RequestBody AppealRequest appealRequest,
-                                                  Authentication authentication) {
-        return getDtoResponse(appealsService.save(appealRequest, authentication));
     }
 }

@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,6 @@ import ru.geekbrains.domodel.services.api.RequisitesService;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import java.util.List;
-import java.util.Random;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 import static ru.geekbrains.domodel.mappers.ResponseMapper.*;
@@ -20,7 +20,7 @@ import static ru.geekbrains.domodel.mappers.ResponseMapper.*;
 /**
  * Контроллер управления сайтом
  */
-@ApiOperation("Контроллер управления сайтом. Доступ только для Администратора")
+@Api("Контроллер управления сайтом. Доступ только для Администратора")
 @CrossOrigin
 @RestController
 @Secured(value = {ROLE_ADMIN})
@@ -28,7 +28,7 @@ import static ru.geekbrains.domodel.mappers.ResponseMapper.*;
 @RequiredArgsConstructor
 public class ManagementController {
 
-    private final String CONSUME_TYPE = "application/json";
+    private final String DATA_TYPE = "application/json";
 
     // Необходимые сервисы
     private final UserService userService;
@@ -36,93 +36,71 @@ public class ManagementController {
     private final AccountService accountService;
 
     @ApiOperation(value = "Выводит текущие реквизиты компании")
-    @GetMapping("/requisites")
+    @GetMapping(value = "/requisites", produces = DATA_TYPE)
     public ResponseEntity<RequisitesDto> readCurrentRequisites() {
         return getDtoResponse(requisitesService.getCurrentDto());
     }
 
     @ApiOperation(value = "Создает текущие реквизиты компании, если не были созданы, либо изменяет текущие")
-    @PostMapping(value = "/requisites", consumes = CONSUME_TYPE)
+    @PostMapping(value = "/requisites", produces = DATA_TYPE)
     public ResponseEntity<RequisitesDto> updateRequisites(@RequestBody RequisitesDto requisitesDto) {
         return getDtoResponse(requisitesService.update(requisitesDto));
     }
 
-    @ApiOperation(value = "Выводит список всех пользователей")
-    @GetMapping("/users")
+    @ApiOperation(value = "Выводит список всех профилей пользователей")
+    @GetMapping(value = "/users", produces = DATA_TYPE)
     public ResponseEntity<List<UserDto>> readAllUsers() {
         return getListUserDtoResponse(userService.getAll());
     }
 
     @ApiOperation(value = "Выводит профиль пользователя по его индексу")
-    @GetMapping(value = "/users/{id}")
+    @GetMapping(value = "/users/{id}", produces = DATA_TYPE)
     public ResponseEntity<UserDto> readUserById(@PathVariable(name = "id") Long id){
         return getDtoResponse(userService.getDtoById(id));
     }
 
     @ApiOperation(value = "Изменяет профиль пользователя")
-    @PostMapping(value = "/users/{id}")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto,
-                                              Authentication authentication) {
+    @PostMapping(value = "/users/{id}", produces = DATA_TYPE)
+    public ResponseEntity<UserDto> updateUserById(@PathVariable(name = "id") Long id,
+                                                  @RequestBody UserDto userDto,
+                                                  Authentication authentication) {
         return getDtoResponse(userService.update(userDto, authentication.getName()));
     }
 
-    @ApiOperation(value = "Выводит результат удаления пользователя")
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<Boolean> deleteUserById(@PathVariable("id") long id) {
-        return getBooleanResponse(userService.deleteById(id));
-    }
-
-    @ApiOperation(value = "Создает нового пользователя")
-    @PostMapping(value = "/users/create")
+    @ApiOperation(value = "Создает новый профиль пользователя")
+    @PostMapping(value = "/users", produces = DATA_TYPE)
     public ResponseEntity<UserDto> createUser(@RequestBody UserRequest userRequest) {
         return getDtoResponse(userService.save(userRequest));
     }
 
+    @ApiOperation(value = "Удаляет профиль пользователя, возвращая результат удаления")
+    @DeleteMapping(value = "/users/{id}", produces = DATA_TYPE)
+    public ResponseEntity<Boolean> deleteUserById(@PathVariable("id") long id) {
+        return getBooleanResponse(userService.deleteById(id));
+    }
+
     @ApiOperation(value = "Выводит список всех лицевых счетов")
-    @GetMapping("/accounts")
-    public ResponseEntity<List<AccountDto>> getAccounts() {
+    @GetMapping(value = "/accounts", produces = DATA_TYPE)
+    public ResponseEntity<List<AccountDto>> readAllAccounts() {
         return getListAccountDtoResponse(accountService.getAllDto());
     }
 
-    @ApiOperation(value = "Создает лицевой счет")
-    @PostMapping("/accounts/create")
+    @ApiOperation(value = "Выводит лицевой счет по его индексу")
+    @GetMapping(value = "/accounts/{id}", produces = DATA_TYPE)
+    public ResponseEntity<AccountDto> readAccountById(@PathVariable(name = "id") Long id) {
+        return getDtoResponse(accountService.getAccountDtoById(id));
+    }
+
+    @ApiOperation(value = "Изменяет лицевой счет")
+    @PostMapping(value = "/accounts/{id}", produces = DATA_TYPE)
+    public ResponseEntity<AccountDto> updateUser(@PathVariable(name = "id") Long id,
+                                                 @RequestBody AccountDto accountDto) {
+        return getDtoResponse(accountService.update(accountDto));
+    }
+
+    @ApiOperation(value = "Создает новый лицевой счет")
+    @PostMapping(value = "/accounts", produces = DATA_TYPE)
     public ResponseEntity<AccountDto> createAccount(@RequestBody AccountRequest accountRequest) {
         return getDtoResponse(accountService.save(accountRequest));
-    }
-
-    @ApiOperation(value = "Создает несколько пользователей")
-    @PostMapping("/users/create/{number}")
-    public ResponseEntity<List<UserDto>> createUsers(@PathVariable(name = "number") Integer number) {
-        Random random = new Random(1000);
-        for (int i = 0; i < number; i++) {
-            String password = "pswd" + random.nextInt();
-            UserRequest userRequest = new UserRequest();
-            userRequest.setPassword(password);
-            userRequest.setPasswordConfirm(password);
-            userRequest.setUsername(String.valueOf(100_001 + i));
-            UserDto userDto = userService.save(userRequest);
-            if (userDto != null) {
-                userDto.setFirstName(password);
-                userService.update(userDto);
-            }
-        }
-        return getListUserDtoResponse(userService.getAll());
-    }
-
-    @ApiOperation(value = "Создает несколько лицевых счетов")
-    @PostMapping("/accounts/create/{number}")
-    public ResponseEntity<List<AccountDto>> createAccounts(@PathVariable(name = "number") Integer number) {
-        for (int i = 0; i < number; i++) {
-            AccountRequest accountRequest = new AccountRequest();
-            accountRequest.setHouseNumber(String.valueOf(i+1));
-            AccountDto accountDto = accountService.save(accountRequest);
-
-            UserDto userDto = userService.getByUsername(String.valueOf(100_001 + i));
-            if (userDto != null) {
-                accountDto.setUser(userDto);
-                accountService.update(accountDto);
-            }
-        }
-        return getListAccountDtoResponse(accountService.getAllDto());
     }
 }
