@@ -64,6 +64,13 @@ public interface UserService {
     UserDto update(UserDto userDto, String username);
 
     /**
+     * Изменить данные пользователя (для внутреннего использования)
+     *
+     * @param userDto пользователь с измененными данными
+     */
+    User update(UserDto userDto);
+
+    /**
      * Получить общего Пользователя для межсервисного взаимодействия
      *
      * @param username логин пользователя

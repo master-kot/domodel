@@ -6,15 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ru.geekbrains.domodel.dto.AccountDto;
-import ru.geekbrains.domodel.dto.RequisitesDto;
-import ru.geekbrains.domodel.dto.UserDto;
-import ru.geekbrains.domodel.dto.UserRequest;
+import ru.geekbrains.domodel.dto.*;
 import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.RequisitesService;
 import ru.geekbrains.domodel.services.api.UserService;
 
 import java.util.List;
+import java.util.Random;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 import static ru.geekbrains.domodel.mappers.ResponseMapper.*;
@@ -83,6 +81,35 @@ public class ManagementController {
     @ApiOperation(value = "Выводит список всех лицевых счетов")
     @GetMapping("/accounts")
     public ResponseEntity<List<AccountDto>> getAccounts() {
+        return getListAccountDtoResponse(accountService.getAllDto());
+    }
+
+    @ApiOperation(value = "Создает лицевой счет")
+    @PostMapping("/accounts/create")
+    public ResponseEntity<AccountDto> createAccount(@RequestBody AccountRequest accountRequest) {
+        return getDtoResponse(accountService.save(accountRequest));
+    }
+
+    @ApiOperation(value = "Создает несколько лицевых счетов")
+    @PostMapping("/accounts/create/{number}")
+    public ResponseEntity<List<AccountDto>> createAccounts(@PathVariable(name = "number") Integer number) {
+        Random random = new Random(10000);
+        for (int i = 0; i < number; i++) {
+            AccountRequest accountRequest = new AccountRequest();
+            accountRequest.setHouseNumber(String.valueOf(100_000 + i));
+            AccountDto accountDto = accountService.save(accountRequest);
+
+            String password = "pswd" + random.nextInt();
+            UserRequest userRequest = new UserRequest();
+            userRequest.setPassword(password);
+            userRequest.setPasswordConfirm(password);
+            userRequest.setUsername(String.valueOf(100_001 + i));
+            UserDto userDto = userService.save(userRequest);
+
+            userDto.setFirstName(password);
+            accountDto.setUser(userDto);
+            accountService.update(accountDto);
+        }
         return getListAccountDtoResponse(accountService.getAllDto());
     }
 }
