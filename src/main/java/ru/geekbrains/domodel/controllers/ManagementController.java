@@ -114,7 +114,7 @@ public class ManagementController {
     public ResponseEntity<List<AccountDto>> createAccounts(@PathVariable(name = "number") Integer number) {
         for (int i = 0; i < number; i++) {
             AccountRequest accountRequest = new AccountRequest();
-            accountRequest.setHouseNumber(String.valueOf(100_001 + i));
+            accountRequest.setHouseNumber(String.valueOf(i+1));
             AccountDto accountDto = accountService.save(accountRequest);
 
             UserDto userDto = userService.getByUsername(String.valueOf(100_001 + i));
