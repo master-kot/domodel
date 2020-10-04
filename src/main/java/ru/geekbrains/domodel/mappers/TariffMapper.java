@@ -15,6 +15,7 @@ import java.util.List;
 public interface TariffMapper {
 
     @Mappings({
+            @Mapping(target="tariffId", source = "entity.id"),
             @Mapping(target="meterTypeDescription", source = "entity.meterType.description")
     })
     TariffDto tariffToTariffDto(Tariff entity);
