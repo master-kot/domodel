@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +14,16 @@ import ru.geekbrains.domodel.services.api.AppealService;
 import java.util.List;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
+import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 import static ru.geekbrains.domodel.mappers.ResponseMapper.getDtoResponse;
 import static ru.geekbrains.domodel.mappers.ResponseMapper.getListAppealDtoResponse;
 
 /**
  * Контроллер обращений
  */
-@ApiOperation(value = "Контроллер обращений")
+@Api(value = "Контроллер обращений")
 @CrossOrigin
+@Secured(value = {ROLE_USER, ROLE_ADMIN})
 @RestController
 @RequestMapping("/api/v1/appeals")
 @RequiredArgsConstructor

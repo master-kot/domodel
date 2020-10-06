@@ -16,6 +16,9 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {PhotoLinkMapper.class, AppealStatusMapper.class})
 public interface AppealMapper {
 
+    @Mappings({
+            @Mapping(target="authorId", source = "entity.author.id")
+    })
     AppealDto appealToAppealDto(Appeal entity);
 
     List<AppealDto> appealToAppealDto(List<Appeal> entities);

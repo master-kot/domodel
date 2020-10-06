@@ -92,8 +92,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto update(UserDto userDto,
-                          String username) {
+    public UserDto update(UserDto userDto, String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
         if (optionalUser.isPresent()) {
             User user = userMapper.updateUser(optionalUser.get(), userDto);
