@@ -49,6 +49,10 @@ public interface UserMapper {
 
     @Mappings({
             @Mapping(target="id", ignore = true),
+            @Mapping(target="username", ignore = true),
+            @Mapping(target="password", ignore = true),
+            @Mapping(target="authorities", ignore = true),
+            @Mapping(target="creationDate", ignore = true),
     })
     User updateUser(@MappingTarget User entity, UserDto dto);
 }

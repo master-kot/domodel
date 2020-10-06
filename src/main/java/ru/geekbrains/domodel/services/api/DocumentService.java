@@ -10,7 +10,12 @@ import java.util.List;
 public interface DocumentService {
 
     /**
-     * Вернуть список документов
+     * Выводит список всех документов
      */
     List<DocumentDto> getAllDto();
+
+    /**
+     * Создает документ
+     */
+    DocumentDto save(DocumentDto documentRequest);
 }
