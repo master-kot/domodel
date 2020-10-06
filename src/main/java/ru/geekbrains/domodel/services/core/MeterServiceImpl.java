@@ -158,7 +158,7 @@ public class MeterServiceImpl implements MeterService {
 
           MeterData previous = getCurrentMeterDataByMeter(meter);
 
-          if (previous.getCreationDate().getMonth().equals(nowDate.getMonth())) {
+          if (previous != null && previous.getCreationDate().getMonth().equals(nowDate.getMonth())) {
               previous.setValue(submitData);
               previous.setCreationDate(nowDate);
               return dataMapper.meterDataToMeterDataDto(meterDataRepository.save(previous));
@@ -202,7 +202,7 @@ public class MeterServiceImpl implements MeterService {
 
                 previous = getCurrentMeterDataByMeter(meter.get());
 
-                if (previous.getCreationDate().getMonth().equals(nowDate.getMonth())) {
+                if (previous != null && previous.getCreationDate().getMonth().equals(nowDate.getMonth())) {
                     previous.setValue(sd.getValue());
                     previous.setCreationDate(nowDate);
                     meterDatas.add(previous);
@@ -260,8 +260,8 @@ public class MeterServiceImpl implements MeterService {
 
     @Override
     public MeterData getCurrentMeterDataByMeter(Meter meter) {
-        //todo: что вернуть если ничего нет ?
-        return meterDataRepository.findCurrentMeterData(meter).orElse(new MeterData());
+        //todo: что вернуть если ничего нет ? : избавитсья от null
+        return meterDataRepository.findCurrentMeterData(meter).orElse(null);
     }
 
     @Override
