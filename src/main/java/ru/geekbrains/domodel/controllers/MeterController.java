@@ -51,7 +51,7 @@ public class MeterController {
     @Secured({Roles.ROLE_ADMIN})
     @PostMapping("")
     public ResponseEntity<MeterDto> createMeter(@RequestBody MeterDto meterDto) {
-        MeterDto m = meterService.saveOrUpdate(meterDto);
+        MeterDto m = meterService.saveOrUpdate(null, meterDto);
         if (m == null) {
             return ResponseEntity.noContent().build();
         }
@@ -68,9 +68,9 @@ public class MeterController {
 
     @ApiOperation(value = "Обновляет информацию о счетчике")
     @Secured({Roles.ROLE_ADMIN})
-    @PutMapping("")
-    public MeterDto updateMeter(@RequestBody MeterDto meterDto) {
-        return meterService.saveOrUpdate(meterDto);
+    @PutMapping("/{id}")
+    public MeterDto updateMeter(@PathVariable Long id, @RequestBody MeterDto meterDto) {
+        return meterService.saveOrUpdate(id, meterDto);
     }
 
     @ApiOperation(value = "Выводит информацию о всех показаниях счетчика по индексу счетчика")

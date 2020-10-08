@@ -221,17 +221,27 @@ public class MeterServiceImpl implements MeterService {
 
     @Transactional
     @Override
-    public MeterDto saveOrUpdate(MeterDto meterDto) {
+    public MeterDto saveOrUpdate(Long idMeter, MeterDto meterDto) {
         Objects.requireNonNull(meterDto, "Данные счетчика не коректны!");
 
         if (meterDto.getSerialNumber() != null) {
             Meter m = meterMapper.meterDtoToMeter(meterDto);
+
+            if (idMeter != null) {
+                if (meterRepository.existsById(idMeter)) {
+                    m.setId(idMeter);
+                } else {
+                    throw new RuntimeException("Данного счетчика не существует: " + idMeter);
+                }
+            }
+
             m.setAccount(accountService.getAccountById(meterDto.getAccountId()));
-            m.setType(meterTypeRepository.findByDescription(meterDto.getTypeDescription()));
+            m.setType(meterTypeRepository.findByDescription(meterDto.getTypeDescription())
+                    .orElseThrow(() -> new RuntimeException("Данные счетчика не коректны: Тип счетчика не найден")));
             return meterMapper.meterToMeterDto(meterRepository.save(m));
         } else {
             log.error("Данные счетчика не коректны: Серийный номер");
-            throw new RuntimeException("Данные счетчика не коректны: ID или Серийный номер");
+            throw new RuntimeException("Данные счетчика не коректны: Серийный номер");
 //            return null;
         }
     }
