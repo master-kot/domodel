@@ -6,10 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ru.geekbrains.domodel.dto.AccountMetersDto;
-import ru.geekbrains.domodel.dto.MeterDataDto;
-import ru.geekbrains.domodel.dto.MeterDto;
-import ru.geekbrains.domodel.dto.SubmitDataDto;
+import ru.geekbrains.domodel.dto.*;
 import ru.geekbrains.domodel.entities.constants.Roles;
 import ru.geekbrains.domodel.services.api.MeterService;
 
@@ -98,5 +95,19 @@ public class MeterController {
     public ResponseEntity<?> deleteMeterDataById(@PathVariable Long dataId) {
         Integer result = meterService.deleteMeterDataById(dataId);
         return result > 0 ? ResponseEntity.ok(result) : ResponseEntity.badRequest().build();
+    }
+
+    @ApiOperation(value = "Выводит список типов счетчика")
+    @Secured({Roles.ROLE_ADMIN})
+    @GetMapping("/types")
+    public List<MeterTypeDto> readMeterTypes() {
+        return meterService.getMeterTypes();
+    }
+
+    @ApiOperation(value = "Выводит список тарифов")
+    @Secured({Roles.ROLE_ADMIN})
+    @GetMapping("/tariffs")
+    public List<TariffDto> readMeterTariffs() {
+        return meterService.getMeterTariffs();
     }
 }

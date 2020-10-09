@@ -29,10 +29,6 @@ public class Tariff {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    // Тип счетчиков, для которого используется данный тариф
-    @OneToOne(mappedBy = "tariff")
-    private MeterType meterType;
-
     // Значение по умолчанию, устанавливается в качестве показания за период, если показание не было подано
     // НЕ ИСПОЛЬЗУЕТСЯ В MVP 0
 //    @Column(name = "default_increase_value")

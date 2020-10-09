@@ -46,6 +46,11 @@ public class Meter {
     @JoinColumn(name = "type_id", nullable = false)
     private MeterType type;
 
+    // Тип счетчика
+    @ManyToOne
+    @JoinColumn(name = "tariff_id", nullable = false)
+    private Tariff tariff;
+
     // Список показаний данного счетчика
     @OneToMany(mappedBy = "meter", cascade = CascadeType.REMOVE)
     private List<MeterData> meterDatas = new ArrayList<>();

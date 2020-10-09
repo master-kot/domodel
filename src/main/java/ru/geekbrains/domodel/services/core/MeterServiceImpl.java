@@ -4,20 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.domodel.dto.AccountMetersDto;
-import ru.geekbrains.domodel.dto.MeterDataDto;
-import ru.geekbrains.domodel.dto.MeterDto;
-import ru.geekbrains.domodel.dto.SubmitDataDto;
+import ru.geekbrains.domodel.dto.*;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
 import ru.geekbrains.domodel.entities.constants.Roles;
-import ru.geekbrains.domodel.mappers.AccountMapper;
-import ru.geekbrains.domodel.mappers.MeterDataMapper;
-import ru.geekbrains.domodel.mappers.MeterMapper;
+import ru.geekbrains.domodel.mappers.*;
 import ru.geekbrains.domodel.repositories.MeterDataRepository;
 import ru.geekbrains.domodel.repositories.MeterRepository;
 import ru.geekbrains.domodel.repositories.MeterTypeRepository;
+import ru.geekbrains.domodel.repositories.TariffRepository;
 import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.MeterService;
 
@@ -41,10 +37,13 @@ public class MeterServiceImpl implements MeterService {
     private final MeterMapper meterMapper;
     private final MeterDataMapper dataMapper;
     private final AccountMapper accountMapper;
+    private final MeterTypeMapper typeMapper;
+    private final TariffMapper tariffMapper;
 
     private final MeterRepository meterRepository;
     private final MeterDataRepository meterDataRepository;
     private final MeterTypeRepository meterTypeRepository;
+    private final TariffRepository tariffRepository;
 
     private final AccountService accountService;
 
@@ -238,6 +237,8 @@ public class MeterServiceImpl implements MeterService {
             m.setAccount(accountService.getAccountById(meterDto.getAccountId()));
             m.setType(meterTypeRepository.findByDescription(meterDto.getTypeDescription())
                     .orElseThrow(() -> new RuntimeException("Данные счетчика не коректны: Тип счетчика не найден")));
+            m.setTariff(tariffRepository.findByDescription(meterDto.getTariffDescription())
+                    .orElseThrow(() -> new RuntimeException("Данные счетчика не коректны: Тариф счетчика не найден")));
             return meterMapper.meterToMeterDto(meterRepository.save(m));
         } else {
             log.error("Данные счетчика не коректны: Серийный номер");
@@ -295,4 +296,13 @@ public class MeterServiceImpl implements MeterService {
         return meterDataRepository.deleteMeterDataById(dataId);
     }
 
+    @Override
+    public List<MeterTypeDto> getMeterTypes() {
+        return typeMapper.meterTypeToMeterTypeDto(meterTypeRepository.findAll());
+    }
+
+    @Override
+    public List<TariffDto> getMeterTariffs() {
+        return tariffMapper.tariffToTariffDto(tariffRepository.findAll());
+    }
 }
