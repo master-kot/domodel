@@ -1,0 +1,33 @@
+package ru.geekbrains.domodel.mappers;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import ru.geekbrains.domodel.dto.PhotoLinkDto;
+import ru.geekbrains.domodel.entities.PhotoLink;
+
+import java.util.List;
+
+/**
+ * Маппер, преобразовывающий классы PhotoLink и PhotoLinkDto друг в друга
+ */
+@Mapper(componentModel = "spring")
+public interface PhotoLinkMapper {
+
+    PhotoLinkDto photoLinkToPhotoLinkDto(PhotoLink entity);
+
+    List<PhotoLinkDto> photoLinkToPhotoLinkDto(List<PhotoLink> entities);
+
+    default String photoLinkToString(PhotoLink entity) {
+        return entity.getLinkAddress();
+    }
+
+    List<String> photoLinkToString(List<PhotoLink> entities);
+
+    @Mappings({
+            @Mapping(target="linkAddress", source = "dto")
+    })
+    PhotoLink stringToPhotoLink(String dto);
+
+    List<PhotoLink> stringToPhotoLink(List<String> dto);
+}

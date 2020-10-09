@@ -17,9 +17,13 @@ import java.util.List;
 public class JwtUser implements UserDetails {
 
     private Long id;
+
     private String username;
+
     private String password;
+
     private boolean enabled;
+
     private List<JwtRole> authorities;
 
     @JsonIgnore

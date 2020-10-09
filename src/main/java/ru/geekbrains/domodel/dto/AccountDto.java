@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 /**
- * DTO представление сущности Лицевой счет
+ * Базовое Dto представление сущности Лицевого счета.
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,4 +17,6 @@ public class AccountDto {
     private String houseNumber;
 
     private Double acresAmount;
+
+    private UserDto user;
 }

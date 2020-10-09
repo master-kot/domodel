@@ -25,16 +25,16 @@ public class BillDto {
     private Double total;
 
     // Тип платежа
-    private String type;
+    private String typeDescription;
 
     // Статус платежа, изменяется председателем (бухгалтером)
     private boolean paymentStatus;
 
     // Номер лицевого счета
-    private Long account;
+    private Long accountId;
 
     // Номер платежных реквизитов
-    private Integer requisites;
+    private Integer requisitesId;
 
     // Список калькуляций (обоснование цены счета)
     private List<CalculationDto> calculations = new ArrayList<>();

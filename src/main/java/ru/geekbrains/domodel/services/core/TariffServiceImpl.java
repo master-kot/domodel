@@ -3,6 +3,7 @@ package ru.geekbrains.domodel.services.core;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.TariffDto;
+import ru.geekbrains.domodel.mappers.TariffMapper;
 import ru.geekbrains.domodel.repositories.TariffRepository;
 import ru.geekbrains.domodel.services.api.TariffService;
 
@@ -18,13 +19,15 @@ public class TariffServiceImpl implements TariffService {
     // Репозиторий тарифов
     private final TariffRepository tariffRepository;
 
+    private final TariffMapper tariffMapper;
+
     @Override
     public List<TariffDto> getAllTariffs() {
-        return null; // мапим результат tariffRepository.findAll();
+        return tariffMapper.tariffToTariffDto(tariffRepository.findAll());
     }
 
     @Override
     public TariffDto getTariffById(Integer id) {
-        return null; // мапим результат tariffRepository.findById(id);
+        return (tariffRepository.findById(id)).map(tariffMapper::tariffToTariffDto).orElse(null);
     }
 }

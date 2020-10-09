@@ -1,5 +1,6 @@
 package ru.geekbrains.domodel.controllers;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * REST контроллер для запросов аутентификации.
+ * Контроллер аутентификации.
  */
+@Api(value = "Контроллер аутентификации")
 @RestController
 @RequestMapping(value = "/api/v1/auth/")
 @RequiredArgsConstructor
@@ -45,8 +47,7 @@ public class AuthenticationController {
                     new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
             JwtUser user = userService.getJwtUserByUsername(username);
             if (user == null) {
-                //return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-                throw new UsernameNotFoundException("User with username: " + username + " not found");
+                throw new UsernameNotFoundException("Пользователь с именем: " + username + " не найден");
             }
 
             String token = jwtTokenProvider.createToken(username,
@@ -59,8 +60,7 @@ public class AuthenticationController {
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (AuthenticationException e) {
-            //return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-            throw new BadCredentialsException("Invalid username or password");
+            throw new BadCredentialsException("Неверное имя пользователя или пароль");
         }
     }
 }

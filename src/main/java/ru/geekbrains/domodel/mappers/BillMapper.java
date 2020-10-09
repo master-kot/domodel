@@ -1,30 +1,26 @@
 package ru.geekbrains.domodel.mappers;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import ru.geekbrains.domodel.dto.BillDto;
 import ru.geekbrains.domodel.entities.Bill;
 
-import java.time.format.DateTimeFormatter;
-import java.util.stream.Collectors;
+import java.util.List;
 
 /**
  * Маппер, преобразовывающий классы Bill и BillDto друг в друга
  */
-@Mapper(componentModel = "spring", uses= {AccountMapper.class, RequisitesMapper.class})
-public abstract class BillMapper {
+@Mapper(componentModel = "spring", uses = {CalculationMapper.class, BillTypeMapper.class})
+public interface BillMapper {
 
-    public BillDto billToBillDto(Bill entity) {
-        BillDto dto = new BillDto();
-        dto.setId(entity.getId());
-        dto.setCreationDate(entity.getCreationDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-        dto.setTarget(entity.getTarget());
-        dto.setTotal(entity.getTotal());
-        dto.setType(entity.getType().name());
-        dto.setPaymentStatus(entity.isPaymentStatus());
-        dto.setAccount(entity.getAccount().getId());
-        dto.setRequisites(entity.getRequisites().getId());
-        dto.setCalculations(entity.getCalculations().stream()
-                .map(CalculationMapper::calculationToCalculationDto).collect(Collectors.toList()));
-        return dto;
-    }
+    @Mappings({
+            @Mapping(target="creationDate", source = "entity.creationDate", dateFormat = "dd-MM-yyyy"),
+            @Mapping(target="typeDescription", source = "entity.type"),
+            @Mapping(target="accountId", source = "entity.account.id"),
+            @Mapping(target="requisitesId", source = "entity.requisites.id")
+    })
+    BillDto billToBillDto(Bill entity);
+
+    List<BillDto> billToBillDto(List<Bill> entities);
 }

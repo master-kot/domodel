@@ -2,7 +2,6 @@ package ru.geekbrains.domodel.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import ru.geekbrains.domodel.entities.MeterData;
 
 /**
  * Dto представление сущности калькуляции для каждой конкретной строки.
@@ -13,7 +12,7 @@ public class CalculationDto {
 
     private Long id;
 
-    // Количество единиц - разница паказаний
+    // Количество единиц - разница показаний
     private Double amount;
 
     // Цена за единицу
@@ -23,8 +22,8 @@ public class CalculationDto {
     private Double cost;
 
     // Ссылка на предыдущие показания счетчика
-    private MeterData previousData;
+    private Double previousDataValue;
 
     // Ссылка на текущие показания счетчика
-    private MeterData currentData;
+    private Double currentDataValue;
 }

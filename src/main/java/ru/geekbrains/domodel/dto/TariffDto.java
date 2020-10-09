@@ -1,6 +1,7 @@
 package ru.geekbrains.domodel.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -10,4 +11,15 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TariffDto {
 
+    @ApiModelProperty(value = "id счетчика")
+    private Integer tariffId;
+
+    @ApiModelProperty(value = "Тарифф")
+    private String description;
+
+    @ApiModelProperty(value = "Ценна тариффа")
+    private Double price;
+
+    @ApiModelProperty(value = "Тип счетчика поддерживающего тарифф")
+    private String meterTypeDescription;
 }

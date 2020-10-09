@@ -1,15 +1,21 @@
 package ru.geekbrains.domodel.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MeterDataDto {
 
-    private Long id;
+    @ApiModelProperty(value = "id показания")
+    private Long meterDataId;
+
+    @ApiModelProperty(value = "Дата подачи показания")
     private LocalDate creationDate;
+
+    @ApiModelProperty(value = "Значения показания")
     private Double value;
 }

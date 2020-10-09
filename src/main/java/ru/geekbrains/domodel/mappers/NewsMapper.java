@@ -7,6 +7,8 @@ import ru.geekbrains.domodel.dto.NewsDto;
 import ru.geekbrains.domodel.dto.NewsRequest;
 import ru.geekbrains.domodel.entities.News;
 
+import java.util.List;
+
 /**
  * Маппер, преобразовывающий классы News и NewsDto друг в друга
  */
@@ -15,8 +17,7 @@ public interface NewsMapper {
 
     @Mappings({
             @Mapping(target="id", source = "entity.id"),
-            @Mapping(target="creationDate", source = "entity.creationDate",
-                    dateFormat = "dd-MM-yyyy"),
+            @Mapping(target="creationDate", source = "entity.creationDate", dateFormat = "dd-MM-yyyy"),
             @Mapping(target="title", source = "entity.title"),
             @Mapping(target="shortText", source = "entity.fullText"),
             @Mapping(target="fullText", source = "entity.fullText"),
@@ -24,19 +25,22 @@ public interface NewsMapper {
             @Mapping(target="hidden", source = "entity.hidden"),
             @Mapping(target="pinned", source = "entity.pinned"),
             @Mapping(target="visible", source = "entity.visible"),
-            @Mapping(target="authorName", source = "entity.author.firstName")})
+            @Mapping(target="authorName", source = "entity.author.firstName")
+    })
     NewsDto newsToNewsDto(News entity);
+
+    List<NewsDto> newsToNewsDto(List<News> entities);
 
     @Mappings({
             @Mapping(target="id", source="dto.id"),
-            @Mapping(target="creationDate", source="dto.creationDate",
-                    dateFormat="dd-MM-yyyy"),
+            @Mapping(target="creationDate", source="dto.creationDate", dateFormat="dd-MM-yyyy"),
             @Mapping(target="title", source="dto.title"),
             @Mapping(target="fullText", source="dto.fullText"),
             @Mapping(target="pictureLink", source="dto.pictureLink"),
             @Mapping(target="hidden", source="dto.hidden"),
             @Mapping(target="pinned", source="dto.pinned"),
-            @Mapping(target="visible", source="dto.visible")})
+            @Mapping(target="visible", source="dto.visible")
+    })
     News newsDtoToNews(NewsDto dto);
 
     @Mappings({
@@ -45,6 +49,7 @@ public interface NewsMapper {
             @Mapping(target="pictureLink", source="dto.photoLink"),
             @Mapping(target="hidden", source="dto.hidden"),
             @Mapping(target="pinned", source="dto.pinned"),
-            @Mapping(target="visible", source="dto.visible")})
+            @Mapping(target="visible", source="dto.visible")
+    })
     News newsRequestToNews(NewsRequest dto);
 }

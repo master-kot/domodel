@@ -7,7 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 /**
- * Сущность ссылки на документ
+ * Сущность Документ
  */
 @Entity
 @Getter

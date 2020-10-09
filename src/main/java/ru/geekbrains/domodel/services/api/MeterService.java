@@ -1,15 +1,15 @@
 package ru.geekbrains.domodel.services.api;
 
 import org.springframework.security.core.Authentication;
-import ru.geekbrains.domodel.dto.AccountDto;
+import ru.geekbrains.domodel.dto.AccountMetersDto;
 import ru.geekbrains.domodel.dto.MeterDataDto;
 import ru.geekbrains.domodel.dto.MeterDto;
+import ru.geekbrains.domodel.dto.SubmitDataDto;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -49,7 +49,7 @@ public interface MeterService {
     /**
      * Получить список всех счетчиков для пользователя
      */
-    Map<AccountDto, List<MeterDto>> getMetersUser(Authentication authentication);
+    List<AccountMetersDto> getMetersUser(Authentication authentication);
 
     /**
      * Получить счетчик по его серийному номеру
@@ -58,9 +58,8 @@ public interface MeterService {
 
     /**
      * Сохранить данные счетчика.
-     * @param meterDto
      */
-    MeterDto saveOrUpdate(MeterDto meterDto);
+    MeterDto saveOrUpdate(Long id, MeterDto meterDto);
 
     /**
      * Удаление данных счетчика.
@@ -75,6 +74,13 @@ public interface MeterService {
     MeterDataDto submitMeterData(Long meterId, Double meterDataDto, Authentication authentication);
 
     /**
+     * Принять данные о показаниях счетчиков.
+     * Предусмотреть, что показания могут быть поданы только раз в месяц,
+     * при попытке повторного сохранения показания в текущем месяце - изменять его
+     */
+    List<MeterDataDto> submitAllMeterData(List<SubmitDataDto> submitData, Authentication authentication);
+
+    /**
      * Получить список всех показаний данного счетчика
      */
     List<MeterDataDto> getAllMeterDataByMeterId(Long id);
@@ -87,7 +93,7 @@ public interface MeterService {
     /**
      * Получить предыдущие (предпоследние в списке по датам) показания для списка счетчиков
      */
-    List<MeterData> getPreviousMeterDatasByMeters(List<Meter> meter);
+    List<MeterData> getPreviousMeterDataByMeters(List<Meter> meter);
 
     /**
      * Получить текущее (последнее по дате в списке) показание счетчика
@@ -98,14 +104,6 @@ public interface MeterService {
      * Получить текущие (последние по датам в списке) показания для списка счетчиков
      */
     List<MeterData> getCurrentMeterDataByMeters(List<Meter> meter);
-
-    /**
-     * Сгенерировать показания для всех счетчиков, по которым не подавались показания в текущем месяце
-     * на основании заданного в сущности Тариф значения по умолчанию для этого типа счетчика.
-     * Предусмотреть защиту от повторного запуска метода в одном расчетном месяце (периоде)
-     */
-    @Deprecated
-    void generateDefaultMeterData();
 
     List<MeterData> getAllDataByMeters(List<Meter> meters);
 

@@ -2,27 +2,36 @@ package ru.geekbrains.domodel.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import ru.geekbrains.domodel.dto.AccountDto;
+import ru.geekbrains.domodel.dto.AccountMetersDto;
+import ru.geekbrains.domodel.dto.AccountRequest;
 import ru.geekbrains.domodel.entities.Account;
+
+import java.util.List;
 
 /**
  * Маппер, преобразовывающий классы Account и AccountDto друг в друга
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserMapper.class, MeterMapper.class})
 public interface AccountMapper {
 
-    @Mappings({
-            @Mapping(target="id", source = "entity.id"),
-            @Mapping(target="address", source = "entity.address"),
-            @Mapping(target="houseNumber", source = "entity.houseNumber"),
-            @Mapping(target="acresAmount", source = "entity.acresAmount")})
     AccountDto accountToAccountDto(Account entity);
 
-    @Mappings({
-            @Mapping(target="id", source="dto.id"),
-            @Mapping(target="address", source="dto.address"),
-            @Mapping(target="houseNumber", source="dto.houseNumber"),
-            @Mapping(target="acresAmount", source="dto.acresAmount")})
+    List<AccountDto> accountToAccountDto(List<Account> entities);
+
+    AccountMetersDto accountToAccountMetersDto(Account entity);
+
+    List<AccountMetersDto> accountToAccountMetersDto(List<Account> entities);
+
     Account accountDtoToAccount(AccountDto dto);
+
+    Account accountRequestToAccount(AccountRequest accountRequest);
+
+    @Mappings({
+            @Mapping(target="id", ignore = true),
+            @Mapping(target="user", ignore = true)
+    })
+    Account updateAccount(@MappingTarget Account entity, AccountDto dto);
 }

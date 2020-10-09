@@ -6,23 +6,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ru.geekbrains.domodel.dto.AccountDto;
+import ru.geekbrains.domodel.dto.AccountMetersDto;
 import ru.geekbrains.domodel.dto.MeterDataDto;
 import ru.geekbrains.domodel.dto.MeterDto;
+import ru.geekbrains.domodel.dto.SubmitDataDto;
 import ru.geekbrains.domodel.entities.constants.Roles;
 import ru.geekbrains.domodel.services.api.MeterService;
 
 import java.util.List;
-import java.util.Map;
-
 
 /**
  * Контроллер счетчиков показаний
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1/meters")
 @Secured({Roles.ROLE_ADMIN, Roles.ROLE_USER})
+@ApiOperation("Доступ к разделу только для зарегистрированных пользователей и Администратора")
+@RequestMapping("/api/v1/meters")
 @RequiredArgsConstructor
 public class MeterController {
 
@@ -30,7 +30,7 @@ public class MeterController {
 
     @ApiOperation(value = "Выводит счетчики отсортированные по лицевому счету")
     @GetMapping("")
-    public Map<AccountDto, List<MeterDto>> readMetersUser(Authentication authentication) {
+    public List<AccountMetersDto> readMetersUser(Authentication authentication) {
         return meterService.getMetersUser(authentication);
     }
 
@@ -51,7 +51,7 @@ public class MeterController {
     @Secured({Roles.ROLE_ADMIN})
     @PostMapping("")
     public ResponseEntity<MeterDto> createMeter(@RequestBody MeterDto meterDto) {
-        MeterDto m = meterService.saveOrUpdate(meterDto);
+        MeterDto m = meterService.saveOrUpdate(null, meterDto);
         if (m == null) {
             return ResponseEntity.noContent().build();
         }
@@ -68,9 +68,9 @@ public class MeterController {
 
     @ApiOperation(value = "Обновляет информацию о счетчике")
     @Secured({Roles.ROLE_ADMIN})
-    @PutMapping("")
-    public MeterDto updateMeter(@RequestBody MeterDto meterDto) {
-        return meterService.saveOrUpdate(meterDto);
+    @PutMapping("/{id}")
+    public MeterDto updateMeter(@PathVariable Long id, @RequestBody MeterDto meterDto) {
+        return meterService.saveOrUpdate(id, meterDto);
     }
 
     @ApiOperation(value = "Выводит информацию о всех показаниях счетчика по индексу счетчика")
@@ -84,6 +84,12 @@ public class MeterController {
     public ResponseEntity<?> createMeterDataByMeterId(@PathVariable Long id, @RequestParam Double submitData, Authentication authentication) {
         MeterDataDto result = meterService.submitMeterData(id, submitData, authentication);
         return  result != null ? ResponseEntity.ok(result) : ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/all/data")
+    public ResponseEntity<?> createMeterDatas(@RequestBody List<SubmitDataDto> submitData, Authentication authentication) {
+        List<MeterDataDto> result = meterService.submitAllMeterData(submitData, authentication);
+        return  !result.isEmpty() ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
     @ApiOperation(value = "Удаляет показания счетчика по индексу показаний")
