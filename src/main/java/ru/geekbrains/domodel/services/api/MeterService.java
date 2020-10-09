@@ -59,7 +59,7 @@ public interface MeterService {
     /**
      * Сохранить данные счетчика.
      */
-    MeterDto saveOrUpdate(MeterDto meterDto);
+    MeterDto saveOrUpdate(Long id, MeterDto meterDto);
 
     /**
      * Удаление данных счетчика.
