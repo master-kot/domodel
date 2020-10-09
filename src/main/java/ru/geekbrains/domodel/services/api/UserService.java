@@ -56,12 +56,20 @@ public interface UserService {
     UserDto save(UserRequest userRequest);
 
     /**
-     * Изменить данные пользователя
+     * Изменить данные пользователя по его username
      *
      * @param userDto пользователь с измененными данными
      * @param username логин пользователя
      */
     UserDto update(UserDto userDto, String username);
+
+    /**
+     * Изменить данные пользователя по его id
+     *
+     * @param userDto пользователь с измененными данными
+     * @param id индекс пользователя
+     */
+    UserDto update(UserDto userDto, Long id);
 
     /**
      * Изменить данные пользователя (для внутреннего использования)

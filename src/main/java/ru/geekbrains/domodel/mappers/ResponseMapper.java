@@ -36,6 +36,11 @@ public final class ResponseMapper {
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
     }
 
+    public static ResponseEntity<MeterDto> getDtoResponse(MeterDto objectDto) {
+        return objectDto == null ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
+    }
+
     public static ResponseEntity<RequisitesDto> getDtoResponse(RequisitesDto objectDto) {
         return objectDto == null ?
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
@@ -68,6 +73,11 @@ public final class ResponseMapper {
 
     public static ResponseEntity<List<InformationDto>> getListInformationDtoResponse(
             List<InformationDto> informationDtoList) {
+        return informationDtoList.size() == 0 ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(informationDtoList, HttpStatus.OK);
+    }
+
+    public static ResponseEntity<List<MeterDto>> getListMeterDtoResponse(List<MeterDto> informationDtoList) {
         return informationDtoList.size() == 0 ?
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(informationDtoList, HttpStatus.OK);
     }

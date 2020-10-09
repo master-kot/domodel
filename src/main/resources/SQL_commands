@@ -13,7 +13,7 @@ INSERT INTO users (username, password, enabled, creation_date, first_name, last_
 INSERT INTO authorities (authority) VALUES ('ROLE_ADMIN'), ('ROLE_DIRECTOR'), ('ROLE_USER');
 INSERT INTO users_authorities (user_id, authority_id) VALUES (1, 1), (2, 3);
 
-### МОДУЛЬ ГОЛОВСОВАНИЯ ###
+### МОДУЛЬ ГОЛОСОВАНИЯ ###
 CREATE TABLE votes (id bigserial not null, title varchar(50) not null, text varchar(500) not null, start_date date not null, end_date date not null, PRIMARY KEY (id));
 
 ### МОДУЛЬ НОВОСТЕЙ ###
@@ -22,30 +22,24 @@ INSERT INTO news (creation_date, title, full_text, picture_link, author_id, hidd
 
 ### МОДУЛИ ПЛАТЕЖНЫХ СЧЕТОВ И СЧЕТЧИКОВ ПОКАЗАНИЙ ###
 INSERT INTO accounts (user_id, address, house_number, acres_amount) VALUES (1, 'СНТ Малые собаки, Первая улица', '1й', 7), (2, 'СНТ Малые собаки, Вторая улица', '2й', 10), (2, 'СНТ Малые собаки, Третья улица', '3й', 15);
-INSERT INTO tariffs (description, price) VALUES ('Единый тариф на электричество', 5), ('Дневной тариф на электричество', 6), ('Ночной тариф на электричество', 4), ('Тариф на газ', 1), ('Тариф на горячую воду', 7), ('Тариф на холодную воду', 2);
-INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик электроэнергии (однотарифный)', 'кВТ/час', 1), ('Счётчик электроэнергии (дневной)', 'кВТ/час', 2), ('Счётчик электроэнергии (ночной)', 'кВТ/час', 3);
-INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик газа', 'куб.метров', 4), ('Счётчик горячей воды', 'куб.метров', 5), ('Счётчик холодной воды', 'куб.метров', 6);
-INSERT INTO meters (serial_number, model, check_date, account_id, type_id) VALUES ('9988776655', 'Модель 1', '2021-05-10', 1, 1), ('9876543210', 'Модель 2', '2021-06-30', 1, 2), ('0123456789', 'Модель 3', '2022-07-20', 2, 3);
-INSERT INTO meters (serial_number, model, check_date, account_id, type_id) VALUES ('1122335566', 'Модель 4', '2022-08-25', 2, 4), ('0123456789', 'Модель 3', '2022-07-20', 3, 5), ('1122335566', 'Модель 4', '2022-08-25', 3, 6);
+
+
+## МОДУЛЬ СЧЕТЧИКОВ ##
+INSERT INTO meter_type (description, measure_unit) VALUES ('Счётчик электроэнергии (однотарифный)', 'кВТ/час'), ('Счётчик электроэнергии (дневной)', 'кВТ/час'), ('Счётчик электроэнергии (ночной)', 'кВТ/час'), ('Счётчик газа', 'куб.метров'), ('Счётчик горячей воды', 'куб.метров'), ('Счётчик холодной воды', 'куб.метров');
+INSERT INTO tariffs (description, price) VALUES ('Единый тариф на электричество', '150'), ('Дневной тариф на электричество', 60), ('Ночной тариф на электричество', 40), ('Тариф на газ', 10), ('Тариф на горячую воду', 70), ('Тариф на холодную воду', 20);
+INSERT INTO meters (serial_number, model, check_date, account_id, type_id, tariff_id) VALUES ('9988776655', 'Модель 1', '2021-05-10', 1, 1, 1), ('9876543210', 'Модель 2', '2021-06-30', 1, 2, 2), ('0123456789', 'Модель 3', '2022-07-20', 2, 3, 3);
+INSERT INTO meters (serial_number, model, check_date, account_id, type_id, tariff_id) VALUES ('1122335566', 'Модель 4', '2022-08-25', 2, 4, 4), ('0123456789', 'Модель 3', '2022-07-20', 3, 5, 5), ('1122335566', 'Модель 4', '2022-08-25', 3, 6, 6);
 INSERT INTO meter_datas (meter_id, creation_date, value) VALUES (1, '2020-07-20', 55), (1, '2020-08-20', 70), (2, '2020-07-15', 30), (2, '2020-08-25', 40), (3, '2020-07-19', 66), (3, '2020-08-23', 88);
 INSERT INTO meter_datas (meter_id, creation_date, value) VALUES (4, '2020-07-30', 51), (4, '2020-08-31', 95), (5, '2020-05-05', 11), (5, '2020-06-06', 22), (6, '2020-07-07', 33), (6, '2020-08-08', 44);
+
 INSERT INTO requisites (company_name, company_address, inn, kpp, ogrn, bank_account, bank_name, bik, correspondent_account) VALUES ('ООО “ДОМОДЕЛ”', 'Московская область, домодедовский район', 11111111, 22222222, 33333333, '324493100000000024578', 'Банк Москвы', 44444444, '89993100000000024578');
+
+## МОДУЛЬ ПЛАТЕЖЕЙ ##
 INSERT INTO bills (creation_date, target, total, type, payment_status, account_id, requisites_id) VALUES ('2020-05-11', 'Платеж за счетчики воды', 111, 1, true, 1, 1), ('2020-05-11', 'Платеж за счетчики воды', 222, 1, true, 2, 1), ('2020-05-11', 'Платеж за счетчики воды', 333, 1, true, 3, 1);
 INSERT INTO bills (creation_date, target, total, type, payment_status, account_id, requisites_id) VALUES ('2020-06-19', 'Членский взнос за май в 444 руб.', 444, 2, false, 1, 1), ('2020-07-25', 'Членский взнос по тарифу за сотку', 555, 3, false, 2, 1);
 INSERT INTO bills (creation_date, target, total, type, payment_status, account_id, requisites_id) VALUES ('2020-08-29', 'Прочий платеж размером 777 руб.', 777, 4, true, 3, 1), ('2020-09-01', 'Прочий платеж по тарифу за сотку', 888, 5, false, 2, 1);
 INSERT INTO calculations (bill_id, previous_data, current_data, amount, price, cost) VALUES (1, 1, 2, 15, 5, 111), (1, 3, 4, 22, 6, 222), (2, 5, 6, 77, 4, 333), (2, 7, 8, 15, 7, 111), (3, 5, 6, 99, 2, 222), (4, 1, 2, 88, 3, 333);
 
-
-## МОДУЛЬ СЧЕТЧИКОВ ##
-## ТАРИФЫ ##
-INSERT INTO tariffs (id, description, price) VALUES (1, 'Однотарифный', '150');
-INSERT INTO tariffs (id, description, price) VALUES (1, 'Дневной', '200');
-INSERT INTO tariffs (id, description, price) VALUES (1, 'Ночной', '75');
-## ТИП СЧЕТЧИКОВ ##
-INSERT INTO meter_type (description, measure_unit) VALUES ('Счётчик электроэнергии', 'кВТ/час');
-INSERT INTO meter_type (description, measure_unit) VALUES ('Счётчик газа', 'куб.метров');
-INSERT INTO meter_type (description, measure_unit) VALUES ('Счётчик горячей воды', 'куб.метров');
-INSERT INTO meter_type (description, measure_unit) VALUES ('Счётчик холодной воды', 'куб.метров');
 
 
 ### РАБОТА С БД ###
@@ -72,3 +66,6 @@ DROP TABLE users CASCADE;
 alter table users drop column login;
 alter table users add column username varchar(50) not null UNIQUE;
 update tariffs set price = 99 where id = 4;
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик электроэнергии (однотарифный)', 'кВТ/час', 1), ('Счётчик электроэнергии (дневной)', 'кВТ/час', 2), ('Счётчик электроэнергии (ночной)', 'кВТ/час', 3);
+INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик газа', 'куб.метров', 4), ('Счётчик горячей воды', 'куб.метров', 5), ('Счётчик холодной воды', 'куб.метров', 6);
+INSERT INTO tariffs (description, price) VALUES ('Единый тариф на электричество', 5), ('Дневной тариф на электричество', 6), ('Ночной тариф на электричество', 4), ('Тариф на газ', 1), ('Тариф на горячую воду', 7), ('Тариф на холодную воду', 2);

@@ -48,7 +48,7 @@ public class MeterServiceImpl implements MeterService {
     private final AccountService accountService;
 
     @Override
-    public MeterDto getMeter(Long id) {
+    public MeterDto getMeterById(Long id) {
         Meter m = meterRepository.findById(id).orElseThrow(() -> new RuntimeException("not found meter by id: " + id));
         return meterMapper.meterToMeterDto(m);
     }
@@ -98,7 +98,7 @@ public class MeterServiceImpl implements MeterService {
     }
 
     @Override
-    public  List<AccountMetersDto> getMetersUser(Authentication authentication) {
+    public  List<AccountMetersDto> getMetersByUserUsername(Authentication authentication) {
         if (authentication != null) {
             List<Meter> meters;
             List<MeterData> currentData;
