@@ -16,9 +16,17 @@ public interface TariffMapper {
 
     @Mappings({
             @Mapping(target="tariffId", source = "entity.id"),
-            @Mapping(target="meterTypeDescription", source = "entity.meterType.description")
+            @Mapping(target="description", source = "entity.description"),
+            @Mapping(target = "price", source = "entity.price")
     })
     TariffDto tariffToTariffDto(Tariff entity);
 
     List<TariffDto> tariffToTariffDto(List<Tariff> entities);
+
+    @Mappings({
+            @Mapping(target="id", source = "dto.tariffId"),
+            @Mapping(target="description", source = "dto.description"),
+            @Mapping(target = "price", source = "dto.price")
+    })
+    Tariff tariffDtoToTariff(TariffDto dto);
 }

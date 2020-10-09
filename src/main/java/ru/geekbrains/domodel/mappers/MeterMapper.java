@@ -19,7 +19,7 @@ public interface MeterMapper {
             @Mapping(target = "accountId", source = "entity.account.id"),
             @Mapping(target = "houseNumber", source = "entity.account.houseNumber"),
             @Mapping(target = "typeDescription", source = "entity.type.description"),
-            @Mapping(target = "tariffDescription", source = "entity.type.tariff.description")
+            @Mapping(target = "tariffDescription", source = "entity.tariff.description")
     })
     MeterDto meterToMeterDto(Meter entity);
 
