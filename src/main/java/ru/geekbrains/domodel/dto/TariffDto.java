@@ -11,7 +11,7 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TariffDto {
 
-    @ApiModelProperty(value = "id счетчика")
+    @ApiModelProperty(value = "id тарифа")
     private Integer tariffId;
 
     @ApiModelProperty(value = "Тарифф")
@@ -19,7 +19,4 @@ public class TariffDto {
 
     @ApiModelProperty(value = "Ценна тариффа")
     private Double price;
-
-    @ApiModelProperty(value = "Тип счетчика поддерживающего тарифф")
-    private String meterTypeDescription;
 }

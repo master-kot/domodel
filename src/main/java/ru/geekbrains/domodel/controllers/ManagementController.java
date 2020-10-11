@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.domodel.dto.*;
 import ru.geekbrains.domodel.services.api.AccountService;
@@ -62,9 +61,8 @@ public class ManagementController {
     @ApiOperation(value = "Изменяет профиль пользователя")
     @PostMapping(value = "/users/{id}", produces = DATA_TYPE)
     public ResponseEntity<UserDto> updateUserById(@PathVariable(name = "id") Long id,
-                                                  @RequestBody UserDto userDto,
-                                                  Authentication authentication) {
-        return getDtoResponse(userService.update(userDto, authentication.getName()));
+                                                  @RequestBody UserDto userDto) {
+        return getDtoResponse(userService.update(userDto, id));
     }
 
     @ApiOperation(value = "Создает новый профиль пользователя")

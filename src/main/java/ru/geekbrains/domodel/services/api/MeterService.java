@@ -1,10 +1,7 @@
 package ru.geekbrains.domodel.services.api;
 
 import org.springframework.security.core.Authentication;
-import ru.geekbrains.domodel.dto.AccountMetersDto;
-import ru.geekbrains.domodel.dto.MeterDataDto;
-import ru.geekbrains.domodel.dto.MeterDto;
-import ru.geekbrains.domodel.dto.SubmitDataDto;
+import ru.geekbrains.domodel.dto.*;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
@@ -32,7 +29,7 @@ public interface MeterService {
     /**
      * Получить счетчик по id
      */
-    MeterDto getMeter(Long id);
+    MeterDto getMeterById(Long id);
 
     /**
      * Получить список счетчиков данного аккаунта
@@ -49,7 +46,7 @@ public interface MeterService {
     /**
      * Получить список всех счетчиков для пользователя
      */
-    List<AccountMetersDto> getMetersUser(Authentication authentication);
+    List<AccountMetersDto> getMetersByUserUsername(Authentication authentication);
 
     /**
      * Получить счетчик по его серийному номеру
@@ -108,4 +105,14 @@ public interface MeterService {
     List<MeterData> getAllDataByMeters(List<Meter> meters);
 
     Integer deleteMeterDataById(Long dataId);
+
+    /**
+     * Получить список всех типов счетчика
+     */
+    List<MeterTypeDto> getMeterTypes();
+
+    /**
+     * Получить список всех тарифов
+     */
+    List<TariffDto> getMeterTariffs();
 }

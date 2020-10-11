@@ -34,11 +34,6 @@ public class MeterType {
     @Column(name = "measure_unit", nullable = false)
     private String measureUnit;
 
-    // Ссылка на расчетный тариф для данного типа счетчика
-    @OneToOne
-    @JoinColumn(name = "tariff_id")
-    private Tariff tariff;
-
     // Список счетчиков, для которых используется данный тариф
     @OneToMany(mappedBy = "type")
     private Set<Meter> meters = new HashSet<>();
