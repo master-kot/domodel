@@ -58,7 +58,7 @@ public class BillController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    /*
+
     @ApiOperation(value = "Выдает список всех платежей")
     @GetMapping("/all")
     public ResponseEntity<Map<String, Object>> readAllBills(Authentication authentication) {
@@ -69,6 +69,7 @@ public class BillController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /*
     @ApiOperation(value = "Создает новость")
     @PostMapping
     @GetMapping("")
