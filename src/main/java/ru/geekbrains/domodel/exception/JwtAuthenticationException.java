@@ -1,4 +1,4 @@
-package ru.geekbrains.domodel.security.jwt;
+package ru.geekbrains.domodel.exception;
 
 import org.springframework.security.core.AuthenticationException;
 
