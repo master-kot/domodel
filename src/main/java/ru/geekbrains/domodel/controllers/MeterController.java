@@ -44,9 +44,8 @@ public class MeterController {
 
     @ApiOperation(value = "Выводит информацию о счетчике по его индексу")
     @GetMapping("/{id}")
-    public ResponseEntity<MeterDto> readMeterById(@PathVariable Long id) {
-        //TODO предусмотреть в сервисе защиту от получения данных по счетчику не принадлежащему пользователю
-        return ResponseMapper.getDtoResponse(meterService.getMeterById(id));
+    public ResponseEntity<MeterDto> readMeterById(@PathVariable Long id, Authentication authentication) {
+        return ResponseMapper.getDtoResponse(meterService.getMeterById(id, authentication));
     }
 
     @ApiOperation(value = "Обновляет информацию о счетчике. Только для администратора")
@@ -83,9 +82,8 @@ public class MeterController {
 
     @ApiOperation(value = "Выводит информацию о всех показаниях счетчика по индексу счетчика")
     @GetMapping("/{id}/data")
-    public ResponseEntity<List<MeterDataDto>> readAllMeterDataByMeterId(@PathVariable Long id) {
-        //TODO предусмотреть в сервисе защиту от получения данных по счетчику, не принадлежащему пользователю
-        return ResponseMapper.getListMeterDataDtoResponse(meterService.getAllMeterDataByMeterId(id));
+    public ResponseEntity<List<MeterDataDto>> readAllMeterDataByMeterId(@PathVariable Long id, Authentication authentication) {
+        return ResponseMapper.getListMeterDataDtoResponse(meterService.getAllMeterDataByMeterId(id, authentication));
     }
 
     @ApiOperation(value = "Создает новые показания счетчика по индексу счетчика")

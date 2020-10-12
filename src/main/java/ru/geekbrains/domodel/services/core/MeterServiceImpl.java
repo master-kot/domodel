@@ -48,8 +48,12 @@ public class MeterServiceImpl implements MeterService {
     private final AccountService accountService;
 
     @Override
-    public MeterDto getMeterById(Long id) {
-        Meter m = meterRepository.findById(id).orElseThrow(() -> new RuntimeException("not found meter by id: " + id));
+    public MeterDto getMeterById(Long id, Authentication authentication) {
+        //TODO предусмотреть в сервисе защиту от получения данных по счетчику не принадлежащему пользователю
+        Meter m = meterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("not found meter by id: " + id));
+
+        checkAllowedMeter(authentication, m);
+
         return meterMapper.meterToMeterDto(m);
     }
 
@@ -248,8 +252,9 @@ public class MeterServiceImpl implements MeterService {
     }
 
     @Override
-    public List<MeterDataDto> getAllMeterDataByMeterId(Long id) {
-        Meter m = meterRepository.findById(id).orElseThrow(() -> new RuntimeException("not found meter by id: " + id));
+    public List<MeterDataDto> getAllMeterDataByMeterId(Long id, Authentication authentication) {
+        Meter m = meterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("not found meter by id: " + id));
+        checkAllowedMeter(authentication, m);
         return meterDataRepository.findAllByMeterOrderByCreationDateDesc(m).stream().map(dataMapper::meterDataToMeterDataDto).collect(Collectors.toList());
     }
 
@@ -304,5 +309,28 @@ public class MeterServiceImpl implements MeterService {
     @Override
     public List<TariffDto> getMeterTariffs() {
         return tariffMapper.tariffToTariffDto(tariffRepository.findAll());
+    }
+
+    /**
+     * Проверка доступа к счетчику. Если пользователя нет разрешения на этот счетчик отправится ошибка.
+     * Админ проходет проверку успешно.
+     * Ошибка логики: Администратор может ходить по счетчика, как пользователь.
+     * @param authentication
+     * @param meter
+     */
+    private void checkAllowedMeter(Authentication authentication, Meter meter) {
+        if (Roles.hasAuthenticationRoleAdmin(authentication)) {
+            return;
+        }
+
+        List<Account> accounts = accountService.getAllAccountsByUserUsername(authentication.getName());
+        for(Account acc : accounts) {
+            if (acc.getUser().getUsername().equals(authentication.getName())) {
+                if (acc.getId().equals(meter.getAccount().getId())) {
+                    return;
+                }
+            }
+        }
+        throw  new RuntimeException("not allowed");
     }
 }
