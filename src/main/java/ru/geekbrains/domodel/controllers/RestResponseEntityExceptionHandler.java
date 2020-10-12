@@ -12,7 +12,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.geekbrains.domodel.exception.EntityBadRequestException;
 import ru.geekbrains.domodel.exception.EntityNotFoundException;
-import ru.geekbrains.domodel.exception.ForbiddenException;
 
 /**
  * Контроллер - глобальный обработчик исключений
@@ -44,10 +43,5 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({ EntityBadRequestException.class })
     public ResponseEntity<Object> handleEntityBadRequestException(Exception ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler({ ForbiddenException.class })
-    public ResponseEntity<Object> handleForbiddenException(Exception ex, WebRequest request) {
-        return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.FORBIDDEN);
     }
 }

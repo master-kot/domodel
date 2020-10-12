@@ -2,6 +2,7 @@ package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -12,7 +13,6 @@ import ru.geekbrains.domodel.entities.MeterData;
 import ru.geekbrains.domodel.entities.constants.Roles;
 import ru.geekbrains.domodel.exception.EntityBadRequestException;
 import ru.geekbrains.domodel.exception.EntityNotFoundException;
-import ru.geekbrains.domodel.exception.ForbiddenException;
 import ru.geekbrains.domodel.mappers.*;
 import ru.geekbrains.domodel.repositories.MeterDataRepository;
 import ru.geekbrains.domodel.repositories.MeterRepository;
@@ -98,10 +98,10 @@ public class MeterServiceImpl implements MeterService {
                 return meterDtoList;
             }
             else {
-                throw new ForbiddenException("Нет нужны прав для работы со счетчиками");
+                throw new AccessDeniedException("Нет нужны прав для работы со счетчиками");
             }
         }
-        throw new ForbiddenException("Нет нужны прав для работы со счетчиками");
+        throw new AccessDeniedException("Нет нужны прав для работы со счетчиками");
     }
 
     @Override
@@ -137,7 +137,7 @@ public class MeterServiceImpl implements MeterService {
             }
             return result;
         }
-        throw new ForbiddenException("Нет нужны прав для работы со счетчиками");
+        throw new AccessDeniedException("Нет нужны прав для работы со счетчиками");
     }
 
     @Override
@@ -180,7 +180,7 @@ public class MeterServiceImpl implements MeterService {
     public List<MeterDataDto> submitAllMeterData(List<SubmitDataDto> submitData, Authentication authentication) {
         if (!submitData.isEmpty()) {
             if (!Roles.hasAuthenticationRoleAdmin(authentication)) {
-                throw new ForbiddenException("Ошибка доступа");
+                throw new AccessDeniedException("Ошибка доступа");
             }
 
             MeterData current;
@@ -330,6 +330,6 @@ public class MeterServiceImpl implements MeterService {
                 }
             }
         }
-        throw  new ForbiddenException("not allowed");
+        throw  new AccessDeniedException("not allowed");
     }
 }
