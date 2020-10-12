@@ -20,9 +20,8 @@ CREATE TABLE votes (id bigserial not null, title varchar(50) not null, text varc
 INSERT INTO news (creation_date, title, full_text, picture_link, author_id, hidden, pinned, visible) VALUES ('2020-08-06', 'Заголовок первой новости', 'Полный текст первой новости, загруженной из сервиса новостей', '1.png', 1, false, false, true);
 INSERT INTO news (creation_date, title, full_text, picture_link, author_id, hidden, pinned, visible) VALUES ('2020-08-20', 'Заголовок второй новости', 'Полный текст второй новости, загруженной из сервиса новостей. Новость закреплена и должны отображаться первой!', '1.png', 1, false, true, true);
 
-### МОДУЛИ ПЛАТЕЖНЫХ СЧЕТОВ И СЧЕТЧИКОВ ПОКАЗАНИЙ ###
+### МОДУЛИ ЛИЦЕВЫХ СЧЕТОВ ###
 INSERT INTO accounts (user_id, address, house_number, acres_amount) VALUES (1, 'СНТ Малые собаки, Первая улица', '1й', 7), (2, 'СНТ Малые собаки, Вторая улица', '2й', 10), (2, 'СНТ Малые собаки, Третья улица', '3й', 15);
-
 
 ## МОДУЛЬ СЧЕТЧИКОВ ##
 INSERT INTO meter_type (description, measure_unit) VALUES ('Счётчик электроэнергии (однотарифный)', 'кВТ/час'), ('Счётчик электроэнергии (дневной)', 'кВТ/час'), ('Счётчик электроэнергии (ночной)', 'кВТ/час'), ('Счётчик газа', 'куб.метров'), ('Счётчик горячей воды', 'куб.метров'), ('Счётчик холодной воды', 'куб.метров');
@@ -32,6 +31,7 @@ INSERT INTO meters (serial_number, model, check_date, account_id, type_id, tarif
 INSERT INTO meter_datas (meter_id, creation_date, value) VALUES (1, '2020-07-20', 55), (1, '2020-08-20', 70), (2, '2020-07-15', 30), (2, '2020-08-25', 40), (3, '2020-07-19', 66), (3, '2020-08-23', 88);
 INSERT INTO meter_datas (meter_id, creation_date, value) VALUES (4, '2020-07-30', 51), (4, '2020-08-31', 95), (5, '2020-05-05', 11), (5, '2020-06-06', 22), (6, '2020-07-07', 33), (6, '2020-08-08', 44);
 
+## МОДУЛЬ ИНФОРМАЦИИ ##
 INSERT INTO requisites (company_name, company_address, inn, kpp, ogrn, bank_account, bank_name, bik, correspondent_account) VALUES ('ООО “ДОМОДЕЛ”', 'Московская область, домодедовский район', 11111111, 22222222, 33333333, '324493100000000024578', 'Банк Москвы', 44444444, '89993100000000024578');
 
 ## МОДУЛЬ ПЛАТЕЖЕЙ ##
@@ -66,6 +66,3 @@ DROP TABLE users CASCADE;
 alter table users drop column login;
 alter table users add column username varchar(50) not null UNIQUE;
 update tariffs set price = 99 where id = 4;
-INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик электроэнергии (однотарифный)', 'кВТ/час', 1), ('Счётчик электроэнергии (дневной)', 'кВТ/час', 2), ('Счётчик электроэнергии (ночной)', 'кВТ/час', 3);
-INSERT INTO meter_type (description, measure_unit, tariff_id) VALUES ('Счётчик газа', 'куб.метров', 4), ('Счётчик горячей воды', 'куб.метров', 5), ('Счётчик холодной воды', 'куб.метров', 6);
-INSERT INTO tariffs (description, price) VALUES ('Единый тариф на электричество', 5), ('Дневной тариф на электричество', 6), ('Ночной тариф на электричество', 4), ('Тариф на газ', 1), ('Тариф на горячую воду', 7), ('Тариф на холодную воду', 2);

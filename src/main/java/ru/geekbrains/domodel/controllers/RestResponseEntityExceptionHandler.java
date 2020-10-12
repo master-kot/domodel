@@ -13,7 +13,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import ru.geekbrains.domodel.exception.EntityBadRequestException;
 import ru.geekbrains.domodel.exception.EntityNotFoundException;
 import ru.geekbrains.domodel.exception.ForbiddenException;
-import ru.geekbrains.domodel.exception.JwtAuthenticationException;
 
 /**
  * Контроллер - глобальный обработчик исключений
@@ -29,10 +28,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler({ AccessDeniedException.class })
     public ResponseEntity<Object> handleAccessDeniedException(Exception ex, WebRequest request) {
-        return new ResponseEntity<>("Access denied message here", new HttpHeaders(), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>("Доступ в данный раздел запрещен", new HttpHeaders(), HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler({ UsernameNotFoundException.class, JwtAuthenticationException.class, BadCredentialsException.class})
+    @ExceptionHandler({ UsernameNotFoundException.class, BadCredentialsException.class})
     public ResponseEntity<Object> handleUsernameNotFoundException(Exception ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
     }
