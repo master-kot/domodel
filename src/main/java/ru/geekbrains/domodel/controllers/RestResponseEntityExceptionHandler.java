@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import ru.geekbrains.domodel.security.jwt.JwtAuthenticationException;
+import ru.geekbrains.domodel.exception.EntityBadRequestException;
+import ru.geekbrains.domodel.exception.EntityNotFoundException;
+import ru.geekbrains.domodel.exception.ForbiddenException;
+import ru.geekbrains.domodel.exception.JwtAuthenticationException;
 
 /**
  * Контроллер - глобальный обработчик исключений
@@ -32,5 +35,20 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({ UsernameNotFoundException.class, JwtAuthenticationException.class, BadCredentialsException.class})
     public ResponseEntity<Object> handleUsernameNotFoundException(Exception ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({ EntityNotFoundException.class })
+    public ResponseEntity<Object> handleEntityNotFoundException(Exception ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({ EntityBadRequestException.class })
+    public ResponseEntity<Object> handleEntityBadRequestException(Exception ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({ ForbiddenException.class })
+    public ResponseEntity<Object> handleForbiddenException(Exception ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.FORBIDDEN);
     }
 }

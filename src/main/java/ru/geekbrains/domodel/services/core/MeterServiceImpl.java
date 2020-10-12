@@ -4,11 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import ru.geekbrains.domodel.dto.*;
 import ru.geekbrains.domodel.entities.Account;
 import ru.geekbrains.domodel.entities.Meter;
 import ru.geekbrains.domodel.entities.MeterData;
 import ru.geekbrains.domodel.entities.constants.Roles;
+import ru.geekbrains.domodel.exception.EntityBadRequestException;
+import ru.geekbrains.domodel.exception.EntityNotFoundException;
+import ru.geekbrains.domodel.exception.ForbiddenException;
 import ru.geekbrains.domodel.mappers.*;
 import ru.geekbrains.domodel.repositories.MeterDataRepository;
 import ru.geekbrains.domodel.repositories.MeterRepository;
@@ -22,7 +26,6 @@ import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -50,7 +53,7 @@ public class MeterServiceImpl implements MeterService {
     @Override
     public MeterDto getMeterById(Long id, Authentication authentication) {
         //TODO предусмотреть в сервисе защиту от получения данных по счетчику не принадлежащему пользователю
-        Meter m = meterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("not found meter by id: " + id));
+        Meter m = meterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Meter not found by id: " + id));
 
         checkAllowedMeter(authentication, m);
 
@@ -95,10 +98,10 @@ public class MeterServiceImpl implements MeterService {
                 return meterDtoList;
             }
             else {
-                throw new RuntimeException("Нет нужны прав для работы со счетчиками: " + authentication);
+                throw new ForbiddenException("Нет нужны прав для работы со счетчиками");
             }
         }
-        throw new RuntimeException("Нет нужны прав для работы со счетчиками: authentication -> null");
+        throw new ForbiddenException("Нет нужны прав для работы со счетчиками");
     }
 
     @Override
@@ -134,13 +137,13 @@ public class MeterServiceImpl implements MeterService {
             }
             return result;
         }
-        throw new RuntimeException("Нет нужны прав для работы со счетчиками: authentication -> null");
+        throw new ForbiddenException("Нет нужны прав для работы со счетчиками");
     }
 
     @Override
     public Meter getMeterBySerialNumber(Integer serialNumber) {
         return meterRepository.findBySerialNumber(serialNumber).orElseThrow(
-                () -> new NullPointerException("Meter not found!")
+                () -> new EntityNotFoundException("Meter not found")
         );
     }
 
@@ -152,12 +155,9 @@ public class MeterServiceImpl implements MeterService {
             MeterData current;
 
           Meter meter = meterRepository.findById(meterId)
-                  .orElseThrow(() -> new RuntimeException("Submit data - meter not found by id: " + meterId));
+                  .orElseThrow(() -> new EntityBadRequestException("Meter not exist"));
 
-          if (!meter.getAccount().getUser().getUsername().equals(authentication.getName())) {
-              log.error("Нет нужны прав для работы со счетчиками: счетчик не пренадлежит пользователю");
-              return null;
-          }
+          checkAllowedMeter(authentication, meter);
 
           MeterData previous = getCurrentMeterDataByMeter(meter);
 
@@ -180,7 +180,7 @@ public class MeterServiceImpl implements MeterService {
     public List<MeterDataDto> submitAllMeterData(List<SubmitDataDto> submitData, Authentication authentication) {
         if (!submitData.isEmpty()) {
             if (!Roles.hasAuthenticationRoleAdmin(authentication)) {
-                throw new RuntimeException("Ошибка доступа");
+                throw new ForbiddenException("Ошибка доступа");
             }
 
             MeterData current;
@@ -218,14 +218,14 @@ public class MeterServiceImpl implements MeterService {
             return dataMapper.meterDataToMeterDataDto(meterDataRepository.saveAll(meterDatas));
 
         } else {
-            throw new  RuntimeException("Показания не корректны");
+            throw new EntityBadRequestException("Показания не корректны");
         }
     }
 
     @Transactional
     @Override
     public MeterDto saveOrUpdate(Long idMeter, MeterDto meterDto) {
-        Objects.requireNonNull(meterDto, "Данные счетчика не коректны!");
+        Assert.notNull(meterDto, "Данные счетчика не коректны!");
 
         if (meterDto.getSerialNumber() != null) {
             Meter m = meterMapper.meterDtoToMeter(meterDto);
@@ -234,20 +234,19 @@ public class MeterServiceImpl implements MeterService {
                 if (meterRepository.existsById(idMeter)) {
                     m.setId(idMeter);
                 } else {
-                    throw new RuntimeException("Данного счетчика не существует: " + idMeter);
+                    throw new EntityNotFoundException("Данного счетчика не существует");
                 }
             }
 
             m.setAccount(accountService.getAccountById(meterDto.getAccountId()));
             m.setType(meterTypeRepository.findByDescription(meterDto.getTypeDescription())
-                    .orElseThrow(() -> new RuntimeException("Данные счетчика не коректны: Тип счетчика не найден")));
+                    .orElseThrow(() -> new EntityBadRequestException("Данные счетчика не коректны: Тип счетчика")));
             m.setTariff(tariffRepository.findByDescription(meterDto.getTariffDescription())
-                    .orElseThrow(() -> new RuntimeException("Данные счетчика не коректны: Тариф счетчика не найден")));
+                    .orElseThrow(() -> new EntityBadRequestException("Данные счетчика не коректны: Тариф счетчика")));
             return meterMapper.meterToMeterDto(meterRepository.save(m));
         } else {
             log.error("Данные счетчика не коректны: Серийный номер");
-            throw new RuntimeException("Данные счетчика не коректны: Серийный номер");
-//            return null;
+            throw new EntityBadRequestException("Данные счетчика не коректны: Серийный номер");
         }
     }
 
@@ -331,6 +330,6 @@ public class MeterServiceImpl implements MeterService {
                 }
             }
         }
-        throw  new RuntimeException("not allowed");
+        throw  new ForbiddenException("not allowed");
     }
 }
