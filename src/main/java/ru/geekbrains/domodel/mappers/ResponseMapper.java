@@ -91,4 +91,24 @@ public final class ResponseMapper {
         return objectDtoList.size() == 0 ?
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDtoList, HttpStatus.OK);
     }
+
+    public static ResponseEntity<List<AccountMetersDto>> getListAccountMeterDtoResponse(List<AccountMetersDto> objectDtoList) {
+        return objectDtoList.size() == 0 ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDtoList, HttpStatus.OK);
+    }
+
+    public static ResponseEntity<List<MeterDataDto>> getListMeterDataDtoResponse(List<MeterDataDto> objectDtoList) {
+        return objectDtoList.size() == 0 ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDtoList, HttpStatus.OK);
+    }
+
+    public static ResponseEntity<List<MeterTypeDto>> getListMeterTypeDtoResponse(List<MeterTypeDto> objectDtoList) {
+        return objectDtoList.size() == 0 ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDtoList, HttpStatus.OK);
+    }
+
+    public static ResponseEntity<List<TariffDto>> getListTariffDtoResponse(List<TariffDto> objectDtoList) {
+        return objectDtoList.size() == 0 ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDtoList, HttpStatus.OK);
+    }
 }
