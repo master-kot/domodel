@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.entities.common.JwtUser;
 import ru.geekbrains.domodel.services.api.UserService;
 
+import static ru.geekbrains.domodel.entities.constants.Messages.USER_FOUND;
+import static ru.geekbrains.domodel.entities.constants.Messages.USER_NOT_FOUND;
+
 /**
  * Сервис, отвечающий за авторизацию пользователей.
  */
@@ -24,9 +27,9 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         JwtUser user = userService.getJwtUserByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("Пользователь с именем: " + username + " не найден");
+            throw new UsernameNotFoundException(String.format(USER_NOT_FOUND, username));
         }
-        log.info("Пользователь с именем: {} успешно загружен", username);
+        log.info(String.format(USER_FOUND, username));
         return user;
     }
 }

@@ -8,7 +8,6 @@ import ru.geekbrains.domodel.repositories.PhotoRepository;
 import ru.geekbrains.domodel.services.api.PhotoService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса фотографий

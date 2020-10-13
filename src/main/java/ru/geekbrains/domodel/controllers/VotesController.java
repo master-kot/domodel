@@ -2,6 +2,7 @@ package ru.geekbrains.domodel.controllers;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -13,8 +14,6 @@ import java.util.List;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
-import static ru.geekbrains.domodel.mappers.ResponseMapper.getDtoResponse;
-import static ru.geekbrains.domodel.mappers.ResponseMapper.getListVoteDtoResponse;
 
 /**
  * Контроллер голосований
@@ -49,12 +48,12 @@ public class VotesController {
     @GetMapping("/{id}")
     public ResponseEntity<VoteDto> readNewsById(@PathVariable Long id,
                                                 Authentication authentication) {
-        return getDtoResponse(voteService.getDtoById(id, authentication));
+        return new ResponseEntity<>(voteService.getDtoById(id, authentication), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Выдает список голосований для данного пользователя")
     @GetMapping("/archive/{id}")
     public ResponseEntity<List<VoteDto>> readAllVotes(Authentication authentication) {
-        return getListVoteDtoResponse(voteService.getAllDto(authentication));
+        return new ResponseEntity<>(voteService.getAllDto(authentication), HttpStatus.OK);
     }
 }

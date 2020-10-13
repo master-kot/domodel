@@ -35,7 +35,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    // TODO вынести
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
