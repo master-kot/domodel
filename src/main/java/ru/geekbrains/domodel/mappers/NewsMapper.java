@@ -22,7 +22,7 @@ public interface NewsMapper {
             @Mapping(target="shortText", source = "entity.fullText"),
             @Mapping(target="fullText", source = "entity.fullText"),
             @Mapping(target="pictureLink", source = "entity.pictureLink"),
-            @Mapping(target="hidden", source = "entity.hidden"),
+            //@Mapping(target="hidden", source = "entity.hidden"),
             @Mapping(target="pinned", source = "entity.pinned"),
             @Mapping(target="visible", source = "entity.visible"),
             @Mapping(target="authorName", source = "entity.author.firstName")
@@ -37,7 +37,7 @@ public interface NewsMapper {
             @Mapping(target="title", source="dto.title"),
             @Mapping(target="fullText", source="dto.fullText"),
             @Mapping(target="pictureLink", source="dto.pictureLink"),
-            @Mapping(target="hidden", source="dto.hidden"),
+            //@Mapping(target="hidden", source="dto.hidden"),
             @Mapping(target="pinned", source="dto.pinned"),
             @Mapping(target="visible", source="dto.visible")
     })
@@ -47,7 +47,7 @@ public interface NewsMapper {
             @Mapping(target="title", source="dto.title"),
             @Mapping(target="fullText", source="dto.fullText"),
             @Mapping(target="pictureLink", source="dto.photoLink"),
-            @Mapping(target="hidden", source="dto.hidden"),
+            //@Mapping(target="hidden", source="dto.hidden"),
             @Mapping(target="pinned", source="dto.pinned"),
             @Mapping(target="visible", source="dto.visible")
     })
