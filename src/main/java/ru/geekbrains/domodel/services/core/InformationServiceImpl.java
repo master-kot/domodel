@@ -5,12 +5,15 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.InformationDto;
 import ru.geekbrains.domodel.dto.InformationRequest;
 import ru.geekbrains.domodel.entities.Information;
+import ru.geekbrains.domodel.exceptions.EntityNotFoundException;
 import ru.geekbrains.domodel.mappers.InformationMapper;
 import ru.geekbrains.domodel.repositories.InformationRepository;
 import ru.geekbrains.domodel.services.api.InformationService;
 
 import java.util.List;
 import java.util.Optional;
+
+import static ru.geekbrains.domodel.entities.constants.Messages.ENTITY_NOT_FOUND_BY_ID;
 
 /**
  * Реализация сервиса информации о компании
@@ -28,7 +31,8 @@ public class InformationServiceImpl implements InformationService {
     @Override
     public InformationDto getDtoById(Integer id) {
         Optional<Information> optionalInformation = informationRepository.findById(id);
-        return optionalInformation.map(informationMapper::informationToInformationDto).orElse(null);
+        return optionalInformation.map(informationMapper::informationToInformationDto).orElseThrow(
+                () -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND_BY_ID, id)));
     }
 
     @Override

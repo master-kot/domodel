@@ -12,6 +12,7 @@ import ru.geekbrains.domodel.dto.AppealDto;
 import ru.geekbrains.domodel.dto.AppealRequest;
 import ru.geekbrains.domodel.services.api.AppealService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
@@ -42,7 +43,7 @@ public class AppealController {
 
     @ApiOperation(value = "Создает обращение")
     @PostMapping(value = "", produces = DATA_TYPE)
-    public ResponseEntity<AppealDto> createAppeal(@RequestBody AppealRequest appealRequest,
+    public ResponseEntity<AppealDto> createAppeal(@Valid @RequestBody AppealRequest appealRequest,
                                                   Authentication authentication) {
         return new ResponseEntity<>(appealsService.save(appealRequest, authentication), HttpStatus.OK);
     }
@@ -64,7 +65,7 @@ public class AppealController {
     @Secured(value = {ROLE_ADMIN})
     @ApiOperation(value = "Изменяет обращение по его индексу. Только для Администратора")
     @PostMapping(value = "/{id}", produces = DATA_TYPE)
-    public ResponseEntity<AppealDto> updateAppealById(@RequestBody AppealDto appealDto,
+    public ResponseEntity<AppealDto> updateAppealById(@Valid @RequestBody AppealDto appealDto,
                                                       Authentication authentication) {
         return new ResponseEntity<>(appealsService.update(appealDto, authentication), HttpStatus.OK);
     }

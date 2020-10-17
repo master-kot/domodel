@@ -2,7 +2,6 @@ package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,8 @@ import ru.geekbrains.domodel.dto.UserRequest;
 import ru.geekbrains.domodel.entities.Authority;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.common.JwtUser;
-import ru.geekbrains.domodel.exception.EntityBadRequestException;
+import ru.geekbrains.domodel.exceptions.EntityBadRequestException;
+import ru.geekbrains.domodel.exceptions.EntityNotFoundException;
 import ru.geekbrains.domodel.mappers.UserMapper;
 import ru.geekbrains.domodel.repositories.AuthorityRepository;
 import ru.geekbrains.domodel.repositories.UserRepository;
@@ -20,11 +20,10 @@ import ru.geekbrains.domodel.services.api.UserService;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static ru.geekbrains.domodel.entities.constants.Messages.*;
-import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
+import static ru.geekbrains.domodel.entities.constants.Roles.hasAuthenticationRoleAdmin;
 
 /**
  * Сервис пользователей
@@ -42,61 +41,44 @@ public class UserServiceImpl implements UserService {
     private final AuthorityRepository authorityRepository;
 
     @Override
-    public UserDto getDtoById(Long userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        return optionalUser.map(userMapper::userToUserDto).orElse(null);
+    public UserDto getDtoById(Long id) {
+        return userMapper.userToUserDto(findById(id));
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
-        return optionalUser.orElse(null);
+    public User getByUsername(String username) {
+        return findByUsername(username);
     }
 
     @Override
-    public JwtUser getJwtUserByUsername(String username) {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
-        return optionalUser.map(userMapper::userToJwtUser).orElse(null);
+    public JwtUser getJwtByUsername(String username) {
+        return userMapper.userToJwtUser(findByUsername(username));
     }
 
     @Override
-    public UserDto getByUsername(String username) {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
-        return optionalUser.map(userMapper::userToUserDto)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, username)));
+    public UserDto getDtoByUsername(String username) {
+        return userMapper.userToUserDto(findByUsername(username));
     }
 
     @Override
-    public List<UserDto> getAll() {
+    public List<UserDto> getAllDto() {
         return userMapper.userToUserDto(userRepository.findAll());
     }
 
     @Override
-    public boolean deleteById(Long userId) {
-        userRepository.deleteById(userId);
-        return userRepository.existsById(userId);
-    }
-
-    @Override
     public UserDto save(UserRequest userRequest) {
+        if (!userRequest.getPassword().equals(userRequest.getPasswordConfirm())) {
+            throw new EntityBadRequestException(PASSWORDS_MISMATCH);
+        }
         String username = userRequest.getUsername();
-        String password = userRequest.getPassword();
-
-        if (password == null || password.isEmpty() || username == null || username.isEmpty()) {
-            throw new EntityBadRequestException(BAD_REQUEST);
-        }
-        if (!password.equals(userRequest.getPasswordConfirm())) {
-            throw new EntityBadRequestException(PASSWORD_MISMATCH);
-        }
         if (userRepository.findByUsername(username).isPresent()) {
             throw new EntityBadRequestException(String.format(USER_HAS_ALREADY_CREATED, username));
         }
 
-        User newUser = new User(
-                userRequest.getUsername(),
-                passwordEncoder.encode(password),
-                true,
-                LocalDate.now());
+        User newUser = userMapper.userRequestToUser(userRequest);
+        newUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        newUser.setEnabled(true);
+        newUser.setCreationDate(LocalDate.now());
         Authority authority = authorityRepository.findByAuthority(ROLE_USER);
         newUser.getAuthorities().add(authority);
         return userMapper.userToUserDto(userRepository.save(newUser));
@@ -104,35 +86,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(UserDto userDto, String username) {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
-        if (optionalUser.isPresent()) {
-            User user = userMapper.updateUser(optionalUser.get(), userDto);
-            return userMapper.userToUserDto(userRepository.save(user));
-        } else {
-            return null;
-        }
+        User user = userMapper.updateUser(findByUsername(username), userDto);
+        return userMapper.userToUserDto(userRepository.save(user));
     }
 
     @Override
     public UserDto update(UserDto userDto, Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            User user = userMapper.updateUser(optionalUser.get(), userDto);
-            return userMapper.userToUserDto(userRepository.save(user));
-        } else {
-            return null;
-        }
+        User user = userMapper.updateUser(findById(id), userDto);
+        return userMapper.userToUserDto(userRepository.save(user));
     }
 
     @Override
     public User update(UserDto userDto) {
-        Optional<User> optionalUser = userRepository.findByUsername(userDto.getUsername());
-        if (optionalUser.isPresent()) {
-            User user = userMapper.updateUser(optionalUser.get(), userDto);
-            return userRepository.save(user);
-        } else {
-            return null;
-        }
+        User user = userMapper.updateUser(findByUsername(userDto.getUsername()), userDto);
+        return userRepository.save(user);
     }
 
     @Override
@@ -143,32 +110,39 @@ public class UserServiceImpl implements UserService {
                 return false;
             }
         }
-
-        Optional<User> optionalUser = userRepository.findByUsername(authentication.getName());
-        User user;
-        if (optionalUser.isPresent()) {
-            user = optionalUser.get();
-        } else {
-            return false;
+        if (!passwordRequest.getNewPassword().equals(passwordRequest.getNewPasswordConfirm())) {
+            throw new EntityBadRequestException(PASSWORDS_MISMATCH);
         }
 
-        String oldPassword = passwordRequest.getOldPassword();
-        String newPassword = passwordRequest.getNewPassword();
-
-        if (oldPassword != null && newPassword != null && !newPassword.isEmpty() &&
-                newPassword.equals(passwordRequest.getNewPasswordConfirm())) {
-            user.setPassword(passwordEncoder.encode(newPassword));
+        User user = findByUsername(authentication.getName());
+        if (!passwordEncoder.matches(passwordRequest.getOldPassword(), user.getPassword())) {
+            throw new EntityBadRequestException(OLD_PASSWORD_INVALID);
+        } else {
+            user.setPassword(passwordEncoder.encode(passwordRequest.getNewPassword()));
             userRepository.save(user);
             return true;
         }
-        return false;
+    }
+
+    @Override
+    public boolean deleteById(Long userId) {
+        userRepository.deleteById(userId);
+        return userRepository.existsById(userId);
     }
 
     /**
-     * Проверить, что пользователь имеет роль Админа
+     * Найти пользователя по id
      */
-    private boolean hasAuthenticationRoleAdmin(Authentication authentication) {
-        return (authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).anyMatch(a -> a.equals(ROLE_ADMIN)));
+    private User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format(USER_NOT_FOUND_BY_ID, id)));
+    }
+
+    /**
+     * Найти пользователя по username
+     */
+    private User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_BY_USERNAME, username)));
     }
 }
