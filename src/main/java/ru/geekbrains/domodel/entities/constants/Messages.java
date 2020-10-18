@@ -37,6 +37,8 @@ public final class Messages {
     /**
      * Иные сообщения об ошибках логики и полей запросов
      */
+    public static final String ENTITY_NOT_FOUND = "Данные не найдены";
+
     public static final String ENTITY_NOT_FOUND_BY_ID = "Данные с индексом %s не найдены";
 
     public static final String ACCESS_DENIED = "Доступ в данный раздел запрещен";

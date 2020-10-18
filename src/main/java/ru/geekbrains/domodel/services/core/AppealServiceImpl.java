@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static ru.geekbrains.domodel.entities.constants.Messages.ENTITY_NOT_FOUND_BY_ID;
 import static ru.geekbrains.domodel.entities.constants.Roles.hasAuthenticationRoleAdmin;
@@ -30,13 +31,13 @@ import static ru.geekbrains.domodel.entities.constants.Roles.hasAuthenticationRo
 @RequiredArgsConstructor
 public class AppealServiceImpl implements AppealService {
 
-    // Необходимые сервисы
-    private final AppealMapper appealMapper;
-    private final UserService userService;
-    private final PhotoService photoService;
-
     // Репозиторий обращений
     private final AppealRepository appealRepository;
+
+    // Необходимые сервисы и мапперы
+    private final UserService userService;
+    private final PhotoService photoService;
+    private final AppealMapper appealMapper;
 
     @Override
     public AppealDto getDtoById(Long id,
@@ -94,16 +95,20 @@ public class AppealServiceImpl implements AppealService {
     @Override
     public List<AppealDto> getAllDtoByUser(Authentication authentication) {
         if (authentication == null) { // Если пользователь не авторизован
-            return new ArrayList<AppealDto>();
-        } else { // Пользователь авторизован
-            return appealMapper.appealToAppealDto(appealRepository.findAllByAuthorUsername(authentication.getName()));
+            return new ArrayList<>();
+        } else {
+            List<Appeal> appealList = appealRepository.findAllByAuthorUsername(authentication.getName()).stream()
+                    .sorted((a1, a2) -> a2.getId().compareTo(a1.getId())).collect(Collectors.toList());
+            return appealMapper.appealToAppealDto(appealList);
         }
     }
 
     @Override
     public List<AppealDto> getAllDto(Authentication authentication) {
-        if (hasAuthenticationRoleAdmin(authentication)) {
-            return appealMapper.appealToAppealDto(appealRepository.findAll());
+        if (hasAuthenticationRoleAdmin(authentication)) { // Если пользователь не Администратор
+            List<Appeal> appealList = appealRepository.findAll().stream()
+                .sorted((a1, a2) -> a2.getCreationDate().compareTo(a1.getCreationDate())).collect(Collectors.toList());
+            return appealMapper.appealToAppealDto(appealList);
         } else {
             return new ArrayList<>();
         }

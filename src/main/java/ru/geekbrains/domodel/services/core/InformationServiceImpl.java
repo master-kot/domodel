@@ -12,6 +12,7 @@ import ru.geekbrains.domodel.services.api.InformationService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static ru.geekbrains.domodel.entities.constants.Messages.ENTITY_NOT_FOUND_BY_ID;
 
@@ -22,11 +23,11 @@ import static ru.geekbrains.domodel.entities.constants.Messages.ENTITY_NOT_FOUND
 @RequiredArgsConstructor
 public class InformationServiceImpl implements InformationService {
 
-    //
-    private final InformationMapper informationMapper;
-
     // Репозиторий информации о компании
     private final InformationRepository informationRepository;
+
+    // Необходимые сервисы и мапперы
+    private final InformationMapper informationMapper;
 
     @Override
     public InformationDto getDtoById(Integer id) {
@@ -37,7 +38,9 @@ public class InformationServiceImpl implements InformationService {
 
     @Override
     public List<InformationDto> getAllDto() {
-        return informationMapper.informationToInformationDto(informationRepository.findAll());
+        List<Information> informationList = informationRepository.findAll().stream()
+                .sorted((i1, i2) -> i2.getId().compareTo(i1.getId())).collect(Collectors.toList());
+        return informationMapper.informationToInformationDto(informationList);
     }
 
     @Override

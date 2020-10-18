@@ -34,5 +34,7 @@ public class AppealDto {
 
     private Long authorId;
 
+    private AuthorNameDto authorName;
+
     private List<String> photoLinks = new ArrayList<>();
 }

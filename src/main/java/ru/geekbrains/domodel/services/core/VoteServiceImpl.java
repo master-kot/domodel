@@ -20,7 +20,7 @@ public class VoteServiceImpl implements VoteService {
     // Репозиторий голосований
     private final VoteRepository voteRepository;
 
-    // Маппер
+    // Необходимые сервисы и мапперы
     private final VoteMapper voteMapper;
 
     @Override

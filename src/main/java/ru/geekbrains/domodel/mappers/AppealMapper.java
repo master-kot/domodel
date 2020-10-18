@@ -13,11 +13,12 @@ import java.util.List;
 /**
  * Маппер, преобразовывающий классы Appeal и AppealDto друг в друга
  */
-@Mapper(componentModel = "spring", uses = {PhotoLinkMapper.class, AppealStatusMapper.class})
+@Mapper(componentModel = "spring", uses = {PhotoLinkMapper.class, AppealStatusMapper.class, UserMapper.class})
 public interface AppealMapper {
 
     @Mappings({
-            @Mapping(target="authorId", source = "entity.author.id")
+            @Mapping(target="authorId", source = "entity.author.id"),
+            @Mapping(target="authorName", source = "entity.author")
     })
     AppealDto appealToAppealDto(Appeal entity);
 

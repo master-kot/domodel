@@ -32,13 +32,13 @@ import static ru.geekbrains.domodel.entities.constants.Roles.hasAuthenticationRo
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    // Необходимые сервисы
-    private final BCryptPasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
-
     // Необходимые репозитории
     private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
+
+    // Необходимые сервисы и мапперы
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Override
     public UserDto getDtoById(Long id) {

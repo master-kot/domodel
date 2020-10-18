@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
+import ru.geekbrains.domodel.dto.AuthorNameDto;
 import ru.geekbrains.domodel.dto.UserDto;
 import ru.geekbrains.domodel.dto.UserRequest;
 import ru.geekbrains.domodel.entities.User;
@@ -25,6 +26,8 @@ public interface UserMapper {
     List<UserDto> userToUserDto(List<User> entities);
 
     JwtUser userToJwtUser(User entity);
+
+    AuthorNameDto userToAuthorNameDto(User entity);
 
     @Mappings({
             @Mapping(target="creationDate", source="dto.creationDate", dateFormat = "dd-MM-yyyy")

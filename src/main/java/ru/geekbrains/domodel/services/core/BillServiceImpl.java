@@ -21,9 +21,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BillServiceImpl implements BillService {
 
+    // Репозиторий счетов (платежных документов)
     private final BillRepository billRepository;
-    private final BillMapper billMapper;
 
+    // Необходимые сервисы и мапперы
+    private final BillMapper billMapper;
 
     @Override
     public List<BillDto> getAllDto() {
