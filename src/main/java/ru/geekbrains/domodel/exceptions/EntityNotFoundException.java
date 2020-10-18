@@ -1,4 +1,4 @@
-package ru.geekbrains.domodel.exception;
+package ru.geekbrains.domodel.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

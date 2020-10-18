@@ -17,6 +17,9 @@ import ru.geekbrains.domodel.services.api.PhotoService;
 @RequiredArgsConstructor
 public class PhotoController {
 
+    // Тип данных
+    private final String DATA_TYPE = "application/json";
+
     // Сервис фотогалереи
     private final PhotoService photoService;
 }

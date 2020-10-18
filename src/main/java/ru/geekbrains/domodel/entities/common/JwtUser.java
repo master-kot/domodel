@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Spring Security обертка для класса Пользователя.
+ * Jwt обертка сущности Пользователь.
  */
 @Setter
 @NoArgsConstructor

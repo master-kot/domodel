@@ -12,6 +12,7 @@ import ru.geekbrains.domodel.services.api.AccountService;
 import ru.geekbrains.domodel.services.api.RequisitesService;
 import ru.geekbrains.domodel.services.api.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
@@ -42,14 +43,14 @@ public class ManagementController {
 
     @ApiOperation(value = "Создает текущие реквизиты компании, если не были созданы, либо изменяет текущие")
     @PostMapping(value = "/requisites", produces = DATA_TYPE)
-    public ResponseEntity<RequisitesDto> updateRequisites(@RequestBody RequisitesDto requisitesDto) {
+    public ResponseEntity<RequisitesDto> updateRequisites(@Valid @RequestBody RequisitesDto requisitesDto) {
         return new ResponseEntity<>(requisitesService.update(requisitesDto), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Выводит список всех профилей пользователей")
     @GetMapping(value = "/users", produces = DATA_TYPE)
     public ResponseEntity<List<UserDto>> readAllUsers() {
-        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAllDto(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Выводит профиль пользователя по его индексу")
@@ -61,13 +62,13 @@ public class ManagementController {
     @ApiOperation(value = "Изменяет профиль пользователя")
     @PostMapping(value = "/users/{id}", produces = DATA_TYPE)
     public ResponseEntity<UserDto> updateUserById(@PathVariable(name = "id") Long id,
-                                                  @RequestBody UserDto userDto) {
+                                                  @Valid @RequestBody UserDto userDto) {
         return new ResponseEntity<>(userService.update(userDto, id), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Создает новый профиль пользователя")
     @PostMapping(value = "/users", produces = DATA_TYPE)
-    public ResponseEntity<UserDto> createUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserRequest userRequest) {
         return new ResponseEntity<>(userService.save(userRequest), HttpStatus.OK);
     }
 
@@ -92,13 +93,13 @@ public class ManagementController {
     @ApiOperation(value = "Изменяет лицевой счет")
     @PostMapping(value = "/accounts/{id}", produces = DATA_TYPE)
     public ResponseEntity<AccountDto> updateUser(@PathVariable(name = "id") Long id,
-                                                 @RequestBody AccountDto accountDto) {
+                                                 @Valid @RequestBody AccountDto accountDto) {
         return new ResponseEntity<>(accountService.update(accountDto), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Создает новый лицевой счет")
     @PostMapping(value = "/accounts", produces = DATA_TYPE)
-    public ResponseEntity<AccountDto> createAccount(@RequestBody AccountRequest accountRequest) {
+    public ResponseEntity<AccountDto> createAccount(@Valid @RequestBody AccountRequest accountRequest) {
         return new ResponseEntity<>(accountService.save(accountRequest), HttpStatus.OK);
     }
 }

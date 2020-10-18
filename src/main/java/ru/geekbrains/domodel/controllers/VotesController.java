@@ -26,6 +26,9 @@ import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
 @RequiredArgsConstructor
 public class VotesController {
 
+    // Тип данных
+    private final String DATA_TYPE = "application/json";
+
     // Сервис голосований
     private final VoteService voteService;
 
@@ -45,14 +48,14 @@ public class VotesController {
      */
 
     @ApiOperation(value = "Выдает голосование по его номеру")
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = DATA_TYPE)
     public ResponseEntity<VoteDto> readNewsById(@PathVariable Long id,
                                                 Authentication authentication) {
         return new ResponseEntity<>(voteService.getDtoById(id, authentication), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Выдает список голосований для данного пользователя")
-    @GetMapping("/archive/{id}")
+    @GetMapping(value = "/archive/{id}", produces = DATA_TYPE)
     public ResponseEntity<List<VoteDto>> readAllVotes(Authentication authentication) {
         return new ResponseEntity<>(voteService.getAllDto(authentication), HttpStatus.OK);
     }

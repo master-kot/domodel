@@ -29,7 +29,7 @@ public class Information {
     @Column(name = "text", nullable = false)
     private String text;
 
-    // Указатель публичности блока. Если false - блок отображается для всех посетителей,
+    // Публичность блока. Если false - блок отображается для всех посетителей,
     // если true - только для зарегистрированных
     @Column(name = "hidden", nullable = false)
     private boolean hidden;
