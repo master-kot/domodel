@@ -150,7 +150,7 @@ public class MeterServiceImpl implements MeterService {
     @Transactional
     @Override
     public MeterDataDto submitMeterData(Long meterId, Double submitData, Authentication authentication) {
-        if (submitData != null && !submitData.isNaN()) {
+        if (submitData != null && !submitData.isNaN() && submitData > 0) {
             LocalDate nowDate = LocalDate.now();
             MeterData current;
 
@@ -191,7 +191,7 @@ public class MeterServiceImpl implements MeterService {
 
             for (SubmitDataDto sd : submitData) {
 
-                if (sd.getValue().isNaN() || sd.getValue() == null) {
+                if (sd.getValue() < 0 || sd.getValue().isNaN() || sd.getValue() == null) {
                     log.warn("Показания не корректны");
                     continue;
                 }
