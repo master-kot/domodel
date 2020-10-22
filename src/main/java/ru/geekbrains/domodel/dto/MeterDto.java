@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
@@ -13,6 +14,7 @@ public class MeterDto {
     @ApiModelProperty(value = "id счетчика")
     private Long meterId;
 
+    @NotNull
     @ApiModelProperty(value = "Серийный номер счетчика")
     private String serialNumber;
 
@@ -22,15 +24,18 @@ public class MeterDto {
     @ApiModelProperty(value = "Дата проверки счетчика")
     private LocalDate checkDate;
 
+    @NotNull
     @ApiModelProperty(value = "id лицевого счета")
     private Long accountId;
 
     @ApiModelProperty(value = "Номер дома/участка")
     private String houseNumber;
 
+    @NotNull
     @ApiModelProperty(value = "Тип счетчика")
     private String typeDescription;
 
+    @NotNull
     @ApiModelProperty(value = "Тарифф счетчика")
     private String tariffDescription;
 

@@ -72,7 +72,7 @@ public class MeterController {
         return result > 0 ? ResponseEntity.ok(result) : ResponseEntity.badRequest().build();
     }
 
-    @ApiOperation(value = "Выводит список показаний для всех счетчиков. Только для администратора")
+    @ApiOperation(value = "Подача показаний для всех счетчиков. Только для администратора")
     @Secured({Roles.ROLE_ADMIN})
     @PostMapping("/all/data")
     public ResponseEntity<?> createMeterData(@RequestBody List<SubmitDataDto> submitData, Authentication authentication) {
