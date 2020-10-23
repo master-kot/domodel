@@ -107,7 +107,7 @@ public class AppealServiceImpl implements AppealService {
     public List<AppealDto> getAllDto(Authentication authentication) {
         if (hasAuthenticationRoleAdmin(authentication)) { // Если пользователь не Администратор
             List<Appeal> appealList = appealRepository.findAll().stream()
-                .sorted((a1, a2) -> a2.getCreationDate().compareTo(a1.getCreationDate())).collect(Collectors.toList());
+                    .sorted((a1, a2) -> a2.getId().compareTo(a1.getId())).collect(Collectors.toList());
             return appealMapper.appealToAppealDto(appealList);
         } else {
             return new ArrayList<>();

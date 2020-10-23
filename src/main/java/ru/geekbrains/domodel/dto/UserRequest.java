@@ -23,5 +23,6 @@ public class UserRequest {
     @NotBlank(message = PASSWORD_NOT_BLANK)
     private String password;
 
+    @NotBlank(message = DATA_NOT_BLANK + "Повторите пароль")
     private String passwordConfirm;
 }
