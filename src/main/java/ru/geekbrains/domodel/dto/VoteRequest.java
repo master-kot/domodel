@@ -1,10 +1,16 @@
 package ru.geekbrains.domodel.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 import ru.geekbrains.domodel.entities.Document;
 import ru.geekbrains.domodel.entities.PhotoLink;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class VoteRequest {
 
     // Тема Опроса (до 50 знаков)

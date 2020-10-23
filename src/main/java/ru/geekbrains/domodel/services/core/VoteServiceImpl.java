@@ -10,16 +10,19 @@ import ru.geekbrains.domodel.entities.Vote;
 import ru.geekbrains.domodel.entities.VoteData;
 import ru.geekbrains.domodel.mappers.VoteMapper;
 import ru.geekbrains.domodel.repositories.VoteRepository;
+import ru.geekbrains.domodel.services.api.UserService;
 import ru.geekbrains.domodel.services.api.VoteService;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static ru.geekbrains.domodel.entities.ChoiceOption.*;
-import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
-import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
+import static ru.geekbrains.domodel.entities.constants.Roles.*;
 import static ru.geekbrains.domodel.entities.constants.VoteStatus.*;
 
 /**
@@ -34,16 +37,13 @@ public class VoteServiceImpl implements VoteService {
 
     // Необходимые сервисы и мапперы
     private final VoteMapper voteMapper;
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @Override
-    public VoteDto getVotesDtoById(Long id, Authentication authentication) {
-        if (authentication != null) {
+    public VoteDto getDtoById(Long id, Authentication authentication) {
             Optional<Vote> optionalVote = voteRepository.findById(id);
             optionalVote.map(voteMapper::votesToVoteDto).orElse(null).setStatusVotes(getStatusVotesById(id, authentication));
             return optionalVote.map(voteMapper::votesToVoteDto).orElse(null);
-        }
-        return null;
     }
 
     @Override
@@ -57,11 +57,11 @@ public class VoteServiceImpl implements VoteService {
             }
             return mapVotes;
         }
-        return new TreeMap<String, String>();
+        return new TreeMap<>();
     }
 
     @Override
-    public List<VoteDto> getAllVotesDto(Authentication authentication) {
+    public List<VoteDto> getAllDto(Authentication authentication) {
         if (authentication != null) {
             Stream<VoteDto> voteDtoStream = voteRepository.findAll().stream().map(voteMapper::votesToVoteDto);
 
@@ -81,7 +81,7 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public VoteDto updateVoteDtoById(Long id, Authentication authentication, String choice) {
+    public VoteDto update(Long id, Authentication authentication, String choice) {
         Optional<Vote> vote = voteRepository.findById(id);
    //     Stream<VoteData> voteStream = vote.get().getVoteDatas().stream();
 
@@ -94,27 +94,11 @@ public class VoteServiceImpl implements VoteService {
             if (choice.equals(DISAGREED)) voteData.setOption(DISAGREED);
             if (choice.equals(ABSTAINED)) voteData.setOption(ABSTAINED);
             else return null;
-            voteData.setAuthor(userService.getUserByUsername(authentication.getName())); //todo это мы точно текущего юзера получаем?
+            voteData.setAuthor(userService.getByUsername(authentication.getName()));
             vote.get().getVoteDatas().add(voteData);
             voteRepository.save(vote.get());
             return voteMapper.votesToVoteDto(vote.get());
         }
-    }
-
-    /**
-     * Проверить, что пользователь имеет роль Админа
-     */
-    private boolean hasAuthenticationRoleAdmin(Authentication authentication) {
-        return (authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).anyMatch(a -> a.equals(ROLE_ADMIN)));
-    }
-
-    /**
-     * Проверить, что пользователь имеет роль Юзера
-     */
-    private boolean hasAuthenticationRoleUser(Authentication authentication) {
-        return (authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).anyMatch(a -> a.equals(ROLE_USER)));
     }
 
     /**
@@ -129,7 +113,8 @@ public class VoteServiceImpl implements VoteService {
 
         if (hasAuthenticationRoleAdmin(authentication)) return STATUS_VOTING_CONTINUES;
 
-        if (getVotesDtoById(id, authentication).getVoteDatas().contains(userService.getByUsername(authentication.getName())))return STATUS_ALREADY_VOTED;//todo проверить голосовал ли юзер
+        if (getDtoById(id, authentication).getVoteDatas().contains(userService.getByUsername(authentication.getName())))
+            return STATUS_ALREADY_VOTED;//todo проверить голосовал ли юзер
 
         return STATUS_LET_VOTE;
     }

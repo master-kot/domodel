@@ -1,12 +1,10 @@
 package ru.geekbrains.domodel.services.api;
 
 import org.springframework.security.core.Authentication;
-import ru.geekbrains.domodel.dto.NewsRequest;
 import ru.geekbrains.domodel.dto.VoteDto;
 import ru.geekbrains.domodel.dto.VoteRequest;
 
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -32,7 +30,7 @@ public interface VoteService {
     /**
      * Получить голосование по индексу
      */
-    VoteDto getVotesDtoById(Long id, Authentication authentication);
+    VoteDto getDtoById(Long id, Authentication authentication);
 
     /**
      * Получить деталировку голосов (для админа)
@@ -42,16 +40,16 @@ public interface VoteService {
     /**
      * Получить список голосований
      */
-    List<VoteDto> getAllVotesDto (Authentication authentication);
+    List<VoteDto> getAllDto(Authentication authentication);
 
     /**
-     * сохранить голосование
+     * Сохранить голосование
      */
-    VoteDto save (VoteRequest voteRequest, Authentication authentication);
+    VoteDto save(VoteRequest voteRequest, Authentication authentication);
 
     /**
-     * Проголосовать
+     * Изменить голосование
      */
-    VoteDto updateVoteDtoById (Long id, Authentication authentication, String choice);
+    VoteDto update(Long id, Authentication authentication, String choice);
 
 }
