@@ -70,4 +70,8 @@ public final class Messages {
     public static final String LINK_ADDRESS_NOT_BLANK = "Поле Ссылка на адрес должно быть не пустым";
 
     public static final String HIDDEN_NOT_BLANK = "Поле Публичность должно быть не пустым";
+
+    public static final String DATA_NOT_BLANK = "Должно быть не пустым поле ";
+
+    public static final String DATA_ONLY_DIGITS = "Должно содержать только цифры поле ";
 }

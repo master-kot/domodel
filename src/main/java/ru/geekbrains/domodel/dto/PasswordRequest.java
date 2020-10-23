@@ -6,8 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import static ru.geekbrains.domodel.entities.constants.Messages.INVALID_PASSWORD_LENGTH;
-import static ru.geekbrains.domodel.entities.constants.Messages.PASSWORD_NOT_BLANK;
+import static ru.geekbrains.domodel.entities.constants.Messages.*;
 
 /**
  * Запрос на изменение пароля
@@ -26,5 +25,6 @@ public class PasswordRequest {
     @NotBlank(message = PASSWORD_NOT_BLANK)
     private String newPassword;
 
+    @NotBlank(message = DATA_NOT_BLANK + "Повторите пароль")
     private String newPasswordConfirm;
 }
