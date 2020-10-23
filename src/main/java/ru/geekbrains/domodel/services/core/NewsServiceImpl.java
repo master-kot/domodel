@@ -144,7 +144,7 @@ public class NewsServiceImpl implements NewsService {
         // Добавляем дату
         news.setCreationDate(LocalDate.now());
         // Добавляем автора новости
-        news.setAuthor(userService.getUserByUsername(authentication.getName()));
+        news.setAuthor(userService.getByUsername(authentication.getName()));
         return newsMapper.newsToNewsDto(newsRepository.save(news));
     }
 

@@ -4,7 +4,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
+import ru.geekbrains.domodel.dto.AuthorNameDto;
 import ru.geekbrains.domodel.dto.UserDto;
+import ru.geekbrains.domodel.dto.UserRequest;
 import ru.geekbrains.domodel.entities.User;
 import ru.geekbrains.domodel.entities.common.JwtUser;
 
@@ -17,16 +19,7 @@ import java.util.List;
 public interface UserMapper {
 
     @Mappings({
-            @Mapping(target="id", source = "entity.id"),
-            @Mapping(target="username", source = "entity.username"),
-            @Mapping(target="creationDate", source = "entity.creationDate", dateFormat = "dd-MM-yyyy"),
-            @Mapping(target="firstName", source = "entity.firstName"),
-            @Mapping(target="lastName", source = "entity.lastName"),
-            @Mapping(target="patronymic", source = "entity.patronymic"),
-            @Mapping(target="email", source = "entity.email"),
-            @Mapping(target="photoLink", source = "entity.photoLink"),
-            @Mapping(target="address", source = "entity.address"),
-            @Mapping(target="phoneNumber", source = "entity.phoneNumber")
+            @Mapping(target="creationDate", source = "entity.creationDate", dateFormat = "dd-MM-yyyy")
     })
     UserDto userToUserDto(User entity);
 
@@ -34,18 +27,14 @@ public interface UserMapper {
 
     JwtUser userToJwtUser(User entity);
 
+    AuthorNameDto userToAuthorNameDto(User entity);
+
     @Mappings({
-            @Mapping(target="id", source="dto.id"),
-            @Mapping(target="username", source="dto.username"),
-            @Mapping(target="firstName", source="dto.firstName"),
-            @Mapping(target="lastName", source="dto.lastName"),
-            @Mapping(target="patronymic", source="dto.patronymic"),
-            @Mapping(target="email", source="dto.email"),
-            @Mapping(target="photoLink", source="dto.photoLink"),
-            @Mapping(target="address", source="dto.address"),
-            @Mapping(target="phoneNumber", source="dto.phoneNumber")
+            @Mapping(target="creationDate", source="dto.creationDate", dateFormat = "dd-MM-yyyy")
     })
     User userDtoToUser(UserDto dto);
+
+    User userRequestToUser(UserRequest dto);
 
     @Mappings({
             @Mapping(target="id", ignore = true),

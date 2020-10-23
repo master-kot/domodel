@@ -29,7 +29,7 @@ public interface MeterService {
     /**
      * Получить счетчик по id
      */
-    MeterDto getMeterById(Long id);
+    MeterDto getMeterById(Long id, Authentication authentication);
 
     /**
      * Получить список счетчиков данного аккаунта
@@ -80,7 +80,7 @@ public interface MeterService {
     /**
      * Получить список всех показаний данного счетчика
      */
-    List<MeterDataDto> getAllMeterDataByMeterId(Long id);
+    List<MeterDataDto> getAllMeterDataByMeterId(Long id, Authentication authentication);
 
     /**
      * Получить предыдущее (предпоследнее по дате в списке) показание счетчика

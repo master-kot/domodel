@@ -16,14 +16,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
+import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
+
 /**
  * Контроллер голосований
  */
+@ApiOperation("Контроллер голосований. Доступ только для зарегистрированных пользователей и Администратора")
 @CrossOrigin
 @RestController
+@Secured(value = {ROLE_USER, ROLE_ADMIN})
 @RequestMapping("/api/v1/votes")
 @RequiredArgsConstructor
 public class VotesController {
+
+    // Тип данных
+    private final String DATA_TYPE = "application/json";
 
     // Сервис голосований
     private final VoteService voteService;
@@ -47,7 +55,7 @@ public class VotesController {
     @GetMapping("/{id}")
     public ResponseEntity<VoteDto> getVotesById(@PathVariable Long id,
                                                 Authentication authentication) {
-        return getVotesDtoResponseEntity(voteService.getVotesDtoById(id, authentication));
+        return new ResponseEntity<>(voteService.getVotesDtoById(id, authentication), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Выдает список проголосовавших для админа")

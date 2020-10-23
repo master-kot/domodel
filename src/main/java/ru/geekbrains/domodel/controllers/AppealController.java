@@ -3,6 +3,7 @@ package ru.geekbrains.domodel.controllers;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -11,12 +12,11 @@ import ru.geekbrains.domodel.dto.AppealDto;
 import ru.geekbrains.domodel.dto.AppealRequest;
 import ru.geekbrains.domodel.services.api.AppealService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_USER;
-import static ru.geekbrains.domodel.mappers.ResponseMapper.getDtoResponse;
-import static ru.geekbrains.domodel.mappers.ResponseMapper.getListAppealDtoResponse;
 
 /**
  * Контроллер обращений
@@ -38,35 +38,35 @@ public class AppealController {
     @ApiOperation(value = "Выводит список обращений текущего пользователя")
     @GetMapping(value = "", produces = DATA_TYPE)
     public ResponseEntity<List<AppealDto>> readAllByUser(Authentication authentication) {
-        return getListAppealDtoResponse(appealsService.getAllDtoByUser(authentication));
+        return new ResponseEntity<>(appealsService.getAllDtoByUser(authentication), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Создает обращение")
     @PostMapping(value = "", produces = DATA_TYPE)
-    public ResponseEntity<AppealDto> createAppeal(@RequestBody AppealRequest appealRequest,
+    public ResponseEntity<AppealDto> createAppeal(@Valid @RequestBody AppealRequest appealRequest,
                                                   Authentication authentication) {
-        return getDtoResponse(appealsService.save(appealRequest, authentication));
+        return new ResponseEntity<>(appealsService.save(appealRequest, authentication), HttpStatus.OK);
     }
 
     @Secured(value = {ROLE_ADMIN})
     @ApiOperation(value = "Выводит список всех обращений. Только для Администратора")
     @GetMapping(value = "/all", produces = DATA_TYPE)
     public ResponseEntity<List<AppealDto>> readAll(Authentication authentication) {
-        return getListAppealDtoResponse(appealsService.getAllDto(authentication));
+        return new ResponseEntity<>(appealsService.getAllDto(authentication), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Выводит обращение по его индексу")
     @GetMapping(value = "/{id}", produces = DATA_TYPE)
     public ResponseEntity<AppealDto> readAppealById(@PathVariable(name = "id") Long id,
                                                     Authentication authentication) {
-        return getDtoResponse(appealsService.getDtoById(id, authentication));
+        return new ResponseEntity<>(appealsService.getDtoById(id, authentication), HttpStatus.OK);
     }
 
     @Secured(value = {ROLE_ADMIN})
     @ApiOperation(value = "Изменяет обращение по его индексу. Только для Администратора")
     @PostMapping(value = "/{id}", produces = DATA_TYPE)
-    public ResponseEntity<AppealDto> updateAppealById(@RequestBody AppealDto appealDto,
+    public ResponseEntity<AppealDto> updateAppealById(@Valid @RequestBody AppealDto appealDto,
                                                       Authentication authentication) {
-        return getDtoResponse(appealsService.update(appealDto, authentication));
+        return new ResponseEntity<>(appealsService.update(appealDto, authentication), HttpStatus.OK);
     }
 }

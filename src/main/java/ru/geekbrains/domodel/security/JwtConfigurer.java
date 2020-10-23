@@ -1,4 +1,4 @@
-package ru.geekbrains.domodel.security.jwt;
+package ru.geekbrains.domodel.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;

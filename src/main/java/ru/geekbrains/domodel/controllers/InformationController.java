@@ -3,6 +3,7 @@ package ru.geekbrains.domodel.controllers;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +13,10 @@ import ru.geekbrains.domodel.dto.InformationRequest;
 import ru.geekbrains.domodel.services.api.DocumentService;
 import ru.geekbrains.domodel.services.api.InformationService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
-import static ru.geekbrains.domodel.mappers.ResponseMapper.*;
 
 /**
  * Контроллер информации
@@ -27,47 +28,50 @@ import static ru.geekbrains.domodel.mappers.ResponseMapper.*;
 @RequiredArgsConstructor
 public class InformationController {
 
+    // Тип данных
+    private final String DATA_TYPE = "application/json";
+
     // Необходимые сервисы
     private final InformationService informationService;
     private final DocumentService documentService;
 
     @ApiOperation(value = "Выводит список информационных блоков раздела контакты")
-    @GetMapping("/contacts")
+    @GetMapping(value = "/contacts", produces = DATA_TYPE)
     public ResponseEntity<List<InformationDto>> readContacts() {
-        return getListInformationDtoResponse(informationService.getAllDto());
+        return new ResponseEntity<>(informationService.getAllDto(), HttpStatus.OK);
     }
 
     @Secured(value = {ROLE_ADMIN})
     @ApiOperation(value = "Выводит информационный блок раздела контакты по его номеру")
-    @GetMapping("/contacts/{id}")
+    @GetMapping(value = "/contacts/{id}", produces = DATA_TYPE)
     public ResponseEntity<InformationDto> readContactsById(@PathVariable(name = "id") Integer id) {
-        return getDtoResponse(informationService.getDtoById(id));
+        return new ResponseEntity<>(informationService.getDtoById(id), HttpStatus.OK);
     }
 
     @Secured(value = {ROLE_ADMIN})
     @ApiOperation(value = "Изменяет информационный блок раздела контакты. Только для Администратора")
-    @PostMapping("/contacts/{id}")
-    public ResponseEntity<InformationDto> updateInformation(@RequestBody InformationDto informationRequest) {
-        return getDtoResponse(informationService.update(informationRequest));
+    @PostMapping(value = "/contacts/{id}", produces = DATA_TYPE)
+    public ResponseEntity<InformationDto> updateInformation(@Valid @RequestBody InformationDto informationRequest) {
+        return new ResponseEntity<>(informationService.update(informationRequest), HttpStatus.OK);
     }
 
     @Secured(value = {ROLE_ADMIN})
     @ApiOperation(value = "Создает информационный блок раздела контакты. Только для Администратора")
-    @PostMapping("/contacts")
-    public ResponseEntity<InformationDto> createInformation(@RequestBody InformationRequest informationRequest) {
-        return getDtoResponse(informationService.save(informationRequest));
+    @PostMapping(value = "/contacts", produces = DATA_TYPE)
+    public ResponseEntity<InformationDto> createInformation(@Valid @RequestBody InformationRequest informationRequest) {
+        return new ResponseEntity<>(informationService.save(informationRequest), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Выводит список всех документов")
-    @GetMapping("/documents")
+    @GetMapping(value = "/documents", produces = DATA_TYPE)
     public ResponseEntity<List<DocumentDto>> readDocuments() {
-        return getListDocumentDtoResponse(documentService.getAllDto());
+        return new ResponseEntity<>(documentService.getAllDto(), HttpStatus.OK);
     }
 
     @Secured(value = {ROLE_ADMIN})
     @ApiOperation(value = "Создает документ")
-    @PostMapping("/documents")
-    public ResponseEntity<DocumentDto> createDocuments(@RequestBody DocumentDto documentRequest) {
-        return getDtoResponse(documentService.save(documentRequest));
+    @PostMapping(value = "/documents", produces = DATA_TYPE)
+    public ResponseEntity<DocumentDto> createDocuments(@Valid @RequestBody DocumentDto documentRequest) {
+        return new ResponseEntity<>(documentService.save(documentRequest), HttpStatus.OK);
     }
 }

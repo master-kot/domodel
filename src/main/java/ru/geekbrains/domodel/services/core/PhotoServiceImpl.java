@@ -8,7 +8,6 @@ import ru.geekbrains.domodel.repositories.PhotoRepository;
 import ru.geekbrains.domodel.services.api.PhotoService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса фотографий
@@ -20,6 +19,7 @@ public class PhotoServiceImpl implements PhotoService {
     // Репозиторий фотографий
     private final PhotoRepository photoRepository;
 
+    // Необходимые сервисы и мапперы
     private final PhotoLinkMapper photoLinkMapper;
 
     @Override

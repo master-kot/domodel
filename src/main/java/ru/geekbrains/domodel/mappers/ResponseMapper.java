@@ -11,70 +11,9 @@ import java.util.List;
  */
 public final class ResponseMapper {
 
-    public static ResponseEntity<Boolean> getBooleanResponse(Boolean objectDto) {
-        return objectDto == null ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
-    }
-
-    public static ResponseEntity<AccountDto> getDtoResponse(AccountDto objectDto) {
-        return objectDto == null ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
-    }
-
-    public static ResponseEntity<AppealDto> getDtoResponse(AppealDto objectDto) {
-        return objectDto == null ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
-    }
-
-    public static ResponseEntity<DocumentDto> getDtoResponse(DocumentDto objectDto) {
-        return objectDto == null ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
-    }
-
-    public static ResponseEntity<InformationDto> getDtoResponse(InformationDto objectDto) {
-        return objectDto == null ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
-    }
-
     public static ResponseEntity<MeterDto> getDtoResponse(MeterDto objectDto) {
         return objectDto == null ?
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
-    }
-
-    public static ResponseEntity<RequisitesDto> getDtoResponse(RequisitesDto objectDto) {
-        return objectDto == null ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
-    }
-
-    public static ResponseEntity<UserDto> getDtoResponse(UserDto objectDto) {
-        return objectDto == null ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
-    }
-
-    public static ResponseEntity<VoteDto> getDtoResponse(VoteDto objectDto) {
-        return objectDto == null ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDto, HttpStatus.OK);
-    }
-
-    public static ResponseEntity<List<AccountDto>> getListAccountDtoResponse(List<AccountDto> objectDtoList) {
-        return objectDtoList.size() == 0 ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDtoList, HttpStatus.OK);
-    }
-
-    public static ResponseEntity<List<AppealDto>> getListAppealDtoResponse(List<AppealDto> objectDtoList) {
-        return objectDtoList.size() == 0 ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDtoList, HttpStatus.OK);
-    }
-
-    public static ResponseEntity<List<DocumentDto>> getListDocumentDtoResponse(List<DocumentDto> documentDtoList) {
-        return documentDtoList.size() == 0 ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(documentDtoList, HttpStatus.OK);
-    }
-
-    public static ResponseEntity<List<InformationDto>> getListInformationDtoResponse(
-            List<InformationDto> informationDtoList) {
-        return informationDtoList.size() == 0 ?
-                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(informationDtoList, HttpStatus.OK);
     }
 
     public static ResponseEntity<List<MeterDto>> getListMeterDtoResponse(List<MeterDto> informationDtoList) {
@@ -82,12 +21,22 @@ public final class ResponseMapper {
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(informationDtoList, HttpStatus.OK);
     }
 
-    public static ResponseEntity<List<UserDto>> getListUserDtoResponse(List<UserDto> objectDtoList) {
+    public static ResponseEntity<List<AccountMetersDto>> getListAccountMeterDtoResponse(List<AccountMetersDto> objectDtoList) {
         return objectDtoList.size() == 0 ?
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDtoList, HttpStatus.OK);
     }
 
-    public static ResponseEntity<List<VoteDto>> getListVoteDtoResponse(List<VoteDto> objectDtoList) {
+    public static ResponseEntity<List<MeterDataDto>> getListMeterDataDtoResponse(List<MeterDataDto> objectDtoList) {
+        return objectDtoList.size() == 0 ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDtoList, HttpStatus.OK);
+    }
+
+    public static ResponseEntity<List<MeterTypeDto>> getListMeterTypeDtoResponse(List<MeterTypeDto> objectDtoList) {
+        return objectDtoList.size() == 0 ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDtoList, HttpStatus.OK);
+    }
+
+    public static ResponseEntity<List<TariffDto>> getListTariffDtoResponse(List<TariffDto> objectDtoList) {
         return objectDtoList.size() == 0 ?
                 new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(objectDtoList, HttpStatus.OK);
     }

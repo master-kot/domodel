@@ -26,6 +26,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BillController {
 
+    // Тип данных
+    private final String DATA_TYPE = "application/json";
+
     // Необходимые сервисы
     private final BillService billService;
     private final AccountService accountService;
@@ -37,7 +40,7 @@ public class BillController {
     }
 
     @ApiOperation(value = "Выдает список неоплаченых платежей по пользователю")
-    @GetMapping("")
+    @GetMapping(value = "", produces = DATA_TYPE)
     public ResponseEntity<Map<String, Object>> readUnpaidBillsByUser(Authentication authentication) {
         Map<String, Object> response = new HashMap<>();
         List<AccountDto> accountDtos = accountService.getAllDtoByUserUsername(authentication.getName());
@@ -48,7 +51,7 @@ public class BillController {
     }
 
     @ApiOperation(value = "Выдает архив платежей по пользователю")
-    @GetMapping("/archive")
+    @GetMapping(value = "/archive", produces = DATA_TYPE)
     public ResponseEntity<Map<String, Object>> readArchiveBillsByUser(Authentication authentication) {
         Map<String, Object> response = new HashMap<>();
         List<AccountDto> accountDtos = accountService.getAllDtoByUserUsername(authentication.getName());
@@ -60,7 +63,7 @@ public class BillController {
 
 
     @ApiOperation(value = "Выдает список всех платежей")
-    @GetMapping("/all")
+    @GetMapping(value = "/all", produces = DATA_TYPE)
     public ResponseEntity<Map<String, Object>> readAllBills(Authentication authentication) {
         Map<String, Object> response = new HashMap<>();
         response.put("accounts", accountService.getAllDto());

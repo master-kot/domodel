@@ -3,6 +3,11 @@ package ru.geekbrains.domodel.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
+import static ru.geekbrains.domodel.entities.constants.Messages.DATA_NOT_BLANK;
+import static ru.geekbrains.domodel.entities.constants.Messages.LINK_ADDRESS_NOT_BLANK;
+
 /**
  * Dto представление сущности Документ
  */
@@ -12,9 +17,8 @@ public class DocumentDto {
 
     private Integer id;
 
-    // Заголовок (наименование)
     private String title;
 
-    // Ссылка на адрес документа
+    @NotBlank(message = LINK_ADDRESS_NOT_BLANK)
     private String linkAddress;
 }

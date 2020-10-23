@@ -31,6 +31,8 @@ public class VoteServiceImpl implements VoteService {
 
     // Репозиторий голосований
     private final VoteRepository voteRepository;
+
+    // Необходимые сервисы и мапперы
     private final VoteMapper voteMapper;
     private final UserServiceImpl userService;
 
