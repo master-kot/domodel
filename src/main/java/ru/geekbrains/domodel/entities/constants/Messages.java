@@ -73,5 +73,17 @@ public final class Messages {
 
     public static final String DATA_NOT_BLANK = "Должно быть не пустым поле ";
 
-    public static final String DATA_ONLY_DIGITS = "Должно содержать только цифры поле ";
+    public static final String DATA_NOT_CONTAIN_ONLY_DIGITS = "Должно содержать только цифры поле ";
+
+    public static final String DATA_NOT_CONTAIN_9_DIGITS = "Должно содержать 9 цифр поле ";
+
+    public static final String DATA_NOT_CONTAIN_10_DIGITS = "Должно содержать 10 цифр поле ";
+
+    public static final String DATA_NOT_CONTAIN_15_DIGITS = "Должно содержать 15 цифр поле ";
+
+    public static final String DATA_NOT_POSITIVE = "Должно содержать положительное число поле ";
+
+    public static final String TEXT_CONTAINS_TOO_MANY_SYMBOLS = "Поле Текст должно содержать не более ";
+
+    public static final String TITLE_CONTAINS_TOO_MANY_SYMBOLS = "Поле Тема должно содержать не более ";
 }
