@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 
@@ -29,7 +28,6 @@ import static ru.geekbrains.domodel.entities.constants.Roles.ROLE_ADMIN;
 @RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
 
-    // TODO проверить работоспособность, после этого стереть лишнее
     private final UserService userService;
     private final NewsMapper newsMapper;
 
@@ -46,37 +44,16 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<NewsDto> getArchiveDtoByPageId(int page, Authentication authentication) {
-//        List<NewsDto> newsDtoList = new ArrayList<>();
         List<NewsDto> newsArchive = getAllVisibleNews();
-//        if (hasAuthenticationRoleAdmin(authentication)) newsArchive.addAll(getDeletedNews());
-//        for (int i = (page - 1) * 10; i < page * 10 && i < newsArchive.size(); i++) {
-//            newsDtoList.add(newsMapper.newsToNewsDto(newsArchive.get(i)));
-//        }
-//        return newsDtoList;
-        return newsArchive.subList((page-1)*10, page*10);
+        if (hasAuthenticationRoleAdmin(authentication)) newsArchive.addAll(getDeletedNews());
+        int limit = (newsArchive.size() < page*10+9) ? newsArchive.size() : page*10 + 9;
+        return newsArchive.subList((page - 1) * 10, limit);
     }
 
     @Override
     public List<NewsDto> getRelevantDto(Authentication authentication) {
-//        Stream<NewsDto> newsDtoStream = newsRepository.findAll().stream().map(newsMapper::newsToNewsDto);
-//        // Если пользователь не авторизован
-//        if (authentication == null) {
-//            return newsDtoStream.filter(n -> !n.isHidden() && !n.isVisible()).collect(Collectors.toList());
-//        }
-//        // Если пользователь - админ
-//        if (hasAuthenticationRoleAdmin(authentication)) {
-//            return newsDtoStream.limit(10).collect(Collectors.toList());
-//        } else { // Просто пользователь
-//            return newsDtoStream.filter(n -> !n.isHidden()).collect(Collectors.toList());
-//        }
-
         List<NewsDto> allNews = getAllVisibleNews();
         int limit = (allNews.size() < 10) ? allNews.size() : 10;
-//        List<NewsDto> newsRelevant = new ArrayList<>();
-//        //if (authentication == null) allNews = getPublicNews();
-//        for (int i = 0; i < limit; i++) {
-//            newsRelevant.add(newsMapper.newsToNewsDto(allNews.get(i)));
-//        }
         return allNews.subList(0, limit);
     }
 
@@ -103,15 +80,9 @@ public class NewsServiceImpl implements NewsService {
         news.setFullText(newsDto.getFullText());
         news.setPictureLink(newsDto.getPictureLink());
         news.setHidden(false);
-//        if (news.isPinned() != newsDto.isPinned() && newsDto.isPinned()) {
-//            List<News> pinnedNews = getPinnedNews();
-//            if (pinnedNews.size() > 1) {
-//                pinnedNews.get(1).setPinned(false);
-//                newsRepository.save(pinnedNews.get(1));
-//            }
-//        }
+
         updatePinningById(id, newsDto.isPinned(), authentication);
-//        news.setPinned(newsDto.isPinned());
+
         news.setVisible(newsDto.isVisible());
         newsRepository.save(news);
         return getDtoById(id, authentication);
@@ -121,13 +92,13 @@ public class NewsServiceImpl implements NewsService {
     public boolean updatePinningById(Long id, boolean pinned, Authentication authentication) {
         //Закрепляем или открепляем выбранную новость
         News news = newsRepository.getOne(id);
-        if (news.isPinned() == pinned || !hasAuthenticationRoleAdmin(authentication))
+        if (news.isPinned() == pinned || !hasAuthenticationRoleAdmin(authentication)||!news.isVisible())
             return pinned;
         else {
-            if (pinned) {
-                NewsDto pinnedNews = getPinnedNews();
+            if (pinned && getPinnedNews().isPresent()) {
+                NewsDto pinnedNews = getPinnedNews().get();
                 pinnedNews.setPinned(false);
-                newsRepository.save(newsMapper.newsDtoToNews(pinnedNews));
+                save(pinnedNews,authentication);
             }
             news.setPinned(pinned);
             newsRepository.save(news);
@@ -142,6 +113,20 @@ public class NewsServiceImpl implements NewsService {
             return null;
         }
         News news = newsMapper.newsRequestToNews(newsRequest);
+        // Добавляем дату
+        news.setCreationDate(LocalDate.now());
+        // Добавляем автора новости
+        news.setAuthor(userService.getByUsername(authentication.getName()));
+        return newsMapper.newsToNewsDto(newsRepository.save(news));
+    }
+
+    @Override
+    public NewsDto save(NewsDto dto, Authentication authentication) {
+        // Если пользователь не авторизован или не админ
+        if (authentication == null || !hasAuthenticationRoleAdmin(authentication)) {
+            return null;
+        }
+        News news = newsMapper.newsDtoToNews(dto);
         // Добавляем дату
         news.setCreationDate(LocalDate.now());
         // Добавляем автора новости
@@ -167,50 +152,22 @@ public class NewsServiceImpl implements NewsService {
     }
 
     private List<NewsDto> getAllVisibleNews() {
-        //список неудаленных новостей для зарегистрированных пользователей. Сначала закрепленные, потом остальные по дате от новых к старым
-//        List<News> allNewsList = getAllNews();
+        //список неудаленных новостей для зарегистрированных пользователей. Сначала закрепленная, потом остальные по дате от новых к старым
         List<NewsDto> newsList = new ArrayList<>();
-        newsList.add(getPinnedNews());
-        newsList.addAll(getAllDto().stream().filter(news -> !news.isVisible()).filter(news -> !news.isPinned()).collect(Collectors.toList()));
-//        for (int i = 0; i < allNewsList.size(); i++) { //добавляем остальные неудаленные новости
-//            if (allNewsList.get(i).isVisible() && !allNewsList.get(i).isPinned()) {
-//                newsList.add(allNewsList.get(i));
-//            }
-//        }
+        if (getPinnedNews().isPresent()) newsList.add(getPinnedNews().get());
+        newsList.addAll(getAllDto().stream().filter(news -> news.isVisible()).filter(news -> !news.isPinned()).collect(Collectors.toList()));
         return newsList;
     }
 
     private List<NewsDto> getDeletedNews() {
         //список удаленных новостей
-//        List<News> allNewsList = getAllNews();
-//        List<News> newsList = new ArrayList<News>();
-//        for (int i = 0; i < allNewsList.size(); i++) {
-//            if (!allNewsList.get(i).isVisible()) {
-//                newsList.add(allNewsList.get(i));
-//            }
-//        }
-//        return newsList;
         return getAllNews().stream().filter(news -> !news.isVisible()).map(newsMapper::newsToNewsDto).collect(Collectors.toList());
     }
 
-    private NewsDto getPinnedNews() {
-        Optional<NewsDto> news = newsRepository.findAll().stream().filter((n -> n.isPinned())).map(newsMapper::newsToNewsDto).findAny();
-        return news.get();
+    private Optional<NewsDto> getPinnedNews() {
+        Optional<NewsDto> news = newsRepository.findAll().stream().filter((n -> n.isPinned())).map(newsMapper::newsToNewsDto).findFirst();
+        return news;
     }
-
-//      private List<NewsDto> getRelevantNews(Authentication authentication) {
-//        Stream<News> newsStream = newsRepository.findAll().stream()
-//                .sorted((n1, n2) -> n2.getCreationDate().compareTo(n1.getCreationDate()))
-//                .limit(10);
-////        if (authentication == null) { // Если пользователь не авторизован
-////            newsStream = newsStream.filter(n -> !n.isHidden() && n.isVisible());
-////        }
-//        // Одинаково для всех авторизованных пользователей
-//            newsStream = newsStream.filter(News::isVisible);
-//        return newsStream.sorted((n1, n2) -> n2.comparePinning(n1))
-//                .map(newsMapper::newsToNewsDto)
-//                .collect(Collectors.toList());
-//      }
 
     /**
      * Проверить, что пользователь имеет роль Админа
