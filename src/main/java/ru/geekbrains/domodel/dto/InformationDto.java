@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import static ru.geekbrains.domodel.entities.constants.Messages.*;
 
@@ -15,7 +16,8 @@ import static ru.geekbrains.domodel.entities.constants.Messages.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InformationDto {
 
-    @NotBlank(message = DATA_NOT_BLANK + "Индекс")
+    @NotNull(message = DATA_NOT_BLANK + "Индекс")
+    @Positive(message = DATA_NOT_POSITIVE + "Индекс")
     private Integer id;
 
     @NotBlank(message = TITLE_NOT_BLANK)
