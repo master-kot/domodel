@@ -20,7 +20,7 @@ public class NewsRequest {
     private String photoLink;
 
     // Указатель публичности новости. Новость отображается для всех посетителей если true
-    private boolean hidden;
+    //private boolean hidden;
 
     // Указатель закрепления новости. Новость закреплена если true
     private boolean pinned;

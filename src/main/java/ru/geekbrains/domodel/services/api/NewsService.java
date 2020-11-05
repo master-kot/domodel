@@ -71,4 +71,12 @@ public interface NewsService {
      * @return новость, сохраненная в репозитории
      */
     NewsDto save(NewsRequest newsRequest, Authentication authentication);
+
+    /**
+     * Сохраняет новость
+     *
+     * @param newsDto запрос на создание новости
+     * @return новость, сохраненная в репозитории
+     */
+    NewsDto save(NewsDto newsDto, Authentication authentication);
 }

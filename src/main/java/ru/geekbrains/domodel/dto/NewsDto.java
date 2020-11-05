@@ -28,7 +28,7 @@ public class NewsDto {
     private String pictureLink;
 
     // Указатель публичности новости. Новость отображается для всех посетителей если true
-    private boolean hidden;
+    //private boolean hidden; при необходимости расскомментить
 
     // Указатель закрепления новости. Новость закреплена если true
     private boolean pinned;
