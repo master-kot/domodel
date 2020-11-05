@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.domodel.dto.RequisitesDto;
 import ru.geekbrains.domodel.entities.Requisites;
+import ru.geekbrains.domodel.exceptions.EntityNotFoundException;
 import ru.geekbrains.domodel.mappers.RequisitesMapper;
 import ru.geekbrains.domodel.repositories.RequisitesRepository;
 import ru.geekbrains.domodel.services.api.RequisitesService;
 
-import java.util.Optional;
+import static ru.geekbrains.domodel.entities.constants.Messages.ENTITY_NOT_FOUND;
 
 /**
  * Реализация сервиса реквизитов компании
@@ -17,28 +18,28 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RequisitesServiceImpl implements RequisitesService {
 
-    private final Integer CURRENT_ID_NUMBER = 1;
-
     // Репозиторий реквизитов
     private final RequisitesRepository requisitesRepository;
-    // Маппер
-    RequisitesMapper requisitesMapper;
+
+    // Необходимые сервисы и мапперы
+    private final RequisitesMapper requisitesMapper;
 
     @Override
     public RequisitesDto getCurrentDto() {
-        return requisitesRepository.findById(CURRENT_ID_NUMBER)
-                .map(requisitesMapper::requisitesToRequisitesDto).orElse(null);
+        return requisitesMapper.requisitesToRequisitesDto(getCurrentRequisites());
     }
 
     @Override
     public RequisitesDto update(RequisitesDto requisitesDto) {
-        Optional<Requisites> optional = requisitesRepository.findById(CURRENT_ID_NUMBER);
-        Requisites requisites;
-        if (optional.isPresent()) {
-            requisites = requisitesMapper.updateRequisites(optional.get(), requisitesDto);
-        } else {
-            requisites = requisitesMapper.requisitesDtoToRequisites(requisitesDto);
-        }
+        Requisites requisites = requisitesMapper.updateRequisites(getCurrentRequisites(), requisitesDto);
         return requisitesMapper.requisitesToRequisitesDto(requisitesRepository.save(requisites));
+    }
+
+    /**
+     * Получает текущие реквизиты
+     */
+    private Requisites getCurrentRequisites() {
+        return requisitesRepository.findAll().stream().findFirst()
+                .orElseThrow(() -> new EntityNotFoundException(ENTITY_NOT_FOUND));
     }
 }

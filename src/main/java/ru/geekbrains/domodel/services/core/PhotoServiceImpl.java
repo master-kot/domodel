@@ -19,6 +19,7 @@ public class PhotoServiceImpl implements PhotoService {
     // Репозиторий фотографий
     private final PhotoRepository photoRepository;
 
+    // Необходимые сервисы и мапперы
     private final PhotoLinkMapper photoLinkMapper;
 
     @Override

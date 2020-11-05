@@ -22,6 +22,8 @@ public class AccountServiceImpl implements AccountService {
 
     // Репозиторий лицевых счетов
     private final AccountRepository accountRepository;
+
+    // Необходимые сторонние сервисы и мапперы
     private final AccountMapper accountMapper;
     private final UserService userService;
 

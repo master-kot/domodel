@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
+import static ru.geekbrains.domodel.entities.constants.Messages.DATA_NOT_BLANK;
 import static ru.geekbrains.domodel.entities.constants.Messages.LINK_ADDRESS_NOT_BLANK;
 
 /**

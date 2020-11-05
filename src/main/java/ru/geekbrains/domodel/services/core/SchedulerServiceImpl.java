@@ -11,7 +11,7 @@ import ru.geekbrains.domodel.services.api.MeterService;
 @RequiredArgsConstructor
 public class SchedulerServiceImpl {
 
-    // Сервис счетчиков
+    // Необходимые сервисы и мапперы
     private final MeterService meterService;
 
 //    /**

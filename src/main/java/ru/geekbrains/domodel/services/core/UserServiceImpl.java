@@ -2,6 +2,8 @@ package ru.geekbrains.domodel.services.core;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,15 +32,15 @@ import static ru.geekbrains.domodel.entities.constants.Roles.hasAuthenticationRo
  */
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
-
-    // Необходимые сервисы
-    private final BCryptPasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     // Необходимые репозитории
     private final UserRepository userRepository;
     private final AuthorityRepository authorityRepository;
+
+    // Необходимые сервисы и мапперы
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Override
     public UserDto getDtoById(Long id) {
@@ -128,6 +130,11 @@ public class UserServiceImpl implements UserService {
     public boolean deleteById(Long userId) {
         userRepository.deleteById(userId);
         return userRepository.existsById(userId);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userMapper.userToJwtUser(findByUsername(username));
     }
 
     /**

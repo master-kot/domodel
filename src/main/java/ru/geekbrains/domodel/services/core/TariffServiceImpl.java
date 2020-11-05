@@ -19,6 +19,7 @@ public class TariffServiceImpl implements TariffService {
     // Репозиторий тарифов
     private final TariffRepository tariffRepository;
 
+    // Необходимые сервисы и мапперы
     private final TariffMapper tariffMapper;
 
     @Override

@@ -3,6 +3,8 @@ package ru.geekbrains.domodel.dto;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import static ru.geekbrains.domodel.entities.constants.Messages.*;
 
@@ -18,6 +20,6 @@ public class InformationRequest {
     @NotBlank(message = TEXT_NOT_BLANK)
     private String text;
 
-    @NotBlank(message = HIDDEN_NOT_BLANK)
+    @NotEmpty(message = HIDDEN_NOT_BLANK)
     private boolean hidden;
 }
